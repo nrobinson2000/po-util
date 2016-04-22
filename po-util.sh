@@ -159,7 +159,7 @@ exit
 fi
 
 
-if [ "$2" == "update" ];
+if [ "$2" == "update" ] || [ "$2" == "patch" ];
 then git pull
 fi
 
