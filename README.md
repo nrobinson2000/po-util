@@ -1,6 +1,11 @@
 # po-util
 Particle Offline Utility: A handy script for installing and using the Particle Toolchain on Ubuntu-based Distros and OSX
 
+# Quick Install
+curl -s "http://bit.ly/1ShvhdI" | sh
+
+
+
 # Notes:
 To fully make use of this script you must first download and save it to your home folder.
 Make the script executable and create an alias for it in your .bashrc.
