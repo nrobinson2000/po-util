@@ -48,7 +48,7 @@ sudo make install
 cd ..
 rm -rf dfu-util-0.9
 # Install gcc-arm-embedded
-sudo apt-add-repository ppa:terry.guo/gcc-arm-embedded
+sudo apt-add-repository -y ppa:terry.guo/gcc-arm-embedded
 sudo apt-get update
 sudo apt-get install gcc-arm-none-eabi
 # clone firmware repository
