@@ -3,7 +3,7 @@ Particle Offline Utility: A handy script for installing and using the Particle T
 
 # Quick Install
 ```
-curl -s http://bit.ly/1ShvhdI | sh
+curl -fsSL https://raw.githubusercontent.com/nrobinson2000/po-util/master/download-po-util.sh | bash
 ```
 
 
