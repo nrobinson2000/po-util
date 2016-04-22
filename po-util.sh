@@ -57,7 +57,7 @@ git clone https://github.com/spark/firmware.git
 sudo npm install -g node-pre-gyp npm
 sudo npm install -g particle-cli
 # create udev rules file
-curl -fsSL https://gist.githubusercontent.com/monkbroc/b283bb4da8c10228a61e/raw/e59c77021b460748a9c80ef6a3d62e17f5947be1/50-particle.rules
+curl -fsSLO https://gist.githubusercontent.com/monkbroc/b283bb4da8c10228a61e/raw/e59c77021b460748a9c80ef6a3d62e17f5947be1/50-particle.rules
 sudo mv 50-particle.rules /etc/udev/rules.d/50-particle.rules
 fi
 if [ "$(uname -s)" == "Darwin" ];
