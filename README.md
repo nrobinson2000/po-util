@@ -20,23 +20,23 @@ To format your working directory into a project folder, run:
 ```
 $ po init
 ```
-To compile and test your firmware run:
+To compile and test your firmware, run:
 ```
 $ po DEVICE build
 ```
-To compile and automagically upload your firmware with dfu-util run:
+To compile and automagically upload your firmware with dfu-util, run:
 ```
 $ po DEVICE flash
 ```
-To reset the build directory run:
+To reset the build directory, run:
 ```
 $ po DEVICE clean
 ```
-To download new firmware from Particle run:
+To download new firmware from Particle, run:
 ```
 $ po DEVICE update
 ```
-To upgrade the system firmware on your device to the latest Particle release and change the [dfu-trigger speed](https://community.particle.io/t/local-compile-electron-workflow/21694/13?u=nrobinson2000) run:
+To upgrade the system firmware on your device to the latest Particle release and change the [dfu-trigger speed](https://community.particle.io/t/local-compile-electron-workflow/21694/13?u=nrobinson2000), run:
 ```
 $ po DEVICE upgrade
 ```
@@ -44,11 +44,11 @@ To instantly flash code that you just compiled with `build`, run:
 ```
 $ po dfu
 ```
-To put your device into DFU mode run:
+To put your device into DFU mode, run:
 ```
 $ po dfu-open
 ```
-To make your device exit DFU mode run:
+To make your device exit DFU mode, run:
 ```
 $ po dfu-close
 ```
