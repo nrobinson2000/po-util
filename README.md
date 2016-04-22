@@ -2,8 +2,9 @@
 Particle Offline Utility: A handy script for installing and using the Particle Toolchain on Ubuntu-based Distros and OSX
 
 # Quick Install
-curl -s "http://bit.ly/1ShvhdI" | sh
-
+```
+curl -s http://bit.ly/1ShvhdI | sh
+```
 
 
 # Notes:
