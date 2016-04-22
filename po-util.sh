@@ -34,9 +34,11 @@ then
 cd ~/github || exit
 # Install dependencies
 echo "installing dependencies..."
+sudo apt-add-repository -y ppa:terry.guo/gcc-arm-embedded
 curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
 sudo apt-get remove -y node modemmanager gcc-arm-none-eabi
-sudo apt-get install -y nodejs python-software-properties python g++ make build-essential libusb-1.0-0-dev
+
+sudo apt-get install -y nodejs python-software-properties python g++ make build-essential libusb-1.0-0-dev gcc-arm-none-eabi
 # Install dfu-util
 curl -fsSLO "https://sourceforge.net/projects/dfu-util/files/dfu-util-0.9.tar.gz/download"
 tar -xzvf download
@@ -47,10 +49,7 @@ make
 sudo make install
 cd ..
 rm -rf dfu-util-0.9
-# Install gcc-arm-embedded
-sudo apt-add-repository -y ppa:terry.guo/gcc-arm-embedded
-sudo apt-get update
-sudo apt-get install gcc-arm-none-eabi
+
 # clone firmware repository
 cd ~/github || exit
 git clone https://github.com/spark/firmware.git
