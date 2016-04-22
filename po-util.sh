@@ -38,7 +38,7 @@ curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
 sudo apt-get remove -y node modemmanager gcc-arm-none-eabi
 sudo apt-get install -y nodejs python-software-properties python g++ make build-essential libusb-1.0-0-dev
 # Install dfu-util
-wget "https://sourceforge.net/projects/dfu-util/files/dfu-util-0.9.tar.gz/download"
+curl -fsSLO "https://sourceforge.net/projects/dfu-util/files/dfu-util-0.9.tar.gz/download"
 tar -xzvf download
 rm download
 cd dfu-util-0.9 || exit
@@ -58,7 +58,7 @@ git clone https://github.com/spark/firmware.git
 sudo npm install -g node-pre-gyp npm
 sudo npm install -g particle-cli
 # create udev rules file
-wget https://gist.githubusercontent.com/monkbroc/b283bb4da8c10228a61e/raw/e59c77021b460748a9c80ef6a3d62e17f5947be1/50-particle.rules
+curl -fsSL https://gist.githubusercontent.com/monkbroc/b283bb4da8c10228a61e/raw/e59c77021b460748a9c80ef6a3d62e17f5947be1/50-particle.rules
 sudo mv 50-particle.rules /etc/udev/rules.d/50-particle.rules
 fi
 if [ "$(uname -s)" == "Darwin" ];
@@ -66,8 +66,8 @@ then
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 brew tap PX4/homebrew-px4
 brew update
-brew install gcc-arm-none-eabi-49 dfu-util wget
-wget https://nodejs.org/dist/v5.8.0/node-v5.8.0.pkg
+brew install gcc-arm-none-eabi-49 dfu-util
+curl -fsSLO https://nodejs.org/dist/v5.8.0/node-v5.8.0.pkg
 sudo installer -pkg node-v5.8.0.pkg -target /
 rm node-v5.8.0.pkg
 sudo npm install -g node-pre-gyp npm
