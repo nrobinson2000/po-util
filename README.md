@@ -5,7 +5,7 @@ Particle Offline Utility: A handy script for installing and using the Particle T
 ```
 curl -fsSL https://raw.githubusercontent.com/nrobinson2000/po-util/master/download-po-util.sh | bash
 ```
-
+Copy and paste this into your terminal.
 
 # Notes:
 To fully make use of this script you must first download and save it to your home folder.
