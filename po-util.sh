@@ -141,7 +141,7 @@ if [ "$1" == "electron" ];
 then git checkout release/v0.5.0
 fi
 
-if [ "$2" == "patch" ];
+if [ "$2" == "upgrade" ];
 then
 cd "$CWD"
 sed '2s/.*/START_DFU_FLASHER_SERIAL_SPEED=19200/' ~/github/firmware/build/module-defaults.mk > temp
