@@ -7,18 +7,8 @@ curl -fsSL https://raw.githubusercontent.com/nrobinson2000/po-util/master/downlo
 ```
 Copy and paste this into your terminal.
 
-# Notes:
-To fully make use of this script you must first download and save it to your home folder.
-Make the script executable and create an alias for it in your .bashrc.
-```
-$ chmod +x po-util.sh
-$ echo 'alias po="~/po-util.sh"' >> .bashrc
-```
+# Usage:
 
-You next have to install the Particle toolchain and dependecies.  All of this can be taken care with:
-```
-$ po install
-```
 To format your working directory into a project folder run:
 ```
 $ po init
