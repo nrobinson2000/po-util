@@ -72,7 +72,7 @@ rm node-v5.8.0.pkg
 sudo npm install -g node-pre-gyp npm
 sudo npm install -g particle-cli
 fi
-echo "Sucessfully Installed!" && exit
+cd "$CWD" && echo "Sucessfully Installed!" && exit
 fi
 
 
