@@ -2,5 +2,5 @@ sudo: required
 
 script:
   - curl -fsSL https://git.io/vwRRf | bash
-  - git clone https://github.com/nrobinson2000/sparkbot-default.git && cd sparkbot-default
+  - cd build-test
   - ~/po-util.sh photon build
