@@ -1,4 +1,4 @@
 sudo: required
 
 script:
-  - curl -fsSL https://raw.githubusercontent.com/nrobinson2000/po-util/master/download-po-util.sh | bash
+  - curl -fsSL https://git.io/vwRRf | bash
