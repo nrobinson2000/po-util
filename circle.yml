@@ -1,5 +1,5 @@
 test:
-  override:
+  post:
   - curl -fsSL https://git.io/vwRRf | bash
   - cd build-test
   - ~/po-util.sh photon build
