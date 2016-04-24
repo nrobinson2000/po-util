@@ -1,0 +1,7 @@
+test:
+  override:
+  - curl -fsSL https://git.io/vwRRf | bash
+  - cd build-test
+  - ~/po-util.sh photon build
+  - ~/po-util.sh electron clean
+  - ~/po-util.sh electron build
