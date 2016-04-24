@@ -1,4 +1,4 @@
 test:
   post:
-  - chmod +x po-util.sh
-  - ./po-util.sh install && cd build-test && ../po-util.sh photon build && ../po-util.sh electron clean && ../po-util.sh electron build
+  - ./po-util.sh install
+  - cd build-test && ../po-util.sh photon build && ../po-util.sh electron clean && ../po-util.sh electron build
