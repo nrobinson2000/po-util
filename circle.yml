@@ -1,6 +1,6 @@
 test:
   post:
-  - curl -fsSL https://git.io/vwRRf | bash
+  - ./download-po-util.sh
   - cd build-test
   - ~/po-util.sh photon build
   - ~/po-util.sh electron clean
