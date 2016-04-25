@@ -38,7 +38,7 @@ sudo apt-add-repository -y ppa:terry.guo/gcc-arm-embedded
 curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
 sudo apt-get remove -y node modemmanager gcc-arm-none-eabi
 
-sudo apt-get install -y nodejs python-software-properties python g++ make build-essential libusb-1.0-0-dev gcc-arm-none-eabi
+sudo apt-get install -y nodejs python-software-properties python g++ make build-essential libusb-1.0-0-dev gcc-arm-none-eabi libarchive-zip-perl
 # Install dfu-util
 curl -fsSLO "https://sourceforge.net/projects/dfu-util/files/dfu-util-0.9.tar.gz/download"
 tar -xzvf download
