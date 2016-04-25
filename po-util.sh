@@ -4,16 +4,44 @@
 
 if [ "$1" == "help" ];
 then
-echo " po-util 1.1
-  To install dependencies run \"po-util install\"
-  To correctly format a project folder run \"po-util init\"
-  To build a binary run \"po-util DEVICE build\", with DEVICE as either \"photon\"
-  or \"electron\"
-  To build a binary and upload (flash) to the connected device using dfu-util
-  run \"po-util DEVICE flash\"
-  If you need to reset the build directory run \"po-util DEVICE clean\"
-Summary: Code in the firmware/ directory is compiled and saved as a binary.
-         The binary can be flashed to a connected device over dfu-util."
+echo "po-util 1.2
+
+Usage:
+
+Put your device into dfu mode and install the firmware patch with:
+po DEVICE patch
+-- replace DEVICE with either \"photon\" or \"electron\"
+
+To format your working directory into a project folder, run:
+po init
+
+To compile and test your firmware, run:
+po DEVICE build
+
+To compile and automagically upload your firmware with dfu-util, run:
+po DEVICE flash
+
+To reset the build directory, run:
+po DEVICE clean
+
+To download new firmware from Particle, run:
+po DEVICE update
+
+To upgrade the system firmware on your device to the latest Particle release, run:
+po DEVICE upgrade
+
+To instantly flash code that you just compiled with \"build\", run:
+po dfu
+
+To put your device into DFU mode, run:
+po dfu-open
+
+To make your device exit DFU mode, run:
+po dfu-close
+
+If you want to upload code that you just compiled with \"build\" Over The Air, run:
+po DEVICE ota DEVICE_NAME
+ -- replace DEVICE_NAME with the name of your device" | less
   exit
 fi
 
