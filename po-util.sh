@@ -117,7 +117,7 @@ fi
 if [ -d "firmware" ];
 then echo
 else echo "Please run with \"init\" to setup this repository.
-Run \"po help\" for information about this tool. && exit
+Run \"po help\" for information about this tool." && exit
 fi
 
 if [ "$1" == "dfu" ];
