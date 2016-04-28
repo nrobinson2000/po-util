@@ -3,11 +3,11 @@ if [ -f ~/po-util.sh ];
 then
   rm ~/po-util.sh
   curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
-  mv po-util.sh ~/po-util.sh
+  cp po-util.sh ~/po-util.sh
   chmod +x ~/po-util.sh
 else
   curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
-  mv po-util.sh ~/po-util.sh
+  cp po-util.sh ~/po-util.sh
 fi
 
 if [ -f ~/.bash_profile ];
