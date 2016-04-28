@@ -224,7 +224,8 @@ fi
 if [ "$2" == "build" ];
 then
 echo
-make all -s -C ~/github/firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1"
+make all -s -C ~/github/firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || MESSAGE="Please run with \"init\" to setup this repository.
+For details type \"po help\"" ; blue_echo && exit
 MESSAGE="Binary saved to $CWD/bin/firmware.bin" ; green_echo
 fi
 
@@ -233,12 +234,14 @@ then
 if [ "$(uname -s)" == "Darwin" ];
 then
 stty -f "$modem" 19200
-make all -s -C ~/github/firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || exit
+make all -s -C ~/github/firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || MESSAGE="Please run with \"init\" to setup this repository.
+For details type \"po help\"" ; blue_echo && exit
 dfu-util -d 2b04:d006 -a 0 -i 0 -s 0x080A0000:leave -D "$CWD/bin/firmware.bin"
 
 else
 stty -F /dev/ttyACM0 19200
-make all -s -C ~/github/firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || exit
+make all -s -C ~/github/firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || MESSAGE="Please run with \"init\" to setup this repository.
+For details type \"po help\"" ; blue_echo && exit
 dfu-util -d 2b04:d006 -a 0 -i 0 -s 0x080A0000:leave -D "$CWD/bin/firmware.bin"
 
 fi
