@@ -11,20 +11,13 @@ red_echo() {
     echo "$(tput setaf 1)$MESSAGE $(tput sgr0)"
 }
 
-if [ -f ~/po-util.sh ];
+if [ "$1" == "ci" ];
 then
-  rm ~/po-util.sh
-  if [ -f po-util.sh ];
-  then
-      cp po-util.sh ~/po-util.sh
-  else
-  curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
   cp po-util.sh ~/po-util.sh
-  chmod +x ~/po-util.sh
-fi
 else
-  curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
-  cp po-util.sh ~/po-util.sh
+  rm ~/po-util.sh
+  curl -fsSLo ~/po-util.sh https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
+  chmod +x ~/po-util.sh
 fi
 
 if [ -f ~/.bash_profile ];
@@ -42,7 +35,7 @@ fi
 if [ -f ~/.bashrc ];
 then
   MESSAGE=".bashrc present." ; green_echo
-  if cat ~/.bashrc | grep "po-util.sh" ;
+  if grep "po-util.sh" ~/.bashrc ;
   then
     MESSAGE="po alias already in place." ; green_echo
   else

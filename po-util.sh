@@ -130,12 +130,6 @@ MESSAGE="Copied c++ files into firmware directory.  Setup complete." ; green_ech
 exit
 fi
 
-if [ -d "firmware" ];
-then echo
-else MESSAGE="Please run with \"init\" to setup this repository.
-For details type \"po help\"" ; blue_echo && exit
-fi
-
 if [ "$1" == "dfu" ];
 then
 if [ "$(uname -s)" == "Darwin" ];
@@ -186,10 +180,11 @@ if [ "$1" == "electron" ];
 then git checkout release/v0.5.0
 fi
 
-if [ "$2" == "upgrade" ];
+if [ "$2" == "upgrade" ] || [ "$2" == "patch" ];
 then
 cd "$CWD"
 sed '2s/.*/START_DFU_FLASHER_SERIAL_SPEED=19200/' ~/github/firmware/build/module-defaults.mk > temp
+cp ~/github/firmware/build/module-defaults.mk temp0
 rm -f ~/github/firmware/build/module-defaults.mk
 mv temp ~/github/firmware/build/module-defaults.mk
 
@@ -200,11 +195,14 @@ cd ~/github/firmware/modules/"$1"/system-part2
 make clean all PLATFORM="$1" program-dfu
 sleep 1
 dfu-util -d 2b04:d006 -a 0 -i 0 -s 0x080A0000:leave -D /dev/null
+cd "$CWD"
+rm -f ~/github/firmware/build/module-defaults.mk
+mv temp0 ~/github/firmware/build/module-defaults.mk
 exit
 fi
 
 
-if [ "$2" == "update" ] || [ "$2" == "patch" ];
+if [ "$2" == "update" ];
 then git pull
 fi
 
@@ -215,6 +213,12 @@ fi
 if [ "$2" == "ota" ];
 then
 particle flash "$3" "$CWD/bin/firmware.bin"
+fi
+
+if [ -d "firmware" ];
+then echo
+else MESSAGE="Please run with \"init\" to setup this repository.
+For details type \"po help\"" ; blue_echo && exit
 fi
 
 if [ "$2" == "build" ];

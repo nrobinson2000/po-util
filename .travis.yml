@@ -5,7 +5,7 @@ os:
 sudo: required
 
 script:
-  - ./download-po-util.sh
+  - ./download-po-util.sh ci
   - cd build-test
   - ~/po-util.sh photon build
   - ~/po-util.sh electron clean
