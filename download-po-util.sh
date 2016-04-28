@@ -1,4 +1,6 @@
 #!/bin/bash
+curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
+
 if [ -f ~/po-util.sh ];
 then
   rm ~/po-util.sh
@@ -22,7 +24,4 @@ else
   echo 'alias po="~/po-util.sh"' >> ~/.bashrc
 fi
 
-if [ "$1" == "install" ];
-then
 ~/po-util.sh install && echo && echo "Sucessfully installed the Particle Offline Utility and necessary dependencies!" && echo "Read more at https://github.com/nrobinson2000/po-util"
-fi
