@@ -1,6 +1,18 @@
 #!/bin/bash
 # Particle Offline Utility
 
+blue_echo() {
+    echo "$(tput setaf 4)$MESSAGE $(tput sgr0)"
+}
+
+green_echo() {
+    echo "$(tput setaf 2)$MESSAGE $(tput sgr0)"
+}
+
+red_echo() {
+    echo "$(tput setaf 1)$MESSAGE $(tput sgr0)"
+}
+
 if [ "$1" == "help" ];
 then
 echo "po-util 1.3 Copyright (C) 2016  Nathan Robinson
@@ -64,7 +76,8 @@ if [ "$(uname -s)" == "Linux" ];
 then
 cd ~/github || exit
 # Install dependencies
-echo "installing dependencies..."
+MESSAGE="Installing dependencies..." ; blue_echo
+echo
 sudo apt-add-repository -y ppa:terry.guo/gcc-arm-embedded
 curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
 sudo apt-get remove -y node modemmanager gcc-arm-none-eabi
@@ -103,7 +116,7 @@ rm node-v5.8.0.pkg
 sudo npm install -g node-pre-gyp npm
 sudo npm install -g particle-cli
 fi
-cd "$CWD" && echo "Sucessfully Installed!" && exit
+cd "$CWD" && MESSAGE="Sucessfully Installed!" ; green_echo && exit
 fi
 
 
@@ -113,14 +126,14 @@ mkdir firmware/
 cp *.cpp firmware/
 cp *.h firmware/
 ls firmware/ | grep -v "particle.include" | cat > firmware/particle.include
-echo "Copied c++ files into firmware directory.  Setup complete."
+MESSAGE="Copied c++ files into firmware directory.  Setup complete." ; green_echo
 exit
 fi
 
 if [ -d "firmware" ];
 then echo
-else echo "Please run with \"init\" to setup this repository.
-For details type \"po help\"" && exit
+else MESSAGE="Please run with \"init\" to setup this repository.
+For details type \"po help\"" ; blue_echo && exit
 fi
 
 if [ "$1" == "dfu" ];
@@ -158,8 +171,8 @@ exit
 fi
 
 if [ "$1" == "photon" ] || [ "$1" == "electron" ];
-then echo "$1 selected."
-else  echo "Please select photon or electron.  Try \"po-util help\" for help." && exit
+then MESSAGE="$1 selected." ; blue_echo
+else  MESSAGE="Please select photon or electron.  Try \"po-util help\" for help." ; red_echo && exit
 fi
 
 
@@ -205,8 +218,10 @@ particle flash "$3" "$CWD/bin/firmware.bin"
 fi
 
 if [ "$2" == "build" ];
-then make all -s -C ~/github/firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1"
-echo "Binary saved to $CWD/bin/firmware.bin"
+then
+echo
+make all -s -C ~/github/firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1"
+MESSAGE="Binary saved to $CWD/bin/firmware.bin" ; green_echo
 fi
 
 if [ "$2" == "flash" ];
