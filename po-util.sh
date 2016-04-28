@@ -184,7 +184,6 @@ if [ "$2" == "upgrade" ] || [ "$2" == "patch" ];
 then
 cd "$CWD"
 sed '2s/.*/START_DFU_FLASHER_SERIAL_SPEED=19200/' ~/github/firmware/build/module-defaults.mk > temp
-cp ~/github/firmware/build/module-defaults.mk temp0
 rm -f ~/github/firmware/build/module-defaults.mk
 mv temp ~/github/firmware/build/module-defaults.mk
 
@@ -193,11 +192,9 @@ make clean all PLATFORM="$1" program-dfu
 
 cd ~/github/firmware/modules/"$1"/system-part2
 make clean all PLATFORM="$1" program-dfu
+cd ~/github/firmware && git stash
 sleep 1
 dfu-util -d 2b04:d006 -a 0 -i 0 -s 0x080A0000:leave -D /dev/null
-cd "$CWD"
-rm -f ~/github/firmware/build/module-defaults.mk
-mv temp0 ~/github/firmware/build/module-defaults.mk
 exit
 fi
 
