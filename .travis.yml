@@ -1,11 +1,11 @@
 os:
   - linux
   - osx
-  
+
 sudo: required
 
 script:
-  - curl -fsSL https://git.io/vwRRf | bash
+  - ./download-po-util.sh install
   - cd build-test
   - ~/po-util.sh photon build
   - ~/po-util.sh electron clean
