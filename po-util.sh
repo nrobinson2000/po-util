@@ -215,12 +215,6 @@ then
 particle flash "$3" "$CWD/bin/firmware.bin"
 fi
 
-if [ -d "firmware" ];
-then echo
-else MESSAGE="Please run with \"init\" to setup this repository.
-For details type \"po help\"" ; blue_echo && exit
-fi
-
 if [ "$2" == "build" ];
 then
 echo
