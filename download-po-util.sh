@@ -12,8 +12,9 @@ fi
 
 if [ -f ~/.bash_profile ];
 then
-  echo
+  echo ".bash_profile present."
 else
+echo "No .bash_profile present. Installing.."
 echo "
 export PATH=\"/usr/local/sbin:$PATH\"
 if [ -f ~/.bashrc ]; then
@@ -23,16 +24,16 @@ fi
 
 if [ -f ~/.bashrc ];
 then
-  echo ".bashrc present"
+  echo ".bashrc present."
   if cat ~/.bashrc | grep "po-util.sh" ;
   then
     echo "po alias already in place."
   else
-    echo "no po alias."
+    echo "no po alias.  Installing..."
     echo 'alias po="~/po-util.sh"' >> ~/.bashrc
   fi
 else
-  echo "No .bashrc present"
+  echo "No .bashrc present.  Installing..."
   echo 'alias po="~/po-util.sh"' >> ~/.bashrc
 fi
 
