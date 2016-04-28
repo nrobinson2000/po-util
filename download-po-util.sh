@@ -1,13 +1,6 @@
 #!/bin/bash
 curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
-
-if [ -f ~/po-util.sh ];
-then
-  rm ~/po-util.sh
-  cp po-util.sh ~/po-util.sh
-else
-  cp po-util.sh ~/po-util.sh
-fi
+cp po-util.sh ~/po-util.sh
 
 if [ -f ~/.bashrc ];
 then
