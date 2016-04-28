@@ -14,9 +14,14 @@ red_echo() {
 if [ -f ~/po-util.sh ];
 then
   rm ~/po-util.sh
+  if [ -f po-util.sh ];
+  then
+      cp po-util.sh ~/po-util.sh
+  else
   curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
   cp po-util.sh ~/po-util.sh
   chmod +x ~/po-util.sh
+fi
 else
   curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
   cp po-util.sh ~/po-util.sh
