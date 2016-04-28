@@ -5,8 +5,8 @@ os:
 sudo: required
 
 script:
-  - ./download-po-util.sh ci
+  - time ./download-po-util.sh ci
   - cd build-test
-  - ~/po-util.sh photon build
-  - ~/po-util.sh electron clean
-  - ~/po-util.sh electron build
+  - time ~/po-util.sh photon build
+  - time ~/po-util.sh electron clean
+  - time ~/po-util.sh electron build
