@@ -187,10 +187,12 @@ fi
 
 if [ "$2" == "update" ];
 then git pull
+exit
 fi
 
 if [ "$2" == "clean" ];
 then make clean
+exit
 fi
 
 if [ "$2" == "ota" ];
@@ -199,6 +201,7 @@ then
   then MESSAGE="Please specify which device to flash ota." ; red_echo ; exit
 fi
 particle flash "$3" "$CWD/bin/firmware.bin"
+exit
 fi
 
 if [ "$2" == "build" ];
@@ -214,6 +217,7 @@ Please run \"po init\" to setup this repository or cd to a valid directrory" ; r
 echo
 make all -s -C ~/github/firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || exit
 MESSAGE="Binary saved to $CWD/bin/firmware.bin" ; green_echo
+exit
 fi
 
 if [ "$2" == "flash" ];
@@ -232,11 +236,13 @@ then
 stty -f "$modem" 19200
 make all -s -C ~/github/firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || exit
 dfu-util -d 2b04:d006 -a 0 -i 0 -s 0x080A0000:leave -D "$CWD/bin/firmware.bin"
+exit
 
 else
 stty -F "$modem" 19200
 make all -s -C ~/github/firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || exit
 dfu-util -d 2b04:d006 -a 0 -i 0 -s 0x080A0000:leave -D "$CWD/bin/firmware.bin"
+exit
 fi
 fi
 
