@@ -133,7 +133,7 @@ else
 if [ "$1" == "" ];
 then
 echo "
-po-util 1.5 Copyright (GPL) 2016  Nathan Robinson
+po-util Copyright (GPL) 2016  Nathan Robinson
 This program comes with ABSOLUTELY NO WARRANTY.
 Read more at https://github.com/nrobinson2000/po-util
 
