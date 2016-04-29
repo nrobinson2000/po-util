@@ -47,4 +47,4 @@ else
   echo 'alias po="~/po-util.sh"' >> ~/.bashrc
 fi
 
-~/po-util.sh install && echo && MESSAGE="Sucessfully installed the Particle Offline Utility and necessary dependencies!" ; green_echo && echo "Read more at https://github.com/nrobinson2000/po-util"
+#~/po-util.sh install && echo && MESSAGE="Sucessfully installed the Particle Offline Utility and necessary dependencies!" ; green_echo && echo "Read more at https://github.com/nrobinson2000/po-util"

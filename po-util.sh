@@ -13,54 +13,6 @@ red_echo() {
     echo "$(tput setaf 1)$(tput bold) $MESSAGE $(tput sgr0)"
 }
 
-if [ "$1" == "help" ];
-then
-echo "po-util 1.4 Copyright (C) 2016  Nathan Robinson
-This program comes with ABSOLUTELY NO WARRANTY.
-Read more at https://github.com/nrobinson2000/po-util
-
-== Usage ==
-
-Put your device into dfu mode and install the firmware patch with:
-  \"po DEVICE patch\"
-
--- replace DEVICE with either \"photon\" or \"electron\" --
-
-To format your working directory into a project folder, run:
-  \"po init\"
-
-To compile and test your firmware, run:
-  \"po DEVICE build\"
-
-To compile and automagically upload your firmware with dfu-util, run:
-  \"po DEVICE flash\"
-
-To reset the build directory, run:
-  \"po DEVICE clean\"
-
-To download new firmware from Particle, run:
-  \"po DEVICE update\"
-
-To upgrade firmware on your device to the latest Particle release, run:
-  \"po DEVICE upgrade\"
-
-To instantly flash code that you just compiled with \"build\", run:
-  \"po dfu\"
-
-To put your device into DFU mode, run:
-  \"po dfu-open\"
-
-To make your device exit DFU mode, run:
-  \"po dfu-close\"
-
-If you want to upload code compiled with \"build\" using Over The Air, run:
-  \"po DEVICE ota DEVICE_NAME\"
-
- -- replace DEVICE_NAME with the name of your device --
- " | less
-  exit
-fi
-
 if [ "$(uname -s)" == "Darwin" ];
 then
 modem="$(ls -1 /dev/cu.* | grep -vi bluetooth | tail -1)"
@@ -173,10 +125,36 @@ fi
 
 if [ "$1" == "photon" ] || [ "$1" == "electron" ];
 then MESSAGE="$1 selected." ; blue_echo
-else  MESSAGE="Please select photon or electron." ; red_echo
-MESSAGE="Try \"po-util help\" for help." ; blue_echo && exit
-fi
+else
+if [ "$1" == "" ];
+then
+echo "
+po-util 1.5 Copyright (GPL) 2016  Nathan Robinson
+This program comes with ABSOLUTELY NO WARRANTY.
+Read more at https://github.com/nrobinson2000/po-util
 
+Usage: po DEVICE_TYPE COMMAND DEVICE_NAME
+       po DFU_COMMAND
+
+Commands:
+  build        Compile code in \"firmware\" subdirectory
+  flash        Compile code and flash to device using dfu-util
+  clean        Refresh all code
+  init         Initialize a new po-util project
+  patch        Apply system firmware patch to change baud rate
+  update       Download new firmware from Particle
+  upgrade      Upgrade system firmware on device
+  ota          Upload code Over The Air using particle-cli
+
+DFU Commands:
+  dfu         Quickly flash pre-compiled code
+  dfu-open    Put device into DFU mode
+  dfu-close   Get device out of DFU mode
+" && exit
+else
+  MESSAGE="Please choose \"photon\" or \"electron\"" ; red_echo
+fi
+fi
 
 cd ~/github/firmware || exit
 
@@ -217,6 +195,9 @@ fi
 
 if [ "$2" == "ota" ];
 then
+  if [ "$3" == "" ];
+  then MESSAGE="Please specify which device to flash ota." ; red_echo ; exit
+fi
 particle flash "$3" "$CWD/bin/firmware.bin"
 fi
 
@@ -258,3 +239,5 @@ make all -s -C ~/github/firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PL
 dfu-util -d 2b04:d006 -a 0 -i 0 -s 0x080A0000:leave -D "$CWD/bin/firmware.bin"
 fi
 fi
+
+MESSAGE="Please choose a command." ; red_echo
