@@ -2,15 +2,15 @@
 # Particle Offline Utility
 
 blue_echo() {
-    echo "$(tput setaf 6)$MESSAGE $(tput sgr0)"
+    echo "$(tput setaf 6)$(tput bold) $MESSAGE $(tput sgr0)"
 }
 
 green_echo() {
-    echo "$(tput setaf 2)$MESSAGE $(tput sgr0)"
+    echo "$(tput setaf 2)$(tput bold) $MESSAGE $(tput sgr0)"
 }
 
 red_echo() {
-    echo "$(tput setaf 1)$MESSAGE $(tput sgr0)"
+    echo "$(tput setaf 1)$(tput bold) $MESSAGE $(tput sgr0)"
 }
 
 if [ "$1" == "help" ];
@@ -117,7 +117,7 @@ brew tap PX4/homebrew-px4
 brew update
 brew install gcc-arm-none-eabi-49 dfu-util
 curl -fsSLO https://nodejs.org/dist/v6.0.0/node-v6.0.0.pkg
-MESSAGE="Istalling nodejs..." ; blue_echo
+MESSAGE="Installing nodejs..." ; blue_echo
 sudo installer -pkg node-*.pkg -target /
 rm node-*.pkg
 sudo npm install -g node-pre-gyp npm
