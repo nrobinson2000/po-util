@@ -1,5 +1,9 @@
 #!/bin/bash
-# Particle Offline Utility
+# Particle Offline Utility: A handy script for installing and using the Particle
+# Toolchain on Ubuntu-based distros and OSX. This script downloads and installs:
+# dfu-util, nodejs, gcc-arm-embedded, particle-cli, and the Particle Firmware
+# source code.
+# Read more at https://github.com/nrobinson2000/po-util
 
 blue_echo() {
     echo "$(tput setaf 6)$(tput bold) $MESSAGE $(tput sgr0)"
