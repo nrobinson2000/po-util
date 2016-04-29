@@ -11,7 +11,7 @@ curl -fsSL https://git.io/vwRRf | bash
 Copy and paste this into your terminal.
 
 # Info:
-
+```
 po-util 1.5 Copyright (GPL) 2016  Nathan Robinson
 This program comes with ABSOLUTELY NO WARRANTY.
 Read more at https://github.com/nrobinson2000/po-util
@@ -33,7 +33,7 @@ DFU Commands:
   dfu         Quickly flash pre-compiled code
   dfu-open    Put device into DFU mode
   dfu-close   Get device out of DFU mode
-
+```
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/500px-Bitcoin.svg.png" height="20px" width="20px">  [Donate Bitcoin](https://onename.com/nrobinson2000)
 ---
