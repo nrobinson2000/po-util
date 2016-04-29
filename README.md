@@ -4,13 +4,13 @@
 A handy script for installing and using the Particle Toolchain on Ubuntu-based distros and OSX.
 This script downloads and installs: [dfu-util](http://dfu-util.sourceforge.net/), [nodejs](https://nodejs.org/en/), [gcc-arm-embedded](https://launchpad.net/~terry.guo/+archive/ubuntu/gcc-arm-embedded), [particle-cli](https://github.com/spark/particle-cli), and the [Particle Firmware source code](https://github.com/spark/firmware).
 
-# Quick Install
+# Quick Install / Update
 ```
 curl -fsSL https://git.io/vwRRf | bash
 ```
 Copy and paste this into your terminal.
 
-# Info:
+# Info
 ```
 po-util 1.5 Copyright (GPL) 2016  Nathan Robinson
 This program comes with ABSOLUTELY NO WARRANTY.
