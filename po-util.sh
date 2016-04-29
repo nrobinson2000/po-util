@@ -20,7 +20,7 @@ fi
 
 if [ "$(uname -s)" == "Linux" ];
 then
-modem="$(ls -1 /dev/ | grep "ttyACM" | tail -1)"
+modem="$(ls -1 /dev/* | grep "ttyACM" | tail -1)"
 fi
 
 CWD="$(pwd)"
