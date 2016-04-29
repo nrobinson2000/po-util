@@ -26,7 +26,6 @@ then
 else
 MESSAGE="No .bash_profile present. Installing.." ; red_echo
 echo "
-export PATH=\"/usr/local/sbin:$PATH\"
 if [ -f ~/.bashrc ]; then
     . ~/.bashrc
 fi" >> ~/.bash_profile
