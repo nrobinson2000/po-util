@@ -15,8 +15,9 @@ red_echo() {
 
 if [ "$1" == "help" ];
 then
-echo "po-util 1.3 Copyright (C) 2016  Nathan Robinson
+echo "po-util 1.4 Copyright (C) 2016  Nathan Robinson
 This program comes with ABSOLUTELY NO WARRANTY.
+Read more at https://github.com/nrobinson2000/po-util
 
 == Usage ==
 
@@ -65,7 +66,12 @@ then
 modem="$(ls -1 /dev/cu.* | grep -vi bluetooth | tail -1)"
 fi
 
-CWD=$(pwd)
+if [ "$(uname -s)" == "Linux" ];
+then
+modem="$(ls -1 /dev/ttyACM* | tail -1)"
+fi
+
+CWD="$(pwd)"
 
 if [ "$1" == "install" ];
 then
@@ -139,7 +145,7 @@ sleep 1
 dfu-util -d 2b04:d006 -a 0 -i 0 -s 0x080A0000:leave -D "$CWD/bin/firmware.bin"
 exit
 else
-stty -F /dev/ttyACM0 19200
+stty -F "$modem" 19200
 sleep 1
 dfu-util -d 2b04:d006 -a 0 -i 0 -s 0x080A0000:leave -D "$CWD/bin/firmware.bin"
 exit
@@ -214,26 +220,39 @@ fi
 
 if [ "$2" == "build" ];
 then
+  cd "$CWD"
+  if [ -d firmware ];
+  then
+    MESSAGE="Found firmware directrory" ; green_echo
+  else
+    MESSAGE="Firmware directory not found.
+Please run \"po init\" to setup this repository or cd to a valid directrory" ; red_echo ; exit
+  fi
 echo
-make all -s -C ~/github/firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || MESSAGE="Please run with \"init\" to setup this repository.
-For details type \"po help\"" ; blue_echo && exit
+make all -s -C ~/github/firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || exit
 MESSAGE="Binary saved to $CWD/bin/firmware.bin" ; green_echo
 fi
 
 if [ "$2" == "flash" ];
 then
+  cd "$CWD"
+  if [ -d firmware ];
+  then
+    MESSAGE="Found firmware directrory" ; green_echo
+  else
+    MESSAGE="Firmware directory not found.
+Please run with \"po init\" to setup this repository or cd to a valid directrory" ; red_echo ; exit
+  fi
+
 if [ "$(uname -s)" == "Darwin" ];
 then
 stty -f "$modem" 19200
-make all -s -C ~/github/firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || MESSAGE="Please run with \"init\" to setup this repository.
-For details type \"po help\"" ; blue_echo && exit
+make all -s -C ~/github/firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || exit
 dfu-util -d 2b04:d006 -a 0 -i 0 -s 0x080A0000:leave -D "$CWD/bin/firmware.bin"
 
 else
-stty -F /dev/ttyACM0 19200
-make all -s -C ~/github/firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || MESSAGE="Please run with \"init\" to setup this repository.
-For details type \"po help\"" ; blue_echo && exit
+stty -F "$modem" 19200
+make all -s -C ~/github/firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || exit
 dfu-util -d 2b04:d006 -a 0 -i 0 -s 0x080A0000:leave -D "$CWD/bin/firmware.bin"
-
 fi
 fi
