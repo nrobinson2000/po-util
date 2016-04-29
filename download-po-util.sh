@@ -1,6 +1,6 @@
 #!/bin/bash
 blue_echo() {
-    echo "$(tput setaf 4)$MESSAGE $(tput sgr0)"
+    echo "$(tput setaf 6)$MESSAGE $(tput sgr0)"
 }
 
 green_echo() {

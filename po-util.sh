@@ -2,7 +2,7 @@
 # Particle Offline Utility
 
 blue_echo() {
-    echo "$(tput setaf 4)$MESSAGE $(tput sgr0)"
+    echo "$(tput setaf 6)$MESSAGE $(tput sgr0)"
 }
 
 green_echo() {
@@ -173,7 +173,8 @@ fi
 
 if [ "$1" == "photon" ] || [ "$1" == "electron" ];
 then MESSAGE="$1 selected." ; blue_echo
-else  MESSAGE="Please select photon or electron.  Try \"po-util help\" for help." ; red_echo && exit
+else  MESSAGE="Please select photon or electron." ; red_echo
+MESSAGE="Try \"po-util help\" for help." ; blue_echo && exit
 fi
 
 
