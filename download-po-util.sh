@@ -1,14 +1,14 @@
 #!/bin/bash
 blue_echo() {
-    echo "$(tput setaf 6)$MESSAGE $(tput sgr0)"
+    echo "$(tput setaf 6)$(tput bold) $MESSAGE $(tput sgr0)"
 }
 
 green_echo() {
-    echo "$(tput setaf 2)$MESSAGE $(tput sgr0)"
+    echo "$(tput setaf 2)$(tput bold) $MESSAGE $(tput sgr0)"
 }
 
 red_echo() {
-    echo "$(tput setaf 1)$MESSAGE $(tput sgr0)"
+    echo "$(tput setaf 1)$(tput bold) $MESSAGE $(tput sgr0)"
 }
 
 if [ "$1" == "ci" ];
