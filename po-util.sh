@@ -116,7 +116,7 @@ then
 brew tap PX4/homebrew-px4
 brew update
 brew install gcc-arm-none-eabi-49 dfu-util
-curl -fsSLO https://nodejs.org/dist/v5.8.0/node-v5.8.0.pkg
+curl -fsSLO https://nodejs.org/dist/v6.0.0/node-v6.0.0.pkg
 sudo installer -pkg node-v5.8.0.pkg -target /
 rm node-v5.8.0.pkg
 sudo npm install -g node-pre-gyp npm
