@@ -116,7 +116,7 @@ then
 brew tap PX4/homebrew-px4
 brew update
 brew install gcc-arm-none-eabi-49 dfu-util
-curl -fsSLO https://nodejs.org/dist/v6.0.0/node-v6.0.0.pkg
+curl -fsSLO https://nodejs.org/dist/v4.4.3/node-v4.4.3.pkg
 MESSAGE="Installing nodejs..." ; blue_echo
 sudo installer -pkg node-*.pkg -target /
 rm node-*.pkg
