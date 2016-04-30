@@ -43,10 +43,9 @@ This script downloads and installs: <a href="http://dfu-util.sourceforge.net/">d
 <h1>
 <a id="info" class="anchor" href="#info" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Info</h1>
 
-<pre><code>
-po-util Copyright (GPL) 2016  Nathan Robinson
+<pre><code>po-util Copyright (GPL) 2016  Nathan Robinson
 This program comes with ABSOLUTELY NO WARRANTY.
-Read more at https://github.com/nrobinson2000/po-util
+Read more at http://bit.ly/po-util
 
 Usage: po DEVICE_TYPE COMMAND DEVICE_NAME
        po DFU_COMMAND
@@ -64,12 +63,37 @@ Commands:
 DFU Commands:
   dfu         Quickly flash pre-compiled code
   dfu-open    Put device into DFU mode
-  dfu-close   Get device out of DFU mode
-</code></pre>
+  dfu-close   Get device out of DFU mode</code></pre>
 
-<h1>Tutorial</h1>
+<h1>Tips</h1>
 <p>
 The three most useful commands are <code>build</code>, <code>flash</code> and <code>clean</code>.  Build compiles code in a <code>"firmware"</code> subdirectory and saves it as a <code>.bin</code> file in a <code>"bin"</code> subdirectory.  Flash does the same, but uploads the compiled <code>.bin</code> to your device using dfu-util.  Clean refreshes the Particle firmware source code.<p>
+<p>
+A po-util project must be arranged like so:
+</p>
+<pre><code>po-util_project/
+  └ firmware/
+    └ main.cpp
+    └ lib.cpp
+    └ lib.h</code></pre>
+<p>Since po-util compiles <code>.cpp</code> and not <code>.ino</code> files, <code>#include "application.h"</code> must be present in your <code>main.cpp</code> file.
+<p>A blank <code>main.cpp</code> would look like:
+<pre><code>#include "application.h"
+
+void setup()
+{
+
+}
+
+void loop()
+{
+
+}
+</code></pre>
+
+<p>One of the features of po-util is that it changes the baud rate to trigger dfu mode on Particle devices from <code>14440</code> to <code>19200</code>.  <strong>The reason for this is because Linux can not easily use 14440 as a baud rate.</strong>  To enable this feature, connect your device and <a href= "https://docs.particle.io/guide/getting-started/modes/photon/#dfu-mode-device-firmware-upgrade-">put it into DFU mode</a>, and type: <pre><code>po DEVICE_TYPE patch
+
+# Replace DEVICE_TYPE with either "photon" or "electron"</code></pre> Your computer will then recompile both parts of the Particle system firmware and flash each part to your device using dfu-util.
 
 <h1>Why I created this script</h1>
 <p>
@@ -80,15 +104,37 @@ If that happened, I would feel very proud of myself for making a meaningful cont
 <p>
 
 
-
-
-
-
-
-
 <h2>
 <a id="--donate-bitcoin" class="anchor" href="#--donate-bitcoin" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/500px-Bitcoin.svg.png" height="20px" width="20px">  <a href="https://onename.com/nrobinson2000">Donate Bitcoin</a>
 </h2>
+
+<script id="dsq-count-scr" src="//po-util.disqus.com/count.js" async></script>
+
+<div id="disqus_thread"></div>
+<script>
+/**
+* RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+* LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+*/
+
+var disqus_config = function () {
+this.page.url = PAGE_URL; // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = 'main'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+
+s.src = '//po-util.disqus.com/embed.js';
+
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/nrobinson2000/po-util">Po-util</a> is maintained by <a href="https://github.com/nrobinson2000">nrobinson2000</a>.</span>
