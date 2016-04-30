@@ -46,9 +46,9 @@ po-util_project/
     └ lib.cpp
     └ lib.h
 ```
-Since po-util compiles .cpp and not .ino files, #include "application.h" must be present in your main.cpp file.
+Since po-util compiles `.cpp` and not `.ino` files, `#include "application.h"` must be present in your `main.cpp` file.
 
-A blank main.cpp would look like:
+A blank `main.cpp` would look like:
 ```
 #include "application.h"
 
