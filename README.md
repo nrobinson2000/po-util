@@ -20,7 +20,7 @@ Usage: po DEVICE_TYPE COMMAND DEVICE_NAME
        po DFU_COMMAND
 
 Commands:
-  build        Compile code in \"firmware\" subdirectory
+  build        Compile code in "firmware" subdirectory
   flash        Compile code and flash to device using dfu-util
   clean        Refresh all code
   init         Initialize a new po-util project
@@ -34,6 +34,10 @@ DFU Commands:
   dfu-open    Put device into DFU mode
   dfu-close   Get device out of DFU mode
 ```
+
+# Why I created this script
+I created this script because Particle does not currently have a script for easily installing the Particle Toolchain and depedencies on Linux and OSX. I created this script in order to help out other Particle users and to improve my bash scripting skills. It would be my dream come true if Particle added this script to its resources or gave it a shout out in its documentation. If that happened, I would feel very proud of myself for making a meaningful contribution.
+
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/500px-Bitcoin.svg.png" height="20px" width="20px">  [Donate Bitcoin](https://onename.com/nrobinson2000)
 ---
