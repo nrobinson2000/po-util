@@ -62,7 +62,7 @@ void loop()
 
 }
 ```
-One of the features of po-util is that it changes the baud rate to trigger dfu mode on Particle devices from 14440 to 19200. **The reason for this is because Linux can not easily use 14440 as a baud rate.** To enable this feature, connect your device and put it into DFU mode, and type:
+One of the features of po-util is that it changes the baud rate to trigger dfu mode on Particle devices from `14440` to `19200`. **The reason for this is because Linux can not easily use 14440 as a baud rate.** To enable this feature, connect your device and put it into DFU mode, and type:
 ```
 po DEVICE_TYPE patch
 
