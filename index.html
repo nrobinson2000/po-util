@@ -21,6 +21,11 @@
     <section class="main-content">
       <p><a href="https://travis-ci.org/nrobinson2000/po-util"><img src="https://travis-ci.org/nrobinson2000/po-util.svg?branch=master" alt="Build Status"></a> <a href="https://circleci.com/gh/nrobinson2000/po-util"><img src="https://circleci.com/gh/nrobinson2000/po-util.svg?style=svg" alt="Circle CI"></a></p>
 
+
+
+
+
+
 <h1>
 <a id="particle-offline-utility" class="anchor" href="#particle-offline-utility" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Particle Offline Utility:</h1>
 
@@ -38,7 +43,8 @@ This script downloads and installs: <a href="http://dfu-util.sourceforge.net/">d
 <h1>
 <a id="info" class="anchor" href="#info" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Info</h1>
 
-<pre><code>po-util Copyright (GPL) 2016  Nathan Robinson
+<pre><code>
+po-util Copyright (GPL) 2016  Nathan Robinson
 This program comes with ABSOLUTELY NO WARRANTY.
 Read more at https://github.com/nrobinson2000/po-util
 
@@ -51,7 +57,7 @@ Commands:
   clean        Refresh all code
   init         Initialize a new po-util project
   patch        Apply system firmware patch to change baud rate
-  update       Download new firmware from Particle
+  update       Download latest firmware source code from Particle
   upgrade      Upgrade system firmware on device
   ota          Upload code Over The Air using particle-cli
 
@@ -61,6 +67,10 @@ DFU Commands:
   dfu-close   Get device out of DFU mode
 </code></pre>
 
+<h1>Tutorial</h1>
+<p>
+The three most useful commands are <code>build</code>, <code>flash</code> and <code>clean</code>.  Build compiles code in a <code>"firmware"</code> subdirectory and saves it as a <code>.bin</code> file in a <code>"bin"</code> subdirectory.  Flash does the same, but uploads the compiled <code>.bin</code> to your device using dfu-util.  Clean refreshes the Particle firmware source code.<p>
+
 <h1>Why I created this script</h1>
 <p>
 I created this script because Particle does not currently have a script for easily installing the Particle Toolchain and depedencies on Linux and OSX.
@@ -68,6 +78,12 @@ I created this script in order to help out other Particle users and to improve m
 It would be my dream come true if Particle added this script to its resources or gave it a shoutout in its documentation.
 If that happened, I would feel very proud of myself for making a meaningful contribution.
 <p>
+
+
+
+
+
+
 
 
 <h2>
