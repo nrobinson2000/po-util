@@ -45,10 +45,11 @@ po-util_project/
     └ main.cpp
     └ lib.cpp
     └ lib.h
+```
 Since po-util compiles .cpp and not .ino files, #include "application.h" must be present in your main.cpp file.
 
 A blank main.cpp would look like:
-
+```
 #include "application.h"
 
 void setup()
