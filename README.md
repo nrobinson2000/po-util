@@ -12,9 +12,9 @@ Copy and paste this into your terminal.
 
 # Info
 ```
-po-util 1.5 Copyright (GPL) 2016  Nathan Robinson
+po-util Copyright (GPL) 2016  Nathan Robinson
 This program comes with ABSOLUTELY NO WARRANTY.
-Read more at https://github.com/nrobinson2000/po-util
+Read more at http://bit.ly/po-util
 
 Usage: po DEVICE_TYPE COMMAND DEVICE_NAME
        po DFU_COMMAND
@@ -25,7 +25,7 @@ Commands:
   clean        Refresh all code
   init         Initialize a new po-util project
   patch        Apply system firmware patch to change baud rate
-  update       Download new firmware from Particle
+  update       Download latest firmware source code from Particle
   upgrade      Upgrade system firmware on device
   ota          Upload code Over The Air using particle-cli
 

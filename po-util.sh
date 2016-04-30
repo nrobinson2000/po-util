@@ -146,7 +146,7 @@ Commands:
   clean        Refresh all code
   init         Initialize a new po-util project
   patch        Apply system firmware patch to change baud rate
-  update       Download new firmware from Particle
+  update       Download latest firmware source code from Particle
   upgrade      Upgrade system firmware on device
   ota          Upload code Over The Air using particle-cli
 
