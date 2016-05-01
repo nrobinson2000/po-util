@@ -91,7 +91,7 @@ void loop()
 }
 </code></pre>
 
-<p>One of the features of po-util is that it changes the baud rate to trigger dfu mode on Particle devices from <code>14400</code> to <code>19200</code>.  <strong>The reason for this is because Linux can not easily use </code>14400<code> as a baud rate.</strong>  To enable this feature, connect your device and <a href= "https://docs.particle.io/guide/getting-started/modes/photon/#dfu-mode-device-firmware-upgrade-">put it into DFU mode</a>, and type: <pre><code>po DEVICE_TYPE patch
+<p>One of the features of po-util is that it changes the baud rate to trigger dfu mode on Particle devices from <code>14400</code> to <code>19200</code>.  <strong>The reason for this is because Linux can not easily use <code>14400</code> as a baud rate.</strong>  To enable this feature, connect your device and <a href= "https://docs.particle.io/guide/getting-started/modes/photon/#dfu-mode-device-firmware-upgrade-">put it into DFU mode</a>, and type: <pre><code>po DEVICE_TYPE patch
 
 # Replace DEVICE_TYPE with either "photon" or "electron"</code></pre> Your computer will then recompile both parts of the Particle system firmware and flash each part to your device using dfu-util.
 
