@@ -15,8 +15,17 @@ Read more at http://bit.ly/po-util
 
 Usage: po DEVICE_TYPE COMMAND DEVICE_NAME
        po DFU_COMMAND
+       po install [full_install_path]
 
 Commands:
+  install      Download all the tools needed for the Particle.
+               Requires sudo. You can optionally install to an 
+               alternate location by specifying [full_install_path].  
+               Ex.:
+                   po install ~/particle
+
+               By default Firmware is installed in ~/github.
+
   build        Compile code in \"firmware\" subdirectory
   flash        Compile code and flash to device using dfu-util
   clean        Refresh all code
@@ -74,9 +83,20 @@ CWD="$(pwd)"
 
 if [ "$1" == "install" ];
 then
-  if [ "$(ls -A $BASE_FIRMWARE)" ] && MESSAGE="Firmware Directory is NOT empty!" && red_echo && exit; fi
+  # Check to see if we need to override the install directory.
+  if [ "$2" ] && [ "$2" != $BASE_FIRMWARE ]
+  then
+    # TODO: Validate this path a bit more.
+    BASE_FIRMWARE = "$2"
+    echo BASE_FIRMWARE="$BASE_FIRMWARE" >  $SETTINGS
+  fi
+
+  if [ "$(ls -A $BASE_FIRMWARE)" ]
+  then 
+    MESSAGE="Firmware Directory is NOT empty!" && red_echo && exit; 
+  fi
   
-  [ -d "$BASE_FIRMWARE"] || mkdir "$BASE_FIRMWARE"
+  [ -d "$BASE_FIRMWARE"] || mkdir -p "$BASE_FIRMWARE"  # Allow creation of parents as needed.
   
   cd "$BASE_FIRMWARE"
   git clone https://github.com/spark/firmware.git
