@@ -52,8 +52,8 @@ then
   export PARTICLE_TOOLCHAIN_INSTALL="$HOME/particle"
   mkdir $PARTICLE_TOOLCHAIN_INSTALL
 else
-  MESSAGE="Where should we install the Particle Toolchain? (please write full path) [default: ~/particle]" ; blue_echo
-  read -r response
+  read -p "Where should we install the Particle Toolchain?                                 [default: ~/particle] " response
+  sleep 1
   if [ "$response" == "" ];
   then
     echo "export PARTICLE_TOOLCHAIN_INSTALL=$HOME/particle" >> ~/.bashrc
