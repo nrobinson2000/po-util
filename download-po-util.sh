@@ -13,6 +13,7 @@ red_echo() {
 
 if [ "$1" == "ci" ];
 then
+  rm ~/po-util.sh
   cp po-util.sh ~/po-util.sh
 else
   rm ~/po-util.sh
