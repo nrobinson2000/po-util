@@ -52,7 +52,9 @@ then
   export PARTICLE_TOOLCHAIN_INSTALL="$HOME/particle"
   mkdir $PARTICLE_TOOLCHAIN_INSTALL
 else
-  read -p "Where should we install the Particle Toolchain?                                 [default: ~/particle] " response
+  echo "Where should we install the Particle Toolchain?"
+  echo "(Please type full path.) OR Press enter for default."
+  read -p "[default: ~/particle] " response
   sleep 1
   if [ "$response" == "" ];
   then
