@@ -18,9 +18,18 @@ Read more at http://bit.ly/po-util
 
 Usage: po DEVICE_TYPE COMMAND DEVICE_NAME
        po DFU_COMMAND
+       po install [full_install_path]
 
 Commands:
-  build        Compile code in "firmware" subdirectory
+  install      Download all the tools needed for the Particle.
+               Requires sudo. You can optionally install to an
+               alternate location by specifying [full_install_path].
+               Ex.:
+                   po install ~/particle
+
+               By default Firmware is installed in ~/github.
+
+  build        Compile code in \"firmware\" subdirectory
   flash        Compile code and flash to device using dfu-util
   clean        Refresh all code
   init         Initialize a new po-util project
