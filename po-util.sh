@@ -31,15 +31,18 @@ CWD="$(pwd)"
 
 if [ "$1" == "install" ];
 then
-mkdir ~/github
-cd ~/github
+cd "$PARTICLE_TOOLCHAIN_INSTALL"
 git clone https://github.com/spark/firmware.git
+echo "export PARTICLE_TOOLCHAIN=$PARTICLE_TOOLCHAIN_INSTALL/firmware/" >> ~/.bashrc
+export PARTICLE_TOOLCHAIN="$PARTICLE_TOOLCHAIN_INSTALL/firmware"
+
 if [ "$(uname -s)" == "Linux" ];
 then
-cd ~/github || exit
+cd "$PARTICLE_TOOLCHAIN_INSTALL"|| exit
 # Install dependencies
 MESSAGE="Installing dependencies..." ; blue_echo
 echo
+
 sudo apt-add-repository -y ppa:terry.guo/gcc-arm-embedded
 curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
 sudo apt-get remove -y node modemmanager gcc-arm-none-eabi
@@ -56,12 +59,9 @@ sudo make install
 cd ..
 rm -rf dfu-util-0.9
 
-# clone firmware repository
-cd ~/github || exit
-git clone https://github.com/spark/firmware.git
 # install particle-cli
-sudo npm install -g node-pre-gyp npm
-sudo npm install -g particle-cli
+sudo npm install -g node-pre-gyp npm particle-cli
+
 # create udev rules file
 curl -fsSLO https://gist.githubusercontent.com/monkbroc/b283bb4da8c10228a61e/raw/e59c77021b460748a9c80ef6a3d62e17f5947be1/50-particle.rules
 sudo mv 50-particle.rules /etc/udev/rules.d/50-particle.rules
@@ -79,7 +79,8 @@ rm node-*.pkg
 sudo npm install -g node-pre-gyp npm
 sudo npm install -g particle-cli
 fi
-cd "$CWD" && MESSAGE="Sucessfully Installed!" ; green_echo && exit
+cd "$CWD" && MESSAGE="Sucessfully Installed!" ; green_echo
+MESSAGE="Please reload your terminal." ; blue_echo && exit
 fi
 
 
@@ -160,29 +161,29 @@ else
 fi
 fi
 
-cd ~/github/firmware || exit
+cd "$PARTICLE_TOOLCHAIN" || exit
 
 if [ "$1" == "photon" ];
-then git checkout release/v0.5.0
+then git checkout latest
 fi
 
 if [ "$1" == "electron" ];
-then git checkout release/v0.5.0
+then git checkout latest
 fi
 
 if [ "$2" == "upgrade" ] || [ "$2" == "patch" ];
 then
 cd "$CWD"
-sed '2s/.*/START_DFU_FLASHER_SERIAL_SPEED=19200/' ~/github/firmware/build/module-defaults.mk > temp
-rm -f ~/github/firmware/build/module-defaults.mk
-mv temp ~/github/firmware/build/module-defaults.mk
+sed '2s/.*/START_DFU_FLASHER_SERIAL_SPEED=19200/' "$PARTICLE_TOOLCHAIN/build/module-defaults.mk" > temp
+rm -f "$PARTICLE_TOOLCHAIN/build/module-defaults.mk"
+mv temp "$PARTICLE_TOOLCHAIN/build/module-defaults.mk"
 
-cd ~/github/firmware/modules/"$1"/system-part1
+cd "$PARTICLE_TOOLCHAIN/modules/"$1"/system-part1"
 make clean all PLATFORM="$1" program-dfu
 
-cd ~/github/firmware/modules/"$1"/system-part2
+cd "$PARTICLE_TOOLCHAIN/modules/"$1"/system-part2"
 make clean all PLATFORM="$1" program-dfu
-cd ~/github/firmware && git stash
+cd "$PARTICLE_TOOLCHAIN" && git stash
 sleep 1
 dfu-util -d 2b04:d006 -a 0 -i 0 -s 0x080A0000:leave -D /dev/null
 exit
@@ -219,7 +220,7 @@ then
 Please run \"po init\" to setup this repository or cd to a valid directrory" ; red_echo ; exit
   fi
 echo
-make all -s -C ~/github/firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || exit
+make all -s -C "$PARTICLE_TOOLCHAIN" APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || exit
 MESSAGE="Binary saved to $CWD/bin/firmware.bin" ; green_echo
 exit
 fi
@@ -238,13 +239,13 @@ Please run with \"po init\" to setup this repository or cd to a valid directrory
 if [ "$(uname -s)" == "Darwin" ];
 then
 stty -f "$modem" 19200
-make all -s -C ~/github/firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || exit
+make all -s -C "$PARTICLE_TOOLCHAIN" APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || exit
 dfu-util -d 2b04:d006 -a 0 -i 0 -s 0x080A0000:leave -D "$CWD/bin/firmware.bin"
 exit
 
 else
 stty -F "$modem" 19200
-make all -s -C ~/github/firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || exit
+make all -s -C "$PARTICLE_TOOLCHAIN" APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || exit
 dfu-util -d 2b04:d006 -a 0 -i 0 -s 0x080A0000:leave -D "$CWD/bin/firmware.bin"
 exit
 fi

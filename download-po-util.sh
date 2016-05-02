@@ -46,4 +46,18 @@ else
   echo 'alias po="~/po-util.sh"' >> ~/.bashrc
 fi
 
+if [ "$1" == "ci" ];
+then
+  echo "export PARTICLE_TOOLCHAIN_INSTALL=$HOME/particle" >> ~/.bashrc
+  export PARTICLE_TOOLCHAIN_INSTALL="$HOME/particle"
+  mkdir $PARTICLE_TOOLCHAIN_INSTALL
+else
+  MESSAGE="Where should we install the Particle Toolchain? (please write full path)" ; blue_echo
+  read -r response
+  echo "export PARTICLE_TOOLCHAIN_INSTALL=$response" >> ~/.bashrc
+  export PARTICLE_TOOLCHAIN_INSTALL="$response"
+  mkdir $PARTICLE_TOOLCHAIN_INSTALL
+
+fi
+
 ~/po-util.sh install && echo && MESSAGE="Sucessfully installed the Particle Offline Utility and necessary dependencies!" ; green_echo && echo "Read more at http://bit.ly/po-util"
