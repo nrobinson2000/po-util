@@ -21,7 +21,7 @@ Usage: po DEVICE_TYPE COMMAND DEVICE_NAME
        po install [full_install_path]
 
 Commands:
-  install      Download all the tools needed for the Particle.
+  install      Download all of the tools needed for development.
                Requires sudo. You can optionally install to an
                alternate location by specifying [full_install_path].
                Ex.:
