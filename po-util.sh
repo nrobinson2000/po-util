@@ -55,7 +55,7 @@ then
   echo BASE_FIRMWARE="$BASE_FIRMWARE" >  $SETTINGS 
 fi
 
-# Import our overrides from the .po file.
+# Import our overrides from the ~/.po file.
 source $SETTINGS
 
 # See if we are connected via USB or Bluetooth.
@@ -87,12 +87,15 @@ then
     # Install dependencies
     MESSAGE="Installing dependencies..." ; blue_echo
     echo
+    MESSAGE="Installing ARM toolchain and dependencies (requires sudo)..." ; blue_echo
     sudo apt-add-repository -y ppa:terry.guo/gcc-arm-embedded
     curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
     sudo apt-get remove -y node modemmanager gcc-arm-none-eabi
 
     sudo apt-get install -y nodejs python-software-properties python g++ make build-essential libusb-1.0-0-dev gcc-arm-none-eabi libarchive-zip-perl
     # Install dfu-util
+    
+    MESSAGE="Installing dfu-util (requires sudo)..." ; blue_echo
     curl -fsSLO "https://sourceforge.net/projects/dfu-util/files/dfu-util-0.9.tar.gz/download"
     tar -xzvf download
     rm download
@@ -105,11 +108,15 @@ then
 
     # clone firmware repository
     cd "$BASE_FIRMWARE" || exit
-    git clone https://github.com/spark/firmware.git
+    MESSAGE="Installing Spark firmware from Github..." ; blue_echo
+    git clone https://github.com/spark/firmware.git\
+
+    MESSAGE="Installing particle-cli..." ; blue_echo
     # install particle-cli
     sudo npm install -g node-pre-gyp npm
     sudo npm install -g particle-cli
-    # create udev rules file
+    # create udev rules file - MOWGLI: This is not a generic rules file. Looks like a Photon?  Perhaps there should be a check before installing.
+    MESSAGE="Installing udev rule (requires sudo) ..." ; blue_echo
     curl -fsSLO https://gist.githubusercontent.com/monkbroc/b283bb4da8c10228a61e/raw/e59c77021b460748a9c80ef6a3d62e17f5947be1/50-particle.rules
     sudo mv 50-particle.rules /etc/udev/rules.d/50-particle.rules
   fi # CLOSE: "$(uname -s)" == "Linux"
@@ -120,14 +127,16 @@ then
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     brew tap PX4/homebrew-px4
     brew update
+    MESSAGE="Installing ARM toolchain..." ; blue_echo
     brew install gcc-arm-none-eabi-49 dfu-util
     curl -fsSLO https://nodejs.org/dist/v5.8.0/node-v5.8.0.pkg
     MESSAGE="Installing nodejs..." ; blue_echo
     sudo installer -pkg node-*.pkg -target /
     rm node-*.pkg
+    MESSAGE="Installing particle-cli..." ; blue_echo
     sudo npm install -g node-pre-gyp npm
     sudo npm install -g particle-cli
-  fi
+  fi # CLOSE: "$(uname -s)" == "Linux"
   cd "$CWD" && MESSAGE="Sucessfully Installed!" ; green_echo && exit
 fi
 
@@ -267,18 +276,18 @@ then
     Please run with \"po init\" to setup this repository or cd to a valid directory" ; red_echo ; exit
   fi
 
-  if [ "$(uname -s)" == "Darwin" ];
-  then
+  # if [ "$(uname -s)" == "Darwin" ]; # No if needed for this
+  # then
     stty -f "$modem" 19200
     make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || exit
     dfu-util -d 2b04:d006 -a 0 -i 0 -s 0x080A0000:leave -D "$CWD/bin/firmware.bin"
     exit
-  else
-    stty -F "$modem" 19200
-    make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || exit
-    dfu-util -d 2b04:d006 -a 0 -i 0 -s 0x080A0000:leave -D "$CWD/bin/firmware.bin"
-    exit
-  fi
+#  else  # MOWGLI: Redundant, Same code either way.
+#    stty -F "$modem" 19200
+#    make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || exit
+#    dfu-util -d 2b04:d006 -a 0 -i 0 -s 0x080A0000:leave -D "$CWD/bin/firmware.bin"
+#    exit
+#  fi
 fi
 
 MESSAGE="Please choose a command." ; red_echo
