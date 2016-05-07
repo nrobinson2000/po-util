@@ -217,11 +217,15 @@ cd "$BASE_FIRMWARE"/firmware || exit
 if [ "$1" == "photon" ];
 then
   git checkout latest
+  DFU_ADDRESS1="2b04:d006"
+  DFU_ADDRESS2="0x080A0000"
 fi
 
 if [ "$1" == "electron" ];
 then
   git checkout latest
+  DFU_ADDRESS1="2b04:d00a"
+  DFU_ADDRESS2="0x08080000"
 fi
 
 #Upgrade our firmware on device
@@ -302,7 +306,7 @@ if [ "$(uname -s)" == "Darwin" ];
     stty -F "$modem" 19200
   fi
     make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || exit
-    dfu-util -d 2b04:d006 -a 0 -i 0 -s 0x080A0000:leave -D "$CWD/bin/firmware.bin"
+    dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$CWD/bin/firmware.bin"
     exit
 fi
 
