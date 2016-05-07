@@ -253,6 +253,8 @@ fi
 if [ "$2" == "clean" ];
 then
   make clean
+  cd "$CWD"
+  rm -rf bin
   exit
 fi
 
