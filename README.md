@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/nrobinson2000/po-util.svg?branch=master)](https://travis-ci.org/nrobinson2000/po-util) [![Circle CI](https://circleci.com/gh/nrobinson2000/po-util.svg?style=svg)](https://circleci.com/gh/nrobinson2000/po-util)
-<img src="po-util.png" height="150px" width="150px">
+<br><img src="po-util.png" height="150px" width="150px">
 # Particle Offline Utility:
 
 A handy script for installing and using the Particle Toolchain on Ubuntu-based distros and OSX.
