@@ -1,6 +1,5 @@
-<img src="po-util.png" height="75px" width="75px">
 [![Build Status](https://travis-ci.org/nrobinson2000/po-util.svg?branch=master)](https://travis-ci.org/nrobinson2000/po-util) [![Circle CI](https://circleci.com/gh/nrobinson2000/po-util.svg?style=svg)](https://circleci.com/gh/nrobinson2000/po-util)
-# Particle Offline Utility:
+# <img src="po-util.png" height="75px" width="75px"> Particle Offline Utility:
 
 A handy script for installing and using the Particle Toolchain on Ubuntu-based distros and OSX.
 This script downloads and installs: [dfu-util](http://dfu-util.sourceforge.net/), [nodejs](https://nodejs.org/en/), [gcc-arm-embedded](https://launchpad.net/~terry.guo/+archive/ubuntu/gcc-arm-embedded), [particle-cli](https://github.com/spark/particle-cli), and the [Particle Firmware source code](https://github.com/spark/firmware).
