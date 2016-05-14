@@ -1,3 +1,4 @@
+<img src="po-util.png" height="150px" width="150px">
 [![Build Status](https://travis-ci.org/nrobinson2000/po-util.svg?branch=master)](https://travis-ci.org/nrobinson2000/po-util) [![Circle CI](https://circleci.com/gh/nrobinson2000/po-util.svg?style=svg)](https://circleci.com/gh/nrobinson2000/po-util)
 # Particle Offline Utility:
 
