@@ -83,6 +83,5 @@ Your computer will then recompile both parts of the Particle system firmware and
 # Why I created this script
 I created this script because Particle does not currently have a script for easily installing the Particle Toolchain and depedencies on Linux and OSX. I created this script in order to help out other Particle users and to improve my bash scripting skills. It would be my dream come true if Particle added this script to its resources or gave it a shout out in its documentation. If that happened, I would feel very proud of myself for making a meaningful contribution.
 
-
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/500px-Bitcoin.svg.png" height="20px" width="20px">  [Donate Bitcoin](https://onename.com/nrobinson2000)
+<center>[![](https://projecthandup.org/wp-content/uploads/2013/01/RibbonDonateBitcoin.png)](https://nrobinson2000.github.io/donate-bitcoin/)</center>
 ---
