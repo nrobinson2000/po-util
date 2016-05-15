@@ -1,9 +1,10 @@
+[![Github All Releases](https://img.shields.io/github/downloads/nrobinson2000/po-util/total.svg?maxAge=2592000)](https://nrobinson2000.github.io/po-util/)
 [![Slack Status](https://nrobinson2000.herokuapp.com/badge.svg)](https://nrobinson2000.herokuapp.com/)
 [![Donate Bitcoin](https://img.shields.io/badge/donate-bitcoin-orange.svg)](https://nrobinson2000.github.io/donate-bitcoin)
 [![GitHub issues](https://img.shields.io/github/issues/nrobinson2000/po-util.svg)](https://github.com/nrobinson2000/po-util/issues)
 [![GitHub stars](https://img.shields.io/github/stars/nrobinson2000/po-util.svg)](https://github.com/nrobinson2000/po-util/stargazers)
 [![Build Status](https://travis-ci.org/nrobinson2000/po-util.svg?branch=master)](https://travis-ci.org/nrobinson2000/po-util) [![Circle CI](https://circleci.com/gh/nrobinson2000/po-util.svg?style=svg)](https://circleci.com/gh/nrobinson2000/po-util)
-<br><br><img src="po-util.png" height="150px" width="150px">
+
 # Particle Offline Utility:
 
 A handy script for installing and using the Particle Toolchain on Ubuntu-based distros and OSX.
@@ -11,7 +12,7 @@ This script downloads and installs: [dfu-util](http://dfu-util.sourceforge.net/)
 
 # Quick Install / Update
 ```
-curl -fsSL bit.ly/install-po-util | bash
+curl -fsSL bit.ly/install-po-util-stable | bash
 ```
 Copy and paste this into your terminal.
 
