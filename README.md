@@ -12,7 +12,7 @@ This script downloads and installs: [dfu-util](http://dfu-util.sourceforge.net/)
 
 # Quick Install / Update
 ```
-curl -fsSL bit.ly/install-po-util | bash
+curl -fsSL bit.ly/install-po-util-stable | bash
 ```
 Copy and paste this into your terminal.
 
