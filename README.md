@@ -51,9 +51,11 @@ DFU Commands:
 ```
 
 # Tips
+
 The three most useful commands are `build`, `flash` and `clean`. Build compiles code in a `"firmware"` subdirectory and saves it as a `.bin` file in a `"bin"` subdirectory. Flash does the same, but uploads the compiled `.bin` to your device using dfu-util. Clean refreshes the Particle firmware source code.
 
 A po-util project must be arranged like so:
+
 ```
 po-util_project/
   └ firmware/
@@ -61,9 +63,11 @@ po-util_project/
     └ lib.cpp
     └ lib.h
 ```
+
 Since po-util compiles `.cpp` and not `.ino` files, `#include "application.h"` must be present in your `main.cpp` file.
 
 A blank `main.cpp` would look like:
+
 ```
 #include "application.h"
 
@@ -78,15 +82,18 @@ void loop()
 }
 ```
 One of the features of po-util is that it changes the baud rate to trigger dfu mode on Particle devices from `14400` to `19200`. **The reason for this is because Linux can not easily use 14400 as a baud rate.** To enable this feature, connect your device and put it into DFU mode, and type:
+
 ```
 po DEVICE_TYPE patch
 
 # Replace DEVICE_TYPE with either "photon" or "electron"
 ```
+
 Your computer will then recompile both parts of the Particle system firmware and flash each part to your device using dfu-util.
 
 
 # Why I created this script
+
 I created this script because Particle does not currently have a script for easily installing the Particle Toolchain and depedencies on Linux and OSX. I created this script in order to help out other Particle users and to improve my bash scripting skills. It would be my dream come true if Particle added this script to its resources or gave it a shout out in its documentation. If that happened, I would feel very proud of myself for making a meaningful contribution.
 
 <center>[![](https://projecthandup.org/wp-content/uploads/2013/01/RibbonDonateBitcoin.png)](https://nrobinson2000.github.io/donate-bitcoin/)</center>
