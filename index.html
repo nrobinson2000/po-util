@@ -50,40 +50,6 @@ This script downloads and installs: <a href="http://dfu-util.sourceforge.net/">d
 
 <p>Copy and paste this into your terminal.</p>
 
-<h1>
-<a id="info" class="anchor" href="#info" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Info</h1>
-
-<pre><code>po-util Copyright (GPL) 2016  Nathan Robinson
-This program comes with ABSOLUTELY NO WARRANTY.
-Read more at http://bit.ly/po-util
-
-Usage: po DEVICE_TYPE COMMAND DEVICE_NAME
-       po DFU_COMMAND
-       po install [full_install_path]
-
-Commands:
-  install      Download all of the tools needed for development.
-               Requires sudo. You can optionally install to an
-               alternate location by specifying [full_install_path].
-               Ex.:
-                   po install ~/particle
-
-               By default Firmware is installed in ~/github.
-
-  build        Compile code in \"firmware\" subdirectory
-  flash        Compile code and flash to device using dfu-util
-  clean        Refresh all code
-  init         Initialize a new po-util project
-  patch        Apply system firmware patch to change baud rate
-  update       Download latest firmware source code from Particle
-  upgrade      Upgrade system firmware on device
-  ota          Upload code Over The Air using particle-cli
-
-DFU Commands:
-  dfu         Quickly flash pre-compiled code
-  dfu-open    Put device into DFU mode
-  dfu-close   Get device out of DFU mode</code></pre>
-
 <h1>Tips</h1>
 <p>
 The three most useful commands are <code>build</code>, <code>flash</code> and <code>clean</code>.  Build compiles code in a <code>"firmware"</code> subdirectory and saves it as a <code>.bin</code> file in a <code>"bin"</code> subdirectory.  Flash does the same, but uploads the compiled <code>.bin</code> to your device using dfu-util.  Clean refreshes the Particle firmware source code.<p>
