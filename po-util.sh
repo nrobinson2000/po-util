@@ -57,11 +57,14 @@ red_echo() {
 # Holds any alternate paths.
 SETTINGS=~/.po
 BASE_FIRMWARE=~/github
+BRANCH="latest"
 
 # Check if we have a saved settings file.  If not, create it.
 if [ ! -f $SETTINGS ]
 then
-  echo BASE_FIRMWARE="$BASE_FIRMWARE" >  $SETTINGS
+  echo BASE_FIRMWARE="$BASE_FIRMWARE" >> $SETTINGS
+  echo BRANCH="latest" >> $SETTINGS
+  echo PARTICLE_DEVELOP=1 >> $SETTINGS
 fi
 
 # Import our overrides from the ~/.po file.
@@ -204,6 +207,18 @@ then
   exit
 fi
 
+#Update po-util
+if [ "$1" == "update" ];
+then
+  MESSAGE="Updating firmware..." ; blue_echo
+  cd "$BASE_FIRMWARE"/firmware
+  git checkout $BRANCH
+  git pull
+  MESSAGE="Updating particle-cli..." ; blue_echo
+  sudo npm update -g particle-cli
+  exit
+fi
+
 # Specific to our photon or electron
 if [ "$1" == "photon" ] || [ "$1" == "electron" ];
 then
@@ -216,14 +231,14 @@ cd "$BASE_FIRMWARE"/firmware || exit
 
 if [ "$1" == "photon" ];
 then
-  git checkout latest
+  git checkout $BRANCH
   DFU_ADDRESS1="2b04:d006"
   DFU_ADDRESS2="0x080A0000"
 fi
 
 if [ "$1" == "electron" ];
 then
-  git checkout latest
+  git checkout $BRANCH
   DFU_ADDRESS1="2b04:d00a"
   DFU_ADDRESS2="0x08080000"
 fi
@@ -247,12 +262,6 @@ then
   exit
 fi
 
-#Update firware directory
-if [ "$2" == "update" ];
-then
-  git pull
-  exit
-fi
 
 if [ "$2" == "clean" ];
 then
