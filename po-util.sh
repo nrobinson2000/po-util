@@ -94,11 +94,6 @@ then
     echo BASE_FIRMWARE="$BASE_FIRMWARE" >  $SETTINGS
   fi
 
-  # if [ "$(ls -A $BASE_FIRMWARE | grep firmware)" ]
-  # then
-  #   MESSAGE="Firmware Directory is NOT empty!" && red_echo && exit;
-  # fi  #EDIT nrobinson2000: Unnecessary
-
   [ -d "$BASE_FIRMWARE" ] || mkdir -p "$BASE_FIRMWARE"  # Allow creation of parents as needed.
 
   # clone firmware repository
