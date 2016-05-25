@@ -303,20 +303,6 @@ then
     Please run with \"po init\" to setup this repository or cd to a valid directory" ; red_echo ; exit
   fi
 
-<<<<<<< HEAD
-  if [ "$(uname -s)" == "Darwin" ]; # No if needed for this
-  then
-    stty -f "$modem" 19200
-    exit
-  else  # MOWGLI: Redundant, Same code either way.
-   stty -F "$modem" 19200
-   exit
- fi
-
- make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || exit
- dfu-util -d 2b04:d006 -a 0 -i 0 -s 0x080A0000:leave -D "$CWD/bin/firmware.bin"
-
-=======
 if [ "$(uname -s)" == "Darwin" ];
   then
     stty -f "$modem" 19200
@@ -326,7 +312,6 @@ if [ "$(uname -s)" == "Darwin" ];
     make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || exit
     dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$CWD/bin/firmware.bin"
     exit
->>>>>>> upstream/master
 fi
 
 MESSAGE="Please choose a command." ; red_echo
