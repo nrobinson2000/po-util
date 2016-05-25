@@ -108,7 +108,7 @@ then
     MESSAGE="Installing dependencies..." ; blue_echo
     echo
     MESSAGE="Installing ARM toolchain and dependencies (requires sudo)..." ; blue_echo
-    sudo add-apt-repository ppa:team-gcc-arm-embedded/ppa #nrobinson2000: terry.guo ppa is down
+    sudo add-apt-repository -y ppa:team-gcc-arm-embedded/ppa #nrobinson2000: terry.guo ppa is down
     curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
     sudo apt-get remove -y node modemmanager gcc-arm-none-eabi
 
