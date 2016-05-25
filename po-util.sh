@@ -11,7 +11,7 @@ then
 echo "
 po-util Copyright (GPL) 2016  Nathan Robinson
 This program comes with ABSOLUTELY NO WARRANTY.
-Read more at http://bit.ly/po-util
+Read more at http://po-util.com
 
 Usage: po DEVICE_TYPE COMMAND DEVICE_NAME
        po DFU_COMMAND
