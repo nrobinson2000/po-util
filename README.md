@@ -5,6 +5,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/nrobinson2000/po-util.svg)](https://github.com/nrobinson2000/po-util/stargazers)
 [![Build Status](https://travis-ci.org/nrobinson2000/po-util.svg?branch=master)](https://travis-ci.org/nrobinson2000/po-util) [![Circle CI](https://circleci.com/gh/nrobinson2000/po-util.svg?style=svg)](https://circleci.com/gh/nrobinson2000/po-util)
 
+<img src="https://raw.githubusercontent.com/nrobinson2000/po-util/gh-pages/logos/po-util-cropped.png" width="400px">
 # Particle Offline Utility:
 
 A handy script for installing and using the Particle Toolchain on Ubuntu-based distros and OSX.
@@ -95,6 +96,3 @@ Your computer will then recompile both parts of the Particle system firmware and
 # Why I created this script
 
 I created this script because Particle does not currently have a script for easily installing the Particle Toolchain and depedencies on Linux and OSX. I created this script in order to help out other Particle users and to improve my bash scripting skills. It would be my dream come true if Particle added this script to its resources or gave it a shout out in its documentation. If that happened, I would feel very proud of myself for making a meaningful contribution.
-
-<center>[![](https://projecthandup.org/wp-content/uploads/2013/01/RibbonDonateBitcoin.png)](https://nrobinson2000.github.io/donate-bitcoin/)</center>
----
