@@ -110,7 +110,7 @@ then
     MESSAGE="Installing ARM toolchain and dependencies (requires sudo)..." ; blue_echo
     sudo add-apt-repository -y ppa:team-gcc-arm-embedded/ppa #nrobinson2000: terry.guo ppa is down
     curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
-    sudo apt-get remove -y node modemmanager gcc-arm-none-eabi
+    sudo apt-get remove -y node modemmanager gcc-arm-embedded
 
     sudo apt-get install -y nodejs python-software-properties python g++ make build-essential libusb-1.0-0-dev gcc-arm-none-eabi libarchive-zip-perl
     # Install dfu-util
