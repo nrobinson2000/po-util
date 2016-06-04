@@ -24,7 +24,7 @@ Commands:
                Ex.:
                    po install ~/particle
 
-               By default Firmware is installed in ~/github.
+               By default, Firmware is installed in ~/github.
 
   build        Compile code in \"firmware\" subdirectory
   flash        Compile code and flash to device using dfu-util
@@ -34,6 +34,7 @@ Commands:
   update       Download latest firmware source code from Particle
   upgrade      Upgrade system firmware on device
   ota          Upload code Over The Air using particle-cli
+  serial       Monitor a device's serial output
 
 DFU Commands:
   dfu         Quickly flash pre-compiled code
