@@ -189,7 +189,9 @@ then
   then
     MESSAGE="No device connected!" red_echo ; exit
   else
-  screen -r || screen "$modem"  && exit
+  screen -S particle "$modem"
+  screen -S particle -X quit || MESSAGE="If \"po serial\" is putting device into DFU mode, power off device, removing battery for Electron, and run \"po serial\" again." ; blue_echo
+  exit
   fi
 fi
 
@@ -224,7 +226,7 @@ if [ "$1" == "photon" ] || [ "$1" == "electron" ];
 then
   MESSAGE="$1 selected." ; blue_echo
 else
-  MESSAGE="Please choose \"photon\" or \"electron\"" ; red_echo
+  MESSAGE="Please choose \"photon\" or \"electron\"" ; red_echo ; exit
 fi
 
 cd "$BASE_FIRMWARE"/firmware || exit
