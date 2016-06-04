@@ -94,7 +94,8 @@ fi
 
 CWD="$(pwd)"
 
-if [ "$1" == "install" ]; # Install
+# Install po-util
+if [ "$1" == "install" ];
 then
   # Check to see if we need to override the install directory.
   if [ "$2" ] && [ "$2" != $BASE_FIRMWARE ]
@@ -265,7 +266,7 @@ then
   exit
 fi
 
-
+# Clean firmware directory
 if [ "$2" == "clean" ];
 then
   make clean
@@ -274,6 +275,7 @@ then
   exit
 fi
 
+# Flash binary over the air
 if [ "$2" == "ota" ];
 then
   if [ "$3" == "" ];
@@ -289,10 +291,10 @@ then
   cd "$CWD"
   if [ -d firmware ];
   then
-    MESSAGE="Found firmware directrory" ; green_echo
+    MESSAGE="Found firmware directory" ; green_echo
   else
     MESSAGE="Firmware directory not found.
-Please run \"po init\" to setup this repository or cd to a valid directrory" ; red_echo ; exit
+Please run \"po init\" to setup this repository or cd to a valid directory" ; red_echo ; exit
   fi
 echo
 make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || exit
