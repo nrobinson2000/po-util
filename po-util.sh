@@ -28,7 +28,7 @@ Commands:
 
   build        Compile code in \"firmware\" subdirectory
   flash        Compile code and flash to device using dfu-util
-  clean        Refresh all code
+  clean        Refresh all code (Run after switching device or directory)
   init         Initialize a new po-util project
   patch        Apply system firmware patch to change baud rate
   update       Download latest firmware source code from Particle
@@ -190,9 +190,10 @@ then
     MESSAGE="No device connected!" red_echo ; exit
   else
   screen -S particle "$modem"
-  screen -S particle -X quit || MESSAGE="If \"po serial\" is putting device into DFU mode, power off device, removing battery for Electron, and run \"po serial\" again." ; blue_echo
-  exit
+  screen -S particle -X quit || MESSAGE="If \"po serial\" is putting device into DFU mode, power off device, removing battery for Electron, and run \"po serial\" several times.
+  This bug will hopefully be fixed in a later release." ; blue_echo
   fi
+  exit
 fi
 
 # Put device into DFU mode
