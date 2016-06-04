@@ -34,7 +34,7 @@ Commands:
   update       Download latest firmware source code from Particle
   upgrade      Upgrade system firmware on device
   ota          Upload code Over The Air using particle-cli
-  serial       Monitor a device's serial output
+  serial       Monitor a device's serial output (Close with CRTL-A +D)
 
 DFU Commands:
   dfu         Quickly flash pre-compiled code
@@ -185,7 +185,12 @@ fi
 # Open serial monitor for device
 if [ "$1" == "serial" ];
 then
-screen "$modem"  && exit
+  if [ "$modem" == "" ]; # Don't run screen if device is not connected
+  then
+    MESSAGE="No device connected!" red_echo ; exit
+  else
+  screen -r || screen "$modem"  && exit
+  fi
 fi
 
 # Put device into DFU mode
