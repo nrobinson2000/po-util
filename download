@@ -1,2 +1,2 @@
 #!/bin/bash
-curl -fsSL https://github.com/nrobinson2000/po-util/releases/download/v1.3/download-po-util.sh | bash
+curl -fsSL https://github.com/nrobinson2000/po-util/releases/download/v1.4/download-po-util.sh | bash
