@@ -1,0 +1,5 @@
+#!/bin/bash
+rm ~/po-util.sh
+curl -fsSLo ~/po-util.sh
+https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
+chmod +x ~/po-util.sh
