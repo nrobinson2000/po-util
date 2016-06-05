@@ -219,6 +219,8 @@ then
   git pull
   MESSAGE="Updating particle-cli..." ; blue_echo
   sudo npm update -g particle-cli
+  MESSAGE="Updating po-util.." ; blue_echo
+  curl https://github.com/nrobinson2000/po-util/raw/po-util.com/update | bash
   exit
 fi
 
