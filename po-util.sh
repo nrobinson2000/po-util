@@ -31,7 +31,7 @@ Commands:
   clean        Refresh all code (Run after switching device or directory)
   init         Initialize a new po-util project
   patch        Apply system firmware patch to change baud rate
-  update       Download latest firmware source code from Particle
+  update       Update Particle firmware, particle-cli and po-util
   upgrade      Upgrade system firmware on device
   ota          Upload code Over The Air using particle-cli
   serial       Monitor a device's serial output (Close with CRTL-A +D)
