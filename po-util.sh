@@ -220,7 +220,7 @@ then
   MESSAGE="Updating particle-cli..." ; blue_echo
   sudo npm update -g particle-cli
   MESSAGE="Updating po-util.." ; blue_echo
-  curl -fsSL https://github.com/nrobinson2000/po-util/raw/po-util.com/update | bash
+  curl -fsSL https://raw.githubusercontent.com/nrobinson2000/po-util/po-util.com/update | bash
   exit
 fi
 
