@@ -5,7 +5,7 @@
 # source code.
 # Read more at https://github.com/nrobinson2000/po-util
 
-if [ "$1" == "" ];
+if [ "$1" == "" ]; # Print help
 then
 
 echo "
@@ -59,6 +59,16 @@ SETTINGS=~/.po
 BASE_FIRMWARE=~/github
 BRANCH="latest"
 
+# Mac OSX uses lowercase f for stty command
+if [ "$(uname -s)" == "Darwin" ];
+  then
+    STTYF="-f"
+    OS="Darwin"
+  else
+    STTYF="-F"
+    OS="Linux"
+  fi
+
 # Check if we have a saved settings file.  If not, create it.
 if [ ! -f $SETTINGS ]
 then
@@ -70,21 +80,20 @@ fi
 # Import our overrides from the ~/.po file.
 source $SETTINGS
 
-# See if we are connected via USB or Bluetooth.
-if [ "$(uname -s)" == "Darwin" ];
+# Automagically choose the correct serial port
+if [ "$OS" == "Darwin" ];
 then
 modem="$(ls -1 /dev/cu.* | grep -vi bluetooth | tail -1)"
 fi
 
-if [ "$(uname -s)" == "Linux" ];
+if [ "$OS" == "Linux" ];
 then
 modem="$(ls -1 /dev/* | grep "ttyACM" | tail -1)"
 fi
 
 CWD="$(pwd)"
 
-
-if [ "$1" == "install" ];
+if [ "$1" == "install" ]; # Install
 then
   # Check to see if we need to override the install directory.
   if [ "$2" ] && [ "$2" != $BASE_FIRMWARE ]
@@ -101,20 +110,17 @@ then
   MESSAGE="Installing Particle firmware from Github..." ; blue_echo
   git clone https://github.com/spark/firmware.git
 
-  if [ "$(uname -s)" == "Linux" ];
+  if [ "$OS" == "Linux" ]; # Linux installation steps
   then
     cd "$BASE_FIRMWARE" || exit
     # Install dependencies
-    MESSAGE="Installing dependencies..." ; blue_echo
-    echo
     MESSAGE="Installing ARM toolchain and dependencies (requires sudo)..." ; blue_echo
-    sudo add-apt-repository -y ppa:team-gcc-arm-embedded/ppa #nrobinson2000: terry.guo ppa is down
-    curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
+    sudo add-apt-repository -y ppa:team-gcc-arm-embedded/ppa #nrobinson2000: terry.guo ppa has been removed using this one instead
     sudo apt-get remove -y node modemmanager gcc-arm-none-eabi
+    curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
+    sudo apt-get install -y nodejs python-software-properties python g++ make build-essential libusb-1.0-0-dev gcc-arm-embedded libarchive-zip-perl screen
 
-    sudo apt-get install -y nodejs python-software-properties python g++ make build-essential libusb-1.0-0-dev gcc-arm-embedded libarchive-zip-perl
     # Install dfu-util
-
     MESSAGE="Installing dfu-util (requires sudo)..." ; blue_echo
     curl -fsSLO "https://sourceforge.net/projects/dfu-util/files/dfu-util-0.9.tar.gz/download"
     tar -xzvf download
@@ -126,32 +132,40 @@ then
     cd ..
     rm -rf dfu-util-0.9
 
+    # Install particle-cli
     MESSAGE="Installing particle-cli..." ; blue_echo
-    # install particle-cli
     sudo npm install -g node-pre-gyp npm particle-cli
 
-    # create udev rules file - MOWGLI: This is not a generic rules file. Looks like a Photon?  Perhaps there should be a check before installing.
+    # Install udev rules file
     MESSAGE="Installing udev rule (requires sudo) ..." ; blue_echo
     curl -fsSLO https://gist.githubusercontent.com/monkbroc/b283bb4da8c10228a61e/raw/e59c77021b460748a9c80ef6a3d62e17f5947be1/50-particle.rules
     sudo mv 50-particle.rules /etc/udev/rules.d/50-particle.rules
-  fi # CLOSE: "$(uname -s)" == "Linux"
+  fi # CLOSE: "$OS" == "Linux"
 
-  if [ "$(uname -s)" == "Darwin" ];
+  if [ "$OS" == "Darwin" ]; # Mac installation steps
   then
+    # Install Homebrew
     MESSAGE="Installing Brew..." ; blue_echo
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     brew tap PX4/homebrew-px4
     brew update
+
+    # Install ARM toolchain
     MESSAGE="Installing ARM toolchain..." ; blue_echo
     brew install gcc-arm-none-eabi-49 dfu-util
-    curl -fsSLO https://nodejs.org/dist/v5.8.0/node-v5.8.0.pkg
+
+    # Install Nodejs version 5.8.0
     MESSAGE="Installing nodejs..." ; blue_echo
+    curl -fsSLO https://nodejs.org/dist/v5.8.0/node-v5.8.0.pkg
     sudo installer -pkg node-*.pkg -target /
     rm node-*.pkg
+
+    # Install particle-cli
     MESSAGE="Installing particle-cli..." ; blue_echo
     sudo npm install -g node-pre-gyp npm
     sudo npm install -g particle-cli
-  fi # CLOSE: "$(uname -s)" == "Linux"
+  fi # CLOSE: "$OS" == "Darwin"
+
   cd "$CWD" && MESSAGE="Sucessfully Installed!" ; green_echo && exit
 fi
 
@@ -166,43 +180,27 @@ then
   exit
 fi
 
-# dfu upload binary
-if [ "$1" == "dfu" ];
+# Open serial monitor for device
+if [ "$1" == "serial" ];
 then
-  if [ "$(uname -s)" == "Darwin" ];
-  then
-    stty -f "$modem" 19200
-    sleep 1
-    dfu-util -d 2b04:d006 -a 0 -i 0 -s 0x080A0000:leave -D "$CWD/bin/firmware.bin"
-    exit
-  else
-    stty -F "$modem" 19200
-    sleep 1
-    dfu-util -d 2b04:d006 -a 0 -i 0 -s 0x080A0000:leave -D "$CWD/bin/firmware.bin"
-    exit
-  fi
+screen "$modem"  && exit
 fi
 
-# dfu connect (Wired)
+# Put device into DFU mode
 if [ "$1" == "dfu-open" ];
 then
-  if [ "$(uname -s)" == "Darwin" ];
-  then
-    stty -f "$modem" 19200
-  else
-    stty -F /dev/ttyACM0 19200
-  fi
+  stty "$STTYF" "$modem" 19200
   exit
 fi
 
-# Close our connection (wired)
+# Get device out of DFU mode
 if [ "$1" == "dfu-close" ];
 then
   dfu-util -d 2b04:d006 -a 0 -i 0 -s 0x080A0000:leave -D /dev/null
   exit
 fi
 
-#Update po-util
+# Update po-util
 if [ "$1" == "update" ];
 then
   MESSAGE="Updating firmware..." ; blue_echo
@@ -238,6 +236,15 @@ then
   DFU_ADDRESS2="0x08080000"
 fi
 
+# Flash already compiled binary
+if [ "$2" == "dfu" ];
+then
+  stty "$STTYF" "$modem" 19200
+  sleep 1
+  dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$CWD/bin/firmware.bin"
+  exit
+fi
+
 #Upgrade our firmware on device
 if [ "$2" == "upgrade" ] || [ "$2" == "patch" ];
 then
@@ -253,7 +260,7 @@ then
   make clean all PLATFORM="$1" program-dfu
   cd "$BASE_FIRMWARE/"firmware && git stash
   sleep 1
-  dfu-util -d 2b04:d006 -a 0 -i 0 -s 0x080A0000:leave -D /dev/null
+  dfu-util -d $DFU_ADDRESS1 -a 0 -i 0 -s $DFU_ADDRESS2:leave -D /dev/null
   exit
 fi
 
@@ -302,16 +309,11 @@ then
     MESSAGE="Firmware directory not found.
     Please run with \"po init\" to setup this repository or cd to a valid directory" ; red_echo ; exit
   fi
-
-if [ "$(uname -s)" == "Darwin" ];
-  then
-    stty -f "$modem" 19200
-  else
-    stty -F "$modem" 19200
-  fi
+    stty "$STTYF" "$modem" 19200
     make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || exit
     dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$CWD/bin/firmware.bin"
     exit
 fi
 
+# If an improper command is chosen:
 MESSAGE="Please choose a command." ; red_echo

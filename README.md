@@ -5,15 +5,17 @@
 [![GitHub stars](https://img.shields.io/github/stars/nrobinson2000/po-util.svg)](https://github.com/nrobinson2000/po-util/stargazers)
 [![Build Status](https://travis-ci.org/nrobinson2000/po-util.svg?branch=master)](https://travis-ci.org/nrobinson2000/po-util) [![Circle CI](https://circleci.com/gh/nrobinson2000/po-util.svg?style=svg)](https://circleci.com/gh/nrobinson2000/po-util)
 
-<img src="https://raw.githubusercontent.com/nrobinson2000/po-util/gh-pages/logos/po-util-cropped.png" width="400px">
+<img src="http://po-util.com/logos/po-util-updated.svg" width="400px">
 # Particle Offline Utility:
 
 A handy script for installing and using the Particle Toolchain on Ubuntu-based distros and OSX.
 This script downloads and installs: [dfu-util](http://dfu-util.sourceforge.net/), [nodejs](https://nodejs.org/en/), [gcc-arm-embedded](https://launchpad.net/~terry.guo/+archive/ubuntu/gcc-arm-embedded), [particle-cli](https://github.com/spark/particle-cli), and the [Particle Firmware source code](https://github.com/spark/firmware).
 
+<img src="https://raw.githubusercontent.com/nrobinson2000/po-util/po-util.com/screenshots/1.png">
+
 # Quick Install / Update
 ```
-curl -fsSL po-util.com/download | bash
+curl po-util.com/download | bash
 ```
 Copy and paste this into your terminal.
 
