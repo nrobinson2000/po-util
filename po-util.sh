@@ -159,7 +159,7 @@ then
     MESSAGE="Installing nodejs..." ; blue_echo
     curl -fsSLO https://nodejs.org/dist/v5.8.0/node-v5.8.0.pkg
     sudo installer -pkg node-*.pkg -target /
-    rm node-*.pkg
+    rm -rf node-*.pkg
 
     # Install particle-cli
     MESSAGE="Installing particle-cli..." ; blue_echo
