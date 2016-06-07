@@ -100,7 +100,6 @@ then
   # Check to see if we need to override the install directory.
   if [ "$2" ] && [ "$2" != $BASE_FIRMWARE ]
   then
-    # TODO: Validate this path a bit more.
     BASE_FIRMWARE="$2"
     echo BASE_FIRMWARE="$BASE_FIRMWARE" >  $SETTINGS
   fi
