@@ -43,6 +43,10 @@ DFU Commands:
 " && exit
 fi
 
+function pause(){
+   read -p "$*"
+}
+
 blue_echo() {
     echo "$(tput setaf 6)$(tput bold) $MESSAGE $(tput sgr0)"
 }
@@ -60,14 +64,21 @@ SETTINGS=~/.po
 BASE_FIRMWARE=~/github
 BRANCH="latest"
 
+CWD="$(pwd)"
+
 # Mac OSX uses lowercase f for stty command
 if [ "$(uname -s)" == "Darwin" ];
   then
-    STTYF="-f"
     OS="Darwin"
+    STTYF="-f"
+    MODEM="$(ls -1 /dev/cu.* | grep -vi bluetooth | tail -1)"
   else
-    STTYF="-F"
     OS="Linux"
+    STTYF="-F"
+    BINDIR=~/bin
+    MODEM="$(ls -1 /dev/* | grep "ttyACM" | tail -1)"
+    # Runs script commands with our specific version of GCC from local.  May not need to be exported.
+    export PATH=$BINDIR/gcc-arm-embedded/gcc-arm-none-eabi-4_8-2014q2/bin:$PATH
   fi
 
 # Check if we have a saved settings file.  If not, create it.
@@ -76,23 +87,11 @@ then
   echo BASE_FIRMWARE="$BASE_FIRMWARE" >> $SETTINGS
   echo BRANCH="latest" >> $SETTINGS
   echo PARTICLE_DEVELOP=1 >> $SETTINGS
+  echo BINDIR="$BINDIR"
 fi
 
 # Import our overrides from the ~/.po file.
 source $SETTINGS
-
-# Automagically choose the correct serial port
-if [ "$OS" == "Darwin" ];
-then
-modem="$(ls -1 /dev/cu.* | grep -vi bluetooth | tail -1)"
-fi
-
-if [ "$OS" == "Linux" ];
-then
-modem="$(ls -1 /dev/* | grep "ttyACM" | tail -1)"
-fi
-
-CWD="$(pwd)"
 
 # Install po-util
 if [ "$1" == "install" ];
@@ -115,11 +114,16 @@ then
   then
     cd "$BASE_FIRMWARE" || exit
     # Install dependencies
-    MESSAGE="Installing ARM toolchain and dependencies (requires sudo)..." ; blue_echo
-    sudo add-apt-repository -y ppa:team-gcc-arm-embedded/ppa #nrobinson2000: terry.guo ppa has been removed using this one instead
-    sudo apt-get remove -y node modemmanager gcc-arm-none-eabi
+    MESSAGE="Installing ARM toolchain and dependencies locally in $BINDIR..." ; blue_echo
+    # For linux let's avoid the PPA and download instead - See https://community.particle.io/t/how-to-install-the-spark-toolchain-in-ubuntu-14-04/4139/7
+    # sudo add-apt-repository -y ppa:team-gcc-arm-embedded/ppa #nrobinson2000: terry.guo ppa has been removed using this one instead
+    # sudo apt-get remove -y node modemmanager gcc-arm-none-eabi
+    mkdir -p $BINDIR/gcc-arm-embedded && cd "$_"
+    wget https://launchpad.net/gcc-arm-embedded/4.8/4.8-2014-q2-update/+download/gcc-arm-none-eabi-4_8-2014q2-20140609-linux.tar.bz2
+    tar xjf gcc-arm-none-eabi-*-linux.tar.bz2
+
     curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
-    sudo apt-get install -y nodejs python-software-properties python g++ make build-essential libusb-1.0-0-dev gcc-arm-embedded libarchive-zip-perl screen
+    sudo apt-get install -y nodejs python-software-properties python g++ make build-essential libusb-1.0-0-dev libarchive-zip-perl screen
 
     # Install dfu-util
     MESSAGE="Installing dfu-util (requires sudo)..." ; blue_echo
@@ -188,7 +192,7 @@ then
   then
     MESSAGE="No device connected!" red_echo ; exit
   else
-  screen -S particle "$modem"
+  screen -S particle "$MODEM"
   screen -S particle -X quit || MESSAGE="If \"po serial\" is putting device into DFU mode, power off device, removing battery for Electron, and run \"po serial\" several times.
   This bug will hopefully be fixed in a later release." ; blue_echo
   fi
@@ -198,7 +202,7 @@ fi
 # Put device into DFU mode
 if [ "$1" == "dfu-open" ];
 then
-  stty "$STTYF" "$modem" 19200
+  stty "$STTYF" "$MODEM" 19200
   exit
 fi
 
@@ -250,7 +254,7 @@ fi
 # Flash already compiled binary
 if [ "$2" == "dfu" ];
 then
-  stty "$STTYF" "$modem" 19200
+  stty "$STTYF" "$MODEM" 19200
   sleep 1
   dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$CWD/bin/firmware.bin"
   exit
@@ -259,6 +263,7 @@ fi
 #Upgrade our firmware on device
 if [ "$2" == "upgrade" ] || [ "$2" == "patch" ];
 then
+  pause "Connect your device and put into DFU mode. Press [ENTER] to continue..."
   cd "$CWD"
   sed '2s/.*/START_DFU_FLASHER_SERIAL_SPEED=19200/' "$BASE_FIRMWARE/"firmware/build/module-defaults.mk > temp
   rm -f "$BASE_FIRMWARE"/firmware/build/module-defaults.mk
@@ -272,6 +277,7 @@ then
   cd "$BASE_FIRMWARE/"firmware && git stash
   sleep 1
   dfu-util -d $DFU_ADDRESS1 -a 0 -i 0 -s $DFU_ADDRESS2:leave -D /dev/null
+  # TODO: Probably should check the status of the build/flash and  put an appropriate pass/fail message here
   exit
 fi
 
@@ -321,7 +327,7 @@ then
     MESSAGE="Firmware directory not found.
     Please run with \"po init\" to setup this repository or cd to a valid directory" ; red_echo ; exit
   fi
-    stty "$STTYF" "$modem" 19200
+    stty "$STTYF" "$MODEM" 19200
     make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || exit
     dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$CWD/bin/firmware.bin"
     exit
