@@ -78,6 +78,7 @@ if [ "$(uname -s)" == "Darwin" ];
     MODEM="$(ls -1 /dev/* | grep "ttyACM" | tail -1)"
     # Runs script commands with our specific version of GCC from local.  May not need to be exported.
     export PATH=$BINDIR/gcc-arm-embedded/gcc-arm-none-eabi-4_8-2014q2/bin:$PATH
+    export GCC_ARM_PATH=$BINDIR/gcc-arm-embedded/gcc-arm-none-eabi-4_8-2014q2/bin
   fi
 
 # Check if we have a saved settings file.  If not, create it.
@@ -200,7 +201,7 @@ fi
 # Get device out of DFU mode
 if [ "$1" == "dfu-close" ];
 then
-  dfu-util -d 2b04:d006 -a 0 -i 0 -s 0x080A0000:leave -D /dev/null
+  dfu-util -d 2b04:D006 -a 0 -i 0 -s 0x080A0000:leave -D /dev/null
   exit
 fi
 
@@ -229,7 +230,7 @@ cd "$BASE_FIRMWARE"/firmware || exit
 if [ "$1" == "photon" ];
 then
   git checkout $BRANCH
-  DFU_ADDRESS1="2b04:d006"
+  DFU_ADDRESS1="2b04:D006"
   DFU_ADDRESS2="0x080A0000"
 fi
 
@@ -265,7 +266,7 @@ then
   make clean all PLATFORM="$1" program-dfu
   cd "$BASE_FIRMWARE/"firmware && git stash
   sleep 1
-  dfu-util -d $DFU_ADDRESS1 -a 0 -i 0 -s $DFU_ADDRESS2:leave -D /dev/null
+  sudo dfu-util -d $DFU_ADDRESS1 -a 0 -i 0 -s $DFU_ADDRESS2:leave -D /dev/null
   # TODO: Probably should check the status of the build/flash and  put an appropriate pass/fail message here 
   exit
 fi
@@ -294,7 +295,7 @@ then
   cd "$CWD"
   if [ -d firmware ];
   then
-    MESSAGE="Found firmware directrory" ; green_echo
+    MESSAGE="Found firmware directory" ; green_echo
   else
     MESSAGE="Firmware directory not found.
 Please run \"po init\" to setup this repository or cd to a valid directrory" ; red_echo ; exit
