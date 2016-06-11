@@ -88,6 +88,7 @@ if [ "$(uname -s)" == "Darwin" ];
     export PATH=$GCC_ARM_PATH:$PATH
     # echo `echo $PATH | grep $GCC_ARM_VER` && MESSAGE=" Path Set." ; green_echo #FIXME: This is spammy
     # Additional option which SHOULD take place for make.
+    alias arm-none-eabi-gcc=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/arm-none-eabi-gcc  #FIXME: This might fix the Travis CI problem.
 fi
 
 # Check if we have a saved settings file.  If not, create it.
@@ -158,8 +159,6 @@ then
     MESSAGE="Installing udev rule (requires sudo) ..." ; blue_echo
     curl -fsSLO https://gist.githubusercontent.com/monkbroc/b283bb4da8c10228a61e/raw/e59c77021b460748a9c80ef6a3d62e17f5947be1/50-particle.rules
     sudo mv 50-particle.rules /etc/udev/rules.d/50-particle.rules
-
-    alias arm-none-eabi-gcc=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/arm-none-eabi-gcc  #FIXME: This might fix the Travis CI problem.
 
   fi # CLOSE: "$OS" == "Linux"
 
