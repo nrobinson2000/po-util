@@ -99,7 +99,7 @@ then
   echo BINDIR="$BINDIR"
   if [ OS == "Linux" ];
     then
-      echo export -e GCC_ARM_PATH=$GCC_ARM_PATH >> $SETTINGS
+      echo export GCC_ARM_PATH=$GCC_ARM_PATH >> $SETTINGS
   fi
 fi
 
@@ -158,6 +158,9 @@ then
     MESSAGE="Installing udev rule (requires sudo) ..." ; blue_echo
     curl -fsSLO https://gist.githubusercontent.com/monkbroc/b283bb4da8c10228a61e/raw/e59c77021b460748a9c80ef6a3d62e17f5947be1/50-particle.rules
     sudo mv 50-particle.rules /etc/udev/rules.d/50-particle.rules
+
+    alias arm-none-eabi-gcc=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/arm-none-eabi-gcc  #FIXME: This might fix the Travis CI problem.
+
   fi # CLOSE: "$OS" == "Linux"
 
   if [ "$OS" == "Darwin" ]; # Mac installation steps
