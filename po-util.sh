@@ -62,24 +62,32 @@ red_echo() {
 SETTINGS=~/.po
 BASE_FIRMWARE=~/github
 BRANCH="latest"
+BINDIR=~/bin
 
 CWD="$(pwd)"
 
 # Mac OSX uses lowercase f for stty command
 if [ "$(uname -s)" == "Darwin" ];
   then
+    MESSAGE="OSX detected..." ; green_echo
     OS="Darwin"
     STTYF="-f"
     MODEM="$(ls -1 /dev/cu.* | grep -vi bluetooth | tail -1)"
   else
+    MESSAGE="Linux detected..." ; green_echo
     OS="Linux"    
     STTYF="-F"
-    BINDIR=~/bin
     MODEM="$(ls -1 /dev/* | grep "ttyACM" | tail -1)"
+
     # Runs script commands with our specific version of GCC from local.  May not need to be exported.
-    export PATH=$BINDIR/gcc-arm-embedded/gcc-arm-none-eabi-4_8-2014q2/bin:$PATH
-    export GCC_ARM_PATH=$BINDIR/gcc-arm-embedded/gcc-arm-none-eabi-4_8-2014q2/bin
-  fi
+    # TODO: Change this to use regex, so we get this version or later - Futureproof
+    GCC_ARM_VER=gcc-arm-none-eabi-4_8-2014q2    
+    MESSAGE="Setting our paths for gcc-arm-none-eabi" ; green_echo
+    export -e GCC_ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin
+    export PATH=$GCC_ARM_PATH:$PATH
+    echo `echo $PATH | grep $GCC_ARM_VER` && MESSAGE=" Path Set." ; green_echo
+    # Additional option which SHOULD take place for make.
+fi
 
 # Check if we have a saved settings file.  If not, create it.
 if [ ! -f $SETTINGS ]
@@ -88,6 +96,10 @@ then
   echo BRANCH="latest" >> $SETTINGS
   echo PARTICLE_DEVELOP=1 >> $SETTINGS
   echo BINDIR="$BINDIR"
+  if [ OS == "Linux" ]; 
+    then 
+      echo export -e GCC_ARM_PATH=$GCC_ARM_PATH >> $SETTINGS
+  fi
 fi
 
 # Import our overrides from the ~/.po file.
@@ -114,7 +126,7 @@ then
   then
     cd "$BASE_FIRMWARE" || exit
     # Install dependencies
-    MESSAGE="Installing ARM toolchain and dependencies locally in $BINDIR..." ; blue_echo
+    MESSAGE="Installing ARM toolchain and dependencies locally in $BINDIR/gcc-arm-embedded/..." ; blue_echo
     # For linux let's avoid the PPA and download instead - See https://community.particle.io/t/how-to-install-the-spark-toolchain-in-ubuntu-14-04/4139/7
     # sudo add-apt-repository -y ppa:team-gcc-arm-embedded/ppa #nrobinson2000: terry.guo ppa has been removed using this one instead
     # sudo apt-get remove -y node modemmanager gcc-arm-none-eabi
@@ -293,17 +305,19 @@ fi
 if [ "$2" == "build" ];
 then
   cd "$CWD"
+
   if [ -d firmware ];
   then
     MESSAGE="Found firmware directory" ; green_echo
   else
-    MESSAGE="Firmware directory not found.
-Please run \"po init\" to setup this repository or cd to a valid directrory" ; red_echo ; exit
+    MESSAGE="Firmware directory not found. Please run \"po init\" to setup this repository or cd to a valid directrory" ; red_echo ; exit
   fi
-echo
-make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || exit
-MESSAGE="Binary saved to $CWD/bin/firmware.bin" ; green_echo
-exit
+    # echo `echo $PATH | grep $GCC_ARM_VER` && MESSAGE=" Path Set." ; green_echo
+    MESSAGE="Using gcc-arm from: `which arm-none-eabi-gcc`" ; blue_echo
+
+    make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || exit
+    MESSAGE="Binary saved to $CWD/bin/firmware.bin" ; green_echo
+    exit
 fi
 
 if [ "$2" == "flash" ];
