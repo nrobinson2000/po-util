@@ -89,6 +89,7 @@ if [ "$(uname -s)" == "Darwin" ];
     # echo `echo $PATH | grep $GCC_ARM_VER` && MESSAGE=" Path Set." ; green_echo #FIXME: This is spammy
     # Additional option which SHOULD take place for make.
     # alias arm-none-eabi-gcc=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/arm-none-eabi-gcc  #FIXME: This does not work to fix Travis CI
+fi
 
 # Check if we have a saved settings file.  If not, create it.
 if [ ! -f $SETTINGS ]
