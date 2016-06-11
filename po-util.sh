@@ -84,7 +84,7 @@ if [ "$(uname -s)" == "Darwin" ];
     # TODO: Change this to use regex, so we get this version or later - Futureproof
     GCC_ARM_VER=gcc-arm-none-eabi-4_8-2014q2
     MESSAGE="Setting our paths for gcc-arm-none-eabi" ; green_echo
-    export -e GCC_ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin
+    export GCC_ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/
     export PATH=$GCC_ARM_PATH:$PATH
     echo `echo $PATH | grep $GCC_ARM_VER` && MESSAGE=" Path Set." ; green_echo
     # Additional option which SHOULD take place for make.
@@ -299,7 +299,6 @@ if [ "$2" == "clean" ];
 then
   make clean
   cd "$CWD"
-  rm -rf bin
   exit
 fi
 
@@ -350,3 +349,4 @@ fi
 
 # If an improper command is chosen:
 MESSAGE="Please choose a command." ; red_echo
+echo $BINDIR
