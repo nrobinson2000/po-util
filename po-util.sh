@@ -245,7 +245,7 @@ if [ "$1" == "photon" ] || [ "$1" == "electron" ];
 then
   MESSAGE="$1 selected." ; blue_echo
 else
-  MESSAGE="Please choose \"photon\" or \"electron\"" ; red_echo ; exit
+  MESSAGE="Please choose \"photon\" or \"electron\", or chose a proper command." ; red_echo ; exit
 fi
 
 cd "$BASE_FIRMWARE"/firmware || exit
@@ -349,4 +349,3 @@ fi
 
 # If an improper command is chosen:
 MESSAGE="Please choose a command." ; red_echo
-echo $BINDIR
