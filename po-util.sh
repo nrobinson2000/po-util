@@ -70,12 +70,12 @@ CWD="$(pwd)"
 # Mac OSX uses lowercase f for stty command
 if [ "$(uname -s)" == "Darwin" ];
   then
-    MESSAGE="OSX detected..." ; green_echo
+    # MESSAGE="OSX detected..." ; green_echo #FIXME: This is spammy
     OS="Darwin"
     STTYF="-f"
     MODEM="$(ls -1 /dev/cu.* | grep -vi bluetooth | tail -1)"
   else
-    MESSAGE="Linux detected..." ; green_echo
+    # MESSAGE="Linux detected..." ; green_echo #FIXME: This is spammy
     OS="Linux"
     STTYF="-F"
     MODEM="$(ls -1 /dev/* | grep "ttyACM" | tail -1)"
@@ -83,10 +83,10 @@ if [ "$(uname -s)" == "Darwin" ];
     # Runs script commands with our specific version of GCC from local.  May not need to be exported.
     # TODO: Change this to use regex, so we get this version or later - Futureproof
     GCC_ARM_VER=gcc-arm-none-eabi-4_8-2014q2
-    MESSAGE="Setting our paths for gcc-arm-none-eabi" ; green_echo
+    # MESSAGE="Setting our paths for gcc-arm-none-eabi" ; green_echo #FIXME: This is spammy
     export GCC_ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/
     export PATH=$GCC_ARM_PATH:$PATH
-    echo `echo $PATH | grep $GCC_ARM_VER` && MESSAGE=" Path Set." ; green_echo
+    # echo `echo $PATH | grep $GCC_ARM_VER` && MESSAGE=" Path Set." ; green_echo #FIXME: This is spammy
     # Additional option which SHOULD take place for make.
 fi
 
