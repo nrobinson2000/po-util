@@ -206,7 +206,7 @@ then
     MESSAGE="No device connected!" red_echo ; exit
   else
   screen -S particle "$MODEM"
-  screen -S particle -X quit || MESSAGE="If \"po serial\" is putting device into DFU mode, power off device, removing battery for Electron, and run \"po serial\" several times.
+  screen -S particle -X quit && exit || MESSAGE="If \"po serial\" is putting device into DFU mode, power off device, removing battery for Electron, and run \"po serial\" several times.
   This bug will hopefully be fixed in a later release." && blue_echo
   fi
   exit
