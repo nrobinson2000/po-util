@@ -201,7 +201,7 @@ fi
 # Open serial monitor for device
 if [ "$1" == "serial" ];
 then
-  if [ "$modem" == "" ]; # Don't run screen if device is not connected
+  if [ "$MODEM" == "" ]; # Don't run screen if device is not connected
   then
     MESSAGE="No device connected!" red_echo ; exit
   else
