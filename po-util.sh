@@ -350,3 +350,4 @@ fi
 
 # If an improper command is chosen:
 MESSAGE="Please choose a command." ; red_echo
+echo $BINDIR
