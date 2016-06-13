@@ -97,7 +97,7 @@ then
   echo BASE_FIRMWARE="$BASE_FIRMWARE" >> $SETTINGS
   echo BRANCH="latest" >> $SETTINGS
   echo PARTICLE_DEVELOP=1 >> $SETTINGS
-  echo BINDIR="$BINDIR"
+  echo BINDIR="$BINDIR" >> $SETTINGS
 
   if [ OS == "Linux" ];
     then
