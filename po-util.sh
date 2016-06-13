@@ -78,7 +78,6 @@ if [ "$(uname -s)" == "Darwin" ];
     OS="Linux"    
     STTYF="-F"
     MODEM="$(ls -1 /dev/* | grep "ttyACM" | tail -1)"
-
     # Runs script commands with our specific version of GCC from local.  May not need to be exported.
     # TODO: Change this to use regex, so we get this version or later - Futureproof
     GCC_ARM_VER=gcc-arm-none-eabi-4_8-2014q2    
@@ -203,7 +202,8 @@ fi
 # Open serial monitor for device
 if [ "$1" == "serial" ];
 then
-screen "$MODEM"  && exit
+screen "$MODEM"  
+exit
 fi
 
 # Put device into DFU mode
@@ -281,7 +281,7 @@ then
   make clean all PLATFORM="$1" $GCC_MAKE program-dfu
   cd "$BASE_FIRMWARE/"firmware && git stash
   sleep 1
-  sudo dfu-util -d $DFU_ADDRESS1 -a 0 -i 0 -s $DFU_ADDRESS2:leave -D /dev/null
+  dfu-util -d $DFU_ADDRESS1 -a 0 -i 0 -s $DFU_ADDRESS2:leave -D /dev/null
   # TODO: Probably should check the status of the build/flash and  put an appropriate pass/fail message here 
   exit
 fi
@@ -315,13 +315,13 @@ then
   else
     MESSAGE="Firmware directory not found. Please run \"po init\" to setup this repository or cd to a valid directrory" ; red_echo ; exit
   fi
-    # echo `echo $PATH | grep $GCC_ARM_VER` && MESSAGE=" Path Set." ; green_echo
-    MESSAGE="Using gcc-arm from: `which arm-none-eabi-gcc`" ; blue_echo
-    MESSAGE="GCC_ARM_PATH=$GCC_ARM_PATH" ; blue_echo
+  # echo `echo $PATH | grep $GCC_ARM_VER` && MESSAGE=" Path Set." ; green_echo
+  MESSAGE="Using gcc-arm from: `which arm-none-eabi-gcc`" ; blue_echo
+  MESSAGE="GCC_ARM_PATH=$GCC_ARM_PATH" ; blue_echo
 
-    make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" $GCC_MAKE  || exit
-    MESSAGE="Binary saved to $CWD/bin/firmware.bin" ; green_echo
-    exit
+  make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" $GCC_MAKE  || exit
+  MESSAGE="Binary saved to $CWD/bin/firmware.bin" ; green_echo
+  exit
 fi
 
 if [ "$2" == "flash" ];
