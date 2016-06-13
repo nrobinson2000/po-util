@@ -330,7 +330,7 @@ then
   fi
     # echo `echo $PATH | grep $GCC_ARM_VER` && MESSAGE=" Path Set." ; green_echo
     MESSAGE="Using gcc-arm from: `which arm-none-eabi-gcc`" ; blue_echo
-    MESSAGE="GCC_ARM_PATH=$GCC_ARM_PATH" ; blue_echo
+    # MESSAGE="GCC_ARM_PATH=$GCC_ARM_PATH" ; blue_echo #FIXME: Spammy
 
     make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" $GCC_MAKE  || exit
     MESSAGE="Binary saved to $CWD/bin/firmware.bin" ; green_echo
