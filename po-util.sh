@@ -283,9 +283,9 @@ if [ "$2" == "upgrade" ] || [ "$2" == "patch" ];
 then
   pause "Connect your device and put into DFU mode. Press [ENTER] to continue..."
   cd "$CWD"
-  sed '2s/.*/START_DFU_FLASHER_SERIAL_SPEED=19200/' "$BASE_FIRMWARE/"firmware/build/module-defaults.mk > temp
+  sed '2s/.*/START_DFU_FLASHER_SERIAL_SPEED=19200/' "$BASE_FIRMWARE/"firmware/build/module-defaults.mk > temp.particle
   rm -f "$BASE_FIRMWARE"/firmware/build/module-defaults.mk
-  mv temp "$BASE_FIRMWARE"/firmware/build/module-defaults.mk
+  mv temp.particle "$BASE_FIRMWARE"/firmware/build/module-defaults.mk
 
   cd "$BASE_FIRMWARE/"firmware/modules/"$1"/system-part1
   make clean all PLATFORM="$1" $GCC_MAKE program-dfu
