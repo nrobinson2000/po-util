@@ -1,0 +1,6 @@
+# UDEV Rules for Particle boards
+#
+# This will allow reflashing with DFU-util without using sudo
+
+# Photon / P1 / Electron
+ACTION=="add", ATTRS{idProduct}=="[cd]00?", ATTRS{idVendor}=="2b04", DRIVERS=="usb", RUN+="chmod a+rw $(ls -1 /dev/* | grep "ttyACM" | tail -1)" , ENV{ID_MM_DEVICE_IGNORE}="1"
