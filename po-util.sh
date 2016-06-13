@@ -83,7 +83,7 @@ if [ "$(uname -s)" == "Darwin" ];
     # TODO: Change this to use regex, so we get this version or later - Futureproof
     GCC_ARM_VER=gcc-arm-none-eabi-4_8-2014q2    
     MESSAGE="Setting our paths for gcc-arm-none-eabi" ; green_echo
-    export -e GCC_ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin
+    export GCC_ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/
     export PATH=$GCC_ARM_PATH:$PATH
     echo `echo $PATH | grep $GCC_ARM_VER` && MESSAGE=" Path Set." ; green_echo
     # Additional option which SHOULD take place for make.
@@ -98,7 +98,7 @@ then
   echo BINDIR="$BINDIR"
   if [ OS == "Linux" ]; 
     then 
-      echo export -e GCC_ARM_PATH=$GCC_ARM_PATH >> $SETTINGS
+      echo export GCC_ARM_PATH=$GCC_ARM_PATH >> $SETTINGS
   fi
 fi
 
@@ -272,10 +272,10 @@ then
   mv temp "$BASE_FIRMWARE"/firmware/build/module-defaults.mk
 
   cd "$BASE_FIRMWARE/"firmware/modules/"$1"/system-part1
-  make clean all PLATFORM="$1" program-dfu
+  make -e clean all PLATFORM="$1" program-dfu
 
   cd "$BASE_FIRMWARE/"firmware/modules/"$1"/system-part2
-  make clean all PLATFORM="$1" program-dfu
+  make -e clean all PLATFORM="$1" program-dfu
   cd "$BASE_FIRMWARE/"firmware && git stash
   sleep 1
   sudo dfu-util -d $DFU_ADDRESS1 -a 0 -i 0 -s $DFU_ADDRESS2:leave -D /dev/null
@@ -314,8 +314,9 @@ then
   fi
     # echo `echo $PATH | grep $GCC_ARM_VER` && MESSAGE=" Path Set." ; green_echo
     MESSAGE="Using gcc-arm from: `which arm-none-eabi-gcc`" ; blue_echo
+    MESSAGE="GCC_ARM_PATH=$GCC_ARM_PATH" ; blue_echo
 
-    make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || exit
+    make all -e -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1"  || exit
     MESSAGE="Binary saved to $CWD/bin/firmware.bin" ; green_echo
     exit
 fi
@@ -331,7 +332,7 @@ then
     Please run with \"po init\" to setup this repository or cd to a valid directory" ; red_echo ; exit
   fi
     stty "$STTYF" "$MODEM" 19200
-    make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" || exit
+    make all -e -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1"  || exit
     dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$CWD/bin/firmware.bin"
     exit
 fi
