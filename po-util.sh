@@ -105,6 +105,9 @@ fi
 # Import our overrides from the ~/.po file.
 source $SETTINGS
 
+# GCC path for linux make utility
+if [ $GCC_ARM_PATH ]; then GCC_MAKE=GCC_ARM_PATH=$GCC_ARM_PATH ; fi
+
 if [ "$1" == "install" ]; # Install
 then
   # Check to see if we need to override the install directory.
@@ -272,10 +275,10 @@ then
   mv temp "$BASE_FIRMWARE"/firmware/build/module-defaults.mk
 
   cd "$BASE_FIRMWARE/"firmware/modules/"$1"/system-part1
-  make -e clean all PLATFORM="$1" program-dfu
+  make clean all PLATFORM="$1" $GCC_MAKE program-dfu
 
   cd "$BASE_FIRMWARE/"firmware/modules/"$1"/system-part2
-  make -e clean all PLATFORM="$1" program-dfu
+  make clean all PLATFORM="$1" $GCC_MAKE program-dfu
   cd "$BASE_FIRMWARE/"firmware && git stash
   sleep 1
   sudo dfu-util -d $DFU_ADDRESS1 -a 0 -i 0 -s $DFU_ADDRESS2:leave -D /dev/null
@@ -316,7 +319,7 @@ then
     MESSAGE="Using gcc-arm from: `which arm-none-eabi-gcc`" ; blue_echo
     MESSAGE="GCC_ARM_PATH=$GCC_ARM_PATH" ; blue_echo
 
-    make all -e -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1"  || exit
+    make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" $GCC_MAKE  || exit
     MESSAGE="Binary saved to $CWD/bin/firmware.bin" ; green_echo
     exit
 fi
@@ -332,7 +335,7 @@ then
     Please run with \"po init\" to setup this repository or cd to a valid directory" ; red_echo ; exit
   fi
     stty "$STTYF" "$MODEM" 19200
-    make all -e -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1"  || exit
+    make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1"  $GCC_MAKE  || exit
     dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$CWD/bin/firmware.bin"
     exit
 fi
