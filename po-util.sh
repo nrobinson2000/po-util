@@ -24,16 +24,17 @@ Commands:
                Ex.:
                    po install ~/particle
 
-               By default Firmware is installed in ~/github.
+               By default, Firmware is installed in ~/github.
 
   build        Compile code in \"firmware\" subdirectory
   flash        Compile code and flash to device using dfu-util
-  clean        Refresh all code
+  clean        Refresh all code (Run after switching device or directory)
   init         Initialize a new po-util project
   patch        Apply system firmware patch to change baud rate
-  update       Download latest firmware source code from Particle
+  update       Update Particle firmware, particle-cli and po-util
   upgrade      Upgrade system firmware on device
   ota          Upload code Over The Air using particle-cli
+  serial       Monitor a device's serial output (Close with CRTL-A +D)
 
 DFU Commands:
   dfu         Quickly flash pre-compiled code
@@ -69,23 +70,24 @@ CWD="$(pwd)"
 # Mac OSX uses lowercase f for stty command
 if [ "$(uname -s)" == "Darwin" ];
   then
-    MESSAGE="OSX detected..." ; green_echo
+    # MESSAGE="OSX detected..." ; green_echo #FIXME: This is spammy
     OS="Darwin"
     STTYF="-f"
     MODEM="$(ls -1 /dev/cu.* | grep -vi bluetooth | tail -1)"
   else
-    MESSAGE="Linux detected..." ; green_echo
-    OS="Linux"    
+    # MESSAGE="Linux detected..." ; green_echo #FIXME: This is spammy
+    OS="Linux"
     STTYF="-F"
     MODEM="$(ls -1 /dev/* | grep "ttyACM" | tail -1)"
     # Runs script commands with our specific version of GCC from local.  May not need to be exported.
     # TODO: Change this to use regex, so we get this version or later - Futureproof
-    GCC_ARM_VER=gcc-arm-none-eabi-4_8-2014q2    
-    MESSAGE="Setting our paths for gcc-arm-none-eabi" ; green_echo
+    GCC_ARM_VER=gcc-arm-none-eabi-4_8-2014q2
+    # MESSAGE="Setting our paths for gcc-arm-none-eabi" ; green_echo #FIXME: This is spammy
     export GCC_ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/
     export PATH=$GCC_ARM_PATH:$PATH
-    echo `echo $PATH | grep $GCC_ARM_VER` && MESSAGE=" Path Set." ; green_echo
+    # echo `echo $PATH | grep $GCC_ARM_VER` && MESSAGE=" Path Set." ; green_echo #FIXME: This is spammy
     # Additional option which SHOULD take place for make.
+    # alias arm-none-eabi-gcc=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/arm-none-eabi-gcc  #FIXME: This does not work to fix Travis CI
 fi
 
 # Check if we have a saved settings file.  If not, create it.
@@ -94,9 +96,10 @@ then
   echo BASE_FIRMWARE="$BASE_FIRMWARE" >> $SETTINGS
   echo BRANCH="latest" >> $SETTINGS
   echo PARTICLE_DEVELOP=1 >> $SETTINGS
-  echo BINDIR="$BINDIR"
-  if [ OS == "Linux" ]; 
-    then 
+  echo BINDIR="$BINDIR" >> $SETTINGS
+
+  if [ OS == "Linux" ];
+    then
       echo export GCC_ARM_PATH=$GCC_ARM_PATH >> $SETTINGS
   fi
 fi
@@ -112,7 +115,6 @@ then
   # Check to see if we need to override the install directory.
   if [ "$2" ] && [ "$2" != $BASE_FIRMWARE ]
   then
-    # TODO: Validate this path a bit more.
     BASE_FIRMWARE="$2"
     echo BASE_FIRMWARE="$BASE_FIRMWARE" >  $SETTINGS
   fi
@@ -157,8 +159,9 @@ then
 
     # Install udev rules file
     MESSAGE="Installing udev rule (requires sudo) ..." ; blue_echo
-    curl -fsSLO https://gist.githubusercontent.com/monkbroc/b283bb4da8c10228a61e/raw/e59c77021b460748a9c80ef6a3d62e17f5947be1/50-particle.rules
-    sudo mv 50-particle.rules /etc/udev/rules.d/50-particle.rules
+    curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/60-po-util.rules
+    sudo mv 60-po-util.rules /etc/udev/rules.d/60-po-util.rules
+
   fi # CLOSE: "$OS" == "Linux"
 
   if [ "$OS" == "Darwin" ]; # Mac installation steps
@@ -177,7 +180,7 @@ then
     MESSAGE="Installing nodejs..." ; blue_echo
     curl -fsSLO https://nodejs.org/dist/v5.8.0/node-v5.8.0.pkg
     sudo installer -pkg node-*.pkg -target /
-    rm node-*.pkg
+    rm -rf node-*.pkg
 
     # Install particle-cli
     MESSAGE="Installing particle-cli..." ; blue_echo
@@ -202,8 +205,15 @@ fi
 # Open serial monitor for device
 if [ "$1" == "serial" ];
 then
-screen "$MODEM"  
-exit
+  if [ "$MODEM" == "" ]; # Don't run screen if device is not connected
+  then
+    MESSAGE="No device connected!" red_echo ; exit
+  else
+  screen -S particle "$MODEM"
+  screen -S particle -X quit && exit || MESSAGE="If \"po serial\" is putting device into DFU mode, power off device, removing battery for Electron, and run \"po serial\" several times.
+  This bug will hopefully be fixed in a later release." && blue_echo
+  fi
+  exit
 fi
 
 # Put device into DFU mode
@@ -229,6 +239,8 @@ then
   git pull
   MESSAGE="Updating particle-cli..." ; blue_echo
   sudo npm update -g particle-cli
+  MESSAGE="Updating po-util.." ; blue_echo
+  curl -fsS https://raw.githubusercontent.com/nrobinson2000/po-util/po-util.com/update | bash
   exit
 fi
 
@@ -237,7 +249,7 @@ if [ "$1" == "photon" ] || [ "$1" == "electron" ];
 then
   MESSAGE="$1 selected." ; blue_echo
 else
-  MESSAGE="Please choose \"photon\" or \"electron\"" ; red_echo
+  MESSAGE="Please choose \"photon\" or \"electron\", or choose a proper command." ; red_echo ; exit
 fi
 
 cd "$BASE_FIRMWARE"/firmware || exit
@@ -270,9 +282,9 @@ if [ "$2" == "upgrade" ] || [ "$2" == "patch" ];
 then
   pause "Connect your device and put into DFU mode. Press [ENTER] to continue..."
   cd "$CWD"
-  sed '2s/.*/START_DFU_FLASHER_SERIAL_SPEED=19200/' "$BASE_FIRMWARE/"firmware/build/module-defaults.mk > temp
+  sed '2s/.*/START_DFU_FLASHER_SERIAL_SPEED=19200/' "$BASE_FIRMWARE/"firmware/build/module-defaults.mk > temp.particle
   rm -f "$BASE_FIRMWARE"/firmware/build/module-defaults.mk
-  mv temp "$BASE_FIRMWARE"/firmware/build/module-defaults.mk
+  mv temp.particle "$BASE_FIRMWARE"/firmware/build/module-defaults.mk
 
   cd "$BASE_FIRMWARE/"firmware/modules/"$1"/system-part1
   make clean all PLATFORM="$1" $GCC_MAKE program-dfu
@@ -286,15 +298,15 @@ then
   exit
 fi
 
-
+# Clean firmware directory
 if [ "$2" == "clean" ];
 then
   make clean
   cd "$CWD"
-  rm -rf bin
   exit
 fi
 
+# Flash binary over the air
 if [ "$2" == "ota" ];
 then
   if [ "$3" == "" ];
@@ -315,9 +327,9 @@ then
   else
     MESSAGE="Firmware directory not found. Please run \"po init\" to setup this repository or cd to a valid directrory" ; red_echo ; exit
   fi
-  # echo `echo $PATH | grep $GCC_ARM_VER` && MESSAGE=" Path Set." ; green_echo
-  MESSAGE="Using gcc-arm from: `which arm-none-eabi-gcc`" ; blue_echo
-  MESSAGE="GCC_ARM_PATH=$GCC_ARM_PATH" ; blue_echo
+    # echo `echo $PATH | grep $GCC_ARM_VER` && MESSAGE=" Path Set." ; green_echo
+    MESSAGE="Using gcc-arm from: `which arm-none-eabi-gcc`" ; blue_echo
+    # MESSAGE="GCC_ARM_PATH=$GCC_ARM_PATH" ; blue_echo #FIXME: Spammy
 
   make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" $GCC_MAKE  || exit
   MESSAGE="Binary saved to $CWD/bin/firmware.bin" ; green_echo
