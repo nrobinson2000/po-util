@@ -4,6 +4,3 @@
 
 # Photon / P1 / Electron
 SUBSYSTEMS=="usb", ACTION=="add", ATTRS{idProduct}=="[cd]00?", ATTRS{idVendor}=="2b04", GROUP="plugdev", RUN+="chmod a+rw $(ls -1 /dev/* | grep "ttyACM" | tail -1)", ENV{ID_MM_DEVICE_IGNORE}="1"
-
-# Core
-SUBSYSTEMS=="usb", ACTION=="add", ATTRS{idProduct}=="607[df]", ATTRS{idVendor}=="1d50", GROUP="plugdev", RUN+="chmod a+rw $(ls -1 /dev/* | grep "ttyACM" | tail -1)", ENV{ID_MM_DEVICE_IGNORE}="1"
