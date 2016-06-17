@@ -14,7 +14,7 @@ This script downloads and installs: [dfu-util](http://dfu-util.sourceforge.net/)
 <img src="https://raw.githubusercontent.com/nrobinson2000/po-util/po-util.com/screenshots/1.png">
 
 # Manual Install / Update
-You can get a copy of po-util at [the Github repository](http://github.com/nrobinson2000).  You can download it manually as a zip, unzip it into a folder, and run: 
+You can get a copy of po-util at [the Github repository](http://github.com/nrobinson2000/po-util).  You can download it manually as a zip, unzip it into a folder, and run:
 ```
 ./po-util install
 ```
@@ -43,7 +43,7 @@ curl po-util.com/download | bash
 ```
 Copy and paste this into your terminal.  
 
-Note: We download  everything from well known locations and Github.  While we believe this is a reasonable method as a quick start, it's always a good idea to know what is going on under the hood.  
+Note: We download  everything from well known locations and Github.  While we believe this is a reasonable method as a quick start, it's always a good idea to know what is going on under the hood.  [The install script can be found on GitHub if you want to manually download and run it.](https://github.com/nrobinson2000/po-util/blob/master/download-po-util.sh)
 
 # Info
 ```
