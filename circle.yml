@@ -1,4 +1,4 @@
 test:
   post:
-  - ./download-po-util.sh ci
+  - time ./po-util.sh install
   - cd build-test && ../po-util.sh photon build && ../po-util.sh electron clean && ../po-util.sh electron build

@@ -113,6 +113,45 @@ if [ $GCC_ARM_PATH ]; then GCC_MAKE=GCC_ARM_PATH=$GCC_ARM_PATH ; fi
 
 if [ "$1" == "install" ]; # Install
 then
+
+if [ -f ~/po-util.sh ];  #Test if installing for the first time.
+then
+
+  rm ~/po-util.sh
+  cp po-util.sh ~/po-util.sh #Replace ~/po-util.sh with one in current directory.
+else
+
+  if [ -f ~/.bash_profile ]; #Create .bash_profile
+  then
+    MESSAGE=".bash_profile present." ; green_echo
+  else
+  MESSAGE="No .bash_profile present. Installing.." ; red_echo
+  echo "
+  if [ -f ~/.bashrc ]; then
+      . ~/.bashrc
+  fi" >> ~/.bash_profile
+  fi
+
+  if [ -f ~/.bashrc ];  #Add po alias to .bashrc
+  then
+    MESSAGE=".bashrc present." ; green_echo
+    if grep "po-util.sh" ~/.bashrc ;
+    then
+      MESSAGE="po alias already in place." ; green_echo
+    else
+      MESSAGE="no po alias.  Installing..." ; red_echo
+      echo 'alias po="~/po-util.sh"' >> ~/.bashrc
+    fi
+  else
+    MESSAGE="No .bashrc present.  Installing..." ; red_echo
+    echo 'alias po="~/po-util.sh"' >> ~/.bashrc
+  fi
+
+
+fi
+
+
+
   # Check to see if we need to override the install directory.
   if [ "$2" ] && [ "$2" != $BASE_FIRMWARE ]
   then
@@ -306,6 +345,11 @@ if [ "$2" == "clean" ];
 then
   make clean
   cd "$CWD"
+  if [ "$CWD" == "$HOME" ];
+  then
+  else
+    rm -rf bin
+  fi
   exit
 fi
 
