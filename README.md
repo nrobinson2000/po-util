@@ -30,10 +30,7 @@ cd po-util
 ./po-util update
 ```
 
-For either method, you will probably want to add po-util to your path to run it from anywhere.  To do this you can add an entry to you PATH environment variable.  Typically you would add this to your .bashrc file found in your home directory.  then you would add the following line at the bottom of your ` ~/.bashrc` file:
-```
-PATH=~/place_where_po-util-lives/:$PATH
-```
+When installing po-util, an alias is added to your `.bashrc` that allows you to run `po` from anywhere to use po-util.
 
 
 # Quick Install / Update
