@@ -347,6 +347,7 @@ then
   cd "$CWD"
   if [ "$CWD" == "$HOME" ];
   then
+  MESSAGE="Please do not use po-util in your home folder." ; blue_echo ; exit
   else
     rm -rf bin
   fi
