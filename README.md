@@ -13,11 +13,37 @@ This script downloads and installs: [dfu-util](http://dfu-util.sourceforge.net/)
 
 <img src="https://raw.githubusercontent.com/nrobinson2000/po-util/po-util.com/screenshots/1.png">
 
+# Manual Install / Update
+You can get a copy of po-util at [the Github repository](http://github.com/nrobinson2000).  You can download it manually as a zip, unzip it into a folder, and run: 
+```
+./po-util install
+```
+
+or if updating:
+```
+./po-util update
+```
+
+Alternatively, you can checkout the utility with github:
+```
+git clone https://github.com/nrobinson2000/po-util
+cd po-util
+./po-util update
+```
+
+For either method, you will probably want to add po-util to your path to run it from anywhere.  To do this you can add an entry to you PATH environment variable.  Typically you would add this to your .bashrc file found in your home directory.  then you would add the following line at the bottom of your ` ~/.bashrc` file:
+```
+PATH=~/place_where_po-util-lives/:$PATH
+```
+
+
 # Quick Install / Update
 ```
 curl po-util.com/download | bash
 ```
-Copy and paste this into your terminal.
+Copy and paste this into your terminal.  
+
+Note: We download  everything from well known locations and Github.  While we believe this is a reasonable method as a quick start, it's always a good idea to know what is going on under the hood.  
 
 # Info
 ```
