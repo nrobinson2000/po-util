@@ -114,12 +114,8 @@ if [ $GCC_ARM_PATH ]; then GCC_MAKE=GCC_ARM_PATH=$GCC_ARM_PATH ; fi
 if [ "$1" == "install" ]; # Install
 then
 
-if [ -f ~/po-util.sh ];  #Test if installing for the first time.
-then
-
   rm ~/po-util.sh
   cp po-util.sh ~/po-util.sh #Replace ~/po-util.sh with one in current directory.
-else
 
   if [ -f ~/.bash_profile ]; #Create .bash_profile
   then
@@ -146,9 +142,6 @@ else
     MESSAGE="No .bashrc present.  Installing..." ; red_echo
     echo 'alias po="~/po-util.sh"' >> ~/.bashrc
   fi
-
-
-fi
 
 
 
