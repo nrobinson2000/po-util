@@ -273,7 +273,10 @@ then
   MESSAGE="Updating particle-cli..." ; blue_echo
   sudo npm update -g particle-cli
   MESSAGE="Updating po-util.." ; blue_echo
-  curl -fsS https://raw.githubusercontent.com/nrobinson2000/po-util/po-util.com/update | bash
+  # curl -fsS https://raw.githubusercontent.com/nrobinson2000/po-util/po-util.com/update | bash ##nrobinson2000: People don't like piping curl to bash
+  rm ~/po-util.sh
+  curl -fsSLo ~/po-util.sh https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
+  chmod +x ~/po-util.sh
   exit
 fi
 
