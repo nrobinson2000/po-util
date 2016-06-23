@@ -143,8 +143,6 @@ then
     echo 'alias po="~/po-util.sh"' >> ~/.bashrc
   fi
 
-
-
   # Check to see if we need to override the install directory.
   if [ "$2" ] && [ "$2" != $BASE_FIRMWARE ]
   then
