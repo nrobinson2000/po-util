@@ -4,6 +4,7 @@
 # dfu-util, nodejs, gcc-arm-embedded, particle-cli, and the Particle Firmware
 # source code.
 # Read more at https://github.com/nrobinson2000/po-util
+# ACII Art Generated from: http://www.patorjk.com/software/taag
 
 function pause(){
    read -p "$*"
