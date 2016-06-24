@@ -25,21 +25,19 @@ if [ "$1" == "" ]; # Print help
 then
 MESSAGE="                                        __      __  __
                                         /  |    /  |/  |
-  ______    ______           __    __  _▓▓ |_   ▓▓/ ▓▓ |
- /      \  /      \  ______ /  |  /  |/ ▓▓   |  /  |▓▓ |
-/▓▓▓▓▓▓  |/▓▓▓▓▓▓  |/      |▓▓ |  ▓▓ |▓▓▓▓▓▓/   ▓▓ |▓▓ |
-▓▓ |  ▓▓ |▓▓ |  ▓▓ |▓▓▓▓▓▓/ ▓▓ |  ▓▓ |  ▓▓ | __ ▓▓ |▓▓ |
-▓▓ |__▓▓ |▓▓ \__▓▓ |        ▓▓ \__▓▓ |  ▓▓ |/  |▓▓ |▓▓ |
-▓▓    ▓▓/ ▓▓    ▓▓/         ▓▓    ▓▓/   ▓▓  ▓▓/ ▓▓ |▓▓ |
-▓▓▓▓▓▓▓/   ▓▓▓▓▓▓/           ▓▓▓▓▓▓/     ▓▓▓▓/  ▓▓/ ▓▓/
-▓▓ |
-▓▓ |
-▓▓/                               http://po-util.com
+  ______    ______           __    __  _██ |_   ██/ ██ |
+ /      \  /      \  ______ /  |  /  |/ ██   |  /  |██ |
+/██████  |/██████  |/      |██ |  ██ |██████/   ██ |██ |
+██ |  ██ |██ |  ██ |██████/ ██ |  ██ |  ██ | __ ██ |██ |
+██ |__██ |██ \__██ |        ██ \__██ |  ██ |/  |██ |██ |
+██    ██/ ██    ██/         ██    ██/   ██  ██/ ██ |██ |
+███████/   ██████/           ██████/     ████/  ██/ ██/
+██ |
+██ |
+██/                               http://po-util.com
 "
 blue_echo
-echo "po-util Copyright (GPL) 2016  Nathan Robinson
-This program comes with ABSOLUTELY NO WARRANTY.
-Read more at http://po-util.com
+echo "Copyright (GPL) 2016  Nathan Robinson
 
 Usage: po DEVICE_TYPE COMMAND DEVICE_NAME
        po DFU_COMMAND
@@ -47,8 +45,9 @@ Usage: po DEVICE_TYPE COMMAND DEVICE_NAME
 
 Commands:
   install      Download all of the tools needed for development.
-               Requires sudo. You can optionally install to an
-               alternate location by specifying [full_install_path].
+               Requires sudo. You can also re-install with this command.
+               You can optionally install to an alternate location by
+               specifying [full_install_path].
                Ex.:
                    po install ~/particle
 
@@ -58,7 +57,6 @@ Commands:
   flash        Compile code and flash to device using dfu-util
   clean        Refresh all code (Run after switching device or directory)
   init         Initialize a new po-util project
-  patch        Apply system firmware patch to change baud rate
   update       Update Particle firmware, particle-cli and po-util
   upgrade      Upgrade system firmware on device
   ota          Upload code Over The Air using particle-cli
