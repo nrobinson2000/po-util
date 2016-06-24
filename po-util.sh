@@ -5,18 +5,33 @@
 # source code.
 # Read more at https://github.com/nrobinson2000/po-util
 
+function pause(){
+   read -p "$*"
+}
+
+blue_echo() {
+    echo "$(tput setaf 6)$(tput bold) $MESSAGE $(tput sgr0)"
+}
+
+green_echo() {
+    echo "$(tput setaf 2)$(tput bold) $MESSAGE $(tput sgr0)"
+}
+
+red_echo() {
+    echo "$(tput setaf 1)$(tput bold) $MESSAGE $(tput sgr0)"
+}
+
 if [ "$1" == "" ]; # Print help
 then
-
-echo "
-                         _   _ _
+MESSAGE="                        _   _ _
  _ __   ___        _   _| |_(_) |
 | '_ \ / _ \ _____| | | | __| | |
 | |_) | (_) |_____| |_| | |_| | |
 | .__/ \___/       \__,_|\__|_|_|
-|_|
-
-po-util Copyright (GPL) 2016  Nathan Robinson
+|_|           http://po-util.com/
+"
+blue_echo
+echo "po-util Copyright (GPL) 2016  Nathan Robinson
 This program comes with ABSOLUTELY NO WARRANTY.
 Read more at http://po-util.com
 
@@ -50,21 +65,7 @@ DFU Commands:
 " && exit
 fi
 
-function pause(){
-   read -p "$*"
-}
 
-blue_echo() {
-    echo "$(tput setaf 6)$(tput bold) $MESSAGE $(tput sgr0)"
-}
-
-green_echo() {
-    echo "$(tput setaf 2)$(tput bold) $MESSAGE $(tput sgr0)"
-}
-
-red_echo() {
-    echo "$(tput setaf 1)$(tput bold) $MESSAGE $(tput sgr0)"
-}
 
 # Holds any alternate paths.
 SETTINGS=~/.po
