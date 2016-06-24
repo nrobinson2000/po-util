@@ -9,6 +9,13 @@ if [ "$1" == "" ]; # Print help
 then
 
 echo "
+                         _   _ _
+ _ __   ___        _   _| |_(_) |
+| '_ \ / _ \ _____| | | | __| | |
+| |_) | (_) |_____| |_| | |_| | |
+| .__/ \___/       \__,_|\__|_|_|
+|_|
+
 po-util Copyright (GPL) 2016  Nathan Robinson
 This program comes with ABSOLUTELY NO WARRANTY.
 Read more at http://po-util.com
