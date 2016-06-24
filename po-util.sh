@@ -112,7 +112,7 @@ then
   echo PARTICLE_DEVELOP=1 >> $SETTINGS
   echo BINDIR="$BINDIR" >> $SETTINGS
 
-  if [ OS == "Linux" ];
+  if [ $OS == "Linux" ];
     then
       echo export GCC_ARM_PATH=$GCC_ARM_PATH >> $SETTINGS
   fi
@@ -178,7 +178,7 @@ then
     # For linux let's avoid the PPA and download instead - See https://community.particle.io/t/how-to-install-the-spark-toolchain-in-ubuntu-14-04/4139/7
     # sudo add-apt-repository -y ppa:team-gcc-arm-embedded/ppa #nrobinson2000: terry.guo ppa has been removed using this one instead
     # sudo apt-get remove -y node modemmanager gcc-arm-none-eabi
-    mkdir -p $BINDIR/gcc-arm-embedded && cd "$_"
+    mkdir -p $BINDIR/gcc-arm-embedded && cd "$_" || exit
     wget https://launchpad.net/gcc-arm-embedded/4.8/4.8-2014-q2-update/+download/gcc-arm-none-eabi-4_8-2014q2-20140609-linux.tar.bz2
     tar xjf gcc-arm-none-eabi-*-linux.tar.bz2
 
@@ -280,7 +280,7 @@ fi
 if [ "$1" == "update" ];
 then
   MESSAGE="Updating firmware..." ; blue_echo
-  cd "$BASE_FIRMWARE"/firmware
+  cd "$BASE_FIRMWARE"/firmware || exit
   git checkout $BRANCH
   git pull
   MESSAGE="Updating particle-cli..." ; blue_echo
@@ -330,17 +330,17 @@ fi
 if [ "$2" == "upgrade" ] || [ "$2" == "patch" ];
 then
   pause "Connect your device and put into DFU mode. Press [ENTER] to continue..."
-  cd "$CWD"
+  cd "$CWD" || exit
   sed '2s/.*/START_DFU_FLASHER_SERIAL_SPEED=19200/' "$BASE_FIRMWARE/"firmware/build/module-defaults.mk > temp.particle
   rm -f "$BASE_FIRMWARE"/firmware/build/module-defaults.mk
   mv temp.particle "$BASE_FIRMWARE"/firmware/build/module-defaults.mk
 
-  cd "$BASE_FIRMWARE/"firmware/modules/"$1"/system-part1
+  cd "$BASE_FIRMWARE/"firmware/modules/"$1"/system-part1 || exit
   make clean all PLATFORM="$1" $GCC_MAKE program-dfu
 
-  cd "$BASE_FIRMWARE/"firmware/modules/"$1"/system-part2
+  cd "$BASE_FIRMWARE/"firmware/modules/"$1"/system-part2 || exit
   make clean all PLATFORM="$1" $GCC_MAKE program-dfu
-  cd "$BASE_FIRMWARE/"firmware && git stash
+  cd "$BASE_FIRMWARE/"firmware && git stash || exit
   sleep 1
   sudo dfu-util -d $DFU_ADDRESS1 -a 0 -i 0 -s $DFU_ADDRESS2:leave -D /dev/null
   # TODO: Probably should check the status of the build/flash and  put an appropriate pass/fail message here
@@ -351,7 +351,7 @@ fi
 if [ "$2" == "clean" ];
 then
   make clean
-  cd "$CWD"
+  cd "$CWD" || exit
   if [ "$CWD" == "$HOME" ];
   then
   MESSAGE="Please do not use po-util in your home folder." ; blue_echo ; exit
@@ -374,7 +374,7 @@ fi
 
 if [ "$2" == "build" ];
 then
-  cd "$CWD"
+  cd "$CWD" || exit
 
   if [ -d firmware ];
   then
@@ -394,7 +394,7 @@ fi
 
 if [ "$2" == "flash" ];
 then
-  cd "$CWD"
+  cd "$CWD" || exit
   if [ -d firmware ];
   then
     echo
