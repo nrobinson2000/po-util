@@ -11,20 +11,20 @@ function pause(){
 }
 
 blue_echo() {
-    echo "$(tput setaf 6)$(tput bold) $MESSAGE $(tput sgr0)"
+    echo "$(tput setaf 6)$(tput bold)$MESSAGE$(tput sgr0)"
 }
 
 green_echo() {
-    echo "$(tput setaf 2)$(tput bold) $MESSAGE $(tput sgr0)"
+    echo "$(tput setaf 2)$(tput bold)$MESSAGE$(tput sgr0)"
 }
 
 red_echo() {
-    echo "$(tput setaf 1)$(tput bold) $MESSAGE $(tput sgr0)"
+    echo "$(tput setaf 1)$(tput bold)$MESSAGE$(tput sgr0)"
 }
 
 if [ "$1" == "" ]; # Print help
 then
-MESSAGE="                                                __      __  __
+MESSAGE="                                                 __      __  __
                                                 /  |    /  |/  |
           ______    ______           __    __  _██ |_   ██/ ██ |
          /      \  /      \  ______ /  |  /  |/ ██   |  /  |██ |
@@ -305,14 +305,14 @@ cd "$BASE_FIRMWARE"/firmware || exit
 
 if [ "$1" == "photon" ];
 then
-  git checkout $BRANCH
+  git checkout $BRANCH >&-
   DFU_ADDRESS1="2b04:D006"
   DFU_ADDRESS2="0x080A0000"
 fi
 
 if [ "$1" == "electron" ];
 then
-  git checkout $BRANCH
+  git checkout $BRANCH >&-
   DFU_ADDRESS1="2b04:d00a"
   DFU_ADDRESS2="0x08080000"
 fi
@@ -380,10 +380,11 @@ then
   then
     echo
   else
-    MESSAGE="Firmware directory not found. Please run \"po init\" to setup this repository or cd to a valid directrory" ; red_echo ; exit
+    MESSAGE="Firmware directory not found.
+    Please run \"po init\" to setup this repository or cd to a valid directrory" ; red_echo ; exit
   fi
     # echo `echo $PATH | grep $GCC_ARM_VER` && MESSAGE=" Path Set." ; green_echo
-    MESSAGE="Using gcc-arm from: `which arm-none-eabi-gcc`" ; blue_echo
+    # MESSAGE="Using gcc-arm from: `which arm-none-eabi-gcc`" ; blue_echo
     # MESSAGE="GCC_ARM_PATH=$GCC_ARM_PATH" ; blue_echo #FIXME: Spammy
 
     make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" $GCC_MAKE  || exit
