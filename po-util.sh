@@ -305,14 +305,14 @@ cd "$BASE_FIRMWARE"/firmware || exit
 
 if [ "$1" == "photon" ];
 then
-  git checkout $BRANCH >&-
+  git checkout $BRANCH > /dev/null
   DFU_ADDRESS1="2b04:D006"
   DFU_ADDRESS2="0x080A0000"
 fi
 
 if [ "$1" == "electron" ];
 then
-  git checkout $BRANCH >&-
+  git checkout $BRANCH > /dev/null
   DFU_ADDRESS1="2b04:d00a"
   DFU_ADDRESS2="0x08080000"
 fi
