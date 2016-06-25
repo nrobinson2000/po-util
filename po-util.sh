@@ -127,7 +127,7 @@ if [ $GCC_ARM_PATH ]; then GCC_MAKE=GCC_ARM_PATH=$GCC_ARM_PATH ; fi
 if [ "$1" == "install" ]; # Install
 then
 
-  rm ~/po-util.sh
+  #rm ~/po-util.sh #This breaks the installation if the user downloads po-util.sh to their homefolder.
   cp po-util.sh ~/po-util.sh #Replace ~/po-util.sh with one in current directory.
 
   if [ -f ~/.bash_profile ]; #Create .bash_profile
