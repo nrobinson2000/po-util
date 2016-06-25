@@ -56,6 +56,12 @@ Commands:
 
   build        Compile code in \"firmware\" subdirectory
   flash        Compile code and flash to device using dfu-util
+
+               NOTE: You can supply another argument to \"build\" and \"flash\"
+               to specify which firmware directory to compile. (Relative to CWD)
+               Ex.:
+                   po photon flash photon-firmware/
+                   
   clean        Refresh all code (Run after switching device or directory)
   init         Initialize a new po-util project
   update       Update Particle firmware, particle-cli and po-util
