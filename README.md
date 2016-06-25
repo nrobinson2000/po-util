@@ -14,21 +14,17 @@
 This script downloads and installs: [dfu-util](http://dfu-util.sourceforge.net/), [nodejs](https://nodejs.org/en/), [gcc-arm-embedded](https://launchpad.net/gcc-arm-embedded), [particle-cli](https://github.com/spark/particle-cli), and the [Particle Firmware source code](https://github.com/spark/firmware).
 
 # Manual Install / Update
-You can get a copy of po-util at [the Github repository](http://github.com/nrobinson2000/po-util).  You can download it manually as a zip, unzip it into a folder, and run:
+You can get a copy of po-util at [the Github repository](http://github.com/nrobinson2000/po-util).  The easiest way is to download `po-util.sh` from [this link](https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh) and run:
 ```
-./po-util install
+./po-util.sh install
 ```
+To setup po-util and install dependencies.
 
-or if updating:
-```
-./po-util update
-```
-
-Alternatively, you can checkout the utility with github:
+Alternatively, you can clone po-util with git:
 ```
 git clone https://github.com/nrobinson2000/po-util
 cd po-util
-./po-util update
+./po-util.sh install
 ```
 
 When installing po-util, an alias is added to your `.bashrc` that allows you to run `po` from anywhere to use po-util.
