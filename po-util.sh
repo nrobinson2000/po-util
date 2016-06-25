@@ -375,18 +375,33 @@ fi
 if [ "$2" == "build" ];
 then
   cd "$CWD" || exit
-  if [ -d firmware ];
-  then
-    echo > /dev/null
-  else
-    MESSAGE="Firmware directory not found.
-    Please run \"po init\" to setup this repository or cd to a valid directrory" ; red_echo ; exit
-  fi
+
+  if [ "$3" != "" ];
+   then
+    if [ -d "$3" ];
+    then
+      FIRMWAREDIR="$3"
+    else
+      MESSAGE="Firmware directory not found.
+Please run \"po init\" to setup this repository or choose a valid directory." ; red_echo ; exit
+    fi
+
+   else
+      if [ -d firmware ];
+        then
+            echo > /dev/null
+            FIRMWAREDIR="firmware"
+            else
+                MESSAGE="Firmware directory not found.
+                Please run \"po init\" to setup this repository or cd to a valid directory." ; red_echo ; exit
+      fi
+
+fi
     # echo `echo $PATH | grep $GCC_ARM_VER` && MESSAGE=" Path Set." ; green_echo
     # MESSAGE="Using gcc-arm from: `which arm-none-eabi-gcc`" ; blue_echo
     # MESSAGE="GCC_ARM_PATH=$GCC_ARM_PATH" ; blue_echo #FIXME: Spammy
 
-    make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1" $GCC_MAKE  || exit
+    make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/$FIRMWAREDIR" TARGET_DIR="$CWD/bin" PLATFORM="$1" $GCC_MAKE  || exit
     MESSAGE="Binary saved to $CWD/bin/firmware.bin" ; green_echo
     exit
 fi
@@ -394,16 +409,30 @@ fi
 if [ "$2" == "flash" ];
 then
   cd "$CWD" || exit
-  if [ -d firmware ];
-  then
-    echo > /dev/null
-  else
-    MESSAGE="Firmware directory not found.
-    Please run with \"po init\" to setup this repository or cd to a valid directory" ; red_echo ; exit
-  fi
+  if [ "$3" != "" ];
+   then
+    if [ -d "$3" ];
+    then
+      FIRMWAREDIR="$3"
+    else
+      MESSAGE="Firmware directory not found.
+Please run \"po init\" to setup this repository or choose a valid directory." ; red_echo ; exit
+    fi
+
+   else
+      if [ -d firmware ];
+        then
+            echo > /dev/null
+            FIRMWAREDIR="firmware"
+            else
+                MESSAGE="Firmware directory not found.
+                Please run \"po init\" to setup this repository or cd to a valid directory." ; red_echo ; exit
+      fi
+
+fi
     stty "$STTYF" "$MODEM" 19200
-    make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/firmware" TARGET_DIR="$CWD/bin" PLATFORM="$1"  $GCC_MAKE  || exit
-    dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$CWD/bin/firmware.bin"
+    make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/$FIRMWAREDIR" TARGET_DIR="$CWD/bin" PLATFORM="$1"  $GCC_MAKE  || exit
+    dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$CWD/$FIRMWAREDIR/bin/firmware.bin"
     exit
 fi
 

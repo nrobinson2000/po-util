@@ -1,3 +1,5 @@
 temp
 temp0
 _site/*
+bin/*
+*.bin
