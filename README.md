@@ -43,9 +43,7 @@ Note: We download  everything from well known locations and Github.  While we be
 
 # Info
 ```
-po-util Copyright (GPL) 2016  Nathan Robinson
-This program comes with ABSOLUTELY NO WARRANTY.
-Read more at http://bit.ly/po-util
+Copyright (GPL) 2016  Nathan Robinson
 
 Usage: po DEVICE_TYPE COMMAND DEVICE_NAME
        po DFU_COMMAND
@@ -53,21 +51,22 @@ Usage: po DEVICE_TYPE COMMAND DEVICE_NAME
 
 Commands:
   install      Download all of the tools needed for development.
-               Requires sudo. You can optionally install to an
-               alternate location by specifying [full_install_path].
+               Requires sudo. You can also re-install with this command.
+               You can optionally install to an alternate location by
+               specifying [full_install_path].
                Ex.:
                    po install ~/particle
 
-               By default Firmware is installed in ~/github.
+               By default, Firmware is installed in ~/github.
 
-  build        Compile code in \"firmware\" subdirectory
+  build        Compile code in "firmware" subdirectory
   flash        Compile code and flash to device using dfu-util
-  clean        Refresh all code
+  clean        Refresh all code (Run after switching device or directory)
   init         Initialize a new po-util project
-  patch        Apply system firmware patch to change baud rate
-  update       Download latest firmware source code from Particle
+  update       Update Particle firmware, particle-cli and po-util
   upgrade      Upgrade system firmware on device
   ota          Upload code Over The Air using particle-cli
+  serial       Monitor a device's serial output (Close with CRTL-A +D)
 
 DFU Commands:
   dfu         Quickly flash pre-compiled code
