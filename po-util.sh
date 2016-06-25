@@ -375,10 +375,9 @@ fi
 if [ "$2" == "build" ];
 then
   cd "$CWD" || exit
-
   if [ -d firmware ];
   then
-    echo
+    echo > /dev/null
   else
     MESSAGE="Firmware directory not found.
     Please run \"po init\" to setup this repository or cd to a valid directrory" ; red_echo ; exit
@@ -397,7 +396,7 @@ then
   cd "$CWD" || exit
   if [ -d firmware ];
   then
-    echo
+    echo > /dev/null
   else
     MESSAGE="Firmware directory not found.
     Please run with \"po init\" to setup this repository or cd to a valid directory" ; red_echo ; exit
