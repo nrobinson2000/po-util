@@ -150,6 +150,7 @@ then
     else
       MESSAGE="no po alias.  Installing..." ; red_echo
       echo 'alias po="~/po-util.sh"' >> ~/.bashrc
+      echo 'alias p="particle"' >> ~/.bashrc  #Also add 'p' alias for 'particle'
     fi
   else
     MESSAGE="No .bashrc present.  Installing..." ; red_echo
@@ -222,16 +223,15 @@ then
     MESSAGE="Installing ARM toolchain..." ; blue_echo
     brew install gcc-arm-none-eabi-49 dfu-util
 
-    # Install Nodejs version 5.8.0
+    # Install Nodejs version 6.2.2
     MESSAGE="Installing nodejs..." ; blue_echo
-    curl -fsSLO https://nodejs.org/dist/v5.8.0/node-v5.8.0.pkg
+    curl -fsSLO https://nodejs.org/dist/v6.2.2/node-v6.2.2.pkg
     sudo installer -pkg node-*.pkg -target /
     rm -rf node-*.pkg
 
     # Install particle-cli
     MESSAGE="Installing particle-cli..." ; blue_echo
-    sudo npm install -g node-pre-gyp npm
-    sudo npm install -g particle-cli
+    sudo npm install -g node-pre-gyp npm serialport particle-cli
   fi # CLOSE: "$OS" == "Darwin"
 
   cd "$CWD" && MESSAGE="Sucessfully Installed!" ; green_echo && exit
