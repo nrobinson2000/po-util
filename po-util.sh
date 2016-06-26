@@ -435,7 +435,7 @@ Please run \"po init\" to setup this repository or choose a valid directory." ; 
       if [ -d firmware ];
         then
             echo > /dev/null
-            FIRMWAREDIR="firmware"
+            FIRMWAREDIR="$CWD/firmware"
             else
                 MESSAGE="Firmware directory not found.
                 Please run \"po init\" to setup this repository or cd to a valid directory." ; red_echo ; exit
@@ -495,7 +495,7 @@ Please run \"po init\" to setup this repository or choose a valid directory." ; 
       if [ -d firmware ];
         then
             echo > /dev/null
-            FIRMWAREDIR="firmware"
+            FIRMWAREDIR="$CWD/firmware"
             else
                 MESSAGE="Firmware directory not found.
                 Please run \"po init\" to setup this repository or cd to a valid directory." ; red_echo ; exit
