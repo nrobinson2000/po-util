@@ -404,7 +404,6 @@ then
     if [ -d "$3" ];
     then
       FIRMWAREDIR="$3"
-
       if [ -d "$CWD/$FIRMWAREDIR" ];  # If firmwaredir is not found relative to CWD, use absolute path instead.
       then
         FIRMWAREDIR="$CWD/$FIRMWAREDIR"
@@ -428,6 +427,12 @@ case "$FIRMWAREDIR" in
     echo "doesn't have a slash" > /dev/null
     ;;
 esac
+
+if [ "$3" == "." ];
+then
+  FIRMWAREDIR="$CWD"
+  echo "$FIRMWAREDIR"
+fi
 
     else
       MESSAGE="Firmware directory not found.
@@ -488,6 +493,13 @@ then
           echo "doesn't have a slash" > /dev/null
           ;;
       esac
+
+      if [ "$3" == "." ];
+      then
+        FIRMWAREDIR="$CWD"
+        echo "$FIRMWAREDIR"
+      fi
+
 
     else
       MESSAGE="Firmware directory not found.
