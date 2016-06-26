@@ -328,9 +328,17 @@ if [ "$2" == "dfu" ];
 then
   stty "$STTYF" "$MODEM" 19200
   sleep 1
-  if [ "$2" != "" ];
+  if [ "$3" != "" ];
   then
-  dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$2"
+    echo "$3"
+
+      if [ -f "$CWD/$3" ]; # If .bin file is not found relative to CWD, use absolute path instead.
+      then
+      dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$CWD/$3"
+      else
+      dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$3"
+      fi
+
   else
     dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$CWD/bin/firmware.bin" || MESSAGE="Firmware not found." ; red_echo
   fi
@@ -392,6 +400,32 @@ then
     if [ -d "$3" ];
     then
       FIRMWAREDIR="$3"
+
+      if [ -d "$CWD/$FIRMWAREDIR" ];  # If firmwaredir is not found relative to CWD, use absolute path instead.
+      then
+        FIRMWAREDIR="$CWD/$FIRMWAREDIR"
+      fi # If firmwaredir is not found do not modify.
+
+      if [ -d "$FIRMWAREDIR" ]; # Exit if firmwaredir is not found at all.
+      then
+        echo "Found firmwaredir" > /dev/null # Continue
+      else
+        MESSAGE="Firmware directory not found.  Please choose a valid directory." ; red_echo
+        exit
+      fi
+
+
+# Remove '/' from end of string
+case "$FIRMWAREDIR" in
+*/)
+    #"has slash"
+    FIRMWAREDIR="${FIRMWAREDIR%?}"
+    ;;
+*)
+    echo "doesn't have a slash" > /dev/null
+    ;;
+esac
+
     else
       MESSAGE="Firmware directory not found.
 Please run \"po init\" to setup this repository or choose a valid directory." ; red_echo ; exit
@@ -412,8 +446,8 @@ fi
     # MESSAGE="Using gcc-arm from: `which arm-none-eabi-gcc`" ; blue_echo
     # MESSAGE="GCC_ARM_PATH=$GCC_ARM_PATH" ; blue_echo #FIXME: Spammy
 
-    make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/$FIRMWAREDIR" TARGET_DIR="$CWD/$FIRMWAREDIR/../bin" PLATFORM="$1" $GCC_MAKE  || exit
-    MESSAGE="Binary saved to $CWD/bin/firmware.bin" ; green_echo
+    make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1" $GCC_MAKE  || exit
+    MESSAGE="Binary saved to $FIRMWAREDIR/../bin/firmware.bin" ; green_echo
     exit
 fi
 
@@ -425,6 +459,33 @@ then
     if [ -d "$3" ];
     then
       FIRMWAREDIR="$3"
+
+            if [ -d "$CWD/$FIRMWAREDIR" ];  # If firmwaredir is not found relative to CWD, use absolute path instead.
+            then
+              FIRMWAREDIR="$CWD/$FIRMWAREDIR"
+            fi # If firmwaredir is not found do not modify.
+
+            if [ -d "$FIRMWAREDIR" ]; # Exit if firmwaredir is not found at all.
+            then
+              echo "Found firmwaredir" > /dev/null # Continue
+            else
+              MESSAGE="Firmware directory not found.  Please choose a valid directory." ; red_echo
+              exit
+            fi
+
+
+
+      # Remove '/' "slash" from the end of string
+      case "$FIRMWAREDIR" in
+      */)
+          #"has slash"
+          FIRMWAREDIR="${FIRMWAREDIR%?}"
+          ;;
+      *)
+          echo "doesn't have a slash" > /dev/null
+          ;;
+      esac
+
     else
       MESSAGE="Firmware directory not found.
 Please run \"po init\" to setup this repository or choose a valid directory." ; red_echo ; exit
@@ -442,8 +503,8 @@ Please run \"po init\" to setup this repository or choose a valid directory." ; 
 
 fi
     stty "$STTYF" "$MODEM" 19200
-    make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/$FIRMWAREDIR" TARGET_DIR="$CWD/$FIRMWAREDIR/../bin" PLATFORM="$1"  $GCC_MAKE  || exit
-    dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$CWD/$FIRMWAREDIR/../bin/firmware.bin"
+    make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR../bin" PLATFORM="$1"  $GCC_MAKE  || exit
+    dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$FIRMWAREDIR/../bin/firmware.bin"
     exit
 fi
 
