@@ -414,7 +414,6 @@ then
         exit
       fi
 
-
 # Remove '/' from end of string
 case "$FIRMWAREDIR" in
 */)
@@ -472,8 +471,6 @@ then
               MESSAGE="Firmware directory not found.  Please choose a valid directory." ; red_echo
               exit
             fi
-
-
 
       # Remove '/' "slash" from the end of string
       case "$FIRMWAREDIR" in
