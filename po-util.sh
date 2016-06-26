@@ -101,7 +101,8 @@ if [ "$(uname -s)" == "Darwin" ];
 
     # Runs script commands with our specific version of GCC from local.  May not need to be exported.
     # TODO: Change this to use regex, so we get this version or later - Futureproof
-    GCC_ARM_VER=gcc-arm-none-eabi-4_8-2014q2
+    # GCC_ARM_VER=gcc-arm-none-eabi-4_8-2014q2
+    GCC_ARM_VER=gcc-arm-none-eabi-4_9-2015q3 # Update to 4.9
     # MESSAGE="Setting our paths for gcc-arm-none-eabi" ; green_echo #FIXME: This is spammy
     export GCC_ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/
     export PATH=$GCC_ARM_PATH:$PATH
@@ -133,8 +134,10 @@ if [ $GCC_ARM_PATH ]; then GCC_MAKE=GCC_ARM_PATH=$GCC_ARM_PATH ; fi
 if [ "$1" == "install" ]; # Install
 then
 
-  #rm ~/po-util.sh #This breaks the installation if the user downloads po-util.sh to their homefolder.
+  if [ "$CWD" != "$HOME" ];
+  then
   cp po-util.sh ~/po-util.sh #Replace ~/po-util.sh with one in current directory.
+  then
 
   if [ -f ~/.bash_profile ]; #Create .bash_profile
   then
@@ -186,7 +189,8 @@ then
     # sudo add-apt-repository -y ppa:team-gcc-arm-embedded/ppa #nrobinson2000: terry.guo ppa has been removed using this one instead
     # sudo apt-get remove -y node modemmanager gcc-arm-none-eabi
     mkdir -p $BINDIR/gcc-arm-embedded && cd "$_" || exit
-    wget https://launchpad.net/gcc-arm-embedded/4.8/4.8-2014-q2-update/+download/gcc-arm-none-eabi-4_8-2014q2-20140609-linux.tar.bz2
+    #wget https://launchpad.net/gcc-arm-embedded/4.8/4.8-2014-q2-update/+download/gcc-arm-none-eabi-4_8-2014q2-20140609-linux.tar.bz2
+    https://launchpad.net/gcc-arm-embedded/4.9/4.9-2015-q3-update/+download/gcc-arm-none-eabi-4_9-2015q3-20150921-linux.tar.bz2 #Update to v4.9
     tar xjf gcc-arm-none-eabi-*-linux.tar.bz2
 
     curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
