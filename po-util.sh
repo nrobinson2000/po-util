@@ -450,7 +450,9 @@ fi
     # MESSAGE="GCC_ARM_PATH=$GCC_ARM_PATH" ; blue_echo #FIXME: Spammy
 
     make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1" $GCC_MAKE  || exit
-    MESSAGE="Binary saved to $FIRMWAREDIR/../bin/firmware.bin" ; green_echo
+    cd "$FIRMWAREDIR"/..
+    BINARYDIR="$(pwd)/bin"
+    MESSAGE="Binary saved to $BINARYDIR/firmware.bin" ; green_echo
     exit
 fi
 
