@@ -137,7 +137,7 @@ then
   if [ "$CWD" != "$HOME" ];
   then
   cp po-util.sh ~/po-util.sh #Replace ~/po-util.sh with one in current directory.
-  then
+  fi
 
   if [ -f ~/.bash_profile ]; #Create .bash_profile
   then
