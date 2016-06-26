@@ -58,7 +58,7 @@ Commands:
   flash        Compile code and flash to device using dfu-util
 
                NOTE: You can supply another argument to \"build\" and \"flash\"
-               to specify which firmware directory to compile. (Relative to CWD)
+               to specify which firmware directory to compile.
                Ex.:
                    po photon flash photon-firmware/
 
