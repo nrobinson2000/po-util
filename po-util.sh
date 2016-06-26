@@ -190,7 +190,7 @@ then
     # sudo apt-get remove -y node modemmanager gcc-arm-none-eabi
     mkdir -p $BINDIR/gcc-arm-embedded && cd "$_" || exit
     #wget https://launchpad.net/gcc-arm-embedded/4.8/4.8-2014-q2-update/+download/gcc-arm-none-eabi-4_8-2014q2-20140609-linux.tar.bz2
-    https://launchpad.net/gcc-arm-embedded/4.9/4.9-2015-q3-update/+download/gcc-arm-none-eabi-4_9-2015q3-20150921-linux.tar.bz2 #Update to v4.9
+    wget https://launchpad.net/gcc-arm-embedded/4.9/4.9-2015-q3-update/+download/gcc-arm-none-eabi-4_9-2015q3-20150921-linux.tar.bz2 #Update to v4.9
     tar xjf gcc-arm-none-eabi-*-linux.tar.bz2
 
     curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
