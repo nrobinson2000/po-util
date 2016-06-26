@@ -61,7 +61,7 @@ Commands:
                to specify which firmware directory to compile. (Relative to CWD)
                Ex.:
                    po photon flash photon-firmware/
-                   
+
   clean        Refresh all code (Run after switching device or directory)
   init         Initialize a new po-util project
   update       Update Particle firmware, particle-cli and po-util
@@ -328,7 +328,12 @@ if [ "$2" == "dfu" ];
 then
   stty "$STTYF" "$MODEM" 19200
   sleep 1
-  dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$CWD/bin/firmware.bin"
+  if [ "$2" != "" ];
+  then
+  dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$2"
+  else
+    dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$CWD/bin/firmware.bin" || MESSAGE="Firmware not found." ; red_echo
+  fi
   exit
 fi
 
@@ -407,7 +412,7 @@ fi
     # MESSAGE="Using gcc-arm from: `which arm-none-eabi-gcc`" ; blue_echo
     # MESSAGE="GCC_ARM_PATH=$GCC_ARM_PATH" ; blue_echo #FIXME: Spammy
 
-    make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/$FIRMWAREDIR" TARGET_DIR="$CWD/bin" PLATFORM="$1" $GCC_MAKE  || exit
+    make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/$FIRMWAREDIR" TARGET_DIR="$CWD/$FIRMWAREDIR/../bin" PLATFORM="$1" $GCC_MAKE  || exit
     MESSAGE="Binary saved to $CWD/bin/firmware.bin" ; green_echo
     exit
 fi
@@ -437,8 +442,8 @@ Please run \"po init\" to setup this repository or choose a valid directory." ; 
 
 fi
     stty "$STTYF" "$MODEM" 19200
-    make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/$FIRMWAREDIR" TARGET_DIR="$CWD/bin" PLATFORM="$1"  $GCC_MAKE  || exit
-    dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$CWD/$FIRMWAREDIR/bin/firmware.bin"
+    make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$CWD/$FIRMWAREDIR" TARGET_DIR="$CWD/$FIRMWAREDIR/../bin" PLATFORM="$1"  $GCC_MAKE  || exit
+    dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$CWD/$FIRMWAREDIR/../bin/firmware.bin"
     exit
 fi
 
