@@ -38,7 +38,10 @@ PATH=~/place_where_po-util-lives/:$PATH
 
 # Quick Install / Update
 ```
-curl po-util.com/download | bash
+cd ~
+curl -fsSLO https://github.com/nrobinson2000/po-util/releases/download/2.0/po-util.sh
+chmod +x po-util.sh
+./po-util.sh install
 ```
 Copy and paste this into your terminal.  
 
