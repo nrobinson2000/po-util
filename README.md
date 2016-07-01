@@ -32,7 +32,10 @@ When installing po-util, an alias is added to your `.bashrc` that allows you to 
 
 # Quick Install / Update
 ```
-curl po-util.com/download | bash
+cd ~
+curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
+chmod +x po-util.sh
+./po-util.sh install
 ```
 Copy and paste this into your terminal.  
 
