@@ -39,7 +39,7 @@ PATH=~/place_where_po-util-lives/:$PATH
 # Quick Install / Update
 ```
 cd ~
-curl -fsSLO https://github.com/nrobinson2000/po-util/releases/download/2.0/po-util.sh
+curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
 chmod +x po-util.sh
 ./po-util.sh install
 ```
