@@ -67,9 +67,9 @@ var obj = JSON.parse(json);
 var bitcoin_price = obj.ask;
 var finalexchange = (currency_value / bitcoin_price).toFixed(5);
 var url = "bitcoin:"+ address +"?amount=" + finalexchange;
-if (mbits == true){var mbitprice = (finalexchange * 1000).toFixed(2); var donatedisplay = mbitprice.toString() + " mBits to ";}
+if (mbits == true){var mbitprice = (finalexchange * 1000).toFixed(2); var donatedisplay = mbitprice.toString() + " mBits ";}
 if (mbits == false){var donatedisplay = finalexchange.toString() + " Bitcoin to ";}
-if (link == true){document.getElementById("donatetext").innerHTML ="<br><a href='"+ url + "'> Please send " + donatedisplay + address + "</a>";}
+if (link == true){document.getElementById("donatetext").innerHTML ="<br><a href='"+ url + "'> Please send " + donatedisplay + "(" + currency_value + " " + currency_code + ")" + " to "  + address + "</a>";}
 if (qrcode == true){document.getElementById("qrcode").innerHTML = "";}
 if (qrcode == true){$('#qrcode').qrcode(url);}
 if (popup == true){window.open(url);}
