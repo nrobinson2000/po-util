@@ -52,3 +52,21 @@ a {
     .btn + .btn {
       margin-top: 1rem;
       margin-left: 0; } }
+
+@media screen and (max-width: 42em) {
+.donateimage {
+  width: 100%;
+}
+}
+
+@media screen and (min-width: 64em) {
+  .donateimage {
+    width: 50%;
+  }
+}
+
+
+.donationboxstuff {
+  background-color: grey;
+  width: 60%;
+}
