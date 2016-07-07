@@ -404,18 +404,28 @@ then
     if [ -d "$3" ];
     then
       FIRMWAREDIR="$3"
-      if [ -d "$CWD/$FIRMWAREDIR" ];  # If firmwaredir is not found relative to CWD, use absolute path instead.
+      if [ -d "$CWD/$FIRMWAREDIR/firmware" ];  # If firmwaredir is not found relative to CWD, use absolute path instead.
       then
-        FIRMWAREDIR="$CWD/$FIRMWAREDIR"
-      fi # If firmwaredir is not found do not modify.
+        FIRMWAREDIR="$CWD/$FIRMWAREDIR/firmware"
 
-      if [ -d "$FIRMWAREDIR" ]; # Exit if firmwaredir is not found at all.
-      then
-        echo "Found firmwaredir" > /dev/null # Continue
-      else
-        MESSAGE="Firmware directory not found.  Please choose a valid directory." ; red_echo
-        exit
-      fi
+    else
+
+
+
+        if [ -d "$FIRMWAREDIR/firmware" ]; # Exit if firmwaredir is not found at all.
+        then
+          FIRMWAREDIR="$FIRMWAREDIR/firmware"
+          echo "Found firmwaredir" > /dev/null # Continue
+        fi
+
+        if [ -d "$FIRMWAREDIR" ];
+          then
+            echo "Found firmwaredir" > /dev/null # Continue
+        fi
+
+
+
+      fi #  CLOSE: if [ -d "$3" ];
 
 # Remove '/' from end of string
 case "$FIRMWAREDIR" in
@@ -464,42 +474,51 @@ fi
 if [ "$2" == "flash" ];
 then
   cd "$CWD" || exit
+
   if [ "$3" != "" ];
    then
     if [ -d "$3" ];
     then
       FIRMWAREDIR="$3"
-
-            if [ -d "$CWD/$FIRMWAREDIR" ];  # If firmwaredir is not found relative to CWD, use absolute path instead.
-            then
-              FIRMWAREDIR="$CWD/$FIRMWAREDIR"
-            fi # If firmwaredir is not found do not modify.
-
-            if [ -d "$FIRMWAREDIR" ]; # Exit if firmwaredir is not found at all.
-            then
-              echo "Found firmwaredir" > /dev/null # Continue
-            else
-              MESSAGE="Firmware directory not found.  Please choose a valid directory." ; red_echo
-              exit
-            fi
-
-      # Remove '/' "slash" from the end of string
-      case "$FIRMWAREDIR" in
-      */)
-          #"has slash"
-          FIRMWAREDIR="${FIRMWAREDIR%?}"
-          ;;
-      *)
-          echo "doesn't have a slash" > /dev/null
-          ;;
-      esac
-
-      if [ "$3" == "." ];
+      if [ -d "$CWD/$FIRMWAREDIR/firmware" ];  # If firmwaredir is not found relative to CWD, use absolute path instead.
       then
-        FIRMWAREDIR="$CWD"
-        echo "$FIRMWAREDIR"
-      fi
+        FIRMWAREDIR="$CWD/$FIRMWAREDIR/firmware"
 
+    else
+
+
+
+        if [ -d "$FIRMWAREDIR/firmware" ]; # Exit if firmwaredir is not found at all.
+        then
+          FIRMWAREDIR="$FIRMWAREDIR/firmware"
+          echo "Found firmwaredir" > /dev/null # Continue
+        fi
+
+        if [ -d "$FIRMWAREDIR" ];
+          then
+            echo "Found firmwaredir" > /dev/null # Continue
+        fi
+
+
+
+      fi #  CLOSE: if [ -d "$3" ];
+
+# Remove '/' from end of string
+case "$FIRMWAREDIR" in
+*/)
+    #"has slash"
+    FIRMWAREDIR="${FIRMWAREDIR%?}"
+    ;;
+*)
+    echo "doesn't have a slash" > /dev/null
+    ;;
+esac
+
+if [ "$3" == "." ];
+then
+  FIRMWAREDIR="$CWD"
+  echo "$FIRMWAREDIR"
+fi
 
     else
       MESSAGE="Firmware directory not found.
