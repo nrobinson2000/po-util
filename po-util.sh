@@ -391,7 +391,7 @@ then
   then
     MESSAGE="Please specify which device to flash ota." ; red_echo ; exit
   fi
-  particle flash "$3" "$CWD/bin/firmware.bin"
+  particle flash "$3" "$CWD/bin/firmware.bin" || MESSAGE="Try using \"particle flash\" if you are having issues." ; red_echo
   exit
 fi
 
