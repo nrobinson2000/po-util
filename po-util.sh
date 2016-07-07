@@ -304,11 +304,11 @@ then
 fi
 
 # Specific to our photon or electron
-if [ "$1" == "photon" ] || [ "$1" == "electron" ];
+if [ "$1" == "photon" ] || [ "$1" == "P1" ] || [ "$1" == "electron" ];
 then
   MESSAGE="$1 selected." ; blue_echo
 else
-  MESSAGE="Please choose \"photon\" or \"electron\", or chose a proper command." ; red_echo ; exit
+  MESSAGE="Please choose \"photon\", \"P1\" or \"electron\", or chose a proper command." ; red_echo ; exit
 fi
 
 cd "$BASE_FIRMWARE"/firmware || exit
@@ -317,6 +317,13 @@ if [ "$1" == "photon" ];
 then
   git checkout $BRANCH > /dev/null
   DFU_ADDRESS1="2b04:D006"
+  DFU_ADDRESS2="0x080A0000"
+fi
+
+if [ "$1" == "P1" ];
+then
+  git checkout $BRANCH > /dev/null
+  DFU_ADDRESS1="2b04:D008"
   DFU_ADDRESS2="0x080A0000"
 fi
 
@@ -465,6 +472,72 @@ fi
     # MESSAGE="GCC_ARM_PATH=$GCC_ARM_PATH" ; blue_echo #FIXME: Spammy
 
     make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1" $GCC_MAKE  || exit
+    cd "$FIRMWAREDIR"/..
+    BINARYDIR="$(pwd)/bin"
+    MESSAGE="Binary saved to $BINARYDIR/firmware.bin" ; green_echo
+    exit
+fi
+
+if [ "$2" == "debug-build" ];
+then
+  cd "$CWD" || exit
+
+  if [ "$3" != "" ];
+   then
+    if [ -d "$3" ];
+    then
+      FIRMWAREDIR="$3"
+      if [ -d "$CWD/$FIRMWAREDIR" ];  # If firmwaredir is not found relative to CWD, use absolute path instead.
+      then
+        FIRMWAREDIR="$CWD/$FIRMWAREDIR"
+      fi # If firmwaredir is not found do not modify.
+
+      if [ -d "$FIRMWAREDIR" ]; # Exit if firmwaredir is not found at all.
+      then
+        echo "Found firmwaredir" > /dev/null # Continue
+      else
+        MESSAGE="Firmware directory not found.  Please choose a valid directory." ; red_echo
+        exit
+      fi
+
+# Remove '/' from end of string
+case "$FIRMWAREDIR" in
+*/)
+    #"has slash"
+    FIRMWAREDIR="${FIRMWAREDIR%?}"
+    ;;
+*)
+    echo "doesn't have a slash" > /dev/null
+    ;;
+esac
+
+if [ "$3" == "." ];
+then
+  FIRMWAREDIR="$CWD"
+  echo "$FIRMWAREDIR"
+fi
+
+    else
+      MESSAGE="Firmware directory not found.
+Please run \"po init\" to setup this repository or choose a valid directory." ; red_echo ; exit
+    fi
+
+   else
+      if [ -d firmware ];
+        then
+            echo > /dev/null
+            FIRMWAREDIR="$CWD/firmware"
+            else
+                MESSAGE="Firmware directory not found.
+                Please run \"po init\" to setup this repository or cd to a valid directory." ; red_echo ; exit
+      fi
+
+fi
+    # echo `echo $PATH | grep $GCC_ARM_VER` && MESSAGE=" Path Set." ; green_echo
+    # MESSAGE="Using gcc-arm from: `which arm-none-eabi-gcc`" ; blue_echo
+    # MESSAGE="GCC_ARM_PATH=$GCC_ARM_PATH" ; blue_echo #FIXME: Spammy
+
+    make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1" DEBUG_BUILD="y" $GCC_MAKE  || exit
     cd "$FIRMWAREDIR"/..
     BINARYDIR="$(pwd)/bin"
     MESSAGE="Binary saved to $BINARYDIR/firmware.bin" ; green_echo
