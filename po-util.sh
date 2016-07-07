@@ -487,18 +487,28 @@ then
     if [ -d "$3" ];
     then
       FIRMWAREDIR="$3"
-      if [ -d "$CWD/$FIRMWAREDIR" ];  # If firmwaredir is not found relative to CWD, use absolute path instead.
+      if [ -d "$CWD/$FIRMWAREDIR/firmware" ];  # If firmwaredir is not found relative to CWD, use absolute path instead.
       then
-        FIRMWAREDIR="$CWD/$FIRMWAREDIR"
-      fi # If firmwaredir is not found do not modify.
+        FIRMWAREDIR="$CWD/$FIRMWAREDIR/firmware"
 
-      if [ -d "$FIRMWAREDIR" ]; # Exit if firmwaredir is not found at all.
-      then
-        echo "Found firmwaredir" > /dev/null # Continue
-      else
-        MESSAGE="Firmware directory not found.  Please choose a valid directory." ; red_echo
-        exit
-      fi
+    else
+
+
+
+        if [ -d "$FIRMWAREDIR/firmware" ]; # Exit if firmwaredir is not found at all.
+        then
+          FIRMWAREDIR="$FIRMWAREDIR/firmware"
+          echo "Found firmwaredir" > /dev/null # Continue
+        fi
+
+        if [ -d "$FIRMWAREDIR" ];
+          then
+            echo "Found firmwaredir" > /dev/null # Continue
+        fi
+
+
+
+      fi #  CLOSE: if [ -d "$3" ];
 
 # Remove '/' from end of string
 case "$FIRMWAREDIR" in
@@ -533,9 +543,6 @@ Please run \"po init\" to setup this repository or choose a valid directory." ; 
       fi
 
 fi
-    # echo `echo $PATH | grep $GCC_ARM_VER` && MESSAGE=" Path Set." ; green_echo
-    # MESSAGE="Using gcc-arm from: `which arm-none-eabi-gcc`" ; blue_echo
-    # MESSAGE="GCC_ARM_PATH=$GCC_ARM_PATH" ; blue_echo #FIXME: Spammy
 
     make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1" DEBUG_BUILD="y" $GCC_MAKE  || exit
     cd "$FIRMWAREDIR"/..
