@@ -617,7 +617,7 @@ Please run \"po init\" to setup this repository or choose a valid directory." ; 
 
 fi
     stty "$STTYF" "$MODEM" 19200
-    make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR../bin" PLATFORM="$1"  $GCC_MAKE  || exit
+    make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1"  $GCC_MAKE  || exit
     dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$FIRMWAREDIR/../bin/firmware.bin"
     exit
 fi
