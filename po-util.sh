@@ -372,7 +372,7 @@ then
   make clean all PLATFORM="$1" $GCC_MAKE program-dfu
   cd "$BASE_FIRMWARE/"firmware && git stash || exit
   sleep 1
-  sudo dfu-util -d $DFU_ADDRESS1 -a 0 -i 0 -s $DFU_ADDRESS2:leave -D /dev/null
+  dfu-util -d $DFU_ADDRESS1 -a 0 -i 0 -s $DFU_ADDRESS2:leave -D /dev/null
   # TODO: Probably should check the status of the build/flash and  put an appropriate pass/fail message here
   exit
 fi
