@@ -6,6 +6,7 @@
 # Read more at https://github.com/nrobinson2000/po-util
 # ACII Art Generated from: http://www.patorjk.com/software/taag
 
+# Helper functions
 function pause(){
    read -p "$*"
 }
@@ -21,6 +22,72 @@ green_echo() {
 red_echo() {
     echo "$(tput setaf 1)$(tput bold)$MESSAGE$(tput sgr0)"
 }
+
+choose_directory()
+{
+  if [ "$3" != "" ];
+   then
+    if [ -d "$3" ];
+    then
+      FIRMWAREDIR="$3"
+      if [ -d "$CWD/$FIRMWAREDIR/firmware" ];  # If firmwaredir is not found relative to CWD, use absolute path instead.
+      then
+        FIRMWAREDIR="$CWD/$FIRMWAREDIR/firmware"
+    else
+        if [ -d "$FIRMWAREDIR/firmware" ]; # Exit if firmwaredir is not found at all.
+        then
+          FIRMWAREDIR="$FIRMWAREDIR/firmware"
+          echo "Found firmwaredir" > /dev/null # Continue
+        fi
+        if [ -d "$FIRMWAREDIR" ];
+          then
+            echo "Found firmwaredir" > /dev/null # Continue
+        fi
+      fi #  CLOSE: if [ -d "$3" ]
+# Remove '/' from end of string
+case "$FIRMWAREDIR" in
+*/)
+    #"has slash"
+    FIRMWAREDIR="${FIRMWAREDIR%?}"
+    ;;
+*)
+    echo "doesn't have a slash" > /dev/null
+    ;;
+esac
+if [ "$3" == "." ];
+then
+  FIRMWAREDIR="$CWD"
+fi
+    else
+      MESSAGE="Firmware directory not found.
+Please run \"po init\" to setup this repository or choose a valid directory." ; red_echo ; exit
+    fi
+   else
+      if [ -d firmware ];
+        then
+            FIRMWAREDIR="$CWD/firmware"
+            else
+                MESSAGE="Firmware directory not found.
+Please run \"po init\" to setup this repository or cd to a valid directory." ; red_echo ; exit
+      fi
+fi
+}
+
+build_message() {
+  cd "$FIRMWAREDIR"/.. || exit
+  BINARYDIR="$(pwd)/bin"
+  MESSAGE="Binary saved to $BINARYDIR/firmware.bin" ; green_echo
+  exit
+}
+
+dfu_open()
+{
+  stty "$STTYF" "$MODEM" 19200
+}
+
+# End of helper functions
+
+
 
 if [ "$1" == "" ]; # Print help
 then
@@ -76,8 +143,6 @@ DFU Commands:
 " && exit
 fi
 
-
-
 # Holds any alternate paths.
 SETTINGS=~/.po
 BASE_FIRMWARE=~/github
@@ -89,12 +154,10 @@ CWD="$(pwd)"
 # Mac OSX uses lowercase f for stty command
 if [ "$(uname -s)" == "Darwin" ];
   then
-    # MESSAGE="OSX detected..." ; green_echo #FIXME: This is spammy
     OS="Darwin"
     STTYF="-f"
     MODEM="$(ls -1 /dev/cu.* | grep -vi bluetooth | tail -1)"
   else
-    # MESSAGE="Linux detected..." ; green_echo #FIXME: This is spammy
     OS="Linux"
     STTYF="-F"
     MODEM="$(ls -1 /dev/* | grep "ttyACM" | tail -1)"
@@ -106,9 +169,6 @@ if [ "$(uname -s)" == "Darwin" ];
     # MESSAGE="Setting our paths for gcc-arm-none-eabi" ; green_echo #FIXME: This is spammy
     export GCC_ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/
     export PATH=$GCC_ARM_PATH:$PATH
-    # echo `echo $PATH | grep $GCC_ARM_VER` && MESSAGE=" Path Set." ; green_echo #FIXME: This is spammy
-    # Additional option which SHOULD take place for make.
-    # alias arm-none-eabi-gcc=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/arm-none-eabi-gcc  #FIXME: This does not work to fix Travis CI
 fi
 
 # Check if we have a saved settings file.  If not, create it.
@@ -185,11 +245,7 @@ then
     cd "$BASE_FIRMWARE" || exit
     # Install dependencies
     MESSAGE="Installing ARM toolchain and dependencies locally in $BINDIR/gcc-arm-embedded/..." ; blue_echo
-    # For linux let's avoid the PPA and download instead - See https://community.particle.io/t/how-to-install-the-spark-toolchain-in-ubuntu-14-04/4139/7
-    # sudo add-apt-repository -y ppa:team-gcc-arm-embedded/ppa #nrobinson2000: terry.guo ppa has been removed using this one instead
-    # sudo apt-get remove -y node modemmanager gcc-arm-none-eabi
     mkdir -p $BINDIR/gcc-arm-embedded && cd "$_" || exit
-    #wget https://launchpad.net/gcc-arm-embedded/4.8/4.8-2014-q2-update/+download/gcc-arm-none-eabi-4_8-2014q2-20140609-linux.tar.bz2
     wget https://launchpad.net/gcc-arm-embedded/4.9/4.9-2015-q3-update/+download/gcc-arm-none-eabi-4_9-2015q3-20150921-linux.tar.bz2 #Update to v4.9
     tar xjf gcc-arm-none-eabi-*-linux.tar.bz2
 
@@ -250,7 +306,24 @@ fi
 # Create our project files
 if [ "$1" == "init" ];
 then
+  if [ -d firmware ];
+  then
+    MESSAGE="Directory is already Initialized!" ; green_echo
+    exit
+  fi
+
   mkdir firmware/
+  echo "#include \"application.h\"
+
+  void setup() // Put setup code here to run once
+  {
+
+  }
+
+  void loop() // Put code here to loop forever
+  {
+
+  }" > firmware/main.cpp
   cp *.cpp firmware/
   cp *.h firmware/
   ls firmware/ | grep -v "particle.include" | cat > firmware/particle.include
@@ -275,7 +348,7 @@ fi
 # Put device into DFU mode
 if [ "$1" == "dfu-open" ];
 then
-  stty "$STTYF" "$MODEM" 19200
+  dfu_open "$@"
   exit
 fi
 
@@ -303,12 +376,12 @@ then
   exit
 fi
 
-# Specific to our photon or electron
+# Make sure we are using photon, P1, or electron
 if [ "$1" == "photon" ] || [ "$1" == "P1" ] || [ "$1" == "electron" ];
 then
   MESSAGE="$1 selected." ; blue_echo
 else
-  MESSAGE="Please choose \"photon\", \"P1\" or \"electron\", or chose a proper command." ; red_echo ; exit
+  MESSAGE="Please choose \"photon\", \"P1\" or \"electron\", or choose a proper command." ; red_echo ; exit
 fi
 
 cd "$BASE_FIRMWARE"/firmware || exit
@@ -337,19 +410,17 @@ fi
 # Flash already compiled binary
 if [ "$2" == "dfu" ];
 then
-  stty "$STTYF" "$MODEM" 19200
+  dfu_open "$@"
   sleep 1
   if [ "$3" != "" ];
   then
     echo "$3"
-
       if [ -f "$CWD/$3" ]; # If .bin file is not found relative to CWD, use absolute path instead.
       then
       dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$CWD/$3"
       else
       dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$3"
       fi
-
   else
     dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$CWD/bin/firmware.bin" || MESSAGE="Firmware not found." ; red_echo
   fi
@@ -372,7 +443,7 @@ then
   make clean all PLATFORM="$1" $GCC_MAKE program-dfu
   cd "$BASE_FIRMWARE/"firmware && git stash || exit
   sleep 1
-  sudo dfu-util -d $DFU_ADDRESS1 -a 0 -i 0 -s $DFU_ADDRESS2:leave -D /dev/null
+  dfu-util -d $DFU_ADDRESS1 -a 0 -i 0 -s $DFU_ADDRESS2:leave -D /dev/null
   # TODO: Probably should check the status of the build/flash and  put an appropriate pass/fail message here
   exit
 fi
@@ -380,13 +451,14 @@ fi
 # Clean firmware directory
 if [ "$2" == "clean" ];
 then
-  make clean
-  cd "$CWD" || exit
-  if [ "$CWD" == "$HOME" ];
-  then
-  MESSAGE="Please do not use po-util in your home folder." ; blue_echo ; exit
-  else
-    rm -rf bin
+    cd "$CWD" || exit
+    choose_directory "$@"
+    cd "$BASE_FIRMWARE"/firmware || exit
+    make clean
+    cd "$CWD" || exit
+    if [ "$FIRMWAREDIR/../bin" != "$HOME/bin" ];
+    then
+    rm -rf "$FIRMWAREDIR/../bin"
   fi
   exit
 fi
@@ -405,222 +477,28 @@ fi
 if [ "$2" == "build" ];
 then
   cd "$CWD" || exit
-
-  if [ "$3" != "" ];
-   then
-    if [ -d "$3" ];
-    then
-      FIRMWAREDIR="$3"
-      if [ -d "$CWD/$FIRMWAREDIR/firmware" ];  # If firmwaredir is not found relative to CWD, use absolute path instead.
-      then
-        FIRMWAREDIR="$CWD/$FIRMWAREDIR/firmware"
-
-    else
-
-
-
-        if [ -d "$FIRMWAREDIR/firmware" ]; # Exit if firmwaredir is not found at all.
-        then
-          FIRMWAREDIR="$FIRMWAREDIR/firmware"
-          echo "Found firmwaredir" > /dev/null # Continue
-        fi
-
-        if [ -d "$FIRMWAREDIR" ];
-          then
-            echo "Found firmwaredir" > /dev/null # Continue
-        fi
-
-
-
-      fi #  CLOSE: if [ -d "$3" ];
-
-# Remove '/' from end of string
-case "$FIRMWAREDIR" in
-*/)
-    #"has slash"
-    FIRMWAREDIR="${FIRMWAREDIR%?}"
-    ;;
-*)
-    echo "doesn't have a slash" > /dev/null
-    ;;
-esac
-
-if [ "$3" == "." ];
-then
-  FIRMWAREDIR="$CWD"
-  echo "$FIRMWAREDIR"
-fi
-
-    else
-      MESSAGE="Firmware directory not found.
-Please run \"po init\" to setup this repository or choose a valid directory." ; red_echo ; exit
-    fi
-
-   else
-      if [ -d firmware ];
-        then
-            echo > /dev/null
-            FIRMWAREDIR="$CWD/firmware"
-            else
-                MESSAGE="Firmware directory not found.
-                Please run \"po init\" to setup this repository or cd to a valid directory." ; red_echo ; exit
-      fi
-
-fi
-    # echo `echo $PATH | grep $GCC_ARM_VER` && MESSAGE=" Path Set." ; green_echo
-    # MESSAGE="Using gcc-arm from: `which arm-none-eabi-gcc`" ; blue_echo
-    # MESSAGE="GCC_ARM_PATH=$GCC_ARM_PATH" ; blue_echo #FIXME: Spammy
-
+    choose_directory "$@"
     make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1" $GCC_MAKE  || exit
-    cd "$FIRMWAREDIR"/..
-    BINARYDIR="$(pwd)/bin"
-    MESSAGE="Binary saved to $BINARYDIR/firmware.bin" ; green_echo
-    exit
+    build_message "$@"
 fi
 
 if [ "$2" == "debug-build" ];
 then
-  cd "$CWD" || exit
-
-  if [ "$3" != "" ];
-   then
-    if [ -d "$3" ];
-    then
-      FIRMWAREDIR="$3"
-      if [ -d "$CWD/$FIRMWAREDIR/firmware" ];  # If firmwaredir is not found relative to CWD, use absolute path instead.
-      then
-        FIRMWAREDIR="$CWD/$FIRMWAREDIR/firmware"
-
-    else
-
-
-
-        if [ -d "$FIRMWAREDIR/firmware" ]; # Exit if firmwaredir is not found at all.
-        then
-          FIRMWAREDIR="$FIRMWAREDIR/firmware"
-          echo "Found firmwaredir" > /dev/null # Continue
-        fi
-
-        if [ -d "$FIRMWAREDIR" ];
-          then
-            echo "Found firmwaredir" > /dev/null # Continue
-        fi
-
-
-
-      fi #  CLOSE: if [ -d "$3" ];
-
-# Remove '/' from end of string
-case "$FIRMWAREDIR" in
-*/)
-    #"has slash"
-    FIRMWAREDIR="${FIRMWAREDIR%?}"
-    ;;
-*)
-    echo "doesn't have a slash" > /dev/null
-    ;;
-esac
-
-if [ "$3" == "." ];
-then
-  FIRMWAREDIR="$CWD"
-  echo "$FIRMWAREDIR"
-fi
-
-    else
-      MESSAGE="Firmware directory not found.
-Please run \"po init\" to setup this repository or choose a valid directory." ; red_echo ; exit
-    fi
-
-   else
-      if [ -d firmware ];
-        then
-            echo > /dev/null
-            FIRMWAREDIR="$CWD/firmware"
-            else
-                MESSAGE="Firmware directory not found.
-                Please run \"po init\" to setup this repository or cd to a valid directory." ; red_echo ; exit
-      fi
-
-fi
-
+    cd "$CWD" || exit
+    choose_directory "$@"
     make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1" DEBUG_BUILD="y" $GCC_MAKE  || exit
-    cd "$FIRMWAREDIR"/..
-    BINARYDIR="$(pwd)/bin"
-    MESSAGE="Binary saved to $BINARYDIR/firmware.bin" ; green_echo
-    exit
+    build_message "$@"
 fi
 
 if [ "$2" == "flash" ];
 then
-  cd "$CWD" || exit
-
-  if [ "$3" != "" ];
-   then
-    if [ -d "$3" ];
-    then
-      FIRMWAREDIR="$3"
-      if [ -d "$CWD/$FIRMWAREDIR/firmware" ];  # If firmwaredir is not found relative to CWD, use absolute path instead.
-      then
-        FIRMWAREDIR="$CWD/$FIRMWAREDIR/firmware"
-
-    else
-
-
-
-        if [ -d "$FIRMWAREDIR/firmware" ]; # Exit if firmwaredir is not found at all.
-        then
-          FIRMWAREDIR="$FIRMWAREDIR/firmware"
-          echo "Found firmwaredir" > /dev/null # Continue
-        fi
-
-        if [ -d "$FIRMWAREDIR" ];
-          then
-            echo "Found firmwaredir" > /dev/null # Continue
-        fi
-
-
-
-      fi #  CLOSE: if [ -d "$3" ];
-
-# Remove '/' from end of string
-case "$FIRMWAREDIR" in
-*/)
-    #"has slash"
-    FIRMWAREDIR="${FIRMWAREDIR%?}"
-    ;;
-*)
-    echo "doesn't have a slash" > /dev/null
-    ;;
-esac
-
-if [ "$3" == "." ];
-then
-  FIRMWAREDIR="$CWD"
-  echo "$FIRMWAREDIR"
-fi
-
-    else
-      MESSAGE="Firmware directory not found.
-Please run \"po init\" to setup this repository or choose a valid directory." ; red_echo ; exit
-    fi
-
-   else
-      if [ -d firmware ];
-        then
-            echo > /dev/null
-            FIRMWAREDIR="$CWD/firmware"
-            else
-                MESSAGE="Firmware directory not found.
-                Please run \"po init\" to setup this repository or cd to a valid directory." ; red_echo ; exit
-      fi
-
-fi
-    stty "$STTYF" "$MODEM" 19200
+    cd "$CWD" || exit
+    choose_directory "$@"
+    dfu_open "$@"
     make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1"  $GCC_MAKE  || exit
     dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$FIRMWAREDIR/../bin/firmware.bin"
     exit
 fi
 
 # If an improper command is chosen:
-MESSAGE="Please choose a command." ; red_echo
+MESSAGE="Please choose a proper command." ; red_echo
