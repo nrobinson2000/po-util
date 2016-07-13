@@ -8,69 +8,76 @@
 
 # Helper functions
 function pause(){
-   read -rp "$*"
+  read -rp "$*"
 }
 
 blue_echo() {
-    echo "$(tput setaf 6)$(tput bold)$MESSAGE$(tput sgr0)"
+  echo "$(tput setaf 6)$(tput bold)$MESSAGE$(tput sgr0)"
 }
 
 green_echo() {
-    echo "$(tput setaf 2)$(tput bold)$MESSAGE$(tput sgr0)"
+  echo "$(tput setaf 2)$(tput bold)$MESSAGE$(tput sgr0)"
 }
 
 red_echo() {
-    echo "$(tput setaf 1)$(tput bold)$MESSAGE$(tput sgr0)"
+  echo "$(tput setaf 1)$(tput bold)$MESSAGE$(tput sgr0)"
 }
 
 choose_directory()
 {
   if [ "$3" != "" ];
-   then
+  then
     if [ -d "$3" ];
     then
       FIRMWAREDIR="$3"
+
       if [ -d "$CWD/$FIRMWAREDIR/firmware" ];  # If firmwaredir is not found relative to CWD, use absolute path instead.
       then
         FIRMWAREDIR="$CWD/$FIRMWAREDIR/firmware"
-    else
-        if [ -d "$FIRMWAREDIR/firmware" ]; # Exit if firmwaredir is not found at all.
+      else
+        if [ -d "$FIRMWAREDIR/firmware" ]; # Use absolute path / firmware
         then
           FIRMWAREDIR="$FIRMWAREDIR/firmware"
           echo "Found firmwaredir" > /dev/null # Continue
         fi
-        if [ -d "$FIRMWAREDIR" ];
-          then
-            echo "Found firmwaredir" > /dev/null # Continue
+        if [ -d "$FIRMWAREDIR" ]; # Use absolute path
+        then
+          echo "Found firmwaredir" > /dev/null # Continue
         fi
-      fi #  CLOSE: if [ -d "$3" ]
-# Remove '/' from end of string
-case "$FIRMWAREDIR" in
-*/)
-    #"has slash"
-    FIRMWAREDIR="${FIRMWAREDIR%?}"
-    ;;
-*)
-    echo "doesn't have a slash" > /dev/null
-    ;;
-esac
-if [ "$3" == "." ];
-then
-  FIRMWAREDIR="$CWD"
-fi
-    else
+      fi #  CLOSE: if [ -d "$CWD/$FIRMWAREDIR/firmware" ]
+
+    # Remove '/' from end of string
+    case "$FIRMWAREDIR" in
+      */)
+       #"has slash"
+       FIRMWAREDIR="${FIRMWAREDIR%?}"
+       ;;
+     *)
+       echo "doesn't have a slash" > /dev/null
+       ;;
+    esac
+
+    if [ "$3" == "." ];
+    then
+      FIRMWAREDIR="$CWD"
+    fi
+
+    else # of if [ -d "$3" ];
+
       MESSAGE="Firmware directory not found.
 Please run \"po init\" to setup this repository or choose a valid directory." ; red_echo ; exit
-    fi
-   else
-      if [ -d firmware ];
-        then
-            FIRMWAREDIR="$CWD/firmware"
-            else
-                MESSAGE="Firmware directory not found.
+    fi # CLOSE: if [ -d "$3" ];
+
+  else # of if [ "$3" != "" ];
+
+    if [ -d firmware ];
+      then
+        FIRMWAREDIR="$CWD/firmware"
+    else
+        MESSAGE="Firmware directory not found.
 Please run \"po init\" to setup this repository or cd to a valid directory." ; red_echo ; exit
-      fi
-fi
+    fi
+  fi
 }
 
 build_message() {
@@ -162,9 +169,7 @@ if [ "$(uname -s)" == "Darwin" ];
     STTYF="-F"
     MODEM="$(ls -1 /dev/* | grep "ttyACM" | tail -1)"
 
-    # Runs script commands with our specific version of GCC from local.  May not need to be exported.
-    # TODO: Change this to use regex, so we get this version or later - Futureproof
-    # GCC_ARM_VER=gcc-arm-none-eabi-4_8-2014q2
+    #THIS COULD BE IMPROVED!
     GCC_ARM_VER=gcc-arm-none-eabi-4_9-2015q3 # Update to 4.9
     # MESSAGE="Setting our paths for gcc-arm-none-eabi" ; green_echo #FIXME: This is spammy
     export GCC_ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/
@@ -196,18 +201,18 @@ then
 
   if [ "$CWD" != "$HOME" ];
   then
-  cp po-util.sh ~/po-util.sh #Replace ~/po-util.sh with one in current directory.
+    cp po-util.sh ~/po-util.sh #Replace ~/po-util.sh with one in current directory.
   fi
 
   if [ -f ~/.bash_profile ]; #Create .bash_profile
   then
     MESSAGE=".bash_profile present." ; green_echo
   else
-  MESSAGE="No .bash_profile present. Installing.." ; red_echo
-  echo "
-  if [ -f ~/.bashrc ]; then
-      . ~/.bashrc
-  fi" >> ~/.bash_profile
+    MESSAGE="No .bash_profile present. Installing.." ; red_echo
+    echo "
+    if [ -f ~/.bashrc ]; then
+        . ~/.bashrc
+    fi" >> ~/.bash_profile
   fi
 
   if [ -f ~/.bashrc ];  #Add po alias to .bashrc
@@ -233,7 +238,7 @@ then
     echo BASE_FIRMWARE="$BASE_FIRMWARE" >  $SETTINGS
   fi
 
-  [ -d "$BASE_FIRMWARE" ] || mkdir -p "$BASE_FIRMWARE"  # Allow creation of parents as needed.
+  [ -d "$BASE_FIRMWARE" ] || mkdir -p "$BASE_FIRMWARE"  # If BASE_FIRMWARE does not exist, create it
 
   # clone firmware repository
   cd "$BASE_FIRMWARE" || exit
@@ -338,9 +343,9 @@ then
   then
     MESSAGE="No device connected!" red_echo ; exit
   else
-  screen -S particle "$MODEM"
-  screen -S particle -X quit && exit || MESSAGE="If \"po serial\" is putting device into DFU mode, power off device, removing battery for Electron, and run \"po serial\" several times.
-  This bug will hopefully be fixed in a later release." && blue_echo
+    screen -S particle "$MODEM"
+    screen -S particle -X quit && exit || MESSAGE="If \"po serial\" is putting device into DFU mode, power off device, removing battery for Electron, and run \"po serial\" several times.
+This bug will hopefully be fixed in a later release." && blue_echo
   fi
   exit
 fi
@@ -422,7 +427,7 @@ then
       dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$3"
       fi
   else
-    dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$CWD/bin/firmware.bin" || MESSAGE="Firmware not found." ; red_echo
+  dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$CWD/bin/firmware.bin" || MESSAGE="Firmware not found." ; red_echo
   fi
   exit
 fi
@@ -444,7 +449,6 @@ then
   cd "$BASE_FIRMWARE/firmware" && git stash || exit
   sleep 1
   dfu-util -d $DFU_ADDRESS1 -a 0 -i 0 -s $DFU_ADDRESS2:leave -D /dev/null
-  # TODO: Probably should check the status of the build/flash and  put an appropriate pass/fail message here
   exit
 fi
 
@@ -458,8 +462,8 @@ then
     cd "$CWD" || exit
     if [ "$FIRMWAREDIR/../bin" != "$HOME/bin" ];
     then
-    rm -rf "$FIRMWAREDIR/../bin"
-  fi
+      rm -rf "$FIRMWAREDIR/../bin"
+    fi
   exit
 fi
 
@@ -470,7 +474,7 @@ then
   then
     MESSAGE="Please specify which device to flash ota." ; red_echo ; exit
   fi
-  particle flash "$3" "$CWD/bin/firmware.bin" || MESSAGE="Try using \"particle flash\" if you are having issues." ; red_echo
+    particle flash "$3" "$CWD/bin/firmware.bin" || MESSAGE="Try using \"particle flash\" if you are having issues." ; red_echo
   exit
 fi
 
