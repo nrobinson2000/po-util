@@ -277,8 +277,6 @@ then
 
     # Install udev rules file
     MESSAGE="Installing udev rule (requires sudo) ..." ; blue_echo
-    # curl -fsSLO https://gist.githubusercontent.com/monkbroc/b283bb4da8c10228a61e/raw/e59c77021b460748a9c80ef6a3d62e17f5947be1/50-particle.rules
-    # sudo mv 50-particle.rules /etc/udev/rules.d/50-particle.rules
     curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/60-po-util.rules
     sudo mv 60-po-util.rules /etc/udev/rules.d/60-po-util.rules
 
