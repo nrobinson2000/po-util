@@ -258,9 +258,10 @@ then
 
     # Install dfu-util
     MESSAGE="Installing dfu-util (requires sudo)..." ; blue_echo
-    #curl -fsSLO "https://sourceforge.net/projects/dfu-util/files/dfu-util-0.9.tar.gz/download" ## SOURCEFORGE IS DOWN
+    #curl -fsSLO "https://sourceforge.net/projects/dfu-util/files/dfu-util-0.9.tar.gz/download"
     #tar -xzvf download
     #rm download
+    ## SOURCEFORGE IS DOWN
 
     cd "$BASE_FIRMWARE" || exit
     git clone https://github.com/IntoRobot/dfu-util.git
