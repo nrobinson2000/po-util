@@ -8,7 +8,7 @@
 
 # Helper functions
 function pause(){
-   read -p "$*"
+   read -rp "$*"
 }
 
 blue_echo() {
@@ -174,7 +174,7 @@ fi
 # Check if we have a saved settings file.  If not, create it.
 if [ ! -f $SETTINGS ]
 then
-  echo BASE_FIRMWARE="$BASE_FIRMWARE" >> $SETTINGS
+  echo "BASE_FIRMWARE=$BASE_FIRMWARE" >> $SETTINGS
   echo BRANCH="latest" >> $SETTINGS
   echo PARTICLE_DEVELOP=1 >> $SETTINGS
   echo BINDIR="$BINDIR" >> $SETTINGS
@@ -186,7 +186,7 @@ then
 fi
 
 # Import our overrides from the ~/.po file.
-source $SETTINGS
+source "$SETTINGS"
 
 # GCC path for linux make utility
 if [ $GCC_ARM_PATH ]; then GCC_MAKE=GCC_ARM_PATH=$GCC_ARM_PATH ; fi
@@ -436,12 +436,12 @@ then
   rm -f "$BASE_FIRMWARE"/firmware/build/module-defaults.mk
   mv temp.particle "$BASE_FIRMWARE"/firmware/build/module-defaults.mk
 
-  cd "$BASE_FIRMWARE/"firmware/modules/"$1"/system-part1 || exit
-  make clean all PLATFORM="$1" $GCC_MAKE program-dfu
+  cd "$BASE_FIRMWARE/firmware/modules/$1/system-part1" || exit
+  make clean all PLATFORM="$1" "$GCC_MAKE" program-dfu
 
-  cd "$BASE_FIRMWARE/"firmware/modules/"$1"/system-part2 || exit
+  cd "$BASE_FIRMWARE/firmware/modules/$1/system-part2" || exit
   make clean all PLATFORM="$1" $GCC_MAKE program-dfu
-  cd "$BASE_FIRMWARE/"firmware && git stash || exit
+  cd "$BASE_FIRMWARE/firmware" && git stash || exit
   sleep 1
   dfu-util -d $DFU_ADDRESS1 -a 0 -i 0 -s $DFU_ADDRESS2:leave -D /dev/null
   # TODO: Probably should check the status of the build/flash and  put an appropriate pass/fail message here
