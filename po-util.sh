@@ -170,8 +170,7 @@ if [ "$(uname -s)" == "Darwin" ];
     MODEM="$(ls -1 /dev/* | grep "ttyACM" | tail -1)"
 
     #THIS COULD BE IMPROVED!
-    GCC_ARM_VER=gcc-arm-none-eabi-4_9-2015q3 # Update to 4.9
-    # MESSAGE="Setting our paths for gcc-arm-none-eabi" ; green_echo #FIXME: This is spammy
+    GCC_ARM_VER=gcc-arm-none-eabi-4_9-2015q3 # Updated to 4.9
     export GCC_ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/
     export PATH=$GCC_ARM_PATH:$PATH
 fi
@@ -262,7 +261,7 @@ then
     #curl -fsSLO "https://sourceforge.net/projects/dfu-util/files/dfu-util-0.9.tar.gz/download" ## SOURCEFORGE IS DOWN
     #tar -xzvf download
     #rm download
-    
+
     cd "$BASE_FIRMWARE" || exit
     git clone https://github.com/IntoRobot/dfu-util.git
     cd dfu-util || exit
