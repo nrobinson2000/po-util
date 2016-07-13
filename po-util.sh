@@ -259,15 +259,18 @@ then
 
     # Install dfu-util
     MESSAGE="Installing dfu-util (requires sudo)..." ; blue_echo
-    curl -fsSLO "https://sourceforge.net/projects/dfu-util/files/dfu-util-0.9.tar.gz/download"
-    tar -xzvf download
-    rm download
-    cd dfu-util-0.9 || exit
+    #curl -fsSLO "https://sourceforge.net/projects/dfu-util/files/dfu-util-0.9.tar.gz/download" ## SOURCEFORGE IS DOWN
+    #tar -xzvf download
+    #rm download
+    
+    cd "$BASE_FIRMWARE" || exit
+    git clone https://github.com/IntoRobot/dfu-util.git
+    cd dfu-util || exit
+    ./autogen.sh
     ./configure
     make
     sudo make install
     cd ..
-    rm -rf dfu-util-0.9
 
     # Install particle-cli
     MESSAGE="Installing particle-cli..." ; blue_echo
