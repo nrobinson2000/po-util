@@ -80,6 +80,54 @@ Please run \"po init\" to setup this repository or cd to a valid directory." ; r
   fi
 }
 
+function find_bin()
+{
+  if [ "$1" != "" ];
+  then
+    case "$1" in
+      */)
+       #"has slash"
+       FIRMWAREBIN="${1%?}"
+       ;;
+     *)
+       echo "doesn't have a slash" > /dev/null
+     FIRMWAREBIN="$1"
+       ;;
+    esac
+
+      if [ -f "$CWD/$FIRMWAREBIN/bin/firmware.bin" ]; # If .bin file is not found relative to CWD, use absolute path instead.
+      then
+      FIRMWAREBIN="$CWD/$FIRMWAREBIN/bin/firmware.bin"
+  else
+    if [ -f "$CWD/bin/firmware.bin" ];
+    then
+      FIRMWAREBIN="$CWD/bin/firmware.bin"
+    else
+      if [ -f "$CWD/firmware.bin" ];
+      then
+        FIRMWAREBIN="$CWD/firmware.bin"
+      else
+        if [ -f "$1" ];
+        then
+          FIRMWAREBIN="$1"
+        else
+          if [ -f "$CWD/$1" ];
+          then
+            FIRMWAREBIN="$CWD/$1"
+          else
+            MESSAGE="Firmware not found." ; red_echo
+          exit
+          fi
+        fi
+      fi
+    fi
+  fi
+else
+  FIRMWAREBIN="$CWD/bin/firmware.bin"
+fi
+echo "$FIRMWAREBIN"
+}
+
 build_message() {
   cd "$FIRMWAREDIR"/.. || exit
   BINARYDIR="$(pwd)/bin"
@@ -420,52 +468,9 @@ if [ "$2" == "dfu" ];
 then
   dfu_open "$@"
   sleep 1
-  if [ "$3" != "" ];
-  then
-    case "$3" in
-      */)
-       #"has slash"
-       FIRMWAREBIN="${3%?}"
-       ;;
-     *)
-       echo "doesn't have a slash" > /dev/null
-     FIRMWAREBIN="$3"
-       ;;
-    esac
-
-      if [ -f "$CWD/$FIRMWAREBIN/bin/firmware.bin" ]; # If .bin file is not found relative to CWD, use absolute path instead.
-      then
-      FIRMWAREBIN="$CWD/$FIRMWAREBIN/bin/firmware.bin"
-  else
-    if [ -f "$CWD/bin/firmware.bin" ];
-    then
-      FIRMWAREBIN="$CWD/bin/firmware.bin"
-    else
-      if [ -f "$CWD/firmware.bin" ];
-      then
-        FIRMWAREBIN="$CWD/firmware.bin"
-      else
-        if [ -f "$3" ];
-        then
-          FIRMWAREBIN="$3"
-        else
-          if [ -f "$CWD/$3" ];
-          then
-            FIRMWAREBIN="$CWD/$3"
-          else
-            MESSAGE="Firmware not found." ; red_echo
-          exit
-          fi
-        fi
-      fi
-    fi
-  fi
-else
-  FIRMWAREBIN="$CWD/bin/firmware.bin"
-fi
+  find_bin "$3"
   echo "$FIRMWAREBIN"
   dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$FIRMWAREBIN" || ( MESSAGE="Device not found." ; red_echo )
-
   exit
 fi
 
@@ -511,52 +516,8 @@ then
   then
     MESSAGE="Please specify which device to flash ota." ; red_echo ; exit
   fi
-
-  if [ "$4" != "" ];
-  then
-    case "$4" in
-      */)
-       #"has slash"
-       FIRMWAREBIN="${4%?}"
-       ;;
-     *)
-       echo "doesn't have a slash" > /dev/null
-     FIRMWAREBIN="$4"
-       ;;
-    esac
-
-      if [ -f "$CWD/$FIRMWAREBIN/bin/firmware.bin" ]; # If .bin file is not found relative to CWD, use absolute path instead.
-      then
-      FIRMWAREBIN="$CWD/$FIRMWAREBIN/bin/firmware.bin"
-  else
-    if [ -f "$CWD/bin/firmware.bin" ];
-    then
-      FIRMWAREBIN="$CWD/bin/firmware.bin"
-    else
-      if [ -f "$CWD/firmware.bin" ];
-      then
-        FIRMWAREBIN="$CWD/firmware.bin"
-      else
-        if [ -f "$4" ];
-        then
-          FIRMWAREBIN="$4"
-        else
-          if [ -f "$CWD/$4" ];
-          then
-            FIRMWAREBIN="$CWD/$4"
-          else
-            MESSAGE="Firmware not found." ; red_echo
-          exit
-          fi
-        fi
-      fi
-    fi
-  fi
-else
-  FIRMWAREBIN="$CWD/bin/firmware.bin"
-fi
-    echo "$FIRMWAREBIN"
-    particle flash "$3" "$FIRMWAREBIN" || ( MESSAGE="Try using \"particle flash\" if you are having issues." ; red_echo )
+  find_bin "$4"
+  particle flash "$3" "$FIRMWAREBIN" || ( MESSAGE="Try using \"particle flash\" if you are having issues." ; red_echo )
   exit
 fi
 
