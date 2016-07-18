@@ -429,24 +429,43 @@ then
        ;;
      *)
        echo "doesn't have a slash" > /dev/null
+     FIRMWAREBIN="$3"
        ;;
     esac
+
       if [ -f "$CWD/$FIRMWAREBIN/bin/firmware.bin" ]; # If .bin file is not found relative to CWD, use absolute path instead.
       then
       FIRMWAREBIN="$CWD/$FIRMWAREBIN/bin/firmware.bin"
-      else
-      FIRMWAREBIN="$FIRMWAREBIN/bin/firmware.bin"
-      fi
   else
     if [ -f "$CWD/bin/firmware.bin" ];
     then
       FIRMWAREBIN="$CWD/bin/firmware.bin"
+      echo hello
     else
-      MESSAGE="Firmware not found." ; red_echo
-      exit
+      if [ -f "$CWD/firmware.bin" ];
+      then
+        FIRMWAREBIN="$CWD/firmware.bin"
+      else
+        if [ -f "$3" ];
+        then
+          FIRMWAREBIN="$3"
+          echo hello
+        else
+          if [ -f "$CWD/$3" ];
+          then
+            FIRMWAREBIN="$CWD/$3"
+          else
+            MESSAGE="Firmware not found." ; red_echo
+          exit
+          fi
+        fi
+      fi
     fi
   fi
-
+else
+  FIRMWAREBIN="$CWD/bin/firmware.bin"
+fi
+  echo "$FIRMWAREBIN"
   dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$FIRMWAREBIN" || ( MESSAGE="Device not found." ; red_echo )
 
   exit
@@ -494,6 +513,7 @@ then
   then
     MESSAGE="Please specify which device to flash ota." ; red_echo ; exit
   fi
+
   if [ "$4" != "" ];
   then
     case "$4" in
@@ -503,23 +523,43 @@ then
        ;;
      *)
        echo "doesn't have a slash" > /dev/null
+     FIRMWAREBIN="$4"
        ;;
     esac
+
       if [ -f "$CWD/$FIRMWAREBIN/bin/firmware.bin" ]; # If .bin file is not found relative to CWD, use absolute path instead.
       then
       FIRMWAREBIN="$CWD/$FIRMWAREBIN/bin/firmware.bin"
-      else
-      FIRMWAREBIN="$FIRMWAREBIN/bin/firmware.bin"
-      fi
   else
     if [ -f "$CWD/bin/firmware.bin" ];
     then
       FIRMWAREBIN="$CWD/bin/firmware.bin"
+      echo hello
     else
-      MESSAGE="Firmware not found." ; red_echo
-      exit
+      if [ -f "$CWD/firmware.bin" ];
+      then
+        FIRMWAREBIN="$CWD/firmware.bin"
+      else
+        if [ -f "$4" ];
+        then
+          FIRMWAREBIN="$4"
+          echo hello
+        else
+          if [ -f "$CWD/$4" ];
+          then
+            FIRMWAREBIN="$CWD/$4"
+          else
+            MESSAGE="Firmware not found." ; red_echo
+          exit
+          fi
+        fi
+      fi
     fi
   fi
+else
+  FIRMWAREBIN="$CWD/bin/firmware.bin"
+fi
+    echo "$FIRMWAREBIN"
     particle flash "$3" "$FIRMWAREBIN" || ( MESSAGE="Try using \"particle flash\" if you are having issues." ; red_echo )
   exit
 fi
