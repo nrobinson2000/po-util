@@ -422,16 +422,33 @@ then
   sleep 1
   if [ "$3" != "" ];
   then
-    echo "$3"
-      if [ -f "$CWD/$3" ]; # If .bin file is not found relative to CWD, use absolute path instead.
+    case "$3" in
+      */)
+       #"has slash"
+       FIRMWAREBIN="${3%?}"
+       ;;
+     *)
+       echo "doesn't have a slash" > /dev/null
+       ;;
+    esac
+      if [ -f "$CWD/$FIRMWAREBIN/bin/firmware.bin" ]; # If .bin file is not found relative to CWD, use absolute path instead.
       then
-      dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$CWD/$3"
+      FIRMWAREBIN="$CWD/$FIRMWAREBIN/bin/firmware.bin"
       else
-      dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$3"
+      FIRMWAREBIN="$FIRMWAREBIN/bin/firmware.bin"
       fi
   else
-  dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$CWD/bin/firmware.bin" || MESSAGE="Firmware not found." ; red_echo
+    if [ -f "$CWD/bin/firmware.bin" ];
+    then
+      FIRMWAREBIN="$CWD/bin/firmware.bin"
+    else
+      MESSAGE="Firmware not found." ; red_echo
+      exit
+    fi
   fi
+
+  dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$FIRMWAREBIN" || ( MESSAGE="Device not found." ; red_echo )
+
   exit
 fi
 
@@ -477,7 +494,33 @@ then
   then
     MESSAGE="Please specify which device to flash ota." ; red_echo ; exit
   fi
-    particle flash "$3" "$CWD/bin/firmware.bin" || ( MESSAGE="Try using \"particle flash\" if you are having issues." ; red_echo )
+  if [ "$4" != "" ];
+  then
+    case "$4" in
+      */)
+       #"has slash"
+       FIRMWAREBIN="${4%?}"
+       ;;
+     *)
+       echo "doesn't have a slash" > /dev/null
+       ;;
+    esac
+      if [ -f "$CWD/$FIRMWAREBIN/bin/firmware.bin" ]; # If .bin file is not found relative to CWD, use absolute path instead.
+      then
+      FIRMWAREBIN="$CWD/$FIRMWAREBIN/bin/firmware.bin"
+      else
+      FIRMWAREBIN="$FIRMWAREBIN/bin/firmware.bin"
+      fi
+  else
+    if [ -f "$CWD/bin/firmware.bin" ];
+    then
+      FIRMWAREBIN="$CWD/bin/firmware.bin"
+    else
+      MESSAGE="Firmware not found." ; red_echo
+      exit
+    fi
+  fi
+    particle flash "$3" "$FIRMWAREBIN" || ( MESSAGE="Try using \"particle flash\" if you are having issues." ; red_echo )
   exit
 fi
 
