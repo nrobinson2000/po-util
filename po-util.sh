@@ -314,7 +314,7 @@ then
     ## SOURCEFORGE IS DOWN
 
     cd "$BASE_FIRMWARE" || exit
-    git clone https://github.com/IntoRobot/dfu-util.git
+    git clone git://git.code.sf.net/p/dfu-util/dfu-util
     cd dfu-util || exit
     ./autogen.sh
     ./configure
