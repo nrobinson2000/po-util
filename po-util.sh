@@ -1,4 +1,17 @@
 #!/bin/bash
+#                                           __      __  __
+#                                          /  |    /  |/  |
+#    ______    ______           __    __  _██ |_   ██/ ██ |
+#   /      \  /      \  ______ /  |  /  |/ ██   |  /  |██ |
+#  /██████  |/██████  |/      |██ |  ██ |██████/   ██ |██ |
+#  ██ |  ██ |██ |  ██ |██████/ ██ |  ██ |  ██ | __ ██ |██ |
+#  ██ |__██ |██ \__██ |        ██ \__██ |  ██ |/  |██ |██ |
+#  ██    ██/ ██    ██/         ██    ██/   ██  ██/ ██ |██ |
+#  ███████/   ██████/           ██████/     ████/  ██/ ██/
+#  ██ |
+#  ██ |
+#  ██/                               http://po-util.com
+#
 # Particle Offline Utility: A handy script for installing and using the Particle
 # Toolchain on Ubuntu-based distros and OSX. This script downloads and installs:
 # dfu-util, nodejs, gcc-arm-embedded, particle-cli, and the Particle Firmware
