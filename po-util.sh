@@ -89,7 +89,7 @@ build_message() {
 
 dfu_open()
 {
-  stty "$STTYF" "$MODEM" 19200
+  stty "$STTYF" "$MODEM" "$DFUBAUDRATE"
 }
 
 # End of helper functions
@@ -155,6 +155,7 @@ SETTINGS=~/.po
 BASE_FIRMWARE=~/github
 BRANCH="latest"
 BINDIR=~/bin
+DFUBAUDRATE=19200
 
 CWD="$(pwd)"
 
@@ -178,10 +179,11 @@ fi
 # Check if we have a saved settings file.  If not, create it.
 if [ ! -f $SETTINGS ]
 then
-  echo "BASE_FIRMWARE=$BASE_FIRMWARE" >> $SETTINGS
+  echo BASE_FIRMWARE="$BASE_FIRMWARE" >> $SETTINGS
   echo BRANCH="latest" >> $SETTINGS
-  echo PARTICLE_DEVELOP=1 >> $SETTINGS
+  echo PARTICLE_DEVELOP="1" >> $SETTINGS
   echo BINDIR="$BINDIR" >> $SETTINGS
+  echo DFUBAUDRATE="$DFUBAUDRATE" >> $SETTINGS
 
   if [ $OS == "Linux" ];
     then
@@ -438,7 +440,7 @@ if [ "$2" == "upgrade" ] || [ "$2" == "patch" ];
 then
   pause "Connect your device and put into DFU mode. Press [ENTER] to continue..."
   cd "$CWD" || exit
-  sed '2s/.*/START_DFU_FLASHER_SERIAL_SPEED=19200/' "$BASE_FIRMWARE/"firmware/build/module-defaults.mk > temp.particle
+  sed "2s/.*/START_DFU_FLASHER_SERIAL_SPEED=$DFUBAUDRATE/" "$BASE_FIRMWARE/"firmware/build/module-defaults.mk > temp.particle
   rm -f "$BASE_FIRMWARE"/firmware/build/module-defaults.mk
   mv temp.particle "$BASE_FIRMWARE"/firmware/build/module-defaults.mk
 
