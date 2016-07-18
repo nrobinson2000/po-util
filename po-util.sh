@@ -440,7 +440,6 @@ then
     if [ -f "$CWD/bin/firmware.bin" ];
     then
       FIRMWAREBIN="$CWD/bin/firmware.bin"
-      echo hello
     else
       if [ -f "$CWD/firmware.bin" ];
       then
@@ -449,7 +448,6 @@ then
         if [ -f "$3" ];
         then
           FIRMWAREBIN="$3"
-          echo hello
         else
           if [ -f "$CWD/$3" ];
           then
@@ -534,7 +532,6 @@ then
     if [ -f "$CWD/bin/firmware.bin" ];
     then
       FIRMWAREBIN="$CWD/bin/firmware.bin"
-      echo hello
     else
       if [ -f "$CWD/firmware.bin" ];
       then
@@ -543,7 +540,6 @@ then
         if [ -f "$4" ];
         then
           FIRMWAREBIN="$4"
-          echo hello
         else
           if [ -f "$CWD/$4" ];
           then
