@@ -316,6 +316,7 @@ then
     cd "$BASE_FIRMWARE" || exit
     git clone git://git.code.sf.net/p/dfu-util/dfu-util
     cd dfu-util || exit
+    git pull
     ./autogen.sh
     ./configure
     make
