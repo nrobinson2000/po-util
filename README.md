@@ -1,6 +1,6 @@
 [![](https://img.shields.io/badge/po--util-wiki-brightgreen.svg)](https://github.com/nrobinson2000/po-util/wiki)
 <p align="center" >
-<img src="http://po-util.com/logos/po-util-updated.svg" width="600px">
+<img src="https://raw.githubusercontent.com/nrobinson2000/po-util/po-util.com/logos/po-util-updated.svg" width="600px">
 </p>
 ## Particle Offline Utility: The handy script for installing and using the Particle Toolchain on Ubuntu-based Distros and OSX
 
