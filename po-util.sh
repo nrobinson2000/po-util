@@ -10,7 +10,7 @@
 #   ███████/   ██████/           ██████/     ████/  ██/ ██/
 #   ██ |
 #   ██ |
-#   ██/                               http://po-util.com
+#   ██/                               https://po-util.com
 #
 # Particle Offline Utility: A handy script for installing and using the Particle
 # Toolchain on Ubuntu-based distros and OSX. This script downloads and installs:
