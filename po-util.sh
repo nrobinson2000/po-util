@@ -1,16 +1,16 @@
 #!/bin/bash
-#                                           __      __  __
-#                                          /  |    /  |/  |
-#    ______    ______           __    __  _██ |_   ██/ ██ |
-#   /      \  /      \  ______ /  |  /  |/ ██   |  /  |██ |
-#  /██████  |/██████  |/      |██ |  ██ |██████/   ██ |██ |
-#  ██ |  ██ |██ |  ██ |██████/ ██ |  ██ |  ██ | __ ██ |██ |
-#  ██ |__██ |██ \__██ |        ██ \__██ |  ██ |/  |██ |██ |
-#  ██    ██/ ██    ██/         ██    ██/   ██  ██/ ██ |██ |
-#  ███████/   ██████/           ██████/     ████/  ██/ ██/
-#  ██ |
-#  ██ |
-#  ██/                               http://po-util.com
+#                                            __      __  __
+#                                           /  |    /  |/  |
+#     ______    ______           __    __  _██ |_   ██/ ██ |
+#    /      \  /      \  ______ /  |  /  |/ ██   |  /  |██ |
+#   /██████  |/██████  |/      |██ |  ██ |██████/   ██ |██ |
+#   ██ |  ██ |██ |  ██ |██████/ ██ |  ██ |  ██ | __ ██ |██ |
+#   ██ |__██ |██ \__██ |        ██ \__██ |  ██ |/  |██ |██ |
+#   ██    ██/ ██    ██/         ██    ██/   ██  ██/ ██ |██ |
+#   ███████/   ██████/           ██████/     ████/  ██/ ██/
+#   ██ |
+#   ██ |
+#   ██/                               http://po-util.com
 #
 # Particle Offline Utility: A handy script for installing and using the Particle
 # Toolchain on Ubuntu-based distros and OSX. This script downloads and installs:
@@ -18,6 +18,25 @@
 # source code.
 # Read more at https://github.com/nrobinson2000/po-util
 # ACII Art Generated from: http://www.patorjk.com/software/taag
+#
+# Helpful Tables: (*Please* update these lists if you make any modifications!)
+#
+    #---SUBCOMMAND------LINE#-#       #--GITHUB CONTRIBUTORS-#
+    #-  help            177  -#       #- @nrobinson2000     -#
+    #-  install         278  -#       #- @mrmowgli          -#
+    #-  init            389  -#       #- @GeertWille        -#
+    #-  serial          417  -#       #-                    -#
+    #-  dfu-open        431  -#       #-                    -#
+    #-  dfu-close       438  -#       #-                    -#
+    #-  update          445  -#       #-                    -#
+    #-  dfu             493  -#       #-                    -#
+    #-  upgrade / patch 504  -#       #-                    -#
+    #-  clean           524  -#       #-                    -#
+    #-  ota             539  -#       #-                    -#
+    #-  build           550  -#       #-                    -#
+    #-  debug-build     558  -#       #-                    -#
+    #-  flash           566  -#       #-                    -#
+    #-------------------------#       #----------------------#
 
 # Helper functions
 function pause(){
@@ -74,7 +93,6 @@ choose_directory()
     then
       FIRMWAREDIR="$CWD"
     fi
-
     else # of if [ -d "$3" ];
 
       MESSAGE="Firmware directory not found.
@@ -93,7 +111,7 @@ Please run \"po init\" to setup this repository or cd to a valid directory." ; r
   fi
 }
 
-function find_bin()
+function find_bin() #Like choose_directory but for .bin files
 {
   if [ "$1" != "" ];
   then
@@ -107,7 +125,6 @@ function find_bin()
      FIRMWAREBIN="$1"
        ;;
     esac
-
       if [ -f "$CWD/$FIRMWAREBIN/bin/firmware.bin" ]; # If .bin file is not found relative to CWD, use absolute path instead.
       then
       FIRMWAREBIN="$CWD/$FIRMWAREBIN/bin/firmware.bin"
@@ -211,14 +228,14 @@ DFU Commands:
 " && exit
 fi
 
-# Holds any alternate paths.
+# Configuration file is created at "~/.po"
 SETTINGS=~/.po
-BASE_FIRMWARE=~/github
-BRANCH="latest"
-BINDIR=~/bin
-DFUBAUDRATE=19200
+BASE_FIRMWARE=~/github # These
+BRANCH="latest"        # can
+BINDIR=~/bin           # be
+DFUBAUDRATE=19200      # changed in the "~/.po" file.
 
-CWD="$(pwd)"
+CWD="$(pwd)" # Global Current Working Directory variable
 
 # Mac OSX uses lowercase f for stty command
 if [ "$(uname -s)" == "Darwin" ];
@@ -321,11 +338,6 @@ then
 
     # Install dfu-util
     MESSAGE="Installing dfu-util (requires sudo)..." ; blue_echo
-    #curl -fsSLO "https://sourceforge.net/projects/dfu-util/files/dfu-util-0.9.tar.gz/download"
-    #tar -xzvf download
-    #rm download
-    ## SOURCEFORGE IS DOWN
-
     cd "$BASE_FIRMWARE" || exit
     git clone git://git.code.sf.net/p/dfu-util/dfu-util
     cd dfu-util || exit
