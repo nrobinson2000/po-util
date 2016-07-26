@@ -24,18 +24,18 @@
     #---SUBCOMMAND------LINE#-#       #--GITHUB CONTRIBUTORS-#
     #-  help            177  -#       #- @nrobinson2000     -#
     #-  install         278  -#       #- @mrmowgli          -#
-    #-  init            389  -#       #- @GeertWille        -#
-    #-  serial          417  -#       #-                    -#
-    #-  dfu-open        431  -#       #-                    -#
-    #-  dfu-close       438  -#       #-                    -#
-    #-  update          445  -#       #-                    -#
-    #-  dfu             493  -#       #-                    -#
-    #-  upgrade / patch 504  -#       #-                    -#
-    #-  clean           524  -#       #-                    -#
-    #-  ota             539  -#       #-                    -#
-    #-  build           550  -#       #-                    -#
-    #-  debug-build     558  -#       #-                    -#
-    #-  flash           566  -#       #-                    -#
+    #-  init            397  -#       #- @GeertWille        -#
+    #-  serial          425  -#       #-                    -#
+    #-  dfu-open        439  -#       #-                    -#
+    #-  dfu-close       446  -#       #-                    -#
+    #-  update          453  -#       #-                    -#
+    #-  dfu             501  -#       #-                    -#
+    #-  upgrade / patch 512  -#       #-                    -#
+    #-  clean           532  -#       #-                    -#
+    #-  ota             547  -#       #-                    -#
+    #-  build           558  -#       #-                    -#
+    #-  debug-build     566  -#       #-                    -#
+    #-  flash           574  -#       #-                    -#
     #-------------------------#       #----------------------#
 
 # Helper functions
@@ -371,11 +371,19 @@ then
     MESSAGE="Installing ARM toolchain..." ; blue_echo
     brew install gcc-arm-none-eabi-49 dfu-util
 
-    # Install Nodejs version 6.2.2
-    MESSAGE="Installing nodejs..." ; blue_echo
-    curl -fsSLO https://nodejs.org/dist/v6.2.2/node-v6.2.2.pkg
+    # Install Nodejs
+    curl -Ss https://nodejs.org/dist/ > node-result.txt
+    cat node-result.txt | grep "<a href=\"v" > node-new.txt
+    tail -1 node-new.txt > node-oneline.txt
+    sed -n 's/.*\"\(.*.\)\".*/\1/p' node-oneline.txt > node-version.txt
+    NODEVERSION="$(cat node-version.txt)"
+    NODEVERSION="${NODEVERSION%?}"
+    INSTALLVERSION="node-$NODEVERSION"
+    MESSAGE="Installing Nodejs version $NODEVERSION..." ; blue_echo
+    curl -fsSLO "https://nodejs.org/dist/$NODEVERSION/$INSTALLVERSION.pkg"
     sudo installer -pkg node-*.pkg -target /
     rm -rf node-*.pkg
+    rm -f node-*.txt
 
     # Install particle-cli
     MESSAGE="Installing particle-cli..." ; blue_echo
