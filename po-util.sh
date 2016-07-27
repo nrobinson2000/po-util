@@ -371,7 +371,7 @@ then
     MESSAGE="Installing ARM toolchain..." ; blue_echo
     brew install gcc-arm-none-eabi-49 dfu-util
 
-    # Install Nodejs
+    # Install Node.js
     curl -Ss https://nodejs.org/dist/ > node-result.txt
     cat node-result.txt | grep "<a href=\"v" > node-new.txt
     tail -1 node-new.txt > node-oneline.txt
@@ -379,7 +379,7 @@ then
     NODEVERSION="$(cat node-version.txt)"
     NODEVERSION="${NODEVERSION%?}"
     INSTALLVERSION="node-$NODEVERSION"
-    MESSAGE="Installing Nodejs version $NODEVERSION..." ; blue_echo
+    MESSAGE="Installing Node.js version $NODEVERSION..." ; blue_echo
     curl -fsSLO "https://nodejs.org/dist/$NODEVERSION/$INSTALLVERSION.pkg"
     sudo installer -pkg node-*.pkg -target /
     rm -rf node-*.pkg
