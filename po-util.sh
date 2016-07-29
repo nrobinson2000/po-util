@@ -250,7 +250,7 @@ if [ "$(uname -s)" == "Darwin" ];
 
     #THIS COULD BE IMPROVED!
     GCC_ARM_VER=gcc-arm-none-eabi-4_9-2015q3 # Updated to 4.9
-    export GCC_ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin
+    export GCC_ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/
     export PATH=$GCC_ARM_PATH:$PATH
 fi
 
