@@ -273,7 +273,7 @@ fi
 source "$SETTINGS"
 
 # GCC path for linux make utility
-if [ $GCC_ARM_PATH ]; then GCC_MAKE=$GCC_ARM_PATH ; fi
+if [ $GCC_ARM_PATH ]; then GCC_MAKE=$GCC_ARM_PATH/arm-none-eabi-gcc ; fi
 
 if [ "$1" == "install" ]; # Install
 then
