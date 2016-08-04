@@ -22,20 +22,20 @@
 # Helpful Tables: (*Please* update these lists if you make any modifications!)
 #
     #---SUBCOMMAND------LINE#-#       #--GITHUB CONTRIBUTORS-#
-    #-  help            177  -#       #- @nrobinson2000     -#
-    #-  install         278  -#       #- @mrmowgli          -#
-    #-  init            397  -#       #- @GeertWille        -#
-    #-  serial          425  -#       #-                    -#
-    #-  dfu-open        439  -#       #-                    -#
-    #-  dfu-close       446  -#       #-                    -#
-    #-  update          453  -#       #-                    -#
-    #-  dfu             501  -#       #-                    -#
-    #-  upgrade / patch 512  -#       #-                    -#
-    #-  clean           532  -#       #-                    -#
-    #-  ota             547  -#       #-                    -#
-    #-  build           558  -#       #-                    -#
-    #-  debug-build     566  -#       #-                    -#
-    #-  flash           574  -#       #-                    -#
+    #-  help            264  -#       #- @nrobinson2000     -#
+    #-  install         376  -#       #- @mrmowgli          -#
+    #-  init            495  -#       #- @GeertWille        -#
+    #-  serial          523  -#       #-                    -#
+    #-  dfu-open        537  -#       #-                    -#
+    #-  dfu-close       544  -#       #-                    -#
+    #-  update          551  -#       #-                    -#
+    #-  dfu             600  -#       #-                    -#
+    #-  upgrade / patch 615  -#       #-                    -#
+    #-  clean           635  -#       #-                    -#
+    #-  ota             651  -#       #-                    -#
+    #-  build           675  -#       #-                    -#
+    #-  debug-build     683  -#       #-                    -#
+    #-  flash           691  -#       #-                    -#
     #-------------------------#       #----------------------#
 
 # Helper functions
@@ -145,8 +145,14 @@ function find_bin() #Like choose_directory but for .bin files
           then
             FIRMWAREBIN="$CWD/$1"
           else
+            if [ "$FIRMWAREBIN" == "." ];
+            then
+              cd "$CWD/.."
+              FIRMWAREBIN="$(pwd)/bin/firmware.bin"
+            else
             MESSAGE="Firmware not found." ; red_echo
           exit
+            fi
           fi
         fi
       fi
@@ -155,7 +161,80 @@ function find_bin() #Like choose_directory but for .bin files
 else
   FIRMWAREBIN="$CWD/bin/firmware.bin"
 fi
-echo "$FIRMWAREBIN"
+if [ -f "$FIRMWAREBIN" ];
+  then
+    FIRMWAREBIN="$FIRMWAREBIN"
+  else
+    echo
+    MESSAGE="Firmware not found." ; red_echo
+    MESSAGE="Perhaps you need to build your firmware?" ; blue_echo
+    FINDBINFAIL="true"
+    echo
+fi
+}
+
+function find_devices() #Like find_bin but for devices.txt files
+{
+  if [ "$1" != "" ];
+  then
+    case "$1" in
+      */)
+       #"has slash"
+       DEVICESFILE="${1%?}"
+       ;;
+     *)
+       echo "doesn't have a slash" > /dev/null
+     DEVICESFILE="$1"
+       ;;
+    esac
+      if [ -f "$CWD/$DEVICESFILE/devices.txt" ]; # If .bin file is not found relative to CWD, use absolute path instead.
+      then
+      DEVICESFILE="$CWD/$DEVICESFILE/devices.txt"
+  else
+    if [ -f "$CWD/devices.txt" ];
+    then
+      DEVICESFILE="$CWD/devices.txt"
+    else
+      if [ -f "$CWD/devices.txt" ];
+      then
+        DEVICESFILE="$CWD/devices.txt"
+      else
+        if [ -f "$1" ];
+        then
+          DEVICESFILE="$1"
+        else
+          if [ -f "$CWD/$1" ];
+          then
+            DEVICESFILE="$CWD/$1"
+          else
+            if [ "$DEVICESFILE" == "." ];
+            then
+              cd "$CWD/.."
+              DEVICESFILE="$(pwd)/devices.txt"
+            else
+              MESSAGE="devices.txt not found." ; red_echo
+              exit
+            fi
+          fi
+        fi
+      fi
+    fi
+  fi
+else
+  DEVICESFILE="$CWD/devices.txt"
+fi
+if [ -f "$DEVICESFILE" ];
+  then
+    DEVICES="$(cat $DEVICESFILE)"
+  else
+    MESSAGE="devices.txt not found." ; red_echo
+    MESSAGE="You need to create a \"devices.txt\" file in your project directory with the names of your devices on each line." ; blue_echo
+    MESSAGE="Example:" ; green_echo
+    echo "    product1
+    product2
+    product3
+"
+fi
 }
 
 build_message() {
@@ -167,6 +246,14 @@ build_message() {
 
 dfu_open()
 {
+  if [ -f "$MODEM" ];
+  then
+  MODEM="$MODEM"
+  else
+    echo
+    MESSAGE="Device not found!" ; red_echo
+    MESSAGE="Your device must be connected by USB."; blue_echo ; echo ; exit
+  fi
   stty "$STTYF" "$MODEM" "$DFUBAUDRATE"
 }
 
@@ -219,6 +306,17 @@ Commands:
   update       Update Particle firmware, particle-cli and po-util
   upgrade      Upgrade system firmware on device
   ota          Upload code Over The Air using particle-cli
+
+               NOTE: You can flash code to multiple devices at once by passing
+               the -m or --multi argument to \"ota\".
+               Ex.:
+                   po photon ota -m product-firmware/
+
+               NOTE: This is different from the product firmware update feature
+               in the Particle Console because it updates the firmware of
+               devices one at a time and only if the devices are online when
+               the command is run.
+
   serial       Monitor a device's serial output (Close with CRTL-A +D)
 
 DFU Commands:
@@ -405,15 +503,15 @@ then
   mkdir firmware/
   echo "#include \"application.h\"
 
-  void setup() // Put setup code here to run once
-  {
+void setup() // Put setup code here to run once
+{
 
-  }
+}
 
-  void loop() // Put code here to loop forever
-  {
+void loop() // Put code here to loop forever
+{
 
-  }" > firmware/main.cpp
+}" > firmware/main.cpp
   cp *.cpp firmware/
   cp *.h firmware/
   ls firmware/ | grep -v "particle.include" | cat > firmware/particle.include
@@ -469,6 +567,7 @@ fi
 # Make sure we are using photon, P1, or electron
 if [ "$1" == "photon" ] || [ "$1" == "P1" ] || [ "$1" == "electron" ];
 then
+  echo
   MESSAGE="$1 selected." ; blue_echo
 else
   MESSAGE="Please choose \"photon\", \"P1\" or \"electron\", or choose a proper command." ; red_echo ; exit
@@ -500,10 +599,14 @@ fi
 # Flash already compiled binary
 if [ "$2" == "dfu" ];
 then
+  find_bin "$3"
+  if [ "$FINDBINFAIL" == "true" ];
+  then
+    exit
+  fi
   dfu_open "$@"
   sleep 1
-  find_bin "$3"
-  echo "$FIRMWAREBIN"
+  MESSAGE="Flashing $FIRMWAREBIN with dfu-util..." ; blue_echo
   dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$FIRMWAREBIN" || ( MESSAGE="Device not found." ; red_echo )
   exit
 fi
@@ -544,13 +647,27 @@ then
 fi
 
 # Flash binary over the air
+# Use --multi to flash multiple devices at once.  This reads a file named devices.txt
 if [ "$2" == "ota" ];
 then
+  find_bin "$4"
   if [ "$3" == "" ];
   then
     MESSAGE="Please specify which device to flash ota." ; red_echo ; exit
   fi
-  find_bin "$4"
+
+  if [ "$3" == "--multi" ] || [ "$3" == "-m" ];
+  then
+    find_devices "$4"
+    for DEVICE in $DEVICES ; do
+      echo
+      MESSAGE="Flashing to device $DEVICE..." ; blue_echo
+      particle flash "$DEVICE" "$FIRMWAREBIN" || ( MESSAGE="Try using \"particle flash\" if you are having issues." ; red_echo )
+    done
+    exit
+  fi
+  echo
+  MESSAGE="Flashing to device $3..." ; blue_echo
   particle flash "$3" "$FIRMWAREBIN" || ( MESSAGE="Try using \"particle flash\" if you are having issues." ; red_echo )
   exit
 fi
