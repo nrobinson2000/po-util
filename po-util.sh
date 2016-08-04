@@ -467,7 +467,7 @@ then
 
     # Install ARM toolchain
     MESSAGE="Installing ARM toolchain..." ; blue_echo
-    brew install gcc-arm-none-eabi-49-20150306 dfu-util
+    brew install gcc-arm-none-eabi dfu-util
 
     # Install Node.js
     curl -Ss https://nodejs.org/dist/ > node-result.txt
