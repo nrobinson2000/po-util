@@ -18,100 +18,92 @@
 # source code.
 # Read more at https://github.com/nrobinson2000/po-util
 # ACII Art Generated from: http://www.patorjk.com/software/taag
-#
-# Helpful Tables: (*Please* update these lists if you make any modifications!)
-#
-    #---SUBCOMMAND------LINE#-#       #--GITHUB CONTRIBUTORS-#
-    #-  help            264  -#       #- @nrobinson2000     -#
-    #-  install         376  -#       #- @mrmowgli          -#
-    #-  init            495  -#       #- @GeertWille        -#
-    #-  serial          523  -#       #-                    -#
-    #-  dfu-open        537  -#       #-                    -#
-    #-  dfu-close       544  -#       #-                    -#
-    #-  update          551  -#       #-                    -#
-    #-  dfu             600  -#       #-                    -#
-    #-  upgrade / patch 615  -#       #-                    -#
-    #-  clean           635  -#       #-                    -#
-    #-  ota             651  -#       #-                    -#
-    #-  build           675  -#       #-                    -#
-    #-  debug-build     683  -#       #-                    -#
-    #-  flash           691  -#       #-                    -#
-    #-------------------------#       #----------------------#
 
 # Helper functions
-function pause(){
+function pause()
+{
   read -rp "$*"
 }
 
-blue_echo() {
+blue_echo()
+{
   echo "$(tput setaf 6)$(tput bold)$MESSAGE$(tput sgr0)"
 }
 
-green_echo() {
+green_echo()
+{
   echo "$(tput setaf 2)$(tput bold)$MESSAGE$(tput sgr0)"
 }
 
-red_echo() {
+red_echo()
+{
   echo "$(tput setaf 1)$(tput bold)$MESSAGE$(tput sgr0)"
 }
 
-choose_directory()
+function find_directory()
 {
-  if [ "$3" != "" ];
+  if [ "$1" != "" ];
   then
-    if [ -d "$3" ];
-    then
-      FIRMWAREDIR="$3"
-
-      if [ -d "$CWD/$FIRMWAREDIR/firmware" ];  # If firmwaredir is not found relative to CWD, use absolute path instead.
-      then
-        FIRMWAREDIR="$CWD/$FIRMWAREDIR/firmware"
-      else
-        if [ -d "$FIRMWAREDIR/firmware" ]; # Use absolute path / firmware
-        then
-          FIRMWAREDIR="$FIRMWAREDIR/firmware"
-          echo "Found firmwaredir" > /dev/null # Continue
-        fi
-        if [ -d "$FIRMWAREDIR" ]; # Use absolute path
-        then
-          echo "Found firmwaredir" > /dev/null # Continue
-        fi
-      fi #  CLOSE: if [ -d "$CWD/$FIRMWAREDIR/firmware" ]
-
-    # Remove '/' from end of string
-    case "$FIRMWAREDIR" in
+    case "$1" in
       */)
        #"has slash"
-       FIRMWAREDIR="${FIRMWAREDIR%?}"
+       FIRMWAREDIR="${1%?}"
        ;;
      *)
        echo "doesn't have a slash" > /dev/null
+     FIRMWAREDIR="$1"
        ;;
     esac
-
-    if [ "$3" == "." ];
+      if [ -d "$CWD/$FIRMWAREDIR/firmware" ]; # If .bin file is not found relative to CWD, use absolute path instead.
+      then
+      FIRMWAREDIR="$CWD/$FIRMWAREDIR/firmware"
+  else
+    if [ -d "$CWD/firmware" ];
     then
-      FIRMWAREDIR="$CWD"
-    fi
-    else # of if [ -d "$3" ];
-
-      MESSAGE="Firmware directory not found.
-Please run \"po init\" to setup this repository or choose a valid directory." ; red_echo ; exit
-    fi # CLOSE: if [ -d "$3" ];
-
-  else # of if [ "$3" != "" ];
-
-    if [ -d firmware ];
+      FIRMWAREDIR="$CWD/firmware"
+    else
+      if [ -d "$CWD/firmware" ];
       then
         FIRMWAREDIR="$CWD/firmware"
-    else
-        MESSAGE="Firmware directory not found.
-Please run \"po init\" to setup this repository or cd to a valid directory." ; red_echo ; exit
+      else
+        if [ -d "$1" ];
+        then
+          FIRMWAREDIR="$1"
+        else
+          if [ -d "$CWD/$1" ];
+          then
+            FIRMWAREDIR="$CWD/$1"
+          else
+            if [ "$FIRMWAREDIR" == "." ];
+            then
+              cd "$CWD/.."
+              FIRMWAREDIR="$(pwd)/firmware"
+            else
+              MESSAGE="Firmware directory not found.
+Please run \"po init\" to setup this repository or choose a valid directory." ; red_echo ; exit
+          exit
+            fi
+          fi
+        fi
+      fi
     fi
   fi
+else
+  FIRMWAREDIR="$CWD/firmware"
+fi
+if [ -d "$FIRMWAREDIR" ];
+  then
+    FIRMWAREDIR="$FIRMWAREDIR"
+  else
+    echo
+    MESSAGE="Firmware directory not found.
+Please run \"po init\" to setup this repository or choose a valid directory." ; red_echo ; exit
+    FINDDIRFAIL="true"
+    echo
+fi
 }
 
-function find_bin() #Like choose_directory but for .bin files
+function find_bin() #Like find_directory but for .bin files
 {
   if [ "$1" != "" ];
   then
@@ -488,7 +480,8 @@ then
     sudo npm install -g node-pre-gyp npm serialport particle-cli
   fi # CLOSE: "$OS" == "Darwin"
 
-  cd "$CWD" && MESSAGE="Sucessfully Installed!" ; green_echo && exit
+  MESSAGE="Sucessfully Installed!" ; green_echo
+  exit
 fi
 
 # Create our project files
@@ -557,7 +550,6 @@ then
   MESSAGE="Updating particle-cli..." ; blue_echo
   sudo npm update -g particle-cli
   MESSAGE="Updating po-util.." ; blue_echo
-  # curl -fsS https://raw.githubusercontent.com/nrobinson2000/po-util/po-util.com/update | bash ##nrobinson2000: People don't like piping curl to bash
   rm ~/po-util.sh
   curl -fsSLo ~/po-util.sh https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
   chmod +x ~/po-util.sh
@@ -634,15 +626,14 @@ fi
 # Clean firmware directory
 if [ "$2" == "clean" ];
 then
-    cd "$CWD" || exit
-    choose_directory "$@"
-    cd "$BASE_FIRMWARE"/firmware || exit
-    make clean
-    cd "$CWD" || exit
+    find_directory "$3"
+    make clean -s 2>&1 /dev/null
     if [ "$FIRMWAREDIR/../bin" != "$HOME/bin" ];
     then
       rm -rf "$FIRMWAREDIR/../bin"
     fi
+    MESSAGE="Sucessfully cleaned." ; blue_echo
+    echo
   exit
 fi
 
@@ -674,24 +665,21 @@ fi
 
 if [ "$2" == "build" ];
 then
-  cd "$CWD" || exit
-    choose_directory "$@"
+    find_directory "$3"
     make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1" $GCC_MAKE  || exit
     build_message "$@"
 fi
 
 if [ "$2" == "debug-build" ];
 then
-    cd "$CWD" || exit
-    choose_directory "$@"
+    find_directory "$3"
     make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1" DEBUG_BUILD="y" $GCC_MAKE  || exit
     build_message "$@"
 fi
 
 if [ "$2" == "flash" ];
 then
-    cd "$CWD" || exit
-    choose_directory "$@"
+    find_directory "$3"
     dfu_open "$@"
     make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1"  $GCC_MAKE  || exit
     dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$FIRMWAREDIR/../bin/firmware.bin"
