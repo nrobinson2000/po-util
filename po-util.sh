@@ -507,8 +507,8 @@ void loop() // Put code here to loop forever
 {
 
 }" > firmware/main.cpp
-  cp *.cpp firmware/ 2>&1 /dev/null
-  cp *.h firmware/ 2>&1 /dev/null
+  cp *.cpp firmware/
+  cp *.h firmware/
   ls firmware/ | grep -v "particle.include" | cat > firmware/particle.include
   MESSAGE="Copied c++ files into firmware directory.  Setup complete." ; green_echo
   exit
