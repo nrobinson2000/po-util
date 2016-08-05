@@ -400,6 +400,9 @@ then
     echo 'alias po="~/po-util.sh"' >> ~/.bashrc
   fi
 
+  #Download po-util-README.md
+  curl -o ~/.po-util-README.md https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util-README.md
+
   # Check to see if we need to override the install directory.
   if [ "$2" ] && [ "$2" != $BASE_FIRMWARE ]
   then
@@ -509,7 +512,7 @@ void loop() // Put code here to loop forever
 }" > firmware/main.cpp
   cp *.cpp firmware/
   cp *.h firmware/
-  ls firmware/ | grep -v "particle.include" | cat > firmware/particle.include
+  cp ~/.po-util-README.md README.md
   MESSAGE="Copied c++ files into firmware directory.  Setup complete." ; green_echo
   exit
 fi
@@ -555,6 +558,8 @@ then
   rm ~/po-util.sh
   curl -fsSLo ~/po-util.sh https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
   chmod +x ~/po-util.sh
+  rm ~/.po-util-README.md
+  curl -fsSLo ~/.po-util-README.md https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util-README.md
   exit
 fi
 
