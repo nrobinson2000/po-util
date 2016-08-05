@@ -341,7 +341,7 @@ if [ "$(uname -s)" == "Darwin" ];
     #THIS COULD BE IMPROVED!
     GCC_ARM_VER=gcc-arm-none-eabi-4_9-2015q3 # Updated to 4.9
     export GCC_ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/
-    export PATH=$GCC_ARM_PATH:$PATH
+    # export PATH=$GCC_ARM_PATH:$PATH
 fi
 
 # Check if we have a saved settings file.  If not, create it.
@@ -422,6 +422,8 @@ then
     mkdir -p $BINDIR/gcc-arm-embedded && cd "$_" || exit
     wget https://launchpad.net/gcc-arm-embedded/4.9/4.9-2015-q3-update/+download/gcc-arm-none-eabi-4_9-2015q3-20150921-linux.tar.bz2 #Update to v4.9
     tar xjf gcc-arm-none-eabi-*-linux.tar.bz2
+
+    sudo ln -s $GCC_ARM_PATH* /usr/local/bin # LINK gcc-arm-none-eabi
 
     curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
     sudo apt-get install -y nodejs python-software-properties python g++ make build-essential libusb-1.0-0-dev libarchive-zip-perl screen
