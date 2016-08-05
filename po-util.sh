@@ -267,7 +267,7 @@ MESSAGE="                                                     __      __  __
             ███████/   ██████/           ██████/     ████/  ██/ ██/
             ██ |
             ██ |
-            ██/                               http://po-util.com
+            ██/                               https://po-util.com
 "
 blue_echo
 echo "Copyright (GPL) 2016  Nathan Robinson
