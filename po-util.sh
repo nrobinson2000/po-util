@@ -220,7 +220,8 @@ if [ -f "$DEVICESFILE" ];
     DEVICES="$(cat $DEVICESFILE)"
   else
     MESSAGE="devices.txt not found." ; red_echo
-    MESSAGE="You need to create a \"devices.txt\" file in your project directory with the names of your devices on each line." ; blue_echo
+    MESSAGE="You need to create a \"devices.txt\" file in your project directory with the names
+of your devices on each line." ; blue_echo
     MESSAGE="Example:" ; green_echo
     echo "    product1
     product2
