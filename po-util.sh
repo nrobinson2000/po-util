@@ -422,7 +422,7 @@ then
     mkdir -p $BINDIR/gcc-arm-embedded && cd "$_" || exit
     wget https://launchpad.net/gcc-arm-embedded/4.9/4.9-2015-q3-update/+download/gcc-arm-none-eabi-4_9-2015q3-20150921-linux.tar.bz2 #Update to v4.9
     tar xjf gcc-arm-none-eabi-*-linux.tar.bz2
-
+    MESSAGE="Creating links in /usr/local/bin" ; blue_echo
     sudo ln -s $GCC_ARM_PATH* /usr/local/bin # LINK gcc-arm-none-eabi
 
     curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
