@@ -40,132 +40,7 @@ red_echo()
   echo "$(tput setaf 1)$(tput bold)$MESSAGE$(tput sgr0)"
 }
 
-function find_directory()
-{
-  if [ "$1" != "" ];
-  then
-    case "$1" in
-      */)
-       #"has slash"
-       FIRMWAREDIR="${1%?}"
-       ;;
-     *)
-       echo "doesn't have a slash" > /dev/null
-     FIRMWAREDIR="$1"
-       ;;
-    esac
-      if [ -d "$CWD/$FIRMWAREDIR/firmware" ]; # If .bin file is not found relative to CWD, use absolute path instead.
-      then
-      FIRMWAREDIR="$CWD/$FIRMWAREDIR/firmware"
-  else
-    if [ -d "$CWD/firmware" ];
-    then
-      FIRMWAREDIR="$CWD/firmware"
-    else
-      if [ -d "$CWD/firmware" ];
-      then
-        FIRMWAREDIR="$CWD/firmware"
-      else
-        if [ -d "$1" ];
-        then
-          FIRMWAREDIR="$1"
-        else
-          if [ -d "$CWD/$1" ];
-          then
-            FIRMWAREDIR="$CWD/$1"
-          else
-            if [ "$FIRMWAREDIR" == "." ];
-            then
-              cd "$CWD/.."
-              FIRMWAREDIR="$(pwd)/firmware"
-            else
-              MESSAGE="Firmware directory not found.
-Please run \"po init\" to setup this repository or choose a valid directory." ; red_echo ; exit
-          exit
-            fi
-          fi
-        fi
-      fi
-    fi
-  fi
-else
-  FIRMWAREDIR="$CWD/firmware"
-fi
-if [ -d "$FIRMWAREDIR" ];
-  then
-    FIRMWAREDIR="$FIRMWAREDIR"
-  else
-    echo
-    MESSAGE="Firmware directory not found.
-Please run \"po init\" to setup this repository or choose a valid directory." ; red_echo ; exit
-    FINDDIRFAIL="true"
-    echo
-fi
-}
-
-function find_bin() #Like find_directory but for .bin files
-{
-  if [ "$1" != "" ];
-  then
-    case "$1" in
-      */)
-       #"has slash"
-       FIRMWAREBIN="${1%?}"
-       ;;
-     *)
-       echo "doesn't have a slash" > /dev/null
-     FIRMWAREBIN="$1"
-       ;;
-    esac
-      if [ -f "$CWD/$FIRMWAREBIN/bin/firmware.bin" ]; # If .bin file is not found relative to CWD, use absolute path instead.
-      then
-      FIRMWAREBIN="$CWD/$FIRMWAREBIN/bin/firmware.bin"
-  else
-    if [ -f "$CWD/bin/firmware.bin" ];
-    then
-      FIRMWAREBIN="$CWD/bin/firmware.bin"
-    else
-      if [ -f "$CWD/firmware.bin" ];
-      then
-        FIRMWAREBIN="$CWD/firmware.bin"
-      else
-        if [ -f "$1" ];
-        then
-          FIRMWAREBIN="$1"
-        else
-          if [ -f "$CWD/$1" ];
-          then
-            FIRMWAREBIN="$CWD/$1"
-          else
-            if [ "$FIRMWAREBIN" == "." ];
-            then
-              cd "$CWD/.."
-              FIRMWAREBIN="$(pwd)/bin/firmware.bin"
-            else
-            MESSAGE="Firmware not found." ; red_echo
-          exit
-            fi
-          fi
-        fi
-      fi
-    fi
-  fi
-else
-  FIRMWAREBIN="$CWD/bin/firmware.bin"
-fi
-if [ -f "$FIRMWAREBIN" ];
-  then
-    FIRMWAREBIN="$FIRMWAREBIN"
-  else
-    echo
-    MESSAGE="Firmware not found." ; red_echo
-    MESSAGE="Perhaps you need to build your firmware?" ; blue_echo
-    FINDBINFAIL="true"
-    echo
-fi
-}
-
-function find_devices() #Like find_bin but for devices.txt files
+function find_objects() #Consolidated function
 {
   if [ "$1" != "" ];
   then
@@ -173,52 +48,71 @@ function find_devices() #Like find_bin but for devices.txt files
       */)
        #"has slash"
        DEVICESFILE="${1%?}"
+       FIRMWAREDIR="${1%?}"
+       FIRMWAREBIN="${1%?}"
+       DIRECTORY="${1%?}"
        ;;
      *)
        echo "doesn't have a slash" > /dev/null
      DEVICESFILE="$1"
+     FIRMWAREDIR="$1"
+     FIRMWAREBIN="$1"
        ;;
     esac
-      if [ -f "$CWD/$DEVICESFILE/devices.txt" ]; # If .bin file is not found relative to CWD, use absolute path instead.
+      if [ -f "$CWD/$DEVICESFILE/devices.txt" ] || [ -d "$CWD/$FIRMWAREDIR/firmware" ] || [ -f "$CWD/$FIRMWAREBIN/bin/firmware.bin" ];
       then
       DEVICESFILE="$CWD/$DEVICESFILE/devices.txt"
+      FIRMWAREDIR="$CWD/$FIRMWAREDIR/firmware"
+      FIRMWAREBIN="$CWD/$FIRMWAREBIN/bin/firmware.bin"
   else
-    if [ -f "$CWD/devices.txt" ];
-    then
-      DEVICESFILE="$CWD/devices.txt"
-    else
-      if [ -f "$CWD/devices.txt" ];
-      then
-        DEVICESFILE="$CWD/devices.txt"
-      else
-        if [ -f "$1" ];
+        if [ -d "$DIRECTORY" ] && [ -d "$DIRECTORY/firmware" ];
         then
-          DEVICESFILE="$1"
+          DEVICESFILE="$DIRECTORY/devices.txt"
+          FIRMWAREDIR="$DIRECTORY/firmware"
+          FIRMWAREBIN="$DIRECTORY/bin/firmware.bin"
         else
-          if [ -f "$CWD/$1" ];
+          if [ -d "$CWD/$DIRECTORY" ];
           then
-            DEVICESFILE="$CWD/$1"
+            DEVICESFILE="$CWD/$DIRECTORY/../devices.txt"
+            FIRMWAREDIR="$CWD/$DIRECTORY"
+            FIRMWAREBIN="$CWD/$DIRECTORY/../bin/firmware.bin"
           else
-            if [ "$DEVICESFILE" == "." ];
+            if [ "$DIRECTORY" == "." ];
             then
               cd "$CWD/.."
               DEVICESFILE="$(pwd)/devices.txt"
-            else
-              MESSAGE="devices.txt not found." ; red_echo
-              exit
+              FIRMWAREDIR="$CWD"
+              FIRMWAREBIN="$(pwd)/bin/firmware.bin"
             fi
           fi
         fi
-      fi
-    fi
   fi
 else
   DEVICESFILE="$CWD/devices.txt"
+  FIRMWAREDIR="$CWD/firmware"
+  FIRMWAREBIN="$CWD/bin/firmware.bin"
 fi
+
+if [ -d "$FIRMWAREDIR" ];
+  then
+    FIRMWAREDIR="$FIRMWAREDIR"
+  else
+    if [ "$DIRWARNING" == "true" ];
+    then
+      echo
+      MESSAGE="Firmware directory not found." ; red_echo
+      MESSAGE="Please run \"po init\" to setup this repository or choose a valid directory." ; blue_echo
+      echo
+    fi
+  FINDDIRFAIL="true"
+fi
+
 if [ -f "$DEVICESFILE" ];
   then
     DEVICES="$(cat $DEVICESFILE)"
   else
+    if [ "$DEVICEWARNING" == "true" ];
+    then
     MESSAGE="devices.txt not found." ; red_echo
     MESSAGE="You need to create a \"devices.txt\" file in your project directory with the names
 of your devices on each line." ; blue_echo
@@ -227,6 +121,22 @@ of your devices on each line." ; blue_echo
     product2
     product3
 "
+fi
+FINDDEVICESFAIL="true"
+fi
+
+if [ -f "$FIRMWAREBIN" ];
+  then
+    FIRMWAREBIN="$FIRMWAREBIN"
+  else
+    if [ "$BINWARNING" == "true" ];
+    then
+      echo
+      MESSAGE="Firmware Binary not found." ; red_echo
+      MESSAGE="Perhaps you need to build your firmware?" ; blue_echo
+      echo
+    fi
+  FINDBINFAIL="true"
 fi
 }
 
@@ -599,7 +509,8 @@ fi
 # Flash already compiled binary
 if [ "$2" == "dfu" ];
 then
-  find_bin "$3"
+  BINWARNING="true"
+  find_objects "$3"
   if [ "$FINDBINFAIL" == "true" ];
   then
     exit
@@ -634,7 +545,13 @@ fi
 # Clean firmware directory
 if [ "$2" == "clean" ];
 then
-    find_directory "$3"
+  DIRWARNING="true"
+  find_objects "$3"
+  if [ "$FINDDIRFAIL" == "true" ];
+  then
+    exit
+  fi
+
     make clean -s 2>&1 /dev/null
     if [ "$FIRMWAREDIR/../bin" != "$HOME/bin" ];
     then
@@ -649,7 +566,15 @@ fi
 # Use --multi to flash multiple devices at once.  This reads a file named devices.txt
 if [ "$2" == "ota" ];
 then
-  find_bin "$4"
+  DIRWARNING="true"
+  BINWARNING="true"
+
+  if [ "$FINDDIRFAIL" == "true" ] || [ "$FINDBINFAIL" == "true" ];
+  then
+    exit
+  fi
+
+  find_objects "$4"
   if [ "$3" == "" ];
   then
     MESSAGE="Please specify which device to flash ota." ; red_echo ; exit
@@ -657,7 +582,14 @@ then
 
   if [ "$3" == "--multi" ] || [ "$3" == "-m" ];
   then
+    DEVICEWARNING="true"
     find_devices "$4"
+
+    if [ "$FINDDEVICESFAIL" == "true" ];
+    then
+      exit
+    fi
+
     for DEVICE in $DEVICES ; do
       echo
       MESSAGE="Flashing to device $DEVICE..." ; blue_echo
@@ -673,21 +605,39 @@ fi
 
 if [ "$2" == "build" ];
 then
-    find_directory "$3"
+  DIRWARNING="true"
+  if [ "$FINDDIRFAIL" == "true" ];
+  then
+    exit
+  fi
+
+    find_objects "$3"
     make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1" $GCC_MAKE  || exit
     build_message "$@"
 fi
 
 if [ "$2" == "debug-build" ];
 then
-    find_directory "$3"
+  DIRWARNING="true"
+  if [ "$FINDDIRFAIL" == "true" ];
+  then
+    exit
+  fi
+
+  find_objects "$3"
     make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1" DEBUG_BUILD="y" $GCC_MAKE  || exit
     build_message "$@"
 fi
 
 if [ "$2" == "flash" ];
 then
-    find_directory "$3"
+  DIRWARNING="true"
+  if [ "$FINDDIRFAIL" == "true" ];
+  then
+    exit
+  fi
+
+    find_objects "$3"
     dfu_open "$@"
     make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1"  $GCC_MAKE  || exit
     dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$FIRMWAREDIR/../bin/firmware.bin"
