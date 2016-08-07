@@ -445,7 +445,7 @@ fi
 # Put device into DFU mode
 if [ "$1" == "dfu-open" ];
 then
-  dfu_open "$@"
+  dfu_open
   exit
 fi
 
@@ -515,7 +515,7 @@ then
   then
     exit
   fi
-  dfu_open "$@"
+  dfu_open
   sleep 1
   MESSAGE="Flashing $FIRMWAREBIN with dfu-util..." ; blue_echo
   dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$FIRMWAREBIN" || ( MESSAGE="Device not found." ; red_echo )
@@ -638,7 +638,7 @@ then
   fi
 
     find_objects "$3"
-    dfu_open "$@"
+    dfu_open
     make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1"  $GCC_MAKE  || exit
     dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$FIRMWAREDIR/../bin/firmware.bin"
     exit
