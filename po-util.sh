@@ -163,6 +163,7 @@ dfu_open()
 # End of helper functions
 
 
+
 if [ "$1" == "" ]; # Print help
 then
 MESSAGE="                                                     __      __  __
