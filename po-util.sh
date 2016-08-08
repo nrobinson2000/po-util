@@ -163,7 +163,6 @@ dfu_open()
 # End of helper functions
 
 
-
 if [ "$1" == "" ]; # Print help
 then
 MESSAGE="                                                     __      __  __
@@ -226,7 +225,8 @@ DFU Commands:
   dfu         Quickly flash pre-compiled code
   dfu-open    Put device into DFU mode
   dfu-close   Get device out of DFU mode
-" && exit
+"
+exit
 fi
 
 # Configuration file is created at "~/.po"
