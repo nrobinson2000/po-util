@@ -149,7 +149,7 @@ build_message() {
 
 dfu_open()
 {
-  if [ -f "$MODEM" ];
+  if [ "$MODEM" != "" ];
   then
   MODEM="$MODEM"
   else
