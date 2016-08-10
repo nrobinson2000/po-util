@@ -569,13 +569,12 @@ if [ "$2" == "ota" ];
 then
   DIRWARNING="true"
   BINWARNING="true"
-
+  find_objects "$4"
   if [ "$FINDDIRFAIL" == "true" ] || [ "$FINDBINFAIL" == "true" ];
   then
     exit
   fi
 
-  find_objects "$4"
   if [ "$3" == "" ];
   then
     MESSAGE="Please specify which device to flash ota." ; red_echo ; exit
@@ -584,7 +583,7 @@ then
   if [ "$3" == "--multi" ] || [ "$3" == "-m" ];
   then
     DEVICEWARNING="true"
-    find_devices "$4"
+    find_objects "$4"
 
     if [ "$FINDDEVICESFAIL" == "true" ];
     then
@@ -607,12 +606,12 @@ fi
 if [ "$2" == "build" ];
 then
   DIRWARNING="true"
+  find_objects "$3"
   if [ "$FINDDIRFAIL" == "true" ];
   then
     exit
   fi
 
-    find_objects "$3"
     make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1" $GCC_MAKE  || exit
     build_message "$@"
 fi
@@ -620,12 +619,12 @@ fi
 if [ "$2" == "debug-build" ];
 then
   DIRWARNING="true"
+  find_objects "$3"
   if [ "$FINDDIRFAIL" == "true" ];
   then
     exit
   fi
 
-  find_objects "$3"
     make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1" DEBUG_BUILD="y" $GCC_MAKE  || exit
     build_message "$@"
 fi
@@ -633,12 +632,12 @@ fi
 if [ "$2" == "flash" ];
 then
   DIRWARNING="true"
+  find_objects "$3"
   if [ "$FINDDIRFAIL" == "true" ];
   then
     exit
   fi
 
-    find_objects "$3"
     dfu_open
     make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1"  $GCC_MAKE  || exit
     dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$FIRMWAREDIR/../bin/firmware.bin"
