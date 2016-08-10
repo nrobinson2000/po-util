@@ -1,4 +1,3 @@
-[![](https://img.shields.io/badge/po--util-wiki-brightgreen.svg)](https://github.com/nrobinson2000/po-util/wiki)
 <p align="center" >
 <img src="https://raw.githubusercontent.com/nrobinson2000/po-util/po-util.com/logos/po-util-updated.png" width="600px">
 </p>
