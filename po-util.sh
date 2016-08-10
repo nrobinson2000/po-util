@@ -100,7 +100,7 @@ if [ -d "$FIRMWAREDIR" ];
     if [ "$DIRWARNING" == "true" ];
     then
       echo
-      MESSAGE="Firmware directory not found." ; red_echo
+      MESSAGE="Firmware directory not found!" ; red_echo
       MESSAGE="Please run \"po init\" to setup this repository or choose a valid directory." ; blue_echo
       echo
     fi
@@ -113,7 +113,8 @@ if [ -f "$DEVICESFILE" ];
   else
     if [ "$DEVICEWARNING" == "true" ];
     then
-    MESSAGE="devices.txt not found." ; red_echo
+    echo
+    MESSAGE="devices.txt not found!" ; red_echo
     MESSAGE="You need to create a \"devices.txt\" file in your project directory with the names
 of your devices on each line." ; blue_echo
     MESSAGE="Example:" ; green_echo
@@ -132,7 +133,7 @@ if [ -f "$FIRMWAREBIN" ];
     if [ "$BINWARNING" == "true" ];
     then
       echo
-      MESSAGE="Firmware Binary not found." ; red_echo
+      MESSAGE="Firmware Binary not found!" ; red_echo
       MESSAGE="Perhaps you need to build your firmware?" ; blue_echo
       echo
     fi
