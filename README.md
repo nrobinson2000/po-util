@@ -48,71 +48,10 @@ When installing po-util, an alias is added to your `.bashrc` that allows you to 
 
 Note: We download everything from well known locations and GitHub.  While we believe this is a reasonable approach, it's always a good idea to know what's going on under the hood.  [The po-util script can be found on GitHub if you want to manually download and run it.](https://github.com/nrobinson2000/po-util/blob/master/po-util.sh)
 
-# Info
-```
-                                                     __      __  __
-                                                    /  |    /  |/  |
-              ______    ______           __    __  _██ |_   ██/ ██ |
-             /      \  /      \  ______ /  |  /  |/ ██   |  /  |██ |
-            /██████  |/██████  |/      |██ |  ██ |██████/   ██ |██ |
-            ██ |  ██ |██ |  ██ |██████/ ██ |  ██ |  ██ | __ ██ |██ |
-            ██ |__██ |██ \__██ |        ██ \__██ |  ██ |/  |██ |██ |
-            ██    ██/ ██    ██/         ██    ██/   ██  ██/ ██ |██ |
-            ███████/   ██████/           ██████/     ████/  ██/ ██/
-            ██ |
-            ██ |
-            ██/                               https://po-util.com
+<p align="center">
+<img src="images/po.png">
+</p>
 
-Copyright (GPL) 2016  Nathan Robinson
-
-Usage: po DEVICE_TYPE COMMAND DEVICE_NAME
-       po DFU_COMMAND
-       po install [full_install_path]
-
-Commands:
-  install      Download all of the tools needed for development.
-               Requires sudo. You can also re-install with this command.
-               You can optionally install to an alternate location by
-               specifying [full_install_path].
-               Example:
-                       po install ~/particle
-
-               By default, Firmware is installed in ~/github.
-
-  build        Compile code in \"firmware\" subdirectory
-  flash        Compile code and flash to device using dfu-util
-
-               NOTE: You can supply another argument to \"build\" and \"flash\"
-               to specify which firmware directory to compile.
-               Example:
-                       po photon flash photon-firmware/
-
-  clean        Refresh all code (Run after switching device or directory)
-  init         Initialize a new po-util project
-  update       Update Particle firmware, particle-cli and po-util
-  upgrade      Upgrade system firmware on device
-  ota          Upload code Over The Air using particle-cli
-
-               NOTE: You can flash code to multiple devices at once by passing
-               the -m or --multi argument to \"ota\".
-               Example:
-                       po photon ota -m product-firmware/
-
-               NOTE: This is different from the product firmware update feature
-               in the Particle Console because it updates the firmware of
-               devices one at a time and only if the devices are online when
-               the command is run.
-
-  serial       Monitor a device's serial output (Close with CRTL-A +D)
-
-DFU Commands:
-  dfu         Quickly flash pre-compiled code to your device.
-              Example:
-                      po photon dfu
-
-  dfu-open    Put device into DFU mode
-  dfu-close   Get device out of DFU mode
-```
 
 # Tips
 
