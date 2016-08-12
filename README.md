@@ -128,6 +128,7 @@ po-util_project/
 All of the C++ files go in the `firmware/` directory, and the compiled binary
 will appear in the `bin/` directory, named `firmware.bin`.
 
+## Building Firmware
 To compile code, simply run `po DEVICE build`, substituting `DEVICE` for
 `photon`, `P1`, or `electron`. To compile and flash code to your device using dfu-util, simply run `po DEVICE flash`. To clean the project, run `po DEVICE clean`.
 
