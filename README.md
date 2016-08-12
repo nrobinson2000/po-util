@@ -132,7 +132,7 @@ All of the C++ files go in the `firmware/` directory, and the compiled binary
 will appear in the `bin/` directory, named `firmware.bin`.
 
 ### Writing Firmware
-Po-util compiles and `.cpp` and `.h` files, but not `.ino` files, so `#include "application.h"` must be present in your `main.cpp` file.  This is done for you when you run the `po init` command to create a project directory.
+Po-util compiles any `.cpp` and `.h` files found in the `firmware/` directory, but not `.ino` files, so `#include "application.h"` must be present in your `main.cpp` file.  This is done for you when you run the `po init` command to create a project directory.
 
 ### Building Firmware
 To compile firmware, simply run `po DEVICE build`, substituting `DEVICE` for
