@@ -110,7 +110,7 @@ DFU Commands:
 
 # Tips
 
-###### Here are some helpful tips to assist you while working with po-util.
+##### Here are some helpful tips to assist you while working with po-util.
 
 ### Project Directory Structure
 The directory structure of a full po-util project is arranged like so:
