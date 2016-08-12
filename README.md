@@ -143,17 +143,7 @@ feature. You can log into particle-cli with `particle cloud login`.***
 This relies on a file called `devices.txt` that you must create in your po-util
 project directory.
 
-`devices.txt` must contain the names of your devices on individual lines.
-
-Example:
-
-    product1
-    product2
-    product3
-
-NOTE: This is different from the product firmware update feature in the
-Particle Console because it updates the firmware of devices one at a time and
-only if the devices are online when the command is run.
+**NOTE: This is different from the product firmware update feature in the Particle Console because it updates the firmware of devices one at a time and only if the devices are online when the command is run.**
 
 For more help, run the `po` command with no arguments,
 or visit https://po-util.com
