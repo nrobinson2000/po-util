@@ -138,8 +138,8 @@ run `po DEVICE ota DEVICE_NAME`, where `DEVICE_NAME` is the name of your device
 in the Particle cloud.  ***Note: You must be logged into particle-cli to use this
 feature. You can log into particle-cli with `particle cloud login`.***
 
-You can also flash code to multiple devices at once by passing the `-m` or
-`--multi` argument to `ota`.  This would look like `po DEVICE ota -m`.
+***You can also flash code to multiple devices at once by passing the `-m` or
+`--multi` argument to `ota`.***  This would look like `po DEVICE ota -m`.
 This relies on a file called `devices.txt` that you must create in your po-util
 project directory.
 
