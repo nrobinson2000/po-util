@@ -25,7 +25,7 @@ git clone https://github.com/nrobinson2000/po-util
 cd po-util
 ./po-util.sh install
 ```
-**Or you can directly download and run the script in Terminal:*
+**Or you can directly download and run the script in Terminal:**
 ```
 curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
 ./po-util.sh install
