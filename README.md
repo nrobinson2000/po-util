@@ -135,8 +135,8 @@ To upload precompiled code over USB, run `po DEVICE dfu`. To put your device int
 
 To upload precompiled code over the air using particle-cli,
 run `po DEVICE ota DEVICE_NAME`, where `DEVICE_NAME` is the name of your device
-in the Particle cloud.  *Note: You must be logged into particle-cli to use this
-feature. You can log into particle-cli with `particle cloud login`.*
+in the Particle cloud.  ***Note: You must be logged into particle-cli to use this
+feature. You can log into particle-cli with `particle cloud login`.***
 
 You can also flash code to multiple devices at once by passing the `-m` or
 `--multi` argument to `ota`.  This would look like `po DEVICE ota -m`.
