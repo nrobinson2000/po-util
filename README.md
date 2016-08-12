@@ -132,8 +132,10 @@ will appear in the `bin/` directory, named `firmware.bin`.
 To compile code, simply run `po DEVICE build`, substituting `DEVICE` for
 `photon`, `P1`, or `electron`. To compile and flash code to your device using dfu-util, simply run `po DEVICE flash`. To clean the project, run `po DEVICE clean`.
 
+### DFU Commands
 To upload precompiled code over USB, run `po DEVICE dfu`. To put your device into dfu mode, run `po dfu-open`. To get your device out of dfu mode, run `po dfu-close`.
 
+### Over The Air (OTA) Uploading
 To upload precompiled code over the air using particle-cli,
 run `po DEVICE ota DEVICE_NAME`, where `DEVICE_NAME` is the name of your device
 in the Particle cloud.  ***Note: You must be logged into particle-cli to use this
