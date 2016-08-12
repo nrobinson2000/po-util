@@ -192,8 +192,8 @@ Commands:
                Requires sudo. You can also re-install with this command.
                You can optionally install to an alternate location by
                specifying [full_install_path].
-               Ex.:
-                   po install ~/particle
+               Example:
+                       po install ~/particle
 
                By default, Firmware is installed in ~/github.
 
@@ -202,8 +202,8 @@ Commands:
 
                NOTE: You can supply another argument to \"build\" and \"flash\"
                to specify which firmware directory to compile.
-               Ex.:
-                   po photon flash photon-firmware/
+               Example:
+                       po photon flash photon-firmware/
 
   clean        Refresh all code (Run after switching device or directory)
   init         Initialize a new po-util project
@@ -213,8 +213,8 @@ Commands:
 
                NOTE: You can flash code to multiple devices at once by passing
                the -m or --multi argument to \"ota\".
-               Ex.:
-                   po photon ota -m product-firmware/
+               Example:
+                       po photon ota -m product-firmware/
 
                NOTE: This is different from the product firmware update feature
                in the Particle Console because it updates the firmware of
@@ -224,7 +224,10 @@ Commands:
   serial       Monitor a device's serial output (Close with CRTL-A +D)
 
 DFU Commands:
-  dfu         Quickly flash pre-compiled code
+  dfu         Quickly flash pre-compiled code to your device.
+              Example:
+                      po photon dfu
+
   dfu-open    Put device into DFU mode
   dfu-close   Get device out of DFU mode
 "
