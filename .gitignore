@@ -4,3 +4,4 @@ _site/*
 bin/*
 *.bin
 temp.sh
+temp.txt

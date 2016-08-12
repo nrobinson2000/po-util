@@ -110,45 +110,66 @@ DFU Commands:
 
 # Tips
 
-The three most useful commands are `build`, `flash` and `clean`. Build compiles code in a `"firmware"` subdirectory and saves it as a `.bin` file in a `"bin"` subdirectory. Flash does the same, but uploads the compiled `.bin` to your device using dfu-util. Clean refreshes the Particle firmware source code.
+Po-util makes it easy to develop firmware for Particle devices.
 
-A po-util project must be arranged like so:
+Po-util supports the Photon, P1, and Electron devices.
+
+Here is the directory structure of a full po-util project:
 
 ```
 po-util_project/
-  └ firmware/
-    └ main.cpp
-    └ lib.cpp
-    └ lib.h
+  ├ firmware/
+  | ├ main.cpp
+  | ├ lib.cpp
+  | └ lib.h
+  ├ bin/
+  | ├ firmware.bin
+  | └ ...
+  ├ devices.txt
+  └ README.md
 ```
 
-Since po-util compiles `.cpp` and not `.ino` files, `#include "application.h"` must be present in your `main.cpp` file.
+All of the C++ files go in the `firmware/` directory, and the compiled binary
+will appear in the `bin/` directory, named `firmware.bin`.
 
-A blank `main.cpp` would look like:
+To compile code, simply run `po DEVICE build`, substituting `DEVICE` for
+`photon`, `P1`, or `electron`.
 
-```
-#include "application.h"
+To compile and flash code, simply run `po DEVICE flash`. Code is compiled and
+then flashed to your device over USB using dfu-util.
 
-void setup()
-{
+To clean the project, run `po DEVICE clean`.
 
-}
+To upload precompiled code over USB, run `po DEVICE dfu`.
 
-void loop()
-{
+To put your device into dfu mode, run `po dfu-open`.
 
-}
-```
-One of the features of po-util is that it changes the baud rate to trigger dfu mode on Particle devices from `14400` to `19200`. **The reason for this is because Linux can not easily use 14400 as a baud rate.** To enable this feature, connect your device and put it into DFU mode, and type:
+To get your device out of dfu mode, run `po dfu-close`.
 
-```
-po DEVICE_TYPE patch
+To upload precompiled code over the air using particle-cli,
+run `po DEVICE ota DEVICE_NAME`, where `DEVICE_NAME` is the name of your device
+in the Particle cloud.  Note: You must be logged into particle-cli to use this
+feature. You can log into particle-cli with `particle cloud login`.
 
-# Replace DEVICE_TYPE with either "photon" or "electron"
-```
+You can also flash code to multiple devices at once by passing the `-m` or
+`--multi` argument to `ota`.  This would look like `po DEVICE ota -m`.
+This relies on a file called `devices.txt` that you must create in your po-util
+project directory.
 
-Your computer will then recompile both parts of the Particle system firmware and flash each part to your device using dfu-util.
+`devices.txt` must contain the names of your devices on individual lines.
 
+Example:
+
+    product1
+    product2
+    product3
+
+NOTE: This is different from the product firmware update feature in the
+Particle Console because it updates the firmware of devices one at a time and
+only if the devices are online when the command is run.
+
+For more help, run the `po` command with no arguments,
+or visit https://po-util.com
 
 # Why I created this script
 
