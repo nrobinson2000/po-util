@@ -154,7 +154,7 @@ project directory.
 
 **NOTE: This is different from the product firmware update feature in the Particle Console because it updates the firmware of devices one at a time and only if the devices are online when the command is run.**
 
-### Triggering DFU mode
+### Triggering DFU mode on your Device(s)
 By default, po-util changes the trigger DFU Mode baud rate to `19200`, as it is a more friendly baud rate for Linux Distributions.  To make your device(s) recognize this baud rate, you must run `po DEVICE update`. This will also update the system firmware on your device(s).
 
 If you wish to use the default Particle DFU Mode baud rate, you may change the `DFUBAUDRATE=19200` line in the `~/.po` configuration file to `DFUBAUDRATE=14400`.
