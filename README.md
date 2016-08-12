@@ -110,11 +110,7 @@ DFU Commands:
 
 # Tips
 
-Po-util makes it easy to develop firmware for Particle devices.
-
-Po-util supports the Photon, P1, and Electron devices.
-
-Here is the directory structure of a full po-util project:
+The directory structure of a full po-util project is arranged like so:
 
 ```
 po-util_project/
