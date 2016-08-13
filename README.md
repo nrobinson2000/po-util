@@ -22,7 +22,7 @@ Po-util downloads and installs: [dfu-util](http://dfu-util.sourceforge.net/), [n
 
 
 <p align="center">
-<img src="images/build-new.png">
+<img src="images/build.png">
 </p>
 
 
@@ -82,6 +82,10 @@ Po-util compiles any `.cpp` and `.h` files found in the `firmware/` directory, b
 ### Building Firmware
 To compile firmware, simply run `po DEVICE build`, substituting `DEVICE` for
 `photon`, `P1`, or `electron`. To compile and flash firmware to your device using dfu-util, simply run `po DEVICE flash`. To clean the project, run `po DEVICE clean`.
+
+<p align="center">
+<img src="images/flash.png">
+</p>
 
 ### DFU Commands
 To upload precompiled code over USB, run `po DEVICE dfu`. To put your device into dfu mode, run `po dfu-open`. To get your device out of dfu mode, run `po dfu-close`.
