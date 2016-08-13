@@ -39,11 +39,11 @@
 <img src="images/build.png">
 </p>
 <h1>Install</h1>
-<p>The easiest and most secure way to install po-util is to download <code>po-util.sh</code> from <a href="https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh">GitHub</a> and run:</p>
+<p>The easiest and most secure way to install <strong>po-util</strong> is to download <code>po-util.sh</code> from <a href="https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh">GitHub</a> and run:</p>
 <pre><code>./po-util.sh install
 </code></pre>
-<p>to install po-util and dependencies.</p>
-<p><strong>You can also install po-util by cloning the GitHub repository:</strong></p>
+<p>to install <strong>po-util</strong> and dependencies.</p>
+<p><strong>You can also install <strong>po-util</strong> by cloning the GitHub repository:</strong></p>
 <pre><code>git clone https://github.com/nrobinson2000/po-util
 cd po-util
 ./po-util.sh install
@@ -52,15 +52,15 @@ cd po-util
 <pre><code>curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
 ./po-util.sh install
 </code></pre>
-<p>When installing po-util, an alias is added to your <code>.bashrc</code> that allows you to run <code>po</code> from anywhere to use po-util.</p>
-<p>Note: We download everything from well known locations and GitHub.  While we believe this is a reasonable approach, it's always a good idea to know what's going on under the hood.  <a href="https://github.com/nrobinson2000/po-util/blob/master/po-util.sh">The po-util script can be found on GitHub if you want to manually download and run it.</a></p>
+<p>When installing <strong>po-util</strong>, an alias is added to your <code>.bashrc</code> that allows you to run <code>po</code> from anywhere to use <strong>po-util</strong>.</p>
+<p>Note: We download everything from well known locations and GitHub. While we believe this is a reasonable approach, it's always a good idea to know what's going on under the hood.  <a href="https://github.com/nrobinson2000/po-util/blob/master/po-util.sh">The <strong>po-util</strong> script can be found on GitHub if you want to manually download and run it.</a></p>
 <p align="center">
 <img src="images/po.png">
 </p>
 <h1>Tips</h1>
-<h4>Here are some helpful tips to assist you while working with po-util.</h4>
+<h4>Here are some helpful tips to assist you while working with <strong>po-util</strong>.</h4>
 <h3>Project Directory Structure</h3>
-<p>The directory structure of a full po-util project is arranged like so:</p>
+<p>The directory structure of a full <strong>po-util</strong> project is arranged like so:</p>
 <pre><code>po-util_project/
   ├ firmware/
   | ├ main.cpp
@@ -75,7 +75,7 @@ cd po-util
 <p>All of the C++ files go in the <code>firmware/</code> directory, and the compiled binary
 will appear in the <code>bin/</code> directory, named <code>firmware.bin</code>.</p>
 <h3>Writing Firmware</h3>
-<p>Po-util compiles any <code>.cpp</code> and <code>.h</code> files found in the <code>firmware/</code> directory, but not <code>.ino</code> files, so <code>#include &quot;application.h&quot;</code> must be present in your <code>main.cpp</code> file.  This is done for you when you run the <code>po init</code> command to create a project directory.</p>
+<p><strong>Po-util</strong> compiles any <code>.cpp</code> and <code>.h</code> files found in the <code>firmware/</code> directory, but not <code>.ino</code> files, so <code>#include &quot;application.h&quot;</code> must be present in your <code>main.cpp</code> file.  This is done for you when you run the <code>po init</code> command to create a project directory.</p>
 <h3>Building Firmware</h3>
 <p>To compile firmware, simply run <code>po DEVICE build</code>, substituting <code>DEVICE</code> for
 <code>photon</code>, <code>P1</code>, or <code>electron</code>. To compile and flash firmware to your device using dfu-util, simply run <code>po DEVICE flash</code>. To clean the project, run <code>po DEVICE clean</code>.</p>
@@ -95,19 +95,19 @@ feature. You can log into particle-cli with <code>particle cloud login</code>.
 </p>
 <p>You can also flash code to multiple devices at once by passing the <code>-m</code> or
 <code>--multi</code> argument to <code>ota</code>.  This would look like <code>po DEVICE ota -m</code>.
-This relies on a file called <code>devices.txt</code> that you must create in your po-util
+This relies on a file called <code>devices.txt</code> that you must create in your <strong>po-util</strong>
 project directory.</p>
 <p><strong>NOTE: This is different from the product firmware update feature in the Particle Console because it updates the firmware of devices one at a time and only if the devices are online when the command is run.</strong></p>
 <p align="center">
 <img src="images/ota.png">
 </p>
 <h3>Triggering DFU mode on your Device(s)</h3>
-<p>By default, po-util changes the trigger DFU Mode baud rate to <code>19200</code>, as it is a more friendly baud rate for Linux Distributions.  To make your device(s) recognize this baud rate, you must run <code>po DEVICE update</code>. This will also update the system firmware on your device(s).</p>
+<p>By default, <strong>po-util</strong> changes the trigger DFU Mode baud rate to <code>19200</code>, as it is a more friendly baud rate for Linux Distributions.  To make your device(s) recognize this baud rate, you must run <code>po DEVICE update</code>. This will also update the system firmware on your device(s).</p>
 <p>If you wish to use the default Particle DFU Mode baud rate, you may change the <code>DFUBAUDRATE=19200</code> line in the <code>~/.po</code> configuration file to <code>DFUBAUDRATE=14400</code>.</p>
 <h1>Why I created this script</h1>
 <p>I created this script because Particle does not currently have a script for easily installing the Particle Toolchain and depedencies on Linux and OSX. I created this script in order to help out other Particle users and to improve my bash scripting skills. It would be my dream come true if Particle added this script to its resources or gave it a shout out in its documentation. If that happened, I would feel very proud of myself for making a meaningful contribution.</p>
 
-<h1>How you can help po-util</h1>
+<h1>How you can help <strong>po-util</strong></h1>
 <p>
 Contributions and starring of the <a href="https://github.com/nrobinson2000/po-util">GitHub Repository</a> are greatly appreciated.  Bitcoin is also accepted to help pay for hosting expenses. <a href="https://po-util.com/donate">Donate Bitcoin Here.</a>  You can also share <strong>po-util</strong> on social media to help other users discover it.
 </p>
