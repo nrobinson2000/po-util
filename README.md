@@ -86,6 +86,10 @@ To compile firmware, simply run `po DEVICE build`, substituting `DEVICE` for
 ### DFU Commands
 To upload precompiled code over USB, run `po DEVICE dfu`. To put your device into dfu mode, run `po dfu-open`. To get your device out of dfu mode, run `po dfu-close`.
 
+<p align="center">
+<img src="images/dfu.png">
+</p>
+
 ### Over The Air (OTA) Uploading
 To upload precompiled code over the air using particle-cli,
 run `po DEVICE ota DEVICE_NAME`, where `DEVICE_NAME` is the name of your device
