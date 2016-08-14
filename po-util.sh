@@ -141,7 +141,8 @@ if [ -f "$FIRMWAREBIN" ];
 fi
 }
 
-build_message() {
+build_message()
+{
   cd "$FIRMWAREDIR"/.. || exit
   BINARYDIR="$(pwd)/bin"
   MESSAGE="Binary saved to $BINARYDIR/firmware.bin" ; green_echo
@@ -159,6 +160,14 @@ dfu_open()
     MESSAGE="Your device must be connected by USB."; blue_echo ; echo ; exit
   fi
   stty "$STTYF" "$MODEM" "$DFUBAUDRATE"
+}
+
+switch_branch()
+{
+  if [ "$(git rev-parse --abbrev-ref HEAD)" != "$BRANCH" ];
+  then
+    git checkout "$BRANCH" > /dev/null
+  fi
 }
 
 # End of helper functions
@@ -492,21 +501,21 @@ cd "$BASE_FIRMWARE"/firmware || exit
 
 if [ "$1" == "photon" ];
 then
-  git checkout $BRANCH > /dev/null
+  switch_branch
   DFU_ADDRESS1="2b04:D006"
   DFU_ADDRESS2="0x080A0000"
 fi
 
 if [ "$1" == "P1" ];
 then
-  git checkout $BRANCH > /dev/null
+  switch_branch
   DFU_ADDRESS1="2b04:D008"
   DFU_ADDRESS2="0x080A0000"
 fi
 
 if [ "$1" == "electron" ];
 then
-  git checkout $BRANCH > /dev/null
+  switch_branch
   DFU_ADDRESS1="2b04:d00a"
   DFU_ADDRESS2="0x08080000"
 fi
