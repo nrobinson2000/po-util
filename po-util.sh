@@ -170,6 +170,15 @@ switch_branch()
   fi
 }
 
+common_commands() #List common commands
+{
+  echo
+  MESSAGE="Common commands include:
+build, flash, clean, ota, dfu, serial, init"
+  blue_echo
+  echo
+}
+
 # End of helper functions
 
 
@@ -494,7 +503,10 @@ then
   echo
   MESSAGE="$1 selected." ; blue_echo
 else
-  MESSAGE="Please choose \"photon\", \"P1\" or \"electron\", or choose a proper command." ; red_echo ; exit
+  echo
+  MESSAGE="Please choose \"photon\", \"P1\" or \"electron\", or choose a proper command." ; red_echo
+  common_commands
+  exit
 fi
 
 cd "$BASE_FIRMWARE"/firmware || exit
@@ -658,4 +670,6 @@ then
 fi
 
 # If an improper command is chosen:
+echo
 MESSAGE="Please choose a proper command." ; red_echo
+common_commands
