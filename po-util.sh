@@ -143,9 +143,11 @@ fi
 
 build_message()
 {
+  echo
   cd "$FIRMWAREDIR"/.. || exit
   BINARYDIR="$(pwd)/bin"
   MESSAGE="Binary saved to $BINARYDIR/firmware.bin" ; green_echo
+  echo
   exit
 }
 
@@ -157,7 +159,9 @@ dfu_open()
   else
     echo
     MESSAGE="Device not found!" ; red_echo
-    MESSAGE="Your device must be connected by USB."; blue_echo ; echo ; exit
+    MESSAGE="Your device must be connected by USB."; blue_echo
+    echo
+    exit
   fi
   stty "$STTYF" "$MODEM" "$DFUBAUDRATE"
 }
@@ -177,6 +181,11 @@ common_commands() #List common commands
 build, flash, clean, ota, dfu, serial, init"
   blue_echo
   echo
+}
+
+build_firmware()
+{
+  make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1"  $GCC_MAKE  || exit
 }
 
 # End of helper functions
@@ -636,7 +645,7 @@ then
   then
     exit
   fi
-
+    echo
     make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1" $GCC_MAKE  || exit
     build_message "$@"
 fi
@@ -649,7 +658,7 @@ then
   then
     exit
   fi
-
+    echo
     make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1" DEBUG_BUILD="y" $GCC_MAKE  || exit
     build_message "$@"
 fi
@@ -662,8 +671,7 @@ then
   then
     exit
   fi
-
-    dfu_open
+     dfu_open
     make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1"  $GCC_MAKE  || exit
     dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$FIRMWAREDIR/../bin/firmware.bin"
     exit
