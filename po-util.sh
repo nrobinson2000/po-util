@@ -163,7 +163,7 @@ dfu_open()
     echo
     exit
   fi
-  stty "$STTYF" "$MODEM" "$DFUBAUDRATE"
+  stty "$STTYF" "$MODEM" "$DFUBAUDRATE" > /dev/null
 }
 
 switch_branch()
