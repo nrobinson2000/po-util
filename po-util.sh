@@ -560,6 +560,7 @@ then
   fi
   dfu_open
   sleep 1
+  echo
   MESSAGE="Flashing $FIRMWAREBIN with dfu-util..." ; blue_echo
   dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$FIRMWAREBIN" || ( MESSAGE="Device not found." ; red_echo )
   exit
