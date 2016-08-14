@@ -185,7 +185,7 @@ build, flash, clean, ota, dfu, serial, init"
 
 build_firmware()
 {
-  make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1"  $GCC_MAKE  || exit
+  make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1" $GCC_MAKE  || exit
 }
 
 # End of helper functions
@@ -343,8 +343,8 @@ then
     echo 'alias po="~/po-util.sh"' >> ~/.bashrc
   fi
 
-  #Download po-util-README.md
-  curl -o ~/.po-util-README.md https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util-README.md
+  # Download po-util-README.md
+  curl -fsSLo ~/.po-util-README.md https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util-README.md
 
   # Check to see if we need to override the install directory.
   if [ "$2" ] && [ "$2" != $BASE_FIRMWARE ]
@@ -366,8 +366,16 @@ then
     # Install dependencies
     MESSAGE="Installing ARM toolchain and dependencies locally in $BINDIR/gcc-arm-embedded/..." ; blue_echo
     mkdir -p $BINDIR/gcc-arm-embedded && cd "$_" || exit
-    wget https://launchpad.net/gcc-arm-embedded/4.9/4.9-2015-q3-update/+download/gcc-arm-none-eabi-4_9-2015q3-20150921-linux.tar.bz2 #Update to v4.9
-    tar xjf gcc-arm-none-eabi-*-linux.tar.bz2
+
+    if [ -d "$GCC_ARM_VER" ]; # 
+    then
+        echo
+        MESSAGE="ARM toolchain version $GCC_ARM_VER is already downloaded... Continuing..." ; blue_echo
+    else
+        curl -fsSLO https://launchpad.net/gcc-arm-embedded/4.9/4.9-2015-q3-update/+download/gcc-arm-none-eabi-4_9-2015q3-20150921-linux.tar.bz2 #Update to v4.9
+        tar xjf gcc-arm-none-eabi-*-linux.tar.bz2
+    fi
+
     MESSAGE="Creating links in /usr/local/bin..." ; blue_echo
     sudo ln -s $GCC_ARM_PATH* /usr/local/bin # LINK gcc-arm-none-eabi
 
@@ -627,7 +635,7 @@ then
     for DEVICE in $DEVICES ; do
       echo
       MESSAGE="Flashing to device $DEVICE..." ; blue_echo
-      particle flash "$DEVICE" "$FIRMWAREBIN" || ( MESSAGE="Try using \"particle flash\" if you are having issues." ; red_echo )
+      particle flash "$DEVICE" "$FIRMWAREBIN" || ( MESSAGE="Your device must be online in order to flash firmware OTA." ; red_echo )
     done
     exit
   fi
@@ -646,7 +654,7 @@ then
     exit
   fi
     echo
-    make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1" $GCC_MAKE  || exit
+    build_firmware "$1"
     build_message "$@"
 fi
 
@@ -659,7 +667,7 @@ then
     exit
   fi
     echo
-    make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1" DEBUG_BUILD="y" $GCC_MAKE  || exit
+    make all -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1" DEBUG_BUILD="y" $GCC_MAKE  || exit
     build_message "$@"
 fi
 
@@ -671,10 +679,10 @@ then
   then
     exit
   fi
-     dfu_open
-    make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1"  $GCC_MAKE  || exit
-    dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$FIRMWAREDIR/../bin/firmware.bin"
-    exit
+  dfu_open
+  build_firmware "$1"
+  dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$FIRMWAREDIR/../bin/firmware.bin"
+  exit
 fi
 
 # If an improper command is chosen:
