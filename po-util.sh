@@ -367,7 +367,7 @@ then
     MESSAGE="Installing ARM toolchain and dependencies locally in $BINDIR/gcc-arm-embedded/..." ; blue_echo
     mkdir -p $BINDIR/gcc-arm-embedded && cd "$_" || exit
 
-    if [ -d "$GCC_ARM_VER" ]; # 
+    if [ -d "$GCC_ARM_VER" ]; #
     then
         echo
         MESSAGE="ARM toolchain version $GCC_ARM_VER is already downloaded... Continuing..." ; blue_echo
@@ -567,7 +567,7 @@ then
 fi
 
 #Upgrade our firmware on device
-if [ "$2" == "upgrade" ] || [ "$2" == "patch" ];
+if [ "$2" == "upgrade" ] || [ "$2" == "patch" ] || [ "$2" == "update" ];
 then
   pause "Connect your device and put into DFU mode. Press [ENTER] to continue..."
   cd "$CWD" || exit
