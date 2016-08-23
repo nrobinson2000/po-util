@@ -5,6 +5,7 @@ os:
 dist: trusty
 sudo: required
 language: generic
+osx_image: xcode8
 
 script:
   - time ./po-util.sh install
