@@ -56,6 +56,15 @@ cd po-util
 <p align="center">
 <img src="images/po.png">
 </p>
+<h1>Key Features</h1>
+<ul>
+<li>Installing the <a href="https://launchpad.net/gcc-arm-embedded">ARM toolchain</a>, <a href="http://dfu-util.sourceforge.net/">dfu-util</a>, <a href="https://nodejs.org/en/">nodejs</a>, <a href="https://github.com/spark/particle-cli">particle-cli</a> and the <a href="https://github.com/spark/firmware">Particle firmware</a>.</li>
+<li>Building firmware locally for Electrons, Photons and P1s, and automatically flashing over USB using dfu-util or Over The Air using particle-cli.  Flashing multiple devices at once over the air is also supported.</li>
+<li>Standardized project directory structure.</li>
+<li>Upgrading the system firmware of devices.</li>
+<li>Monitoring the serial output of devices.</li>
+<li>Manually putting devices into DFU mode and out of DFU mode.</li>
+</ul>
 <h1>Tips</h1>
 <h4>Here are some helpful tips to assist you while working with <strong>po-util</strong>.</h4>
 <h3>Project Directory Structure</h3>
@@ -101,10 +110,10 @@ project directory.</p>
 <img src="images/ota.png">
 </p>
 <h3>Triggering DFU mode on your Device(s)</h3>
-<p>By default, <strong>po-util</strong> changes the trigger DFU Mode 
-baud rate to <code>19200</code>, as it is a more friendly baud rate for 
-Linux Distributions.  To make your device(s) recognize this baud rate, 
-you must run <code>po DEVICE upgrade</code>. This will also update the 
+<p>By default, <strong>po-util</strong> changes the trigger DFU Mode
+baud rate to <code>19200</code>, as it is a more friendly baud rate for
+Linux Distributions.  To make your device(s) recognize this baud rate,
+you must run <code>po DEVICE upgrade</code>. This will also update the
 system firmware on your device(s).</p>
 <p>If you wish to use the default Particle DFU Mode baud rate, you may change the <code>DFUBAUDRATE=19200</code> line in the <code>~/.po</code> configuration file to <code>DFUBAUDRATE=14400</code>.</p>
 <h1>Why I created this script</h1>

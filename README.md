@@ -44,7 +44,7 @@ cd po-util
 curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
 ./po-util.sh install
 ```
-When installing po-util, an alias is added to your `.bashrc` that allows you to run `po` from anywhere to use po-util. 
+When installing po-util, an alias is added to your `.bashrc` that allows you to run `po` from anywhere to use po-util.
 
 Note: We download everything from well known locations and GitHub.  While we believe this is a reasonable approach, it's always a good idea to know what's going on under the hood.  [The po-util script can be found on GitHub if you want to manually download and run it.](https://github.com/nrobinson2000/po-util/blob/master/po-util.sh)
 
@@ -52,6 +52,14 @@ Note: We download everything from well known locations and GitHub.  While we bel
 <img src="images/po.png">
 </p>
 
+# Key Features
+
+* Installing the [ARM toolchain](https://launchpad.net/gcc-arm-embedded), [dfu-util](http://dfu-util.sourceforge.net/), [nodejs](https://nodejs.org/en/), [particle-cli](https://github.com/spark/particle-cli) and the [Particle firmware](https://github.com/spark/firmware).
+* Building firmware locally for Electrons, Photons and P1s, and automatically flashing over USB using dfu-util or Over The Air using particle-cli.  Flashing multiple devices at once over the air is also supported.
+* Standardized project directory structure.
+* Upgrading the system firmware of devices.
+* Monitoring the serial output of devices.
+* Manually putting devices into DFU mode and out of DFU mode.
 
 # Tips
 
