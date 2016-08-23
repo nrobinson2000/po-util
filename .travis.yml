@@ -2,6 +2,8 @@ os:
   - osx
   - linux
 
+dist: trusty
+
 sudo: required
 
 script:
