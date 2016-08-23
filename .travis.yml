@@ -5,7 +5,7 @@ os:
 dist: trusty
 sudo: required
 language: generic
-osx_image: xcode8
+# osx_image: xcode8 #This makes the build take forever
 
 script:
   - time ./po-util.sh install
