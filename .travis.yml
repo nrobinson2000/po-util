@@ -1,15 +1,14 @@
 os:
   - osx
-  # - linux
+  - linux
 
 sudo: required
 
 script:
   - time ./po-util.sh install
-  - cd build-test
-  - time ~/po-util.sh photon build
-  - time ~/po-util.sh electron clean
-  - time ~/po-util.sh electron build
+  - time ./po-util.sh photon build build-test/
+  - time ./po-util.sh electron clean build-test/
+  - time ./po-util.sh electron build build-test/
 
 addons:
     code_climate:

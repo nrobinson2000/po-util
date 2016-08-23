@@ -1,4 +1,6 @@
 test:
   post:
   - time ./po-util.sh install
-  - cd build-test && ../po-util.sh photon build && ../po-util.sh electron clean && ../po-util.sh electron build
+  - time ./po-util.sh photon build build-test/
+  - time ./po-util.sh electron clean build-test/
+  - time ./po-util.sh electron build build-test/
