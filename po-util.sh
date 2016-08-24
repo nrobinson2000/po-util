@@ -403,6 +403,9 @@ then
     curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/60-po-util.rules
     sudo mv 60-po-util.rules /etc/udev/rules.d/60-po-util.rules
 
+    MESSAGE="Adding $USER to plugdev group..."
+    sudo adduser "$USER" plugdev
+
   fi # CLOSE: "$OS" == "Linux"
 
   if [ "$OS" == "Darwin" ]; # Mac installation steps
