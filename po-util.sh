@@ -440,6 +440,7 @@ then
   fi # CLOSE: "$OS" == "Darwin"
 
   MESSAGE="Sucessfully Installed!" ; green_echo
+  source ~/.bashrc
   exit
 fi
 
