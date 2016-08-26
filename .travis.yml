@@ -9,8 +9,8 @@ language: generic
 
 script:
   - time ./po-util.sh install
-  - time po photon build build-test/
-  - time po electron clean build-test/
-  - time po electron build build-test/
-  - time po P1 clean build-test/
-  - time po P1 build build-test/
+  - time ./po-util.sh photon build build-test/
+  - time ./po-util.sh electron clean build-test/
+  - time ./po-util.sh electron build build-test/
+  - time ./po-util.sh P1 clean build-test/
+  - time ./po-util.sh P1 build build-test/
