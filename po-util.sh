@@ -395,7 +395,7 @@ then
     MESSAGE="Creating links in /usr/local/bin..." ; blue_echo
     sudo ln -s $GCC_ARM_PATH* /usr/local/bin # LINK gcc-arm-none-eabi
 
-    if [ DISTRO != "arch" ];
+    if [ "$DISTRO" != "arch" ];
     then
       curl -Ss https://api.github.com/repos/nodesource/distributions/contents/"$DISTRO" | grep "name"  | grep "setup_"| grep -v "setup_iojs"| grep -v "setup_dev" > node-files.txt
       tail -1 node-files.txt > node-oneline.txt
