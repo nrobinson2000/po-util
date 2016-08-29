@@ -405,7 +405,7 @@ then
       rm -rf node-*.txt
     fi
 
-    sudo "$INSTALLER" nodejs python-software-properties python g++ make build-essential libusb libarchive-zip-perl screen
+    sudo $INSTALLER nodejs python-software-properties python g++ make build-essential libusb libarchive-zip-perl screen
 
     # Install dfu-util
     MESSAGE="Installing dfu-util (requires sudo)..." ; blue_echo
