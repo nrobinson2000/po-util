@@ -401,7 +401,7 @@ then
       tail -1 node-files.txt > node-oneline.txt
       sed -n 's/.*\"\(.*.\)\".*/\1/p' node-oneline.txt > node-version.txt
       MESSAGE="Installing Nodejs version $(cat node-version.txt)..." blue_echo
-      curl -sL https://deb.nodesource.com/"$(cat node-version.txt)" | sudo -E bash -
+      curl -sL https://"$DISTRO".nodesource.com/"$(cat node-version.txt)" | sudo -E bash -
       rm -rf node-*.txt
     fi
 
