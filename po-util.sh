@@ -363,6 +363,22 @@ then
 
   if [ "$OS" == "Linux" ]; # Linux installation steps
   then
+
+    if hash apt-get 2>/dev/null; # Test if on a Debian-based system
+    then
+      DISTRO="deb" # Debian
+      INSTALLER="apt-get install -y"
+    else
+      DISTRO="rpm" # Fedora / Centos Linux
+      INSTALLER="yum -y install"
+      if hash pacman  2>/dev/null; # Arch Linux
+      then
+        DISTRO="arch"
+        INSTALLER="pacman -S"
+      fi
+  fi
+
+    if hash pacman
     cd "$BASE_FIRMWARE" || exit
     # Install dependencies
     MESSAGE="Installing ARM toolchain and dependencies locally in $BINDIR/gcc-arm-embedded/..." ; blue_echo
@@ -380,14 +396,17 @@ then
     MESSAGE="Creating links in /usr/local/bin..." ; blue_echo
     sudo ln -s $GCC_ARM_PATH* /usr/local/bin # LINK gcc-arm-none-eabi
 
-    curl -Ss https://api.github.com/repos/nodesource/distributions/contents/deb | grep "name"  | grep "setup_"| grep -v "setup_iojs"| grep -v "setup_dev" > node-files.txt
-    tail -1 node-files.txt > node-oneline.txt
-    sed -n 's/.*\"\(.*.\)\".*/\1/p' node-oneline.txt > node-version.txt
-    MESSAGE="Installing Nodejs version $(cat node-version.txt)..." blue_echo
-    curl -sL https://deb.nodesource.com/"$(cat node-version.txt)" | sudo -E bash -
-    rm -rf node-*.txt
+    if [ DISTRO != "arch" ];
+    then
+      curl -Ss https://api.github.com/repos/nodesource/distributions/contents/"$DISTRO" | grep "name"  | grep "setup_"| grep -v "setup_iojs"| grep -v "setup_dev" > node-files.txt
+      tail -1 node-files.txt > node-oneline.txt
+      sed -n 's/.*\"\(.*.\)\".*/\1/p' node-oneline.txt > node-version.txt
+      MESSAGE="Installing Nodejs version $(cat node-version.txt)..." blue_echo
+      curl -sL https://deb.nodesource.com/"$(cat node-version.txt)" | sudo -E bash -
+      rm -rf node-*.txt
+    fi
 
-    sudo apt-get install -y nodejs python-software-properties python g++ make build-essential libusb-1.0-0-dev libarchive-zip-perl screen
+    sudo "$INSTALLER" nodejs python-software-properties python g++ make build-essential libusb libarchive-zip-perl screen
 
     # Install dfu-util
     MESSAGE="Installing dfu-util (requires sudo)..." ; blue_echo
