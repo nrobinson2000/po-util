@@ -378,7 +378,6 @@ then
       fi
   fi
 
-    if hash pacman
     cd "$BASE_FIRMWARE" || exit
     # Install dependencies
     MESSAGE="Installing ARM toolchain and dependencies locally in $BINDIR/gcc-arm-embedded/..." ; blue_echo
