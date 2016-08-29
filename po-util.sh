@@ -371,7 +371,7 @@ then
     else
       DISTRO="rpm" # Fedora / Centos Linux
       INSTALLER="yum -y install"
-      if hash pacman  2>/dev/null; # Arch Linux
+      if hash pacman 2>/dev/null; # Arch Linux
       then
         DISTRO="arch"
         INSTALLER="pacman -S"
