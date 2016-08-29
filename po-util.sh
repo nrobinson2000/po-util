@@ -380,7 +380,13 @@ then
     MESSAGE="Creating links in /usr/local/bin..." ; blue_echo
     sudo ln -s $GCC_ARM_PATH* /usr/local/bin # LINK gcc-arm-none-eabi
 
-    curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+    curl -Ss https://api.github.com/repos/nodesource/distributions/contents/deb | grep "name"  | grep "setup_"| grep -v "setup_iojs"| grep -v "setup_dev" > node-files.txt
+    tail -1 node-files.txt > node-oneline.txt
+    sed -n 's/.*\"\(.*.\)\".*/\1/p' node-oneline.txt > node-version.txt
+    MESSAGE="Installing Nodejs version $(cat node-version.txt)..." blue_echo
+    curl -sL https://deb.nodesource.com/"$(cat node-version.txt)" | sudo -E bash -
+    rm -rf node-*.txt
+
     sudo apt-get install -y nodejs python-software-properties python g++ make build-essential libusb-1.0-0-dev libarchive-zip-perl screen
 
     # Install dfu-util
