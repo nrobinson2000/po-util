@@ -404,7 +404,7 @@ then
       curl -sL https://"$DISTRO".nodesource.com/"$(cat node-version.txt)" | sudo -E bash -
       rm -rf node-*.txt
     fi
-
+    #TODO: Work more on supporting other Linux Distributions.
     sudo $INSTALLER nodejs python-software-properties python g++ make build-essential libusb-1.0-0-dev libarchive-zip-perl screen
 
     # Install dfu-util
@@ -625,7 +625,7 @@ then
     exit
   fi
 
-    make clean -s 2>&1 /dev/null
+    make clean -s PLATFORM="$1" 2>&1 /dev/null
     if [ "$FIRMWAREDIR/../bin" != "$HOME/bin" ];
     then
       rm -rf "$FIRMWAREDIR/../bin"
