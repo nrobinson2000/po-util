@@ -258,7 +258,25 @@ DFU Commands:
   dfu-open    Put device into DFU mode
   dfu-close   Get device out of DFU mode
 "
+MESSAGE="If you like po-util, don't forget to share it on social media so that
+more users will be able to discover it.  https://po-util.com/share
+Run \"po share\" to instantly open the share page URL.
+" ; blue_echo
 exit
+fi
+
+# Open share page in browser
+if [ "$1" == "share" ];
+then
+  open "https://po-util.com/share"
+  exit
+fi
+
+# Open info page in browser
+if [ "$1" == "info" ];
+then
+  open "https://po-util.com"
+  exit
 fi
 
 # Configuration file is created at "~/.po"
