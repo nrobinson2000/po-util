@@ -259,17 +259,9 @@ DFU Commands:
   dfu-close   Get device out of DFU mode
 "
 MESSAGE="If you like po-util, don't forget to share it on social media so that
-more users will be able to discover it.  https://po-util.com/share
-Run \"po share\" to instantly open the share page URL.
-" ; blue_echo
+more users will be able to discover it.  https://po-util.com/
+" ; green_echo
 exit
-fi
-
-# Open share page in browser
-if [ "$1" == "share" ];
-then
-  open "https://po-util.com/share"
-  exit
 fi
 
 # Open info page in browser
@@ -482,7 +474,14 @@ then
     sudo npm install -g node-pre-gyp npm serialport particle-cli
   fi # CLOSE: "$OS" == "Darwin"
 
-  MESSAGE="Sucessfully Installed!" ; green_echo
+  MESSAGE="
+  Thank you for installing po-util. Be sure to check out https://po-util.com/
+  if you have any questions, suggestions, comments, or problems.  You can use
+  the Message button in the bottom right corner of the site to send me a
+  private message. If need to update po-util just run \"po update\" to download
+  the latest versions of po-util, Particle Firmware and particle-cli, or run
+  \"po install\" to update all dependencies.
+  " ; green_echo
   source ~/.bashrc
   exit
 fi
