@@ -1,0 +1,163 @@
+==================================================================
+https://keybase.io/nrobinson2000
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of http://po-util.com
+  * I am nrobinson2000 (https://keybase.io/nrobinson2000) on keybase.
+  * I have a public key with fingerprint BE91 6A17 C8EA 8B46 39AB  936D
+7F97 6E71 AA45 57C8
+
+To do so, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "eldest_kid":
+"0120a7143dd7b75700a5a9facbbfd4c0b937a09d40e42d7809a6f68ad1c7ea02ad930a",
+            "fingerprint": "be916a17c8ea8b4639ab936d7f976e71aa4557c8",
+            "host": "keybase.io",
+            "key_id": "7f976e71aa4557c8",
+            "kid":
+"01015d820c0e52220c5e9ae300e1dcced6054a57a05ff7ec9a9c3a0b6baa6325b2cb0a",
+            "uid": "a42d14096240ab8ba1906552c8e55e19",
+            "username": "nrobinson2000"
+        },
+        "service": {
+            "hostname": "po-util.com",
+            "protocol": "http:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1465332752,
+    "expire_in": 157680000,
+    "prev":
+"626f86f1c95dff5ee8515d71a2a84cd5344aab9ca95267510a196abd1fee9684",
+    "seqno": 12,
+    "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v2.0.53
+Comment: https://keybase.io/crypto
+
+yMN0AnicbZJ7UFRVHMcX2bbEUBwzQhjIm5kp4LmPcx9UJMnDRkBCHjOKrOfeey5s
+sA92l9cwiwPETCCJAiHDoyHQLclpmmSYxJRwbCK1gmgUAalgqyHIUssmkqGzjP7X
+X2fO+X2/n/P9/c655O+r8/M5dNxS0BOXOeRzZbCtUJeZyQWUUbJVLaWiyqg8vLzg
+fBU7nMY8k0pFUYBmABJojlVVQRagAACCSNKQIsuayilAllgBAUnlAOYYVRCBhHiN
+F5FKKwJGgEGqxAJEhVOayZKD7Ta7yeIkWBlLNI9oQRExEmWOZyVESLwqaJLAY4FG
+iIOQVIkx1+rwOkg4GTlwpMlKzsjGuBzvf/QPcwMaqiIDFIAhw5AVYglhFgBMq4qC
+VR5ADkGSHWqagBUJSQqLgMzLCPEsA2VGkZdzFy7jEGmO5oDEMxxAsigjWgI8hAzJ
+DyGmJa/Qge0WZMZEbbFbZZPFYbUwAADKFU6RUpFJwd7pett5ILNZIwqdpvxIxWom
+fpvd6rQq1nxSyHU6bVFen7PU5hUWY9n4AGEkYJWMkhiKsN1hslqoKJooFafJy6Q5
+HrIsI0AmnMIlNpMdG01eBRR4kWQB3mtwEUHyDK+JvEYrElQ1DWIsQjIvMkgGiZyi
+QpbjEHkSBUmQ4QVIA9Ixj2SV1jCWeJGjvE0VWKyETa5yohzCdJhyLMhZaMeU6+Jg
+ll7n46czPLLC+8d0fisDHv48uTZA15Wu3Z0OKh9Tpk6u/RbtCDhb4rakn3o26cZb
+I9OGx3Jvdk6OPdnPxPjFNmRvrf5ISOu6vz7Eecf84+9tcZuPJ8uMzwsTwz4z2R5/
+EZbddeWdvVr5a1PIMzFrPM+71m3e33Vg1HG5t6+2LbkkMdI+klrx76hRfq5YzIx9
+39VbdG5D4vmnkvtC9beDXzoyV3pCX5Kx4vWy5oUEg5E79ml9fuXuobiq2QuXy12V
++9Z8nbHFt2jKP3iD7XriAEi50RPYGJP+9xNDSbr4XzK7f3adGTQOjxpaQ3obdm38
+MzWyrmnLvjNfNi5Gthr2325vv+r5q37pnaPO7Y0l975LqLvHGNUdnxdLIzP9owue
+S/Pns35jZ28qNfjY3Bv94V/N1Irbenl32lxr92sv+w7WPZqdN2qwbwybapv+R5uf
+csPZPdGdgebTfovDIa88ba4I6//hENvyzeG9Vat74kJ3zu89emJV56mWvJ7td6Lj
+uxcLqrsnxne+Kt360N3/5ulY+uPdfuOULNDt715bOT5WFb615mBG0qrmvNHmnz5Z
+O/RHW23CJrdZ/eBWHxeamRRxsOy63hw9o5c8QR6+Mii4ZrpiU8rqCx0Lvrsa2C/e
+C4yaeHHk7fvZLSEpBWlNHYFJEeUHLpamBy9dG6juCHNnxQ/UH4n57PFtkw38+uSs
+K/pz39ccDsAnJ1MdxuGldXv+AwXuu1U=
+=uWta
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here:
+https://keybase.io/nrobinson2000
+
+==================================================================
+
+
+==================================================================
+https://keybase.io/nrobinson2000
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://po-util.com
+  * I am nrobinson2000 (https://keybase.io/nrobinson2000) on keybase.
+  * I have a public key with fingerprint BE91 6A17 C8EA 8B46 39AB  936D 7F97 6E71 AA45 57C8
+
+To do so, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "eldest_kid": "0120a7143dd7b75700a5a9facbbfd4c0b937a09d40e42d7809a6f68ad1c7ea02ad930a",
+            "fingerprint": "be916a17c8ea8b4639ab936d7f976e71aa4557c8",
+            "host": "keybase.io",
+            "key_id": "7f976e71aa4557c8",
+            "kid": "01015d820c0e52220c5e9ae300e1dcced6054a57a05ff7ec9a9c3a0b6baa6325b2cb0a",
+            "uid": "a42d14096240ab8ba1906552c8e55e19",
+            "username": "nrobinson2000"
+        },
+        "revoke": {
+            "sig_ids": [
+                "458d6bcb52fd58f9db2000c78b0041acee309b592e893d00db4b2c39fc9dc8820f"
+            ]
+        },
+        "service": {
+            "hostname": "po-util.com",
+            "protocol": "https:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1467773916,
+    "expire_in": 157680000,
+    "prev": "2cc72fbe4776a35f8681ecdc1eae1bdfa2d1406e11f2f1fcd299d844e4c723c2",
+    "seqno": 32,
+    "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v2.0.53
+Comment: https://keybase.io/crypto
+
+yMOwAnicbZJ7UFRVHMdXhdSlzLFxnBgtveBUCnTu+96tdMokHwOVGI4Dup7XXa7L
+3rsvUBCCxsliTLFlUlPQIArdmcwXjWiaGqLlO2AcmPWR2mDpoDjmcxw6y+h//XXm
+3vP9fc7n9zun9bkhDueginVWIDp93rFBxw/dL3LMKwvFlnHIJiWcaxnnpQMLLSQ0
+FHZ7TcK5OMALAKq8JBKiIlVWAYAy1A2IETKIhAHSRRUCnUiASgJRNaBDxVA0SHis
+UggESHQRQC6NM0zLQ4P+oGmFGRZRnVcgr2KNQg1JiqhDRlKIauiqQlUeQkmW2S4r
+LLBD8Qomh2CIZpg2+8c+3AN6/5N/6g14mWgCwIDKgsBWmeqQigBQnmBMiQJkCcrM
+XTYMlWId6liEACkIQkUUZCRgNOBdNICDrDleAroiSAAiDUFeB4osC8xflimvx4Mh
+GrSgj7K0FbSRaYVsSwAAcOVpXJAW214aH27I9DDzEOfK4yRZIwrCSBYMImuGTlA8
+jlUNASDxEFNmqyNZF6imiwQAgiRmJeoG1gnWWGsGt4Cx2bHFJh6Ax0f1RMFvpxeF
+zcIMbPuYmz9oh21sF7KNgnDYH3LFpcIl/nhyCUXuJww3sybsnlhFMQ2GTNviXDxL
+4rAZh/KSoqqqyG4ujaNL/WaQus14QlYVjZmD+Dm0mCEFjFXBQFRSVQWKsqEpGk8x
+wTyFlEfEgAPDVCjPG4LBG5gIuk40SaISqxOxwMW7Clg25xIF5gk9jMkGZ8FwUZBy
+5YcP5Sc4BjkdzyQOjj9gh3P4yKfP+kHC84/HDWvaNLR6pP3plXpjctnyRas+cUau
+5+zc5k/RdydWtWYbwbwfu3L+mfvg1Z/Gjbc89yY8+0XpqeMbFlpjXqtd+caFS+kN
+M/Y8Fj7Mu/7lsMFbTv6muh7dud1x95SFm+82z66JTilPnbA/1LhoqXRhcnZt7Z6v
+yhLGVCe++fbarJm73vHYGyf+ceDvlv6asx/33aYt1X9mNstryP4221U97kBXUuDG
+1VbvlFU3z7f3XbxlekZt/3XSjoXZj+49fGl07OaByCxnVkHWuT3f9GbuDj2cs8uX
+u/L8lTOVqC71lxt93qvX1m59XHDyTr23Pnf9qvd7KjNyuk8nRF1oI3lxsyOSFWk4
+/ZevsrSda9y0ur0vryzrYENaLPegI9rUWRr1xG50JqdsJD3DncZH83JnNNbNF9qa
+evkZ9w9vGd2xhn+BVo13LHnrWrh8XWTEK0Lt1oxF7paeuymRwIaYdiLj66M1Kyp6
+aeIld3Fg6PSxzrn9vr2Xp6XXzeqanpd8hmtd0i8eaZo5pnFq5PubJxbsLVk/0d8Y
+3X64qvBYLCn1Vtaky747qfumzlGDyYGx5yILY20P/817N5ad0tc9/OedUtXiiusd
+y9O/29lTLsbMUdzo/Ji/+/XZHRWLK6atzCyvaWuIHnnv9+6zK4Z8sD1px/n8Bb6j
+dbktm5OW1e++2Lnv89U5I36o2dbbv/nb+SVrP3v5P8ww7FE=
+=66yA
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/nrobinson2000
+
+==================================================================
