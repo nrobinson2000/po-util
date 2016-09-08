@@ -1,5 +1,10 @@
+dependencies:
+  post:
+    - sudo apt-get install -y expect
+
 test:
   post:
+  - time ./config-expect.sh
   - time ./po-util.sh install
   - time ./po-util.sh photon build build-test/
   - time ./po-util.sh electron clean build-test/

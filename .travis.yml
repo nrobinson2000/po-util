@@ -8,6 +8,7 @@ language: generic
 # osx_image: xcode8 #This makes the build take forever
 
 script:
+  - time ./config-expect.sh
   - time ./po-util.sh install
   - time ./po-util.sh photon build build-test/
   - time ./po-util.sh electron clean build-test/
