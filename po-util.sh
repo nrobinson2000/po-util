@@ -13,7 +13,7 @@
 #   ██/                               https://po-util.com
 #
 # Particle Offline Utility: A handy script for installing and using the Particle
-# Toolchain on Ubuntu-based distros and OSX. This script downloads and installs:
+# Toolchain on Linux and OSX. This script downloads and installs:
 # dfu-util, nodejs, gcc-arm-embedded, particle-cli, and the Particle Firmware
 # source code.
 # Read more at https://github.com/nrobinson2000/po-util
@@ -384,7 +384,7 @@ then
       if hash pacman 2>/dev/null; # Arch Linux
       then
         DISTRO="arch"
-        INSTALLER="pacman -S"
+        INSTALLER="pacman -Syu"
       fi
   fi
 
@@ -415,7 +415,22 @@ then
       rm -rf node-*.txt
     fi
     #TODO: Work more on supporting other Linux Distributions.
-    sudo $INSTALLER nodejs python-software-properties python g++ make build-essential libusb-1.0-0-dev libarchive-zip-perl screen
+
+    if [ "$DISTRO" == "deb" ];
+    then
+        sudo $INSTALLER nodejs python-software-properties python g++ make build-essential libusb-1.0-0-dev libarchive-zip-perl screen
+    fi
+
+    if [ "$DISTRO" == "rpm" ];
+    then
+        sudo $INSTALLER nodejs python make automake gcc gcc-c++ kernel-devel libusb perl-String-CRC32 screen
+    fi
+
+    if [ "$DISTRO" == "arch" ];
+    then
+        sudo $INSTALLER nodejs python gcc make automake libusb perl-string-crc32 screen
+    fi
+
 
     # Install dfu-util
     MESSAGE="Installing dfu-util (requires sudo)..." ; blue_echo
