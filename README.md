@@ -2,7 +2,7 @@
 <img src="https://raw.githubusercontent.com/nrobinson2000/po-util/po-util.com/logos/po-util-updated.png" width="600px">
 </p>
 
-## Particle Offline Utility: The handy script for installing and using the Particle Toolchain on Ubuntu-based Distros and OSX
+## Particle Offline Utility: The handy script for installing and using the Particle Toolchain on Linux and OSX
 
 [![Slack Status](https://nrobinson2000.herokuapp.com/badge.svg)](https://nrobinson2000.herokuapp.com/)
 [![Donate Bitcoin](https://img.shields.io/badge/donate-bitcoin-orange.svg)](https://nrobinson2000.github.io/donate-bitcoin)
@@ -10,10 +10,6 @@
 [![GitHub stars](https://img.shields.io/github/stars/nrobinson2000/po-util.svg)](https://github.com/nrobinson2000/po-util/stargazers)
 [![Build Status](https://travis-ci.org/nrobinson2000/po-util.svg?branch=master)](https://travis-ci.org/nrobinson2000/po-util) [![Circle CI](https://circleci.com/gh/nrobinson2000/po-util.svg?style=svg)](https://circleci.com/gh/nrobinson2000/po-util)
 
-<<<<<<< HEAD
-<img src="http://po-util.com/logos/po-util-updated.svg" width="400px">
-# Particle Offline Utility:
-=======
 # About
 
 Particle Offline Utility, pronounced po-util, is a script for installing and using the Particle Toolchain on Ubuntu-based distros and OSX.
@@ -21,17 +17,9 @@ Particle Offline Utility, pronounced po-util, is a script for installing and usi
 Po-util makes it easy for developers to download the Particle Toolchain and install the required dependencies to quickly begin creating projects using the Particle Platform.
 
 Po-util features a responsive experience, giving developers the tools they need for seamless local development. Po-util provides understandable commands for simplifying complex tasks like properly compiling and flashing firmware.
->>>>>>> 5694f80ac5949cb9ff69ca1f03c6eca37a8ace2d
 
 Po-util downloads and installs: [dfu-util](http://dfu-util.sourceforge.net/), [nodejs](https://nodejs.org/en/), [gcc-arm-embedded](https://launchpad.net/gcc-arm-embedded), [particle-cli](https://github.com/spark/particle-cli), and the [Particle Firmware source code](https://github.com/spark/firmware).
 
-<<<<<<< HEAD
-<img src="https://raw.githubusercontent.com/nrobinson2000/po-util/po-util.com/screenshots/1.png">
-
-# Quick Install / Update
-```
-curl po-util.com/download | bash
-=======
 
 <p align="center">
 <img src="images/build.png">
@@ -42,7 +30,6 @@ curl po-util.com/download | bash
 The easiest and most secure way to install po-util is to download `po-util.sh` from [GitHub](https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh) and run:
 ```
 ./po-util.sh install
->>>>>>> 5694f80ac5949cb9ff69ca1f03c6eca37a8ace2d
 ```
 to install po-util and dependencies.
 
