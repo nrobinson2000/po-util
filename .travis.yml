@@ -14,6 +14,3 @@ script:
   - time ./po-util.sh electron build build-test/
   - time ./po-util.sh P1 clean build-test/
   - time ./po-util.sh P1 build build-test/
-  
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
