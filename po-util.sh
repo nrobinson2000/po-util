@@ -188,6 +188,39 @@ build_firmware()
   make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1" $GCC_MAKE  || exit
 }
 
+
+config()
+{
+  echo BASE_FIRMWARE="$BASE_FIRMWARE" >> $SETTINGS
+  echo PARTICLE_DEVELOP="1" >> $SETTINGS
+  echo BINDIR="$BINDIR" >> $SETTINGS
+  echo
+  MESSAGE="Which branch of the Particle firmware would you like to use?
+You can find the branches at https://github.com/spark/firmware/branches
+If you are unsure, please enter \"latest\"" ; blue_echo
+  read -rp "Branch: " branch_variable
+  BRANCH="$branch_variable"
+  echo BRANCH="$BRANCH" >> $SETTINGS
+  echo
+  MESSAGE="Which baud rate would you like to use to put devices into DFU mode?
+Enter \"default\" for the default Particle baud rate of 14400.
+Enter \"po\" to use the po-util recommended baud rate of 19200." ; blue_echo
+  read -rp "Baud Rate: " dfu_variable
+  if [ "$dfu_variable" == "default" ];
+  then
+    DFUBAUDRATE=14400
+  fi
+  if [ "$dfu_variable" == "po" ];
+  then
+    DFUBAUDRATE=19200
+  fi
+  echo DFUBAUDRATE="$DFUBAUDRATE" >> $SETTINGS
+
+  if [ $OS == "Linux" ];
+    then
+      echo export GCC_ARM_PATH=$GCC_ARM_PATH >> $SETTINGS
+  fi
+}
 # End of helper functions
 
 
@@ -249,6 +282,7 @@ Commands:
                the command is run.
 
   serial       Monitor a device's serial output (Close with CRTL-A +D)
+  config       Select Particle firmware branch and DFU trigger baud rate
 
 DFU Commands:
   dfu         Quickly flash pre-compiled code to your device.
@@ -300,16 +334,9 @@ fi
 # Check if we have a saved settings file.  If not, create it.
 if [ ! -f $SETTINGS ]
 then
-  echo BASE_FIRMWARE="$BASE_FIRMWARE" >> $SETTINGS
-  echo BRANCH="latest" >> $SETTINGS
-  echo PARTICLE_DEVELOP="1" >> $SETTINGS
-  echo BINDIR="$BINDIR" >> $SETTINGS
-  echo DFUBAUDRATE="$DFUBAUDRATE" >> $SETTINGS
-
-  if [ $OS == "Linux" ];
-    then
-      echo export GCC_ARM_PATH=$GCC_ARM_PATH >> $SETTINGS
-  fi
+  echo
+  MESSAGE="Your \"$SETTINGS\" configuration file is missing.  Let's create it:" ; blue_echo
+  config "$@"
 fi
 
 # Import our overrides from the ~/.po file.
@@ -317,6 +344,13 @@ source "$SETTINGS"
 
 # GCC path for linux make utility
 if [ $GCC_ARM_PATH ]; then GCC_MAKE=GCC_ARM_PATH=$GCC_ARM_PATH ; fi
+
+if [ "$1" == "config" ];
+then
+  rm "$SETTINGS"
+  config "$@"
+  exit
+fi
 
 if [ "$1" == "install" ]; # Install
 then
