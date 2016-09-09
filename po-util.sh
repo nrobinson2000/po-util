@@ -446,7 +446,7 @@ then
 
     if [ "$DISTRO" != "arch" ];
     then
-    
+
     # Install Node.js
     curl -Ss https://nodejs.org/dist/ > node-result.txt
     cat node-result.txt | grep "<a href=\"v" > node-new.txt
@@ -468,7 +468,7 @@ then
       rm -rf node-*.txt
     fi
     fi
-    
+
     #TODO: Work more on supporting other Linux Distributions.
 
     if [ "$DISTRO" == "deb" ];
@@ -483,7 +483,7 @@ then
 
     if [ "$DISTRO" == "arch" ];
     then
-        sudo $INSTALLER nodejs python gcc make automake libusb perl-string-crc32 screen
+        sudo $INSTALLER nodejs npm python gcc make automake libusb perl-string-crc32 screen
     fi
 
 
