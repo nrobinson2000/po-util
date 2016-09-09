@@ -446,6 +446,20 @@ then
 
     if [ "$DISTRO" != "arch" ];
     then
+    
+    # Install Node.js
+    curl -Ss https://nodejs.org/dist/ > node-result.txt
+    cat node-result.txt | grep "<a href=\"v" > node-new.txt
+    tail -1 node-new.txt > node-oneline.txt
+    sed -n 's/.*\"\(.*.\)\".*/\1/p' node-oneline.txt > node-version.txt
+    NODEVERSION="$(cat node-version.txt)"
+    NODEVERSION="${NODEVERSION%?}"
+    INSTALLVERSION="node-$NODEVERSION"
+    if [ "$(node -v)" == "$NODEVERSION" ];
+    then
+    MESSAGE="Node.js version $NODEVERSION is already installed."; blue_echo
+    else
+      MESSAGE="Installing Node.js version $NODEVERSION..." ; blue_echo
       curl -Ss https://api.github.com/repos/nodesource/distributions/contents/"$DISTRO" | grep "name"  | grep "setup_"| grep -v "setup_iojs"| grep -v "setup_dev" > node-files.txt
       tail -1 node-files.txt > node-oneline.txt
       sed -n 's/.*\"\(.*.\)\".*/\1/p' node-oneline.txt > node-version.txt
@@ -453,6 +467,8 @@ then
       curl -sL https://"$DISTRO".nodesource.com/"$(cat node-version.txt)" | sudo -E bash -
       rm -rf node-*.txt
     fi
+    fi
+    
     #TODO: Work more on supporting other Linux Distributions.
 
     if [ "$DISTRO" == "deb" ];
@@ -517,11 +533,16 @@ then
     NODEVERSION="$(cat node-version.txt)"
     NODEVERSION="${NODEVERSION%?}"
     INSTALLVERSION="node-$NODEVERSION"
+    if [ "$(node -v)" == "$NODEVERSION" ];
+    then
+    MESSAGE="Node.js version $NODEVERSION is already installed." ; blue_echo
+    else
     MESSAGE="Installing Node.js version $NODEVERSION..." ; blue_echo
     curl -fsSLO "https://nodejs.org/dist/$NODEVERSION/$INSTALLVERSION.pkg"
     sudo installer -pkg node-*.pkg -target /
     rm -rf node-*.pkg
     rm -f node-*.txt
+    fi
 
     # Install particle-cli
     MESSAGE="Installing particle-cli..." ; blue_echo
