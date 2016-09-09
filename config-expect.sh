@@ -1,7 +1,7 @@
 #!/usr/bin/expect -f
 set timeout 10
 
-spawn ./po-util.sh config
+spawn ./po-util.sh
 
 expect -exact "Branch: "
 send -- "latest\n"
