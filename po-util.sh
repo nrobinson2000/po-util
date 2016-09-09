@@ -215,11 +215,6 @@ Enter \"po\" to use the po-util recommended baud rate of 19200." ; blue_echo
     DFUBAUDRATE=19200
   fi
   echo DFUBAUDRATE="$DFUBAUDRATE" >> $SETTINGS
-
-  if [ $OS == "Linux" ];
-    then
-      echo export GCC_ARM_PATH=$GCC_ARM_PATH >> $SETTINGS
-  fi
 }
 # End of helper functions
 
@@ -328,7 +323,6 @@ if [ "$(uname -s)" == "Darwin" ];
     #THIS COULD BE IMPROVED!
     GCC_ARM_VER=gcc-arm-none-eabi-4_9-2015q3 # Updated to 4.9
     export GCC_ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/
-    # export PATH=$GCC_ARM_PATH:$PATH
 fi
 
 
