@@ -185,7 +185,7 @@ build, flash, clean, ota, dfu, serial, init"
 
 build_firmware()
 {
-  make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1" $GCC_MAKE  || exit
+  make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1" || exit
 }
 
 
@@ -349,9 +349,6 @@ fi
 
 # Import our overrides from the ~/.po file.
 source "$SETTINGS"
-
-# GCC path for linux make utility
-if [ $GCC_ARM_PATH ]; then GCC_MAKE="/usr/local/bin" ; fi
 
 if [ "$1" == "install" ]; # Install
 then
@@ -697,10 +694,10 @@ then
   mv temp.particle "$BASE_FIRMWARE"/firmware/build/module-defaults.mk
 
   cd "$BASE_FIRMWARE/firmware/modules/$1/system-part1" || exit
-  make clean all PLATFORM="$1" "$GCC_MAKE" program-dfu
+  make clean all PLATFORM="$1" program-dfu
 
   cd "$BASE_FIRMWARE/firmware/modules/$1/system-part2" || exit
-  make clean all PLATFORM="$1" $GCC_MAKE program-dfu
+  make clean all PLATFORM="$1" program-dfu
   cd "$BASE_FIRMWARE/firmware" && git stash || exit
   sleep 1
   dfu-util -d $DFU_ADDRESS1 -a 0 -i 0 -s $DFU_ADDRESS2:leave -D /dev/null
@@ -789,7 +786,7 @@ then
     exit
   fi
     echo
-    make all -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1" DEBUG_BUILD="y" $GCC_MAKE  || exit
+    make all -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1" DEBUG_BUILD="y" || exit
     build_message "$@"
 fi
 
