@@ -452,6 +452,7 @@ then
     NODEVERSION="$(cat node-version.txt)"
     NODEVERSION="${NODEVERSION%?}"
     INSTALLVERSION="node-$NODEVERSION"
+    rm node-*.txt
     if [ "$(node -v)" == "$NODEVERSION" ];
     then
     MESSAGE="Node.js version $NODEVERSION is already installed."; blue_echo
@@ -530,6 +531,7 @@ then
     NODEVERSION="$(cat node-version.txt)"
     NODEVERSION="${NODEVERSION%?}"
     INSTALLVERSION="node-$NODEVERSION"
+    rm node-*.txt
     if [ "$(node -v)" == "$NODEVERSION" ];
     then
     MESSAGE="Node.js version $NODEVERSION is already installed." ; blue_echo
