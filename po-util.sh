@@ -414,13 +414,17 @@ then
       DISTRO="deb" # Debian
       INSTALLER="apt-get install -y"
     else
+      if hash yum 2>/dev/null;
+      then
       DISTRO="rpm" # Fedora / Centos Linux
       INSTALLER="yum -y install"
+    else
       if hash pacman 2>/dev/null; # Arch Linux
       then
         DISTRO="arch"
         INSTALLER="pacman -Syu"
       fi
+    fi
   fi
 
     cd "$BASE_FIRMWARE" || exit
