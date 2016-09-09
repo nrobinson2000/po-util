@@ -331,6 +331,14 @@ if [ "$(uname -s)" == "Darwin" ];
     # export PATH=$GCC_ARM_PATH:$PATH
 fi
 
+
+if [ "$1" == "config" ];
+then
+  rm "$SETTINGS"
+  config "$@"
+  exit
+fi
+
 # Check if we have a saved settings file.  If not, create it.
 if [ ! -f $SETTINGS ]
 then
@@ -344,13 +352,6 @@ source "$SETTINGS"
 
 # GCC path for linux make utility
 if [ $GCC_ARM_PATH ]; then GCC_MAKE=GCC_ARM_PATH=$GCC_ARM_PATH ; fi
-
-if [ "$1" == "config" ];
-then
-  rm "$SETTINGS"
-  config "$@"
-  exit
-fi
 
 if [ "$1" == "install" ]; # Install
 then
