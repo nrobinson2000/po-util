@@ -1,14 +1,9 @@
 os:
   - osx
-  - linux
 
 dist: trusty
 sudo: required
 language: generic
-# osx_image: xcode8 #This makes the build take forever
-
-install:
-  - if [ "$(uname -s)" == "Linux" ]; then sudo apt-get install -y expect; fi
 
 script:
   - time ./config-expect.sh
