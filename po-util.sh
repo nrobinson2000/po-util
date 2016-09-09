@@ -439,7 +439,7 @@ then
     fi
 
     MESSAGE="Creating links in /usr/local/bin..." ; blue_echo
-    sudo ln -s $GCC_ARM_PATH* /usr/local/bin # LINK gcc-arm-none-eabi
+    sudo ln  $GCC_ARM_PATH* /usr/local/bin # LINK gcc-arm-none-eabi
 
     if [ "$DISTRO" != "arch" ];
     then
