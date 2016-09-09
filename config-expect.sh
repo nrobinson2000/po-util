@@ -1,17 +1,11 @@
-#!/usr/bin/expect
-log_user 0
+#!/usr/bin/expect -f
 set timeout 10
 
-spawn ./po-util.sh
+spawn ./po-util.sh config
 
-log_user 0
-
-expect "Branch: "
-send "latest\r"
-
-log_user 0
-
-expect "Baud Rate: "
-send "po\r"
+expect -exact "Branch: "
+send -- "latest\n"
+expect -exact "Baud Rate: "
+send -- "po\n"
 
 interact
