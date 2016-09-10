@@ -476,7 +476,7 @@ then
     if [ "$DISTRO" == "arch" ];
     then
         sudo $INSTALLER nodejs npm python gcc make automake libusb lib32-glibc vim yaourt screen
-        yaourt perl-archive-zip
+        yaourt -S perl-archive-zip
     fi
 
 
