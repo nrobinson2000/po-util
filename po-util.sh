@@ -502,7 +502,7 @@ then
     sudo mv 60-po-util.rules /etc/udev/rules.d/60-po-util.rules
 
     MESSAGE="Adding $USER to plugdev group..." ; blue_echo
-    sudo adduser "$USER" plugdev
+    sudo usermod -a -G plugdev "$USER"
 
   fi # CLOSE: "$OS" == "Linux"
 
