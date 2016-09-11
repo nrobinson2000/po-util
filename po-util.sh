@@ -465,12 +465,12 @@ then
 
     if [ "$DISTRO" == "deb" ];
     then
-        sudo $INSTALLER nodejs python-software-properties python g++ make build-essential libusb-1.0-0-dev libarchive-zip-perl screen libc6-i386 
+        sudo $INSTALLER nodejs python-software-properties python g++ make build-essential libusb-1.0-0-dev libarchive-zip-perl screen libc6-i386
     fi
 
     if [ "$DISTRO" == "rpm" ];
     then
-        sudo $INSTALLER nodejs python make automake gcc gcc-c++ kernel-devel libusb glibc.1686 vim-common perl-Archive-Zip-1.58-1.fc24.noarch screen
+        sudo $INSTALLER nodejs python make automake gcc gcc-c++ kernel-devel libusb glibc.i686 vim-common perl-Archive-Zip-1.58-1.fc24.noarch screen
     fi
 
     if [ "$DISTRO" == "arch" ];
