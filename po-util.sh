@@ -178,7 +178,7 @@ common_commands() #List common commands
 {
   echo
   MESSAGE="Common commands include:
-build, flash, clean, ota, dfu, serial, init"
+build, flash, clean, ota, dfu, serial, init, config, setup"
   blue_echo
   echo
 }
@@ -278,6 +278,7 @@ Commands:
 
   serial       Monitor a device's serial output (Close with CRTL-A +D)
   config       Select Particle firmware branch and DFU trigger baud rate
+  setup        Get a device's ID and connect it Wi-Fi. Manually claim it after.
 
 DFU Commands:
   dfu         Quickly flash pre-compiled code to your device.
@@ -662,6 +663,25 @@ then
   switch_branch
   DFU_ADDRESS1="2b04:d00a"
   DFU_ADDRESS2="0x08080000"
+fi
+
+if [ "$2" == "setup" ];
+then
+  echo
+  pause "Connect your device and put it into Listening mode. Press [ENTER] to continue..."
+  particle serial identify
+  if [ "$1" != "electron" ];
+  then
+    echo
+  pause "We will now connect your $1 to Wi-Fi. Press [ENTER] to continue..."
+  echo
+  particle serial wifi
+fi
+echo
+MESSAGE="You should now be able to claim your device.  Please run
+\"particle cloud claim Device_ID\", using the Device_ID we found above." ; blue_echo
+echo
+exit
 fi
 
 # Flash already compiled binary
