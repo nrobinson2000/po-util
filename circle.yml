@@ -1,6 +1,6 @@
 dependencies:
   post:
-    - sudo apt-get install -y expect
+    - sudo apt-get install -y expect libcurl4-openssl-dev libelf-dev libdw-dev cmake
 
 test:
   post:
@@ -11,3 +11,4 @@ test:
   - time ./po-util.sh electron build build-test/
   - time ./po-util.sh P1 clean build-test/
   - time ./po-util.sh P1 build build-test/
+  - wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz && tar xzf master.tar.gz && cd kcov-master && mkdir build && cd build && cmake .. && make && sudo make install && cd ../.. && rm -rf kcov-master && mkdir -p coverage && kcov coverage po-util.sh && bash <(curl -s https://codecov.io/bash)
