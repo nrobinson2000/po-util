@@ -679,7 +679,7 @@ then
 fi
 echo
 MESSAGE="You should now be able to claim your device.  Please run
-\"particle cloud claim Device_ID\", using the Device_ID we found above." ; blue_echo
+\"particle device add Device_ID\", using the Device_ID we found above." ; blue_echo
 echo
 exit
 fi
