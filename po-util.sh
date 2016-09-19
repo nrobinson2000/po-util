@@ -185,7 +185,7 @@ build, flash, clean, ota, dfu, serial, init, config, setup"
 
 build_firmware()
 {
-  make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1" || exit
+  make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1"
 }
 
 
@@ -790,7 +790,7 @@ then
     exit
   fi
     echo
-    build_firmware "$1"
+    build_firmware "$1" || exit
     build_message "$@"
 fi
 
