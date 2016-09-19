@@ -756,7 +756,7 @@ then
   if [ "$3" == "" ];
   then
     echo
-    MESSAGE="Please specify which device to flash ota." ; red_echo ; exit
+    MESSAGE="Please specify which device to flash ota." ; red_echo ; echo ; exit
   fi
 
   if [ "$3" == "--multi" ] || [ "$3" == "-m" ];
