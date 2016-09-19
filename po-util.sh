@@ -755,6 +755,7 @@ then
 
   if [ "$3" == "" ];
   then
+    echo
     MESSAGE="Please specify which device to flash ota." ; red_echo ; exit
   fi
 
