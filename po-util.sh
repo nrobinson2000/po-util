@@ -823,8 +823,8 @@ then
   echo
   MESSAGE="Building firmware was successful! Flashing with dfu-util..."
   green_echo
-  echo
   dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$FIRMWAREDIR/../bin/firmware.bin" &> /dev/null
+  echo
   exit
 fi
 
