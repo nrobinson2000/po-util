@@ -816,6 +816,7 @@ then
     exit
   fi
   dfu_open
+  echo
   build_firmware "$1" || (MESSAGE='Building firmware failed! Closing DFU...' && echo && red_echo && echo && dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D /dev/null &> /dev/null && exit)
   echo
   MESSAGE="Building firmware was successful! Flashing with dfu-util..."
