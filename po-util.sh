@@ -608,7 +608,7 @@ fi
 # Get device out of DFU mode
 if [ "$1" == "dfu-close" ];
 then
-  dfu-util -d 2b04:D006 -a 0 -i 0 -s 0x080A0000:leave -D /dev/null
+  dfu-util -d 2b04:D006 -a 0 -i 0 -s 0x080A0000:leave -D /dev/null &> /dev/null
   exit
 fi
 
@@ -697,7 +697,7 @@ then
   sleep 1
   echo
   MESSAGE="Flashing $FIRMWAREBIN with dfu-util..." ; blue_echo
-  dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$FIRMWAREBIN" || ( MESSAGE="Device not found." ; red_echo )
+  dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$FIRMWAREBIN" &> /dev/null || ( MESSAGE="Device not found." ; red_echo )
   exit
 fi
 
@@ -717,7 +717,7 @@ then
   make clean all PLATFORM="$1" program-dfu
   cd "$BASE_FIRMWARE/firmware" && git stash || exit
   sleep 1
-  dfu-util -d $DFU_ADDRESS1 -a 0 -i 0 -s $DFU_ADDRESS2:leave -D /dev/null
+  dfu-util -d $DFU_ADDRESS1 -a 0 -i 0 -s $DFU_ADDRESS2:leave -D /dev/null &> /dev/null
   exit
 fi
 
@@ -816,8 +816,8 @@ then
     exit
   fi
   dfu_open
-  build_firmware "$1" || MESSAGE='Building firmware failed!  Closing DFU...' && red_echo && dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D /dev/null && exit
-  dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$FIRMWAREDIR/../bin/firmware.bin"
+  build_firmware "$1" || MESSAGE='Building firmware failed! Closing DFU...' && echo && red_echo && echo && dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D /dev/null &> /dev/null && exit
+  dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$FIRMWAREDIR/../bin/firmware.bin" &> /dev/null
   exit
 fi
 
