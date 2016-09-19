@@ -159,6 +159,7 @@ dfu_open()
   else
     echo
     MESSAGE="Device not found!" ; red_echo
+    echo
     MESSAGE="Your device must be connected by USB."; blue_echo
     echo
     exit
