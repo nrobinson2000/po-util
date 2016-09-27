@@ -1,3 +1,6 @@
 build-test/*
 _site/*
 temp*
+stylesheets/fonts.css
+test.html
+img.svg
