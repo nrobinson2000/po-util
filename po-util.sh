@@ -204,7 +204,7 @@ build_firmware()
 config()
 {
   echo BASE_FIRMWARE="$BASE_FIRMWARE" >> $SETTINGS
-  echo PARTICLE_DEVELOP="1" >> $SETTINGS
+  echo "export PARTICLE_DEVELOP=1" >> $SETTINGS
   echo BINDIR="$BINDIR" >> $SETTINGS
   echo
   MESSAGE="Which branch of the Particle firmware would you like to use?
@@ -743,7 +743,7 @@ then
   then
     exit
   fi
-    git stash
+    git stash &> /dev/null
     make clean -s PLATFORM="$1" 2>&1 /dev/null
     if [ "$FIRMWAREDIR/../bin" != "$HOME/bin" ];
     then

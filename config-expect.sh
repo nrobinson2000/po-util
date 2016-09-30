@@ -4,7 +4,7 @@ set timeout 10
 spawn ./po-util.sh config
 
 expect -exact "Branch: "
-send -- "release/v0.5.1\n"
+send -- "release/v0.5.3\n"
 expect -exact "Baud Rate: "
 send -- "po\n"
 
