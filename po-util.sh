@@ -184,8 +184,19 @@ build, flash, clean, ota, dfu, serial, init, config, setup"
   echo
 }
 
+configure_makefile() #In development
+{
+  if grep 'INCLUDE_DIRS += $(SOURCE_PATH)/../lib' "$BASE_FIRMWARE/firmware/user/build.mk" &> /dev/null;
+    then
+      echo " " > /dev/null
+    else
+      echo 'INCLUDE_DIRS += $(SOURCE_PATH)/../lib' >> "$BASE_FIRMWARE/firmware/user/build.mk"
+  fi
+}
+
 build_firmware()
 {
+  #configure_makefile
   make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1"
 }
 
@@ -442,7 +453,7 @@ then
 
     # Install Node.js
     curl -Ss https://nodejs.org/dist/ > node-result.txt
-    cat node-result.txt | grep "<a href=\"v" > node-new.txt
+    grep "<a href=\"v" "node-result.txt" > node-new.txt
     tail -1 node-new.txt > node-oneline.txt
     sed -n 's/.*\"\(.*.\)\".*/\1/p' node-oneline.txt > node-version.txt
     NODEVERSION="$(cat node-version.txt)"
@@ -522,7 +533,7 @@ then
 
     # Install Node.js
     curl -Ss https://nodejs.org/dist/ > node-result.txt
-    cat node-result.txt | grep "<a href=\"v" > node-new.txt
+    grep "<a href=\"v" "node-result.txt" > node-new.txt
     tail -1 node-new.txt > node-oneline.txt
     sed -n 's/.*\"\(.*.\)\".*/\1/p' node-oneline.txt > node-version.txt
     NODEVERSION="$(cat node-version.txt)"
@@ -565,7 +576,7 @@ then
     MESSAGE="Directory is already Initialized!" ; green_echo
     exit
   fi
-
+  #mkdir lib/ # In development
   mkdir firmware/
   echo "#include \"application.h\"
 
@@ -578,8 +589,8 @@ void loop() // Put code here to loop forever
 {
 
 }" > firmware/main.cpp
-  cp *.cpp firmware/
-  cp *.h firmware/
+  # cp *.cpp firmware/
+  # cp *.h firmware/
   cp ~/.po-util-README.md README.md
   MESSAGE="Copied c++ files into firmware directory.  Setup complete." ; green_echo
   exit
@@ -618,6 +629,7 @@ if [ "$1" == "update" ];
 then
   MESSAGE="Updating firmware..." ; blue_echo
   cd "$BASE_FIRMWARE"/firmware || exit
+  git stash
   git checkout $BRANCH
   git pull
   MESSAGE="Updating particle-cli..." ; blue_echo
@@ -731,7 +743,7 @@ then
   then
     exit
   fi
-
+    git stash
     make clean -s PLATFORM="$1" 2>&1 /dev/null
     if [ "$FIRMWAREDIR/../bin" != "$HOME/bin" ];
     then
@@ -805,6 +817,7 @@ then
     exit
   fi
     echo
+    #configure_makefile
     make all -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1" DEBUG_BUILD="y" || exit
     build_message "$@"
 fi

@@ -5,3 +5,6 @@ bin/*
 *.bin
 temp.sh
 temp.txt
+test.html
+stylesheets/*
+img.svg
