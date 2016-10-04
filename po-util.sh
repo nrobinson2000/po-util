@@ -478,17 +478,17 @@ then
 
     if [ "$DISTRO" == "deb" ];
     then
-        sudo $INSTALLER nodejs python-software-properties python g++ make build-essential libusb-1.0-0-dev libarchive-zip-perl screen libc6-i386
+        sudo $INSTALLER nodejs python-software-properties python g++ make build-essential libusb-1.0-0-dev libarchive-zip-perl screen libc6-i386 autoconf
     fi
 
     if [ "$DISTRO" == "rpm" ];
     then
-        sudo $INSTALLER nodejs python make automake gcc gcc-c++ kernel-devel libusb glibc.i686 vim-common perl-Archive-Zip-1.58-1.fc24.noarch screen
+        sudo $INSTALLER nodejs python make automake gcc gcc-c++ kernel-devel libusb glibc.i686 vim-common perl-Archive-Zip-1.58-1.fc24.noarch screen autoconf
     fi
 
     if [ "$DISTRO" == "arch" ];
     then
-        sudo $INSTALLER nodejs npm python gcc make automake libusb lib32-glibc vim yaourt screen
+        sudo $INSTALLER nodejs npm python gcc make automake libusb lib32-glibc vim yaourt screen autoconf
         yaourt -S perl-archive-zip
     fi
 
