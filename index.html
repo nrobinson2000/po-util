@@ -5,15 +5,27 @@
     <title>po-util</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
     <link rel="shortcut icon" type="image/x-icon" href="logos/favicon.ico.png">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <script src="jquery.js"></script>
+    <script>
+    $(window).resize(function() {
+      if ($(window).width() < 600)
+      {
+        document.getElementById("logo").width = 400;
+      }
+      else {
+        document.getElementById("logo").width = 550;
+      }
+});
+    </script>
   </head>
   <body>
     <section class="page-header">
-      <img src="logos/po-util-updated.svg" width="400px">
-      <h2 class="project-tagline">Particle Offline Utility: The handy script for installing and using the Particle Toolchain on Ubuntu-based Distros and OSX</h2>
+      <img id="logo" onload="if (screen.width < 600){this.width = 400;}else{this.width=550;}"src="logos/po-util-updated.svg" width="550px">
+      <h1 class="project-tagline">Particle Offline Utility: The handy script for installing and using the Particle Toolchain on Linux and OSX</h1>
       <a href="https://github.com/nrobinson2000/po-util" class="btn">View on GitHub</a>
       <a href="https://github.com/nrobinson2000/po-util/wiki" class="btn">View Wiki</a>
     </section>
@@ -25,12 +37,12 @@
         <a href="https://github.com/nrobinson2000/po-util/issues"><img src="https://img.shields.io/github/issues/nrobinson2000/po-util.svg"></a>
         <a href="https://github.com/nrobinson2000/po-util/stargazers"><img src="https://img.shields.io/github/stars/nrobinson2000/po-util.svg"></a>
         <a href="https://travis-ci.org/nrobinson2000/po-util"><img src="https://travis-ci.org/nrobinson2000/po-util.svg?branch=master" alt="Build Status"></a>
-        <a href="https://circleci.com/gh/nrobinson2000/po-util"><img src="https://circleci.com/gh/nrobinson2000/po-util.svg?style=svg" alt="Circle CI"></a>
+        <a href="https://circleci.com/gh/nrobinson2000/po-util/tree/master"><img src="https://circleci.com/gh/nrobinson2000/po-util/tree/master.svg?style=svg" alt="Circle CI"></a>
         <a href="https://twitter.com/share" class="twitter-share-button" data-url="https://po-util.com" data-text="Check out po-util. It's a handy script for installing and using the @particle Toolchain on Linux and OSX.">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
       </p>
 
 <h1>About</h1>
-<p>Particle Offline Utility, pronounced <strong>po-util</strong>, is a script for installing and using the Particle Toolchain on Ubuntu-based distros and OSX.</p>
+<p>Particle Offline Utility, pronounced <strong>po-util</strong>, is a script for installing and using the Particle Toolchain on Linux and OSX.</p>
 <p><strong>Po-util</strong> makes it easy for developers to download the Particle Toolchain and install the required dependencies to quickly begin creating projects using the Particle Platform.</p>
 <p><strong>Po-util</strong> features a responsive experience, giving developers the tools they need for seamless local development. <strong>Po-util</strong> provides understandable commands for simplifying complex tasks like properly compiling and flashing firmware.</p>
 <p><strong>Po-util</strong> downloads and installs: <a href="http://dfu-util.sourceforge.net/">dfu-util</a>, <a href="https://nodejs.org/en/">nodejs</a>, <a href="https://launchpad.net/gcc-arm-embedded">gcc-arm-embedded</a>, <a href="https://github.com/spark/particle-cli">particle-cli</a>, and the <a href="https://github.com/spark/firmware">Particle Firmware source code</a>.</p>
@@ -52,7 +64,7 @@ cd po-util
 ./po-util.sh install
 </code></pre>
 <p>When installing <strong>po-util</strong>, an alias is added to your <code>.bashrc</code> that allows you to run <code>po</code> from anywhere to use <strong>po-util</strong>.</p>
-<p>Note: We download everything from well known locations and GitHub. While we believe this is a reasonable approach, it's always a good idea to know what's going on under the hood.  <a href="https://github.com/nrobinson2000/po-util/blob/master/po-util.sh">The <strong>po-util</strong> script can be found on GitHub if you want to manually download and run it.</a></p>
+<p>Note: We download everything from well-known locations and GitHub. While we believe this is a reasonable approach, it's always a good idea to know what's going on under the hood.  <a href="https://github.com/nrobinson2000/po-util/blob/master/po-util.sh">The <strong>po-util</strong> script can be found on GitHub if you want to manually download and run it.</a></p>
 <p align="center">
 <img src="images/po.png">
 </p>
@@ -117,11 +129,27 @@ you must run <code>po DEVICE upgrade</code>. This will also update the
 system firmware on your device(s).</p>
 <p>If you wish to use the default Particle DFU Mode baud rate, you may change the <code>DFUBAUDRATE=19200</code> line in the <code>~/.po</code> configuration file to <code>DFUBAUDRATE=14400</code>.</p>
 <h1>Why I created this script</h1>
-<p>I created this script because Particle does not currently have a script for easily installing the Particle Toolchain and depedencies on Linux and OSX. I created this script in order to help out other Particle users and to improve my bash scripting skills. It would be my dream come true if Particle added this script to its resources or gave it a shout out in its documentation. If that happened, I would feel very proud of myself for making a meaningful contribution.</p>
+<p>I created this script because Particle does not currently have a script for easily installing the Particle Toolchain and dependencies on Linux and OSX. I created this script in order to help out other Particle users and to improve my bash scripting skills. It would be my dream come true if Particle added this script to its resources or gave it a shout out in its documentation. If that happened, I would feel very proud of myself for making a meaningful contribution.</p>
 
 <h1>How you can help <strong>po-util</strong></h1>
 <p>
 Contributions and starring of the <a href="https://github.com/nrobinson2000/po-util">GitHub Repository</a> are greatly appreciated.  Bitcoin is also accepted to help pay for hosting expenses. <a href="https://po-util.com/donate">Donate Bitcoin Here.</a>  You can also share <strong>po-util</strong> on social media to help other users discover it.
+</p>
+
+<h1>Share <strong>po-util</strong>:</h1>
+<p>Sharing <strong>po-util</strong> on social media or discussing it on social media platforms is crucial for other users to discover and use <strong>po-util</strong>.  <strong>Po-util</strong> is a great tool, and if you are reading this page, you most likely agree.  Please share <strong>po-util</strong> on whatever platform(s) you prefer, so that it may be found by people who need it.</p>
+
+<p>If you like <strong>po-util</strong>, I would recommend starring it on GitHub so that I can get a broad idea of the number of users interested in it.
+  <a href="https://github.com/nrobinson2000/po-util/stargazers"><img src="https://img.shields.io/github/stars/nrobinson2000/po-util.svg?style=social&label=Star&maxAge=2592000"></a>
+</p>
+
+<p>
+  You can also Tweet about <strong>po-util</strong>, <a href="https://twitter.com/intent/tweet?ref_src=twsrc%5Etfw&text=Check%20out%20po-util.%20It%27s%20a%20handy%20script%20for%20installing%20and%20using%20the%20%40particle%20Toolchain%20on%20Linux%20and%20OSX.&tw_p=tweetbutton&url=https%3A%2F%2Fpo-util.com"><img src="https://img.shields.io/twitter/url/http/shields.io.svg?style=social&maxAge=2592000"></a>
+</p>
+
+<p>
+  Or share it on Google+, <!-- Place this tag where you want the +1 button to render. -->
+  <div class="g-plusone" data-href="https://po-util.com"></div>
 </p>
 
 <!-- <h1>Preview source code</h1>
@@ -151,11 +179,19 @@ s.setAttribute('data-timestamp', +new Date());
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
+<p>
+  <a href="https://nrobinson2000.herokuapp.com"><img src="https://nrobinson2000.herokuapp.com/badge.svg"></a>
+  <a href="https://po-util.com/donate"><img src="https://img.shields.io/badge/donate-bitcoin-orange.svg"></a>
+  <a href="https://github.com/nrobinson2000/po-util/issues"><img src="https://img.shields.io/github/issues/nrobinson2000/po-util.svg"></a>
+  <a href="https://github.com/nrobinson2000/po-util/stargazers"><img src="https://img.shields.io/github/stars/nrobinson2000/po-util.svg"></a>
+  <a href="https://travis-ci.org/nrobinson2000/po-util"><img src="https://travis-ci.org/nrobinson2000/po-util.svg?branch=master" alt="Build Status"></a>
+  <a href="https://circleci.com/gh/nrobinson2000/po-util"><img src="https://circleci.com/gh/nrobinson2000/po-util.svg?style=svg" alt="Circle CI"></a>
+  <a href="https://twitter.com/share" class="twitter-share-button" data-url="https://po-util.com" data-text="Check out po-util. It's a handy script for installing and using the @particle Toolchain on Linux and OSX.">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</p>
 
+      <!-- <footer class="site-footer">
 
-      <footer class="site-footer">
-
-      </footer>
+      </footer> -->
 
     </section>
 
@@ -170,9 +206,10 @@ s.setAttribute('data-timestamp', +new Date());
     <!--End of Zopim Live Chat Script-->
 
 
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57ccc3d648ee060b"></script>
 
-
-
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
 
 
 
