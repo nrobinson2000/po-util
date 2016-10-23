@@ -407,8 +407,12 @@ then
 
   # clone firmware repository
   cd "$BASE_FIRMWARE" || exit
-  MESSAGE="Installing Particle firmware from Github..." ; blue_echo
-  git clone https://github.com/spark/firmware.git
+
+  if hash git 2>/dev/null;
+  then
+    MESSAGE="Installing Particle firmware from Github..." ; blue_echo
+    git clone https://github.com/spark/firmware.git
+  fi
 
   if [ "$OS" == "Linux" ]; # Linux installation steps
   then
@@ -479,17 +483,17 @@ then
 
     if [ "$DISTRO" == "deb" ];
     then
-        sudo $INSTALLER nodejs python-software-properties python g++ make build-essential libusb-1.0-0-dev libarchive-zip-perl screen libc6-i386 autoconf
+        sudo $INSTALLER git nodejs python-software-properties python g++ make build-essential libusb-1.0-0-dev libarchive-zip-perl screen libc6-i386 autoconf
     fi
 
     if [ "$DISTRO" == "rpm" ];
     then
-        sudo $INSTALLER nodejs python make automake gcc gcc-c++ kernel-devel libusb glibc.i686 vim-common perl-Archive-Zip-1.58-1.fc24.noarch screen autoconf
+        sudo $INSTALLER git nodejs python make automake gcc gcc-c++ kernel-devel libusb glibc.i686 vim-common perl-Archive-Zip-1.58-1.fc24.noarch screen autoconf
     fi
 
     if [ "$DISTRO" == "arch" ];
     then
-        sudo $INSTALLER nodejs npm python gcc make automake libusb lib32-glibc vim yaourt screen autoconf
+        sudo $INSTALLER git nodejs npm python gcc make automake libusb lib32-glibc vim yaourt screen autoconf
         yaourt -S perl-archive-zip
     fi
 
@@ -556,6 +560,14 @@ then
     MESSAGE="Installing particle-cli..." ; blue_echo
     sudo npm install -g node-pre-gyp npm serialport particle-cli
   fi # CLOSE: "$OS" == "Darwin"
+
+  cd "$BASE_FIRMWARE" || exit
+
+  if hash git 2>/dev/null;
+  then
+    MESSAGE="Installing Particle firmware from Github..." ; blue_echo
+    git clone https://github.com/spark/firmware.git
+  fi
 
   MESSAGE="
   Thank you for installing po-util. Be sure to check out https://po-util.com/
