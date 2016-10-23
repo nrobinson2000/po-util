@@ -684,7 +684,12 @@ then
   if [ "$2" == "get" ] || [ "$2" == "install" ]; # Download a library with git
   then
     cd "$LIBRARY"
+    if [ "$4" != "" ];
+    then
     git clone "$3" "$4" || ( echo ; MESSAGE="Could not download Library.  Please supply a valid URL to a git repository." ; red_echo )
+    else
+    git clone "$3" || ( echo ; MESSAGE="Could not download Library.  Please supply a valid URL to a git repository." ; red_echo )
+  fi
     exit
   fi
 
