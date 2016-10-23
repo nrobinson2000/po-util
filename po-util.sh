@@ -179,7 +179,7 @@ common_commands() #List common commands
 {
   echo
   MESSAGE="Common commands include:
-build, flash, clean, ota, dfu, serial, init, config, setup"
+build, flash, clean, ota, dfu, serial, init, config, setup, library"
   blue_echo
   echo
 }
