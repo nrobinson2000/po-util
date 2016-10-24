@@ -716,7 +716,7 @@ then
     exit
   fi
 
-  if [ "$2" == create ]; # Create a libary in "$LIBRARY" from files in "$FIRMWAREDIR"
+  if [ "$2" == create ]; # Create a library in "$LIBRARY" from files in "$FIRMWAREDIR"
   then
     find_objects
 
@@ -759,9 +759,7 @@ Use \"po library add $3 to add the library to ther projects." ; green_echo
 
     if [ -d "$LIBRARY/$3" ];
     then
-      echo
-      MESSAGE="Found library $3" ; green_echo
-      echo
+      echo "Found" > /dev/null
     else
       echo
       MESSAGE="Library $3 not found" ; red_echo ; echo ; exit
@@ -784,8 +782,12 @@ Use \"po library add $3 to add the library to ther projects." ; green_echo
         fi
 
       fi
-    MESSAGE="Imported library $3" ; green_echo ; echo ; exit
     echo
+    MESSAGE="Imported library $3" ; green_echo
+    echo
+    MESSAGE="  Add \#include \"$3.h\" to your main.cpp
+  to use the library" ; blue_echo
+    exit
     fi
   fi
 
