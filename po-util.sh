@@ -787,6 +787,7 @@ Use \"po library add $3 to add the library to ther projects." ; green_echo
     echo
     MESSAGE="  Add \#include \"$3.h\" to your main.cpp
   to use the library" ; blue_echo
+    echo
     exit
     fi
   fi
