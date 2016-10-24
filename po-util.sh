@@ -424,7 +424,10 @@ then
   then
     MESSAGE="Installing Particle firmware from Github..." ; blue_echo
     git clone https://github.com/spark/firmware.git
+  else
+    NOGIT="true"
   fi
+
 
   if [ "$OS" == "Linux" ]; # Linux installation steps
   then
@@ -575,7 +578,7 @@ then
 
   cd "$BASE_FIRMWARE" || exit
 
-  if hash git 2>/dev/null;
+  if [ $NOGIT == "true" ];
   then
     MESSAGE="Installing Particle firmware from Github..." ; blue_echo
     git clone https://github.com/spark/firmware.git
