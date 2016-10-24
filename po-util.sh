@@ -767,6 +767,7 @@ Use \"po library add $3 to add the library to ther projects." ; green_echo
 
     if [ -f "$FIRMWAREDIR/$3.cpp" ] || [ -f "$FIRMWAREDIR/$3.h" ];
     then
+      echo
       MESSAGE="Library $3 is already imported" ; red_echo ; echo ; exit
     else
 
@@ -785,8 +786,7 @@ Use \"po library add $3 to add the library to ther projects." ; green_echo
     echo
     MESSAGE="Imported library $3" ; green_echo
     echo
-    MESSAGE="  Add \#include \"$3.h\" to your main.cpp
-  to use the library" ; blue_echo
+    MESSAGE="Add #include \"$3.h\" to your main.cpp to use the library" ; blue_echo
     echo
     exit
     fi
