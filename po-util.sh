@@ -184,19 +184,9 @@ build, flash, clean, ota, dfu, serial, init, config, setup, library"
   echo
 }
 
-configure_makefile() #In development
-{
-  if grep 'INCLUDE_DIRS += $(SOURCE_PATH)/../lib' "$BASE_FIRMWARE/firmware/user/build.mk" &> /dev/null;
-    then
-      echo " " > /dev/null
-    else
-      echo 'INCLUDE_DIRS += $(SOURCE_PATH)/../lib' >> "$BASE_FIRMWARE/firmware/user/build.mk"
-  fi
-}
 
 build_firmware()
 {
-  #configure_makefile
   make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1"
 }
 
