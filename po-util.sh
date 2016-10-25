@@ -412,6 +412,7 @@ then
 
   if hash git 2>/dev/null;
   then
+    NOGIT="false"
     MESSAGE="Installing Particle firmware from Github..." ; blue_echo
     git clone https://github.com/spark/firmware.git
   else
@@ -568,7 +569,7 @@ then
 
   cd "$BASE_FIRMWARE" || exit
 
-  if [ $NOGIT == "true" ];
+  if [ "$NOGIT" == "true" ];
   then
     MESSAGE="Installing Particle firmware from Github..." ; blue_echo
     git clone https://github.com/spark/firmware.git
