@@ -488,7 +488,7 @@ then
 
     if [ "$DISTRO" == "deb" ];
     then
-        sudo $INSTALLER git nodejs python-software-properties python g++ make build-essential libusb-1.0-0-dev libarchive-zip-perl screen libc6-i386 autoconf
+        sudo $INSTALLER git nodejs python-software-properties python g++ make build-essential libusb-1.0-0-dev libarchive-zip-perl screen libc6-i386 autoconf automake
     fi
 
     if [ "$DISTRO" == "rpm" ];
