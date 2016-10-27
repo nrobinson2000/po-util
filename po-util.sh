@@ -187,7 +187,7 @@ build, flash, clean, ota, dfu, serial, init, config, setup, library"
 
 build_firmware()
 {
-  make all  -i -k -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1"
+  make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1"
 }
 
 
