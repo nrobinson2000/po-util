@@ -598,7 +598,7 @@ then
   fi
   #mkdir lib/ # In development
   mkdir firmware/
-  echo "#include \"application.h\"
+  echo "#include \"Particle.h\"
 
 void setup() // Put setup code here to run once
 {
