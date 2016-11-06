@@ -378,13 +378,7 @@ then
 
     else
 
-    curl -fsSLo https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
-
-    if [ "$CWD" != "$HOME" ];
-    then
-      cp po-util.sh ~/po-util.sh #Replace ~/po-util.sh with one in current directory.
-    fi
-
+    curl -fsSLo ~/po-util.sh https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
     chmod +x ~/po-util.sh
 
     fi
