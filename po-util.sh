@@ -362,11 +362,34 @@ source "$SETTINGS"
 if [ "$1" == "install" ]; # Install
 then
 
-  if [ "$CWD" != "$HOME" ];
+  if [ -f po-util.sh ];
   then
-    cp po-util.sh ~/po-util.sh #Replace ~/po-util.sh with one in current directory.
+  
+    if [ "$CWD" != "$HOME" ];
+    then
+      cp po-util.sh ~/po-util.sh #Replace ~/po-util.sh with one in current directory.
+    fi
     chmod +x ~/po-util.sh
+  else
+    if [ -f ~/po-util.sh ];
+    then
+
+      chmod +x ~/po-util.sh
+
+    else
+
+    curl -fLosS https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
+
+    if [ "$CWD" != "$HOME" ];
+    then
+      cp po-util.sh ~/po-util.sh #Replace ~/po-util.sh with one in current directory.
+    fi
+
+    chmod +x ~/po-util.sh
+
+    fi
   fi
+
 
   if [ -f ~/.bash_profile ]; #Create .bash_profile
   then
