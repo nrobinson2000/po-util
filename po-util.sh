@@ -378,7 +378,7 @@ then
 
     else
 
-    curl -fLosS https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
+    curl -fsSLo https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
 
     if [ "$CWD" != "$HOME" ];
     then
