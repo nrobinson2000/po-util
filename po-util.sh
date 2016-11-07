@@ -364,7 +364,7 @@ then
 
   if [ -f po-util.sh ];
   then
-  
+
     if [ "$CWD" != "$HOME" ];
     then
       cp po-util.sh ~/po-util.sh #Replace ~/po-util.sh with one in current directory.
@@ -861,6 +861,7 @@ Use \"po library add $3 to add the library to ther projects." ; green_echo
     echo
     ls -m "$LIBRARY"
     echo
+    exit
   fi # Close list
 
   if [ "$2" == "help" ] || [ "$2" == "" ]; # SHOW HELP TEXT FOR "po library"
@@ -895,13 +896,47 @@ Commands:
 
   list         Show all libraries in ~/.po-util/lib
 
+  update       Update all of your libraries.
+  refresh
+
   help         Show this help documentation.
     "
-
-
+  exit
 fi # Close help
 
+if [ "$2" == "update" ] || [ "$2" == "refresh" ]; # Update all libraries
+then
+  echo
 
+  if [ "$(ls -1 $LIBRARY)" == "" ];
+  then
+    MESSAGE="No libraries installed.  Use \"po lib get\" to download some." ; red_echo
+    exit
+  fi
+
+  for OUTPUT in $(ls -1 "$LIBRARY")
+  do
+  	cd "$LIBRARY/$OUTPUT"
+    MESSAGE="Updating library $OUTPUT..." ; blue_echo
+    echo
+    git pull
+    echo
+  done
+  exit
+fi # Close Update
+
+
+
+
+
+
+
+
+
+
+  echo
+  MESSAGE="Please choose a valid command, or run \"po lib\" for help." ; red_echo
+  echo
   exit
 fi # Close Library
 ####################
