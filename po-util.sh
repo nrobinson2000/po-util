@@ -492,12 +492,13 @@ then
     then
     MESSAGE="Node.js version $NODEVERSION is already installed."; blue_echo
     else
-      MESSAGE="Installing Node.js version $NODEVERSION..." ; blue_echo
+      # MESSAGE="Installing Node.js version $NODEVERSION..." ; blue_echo
       curl -Ss https://api.github.com/repos/nodesource/distributions/contents/"$DISTRO" | grep "name"  | grep "setup_"| grep -v "setup_iojs"| grep -v "setup_dev" > node-files.txt
       tail -1 node-files.txt > node-oneline.txt
       sed -n 's/.*\"\(.*.\)\".*/\1/p' node-oneline.txt > node-version.txt
       MESSAGE="Installing Node.js version $(cat node-version.txt)..." blue_echo
-      curl -sL https://"$DISTRO".nodesource.com/"$(cat node-version.txt)" | sudo -E bash -
+      # curl -sL https://"$DISTRO".nodesource.com/"$(cat node-version.txt)" | sudo -E bash -
+      curl -sL https://"$DISTRO".nodesource.com/setup_6.x | sudo -E bash -
       rm -rf node-*.txt
     fi
     fi
