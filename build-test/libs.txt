@@ -1,0 +1,3 @@
+https://github.com/Adesh/SparkCore-LiquidCrystal-master LiquidCrystal
+https://github.com/spark/PowerShield PowerShield
+https://github.com/technobly/SparkCore-NeoPixel.git neopixel

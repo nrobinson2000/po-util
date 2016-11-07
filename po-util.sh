@@ -694,17 +694,45 @@ then
     mkdir -p "$LIBRARY"
   fi
 
-  if [ "$2" == "get" ] || [ "$2" == "install" ]; # Download a library with git
+  if [ "$2" == "get" ] || [ "$2" == "install" ]; # Download a library with git OR Install from libs.txt
   then
+    find_objects
+
     cd "$LIBRARY"
-    if [ "$4" != "" ];
+
+
+        if [ "$3" == "" ]; # Install from libs.txt
+        then
+
+        echo " " > /dev/null # TODO: In progress
+
+
+
+
+        fi
+
+
+
+
+    if [ "$4" != "" ];  # Download a library with git
     then
-    git clone "$3" "$4" || ( echo ; MESSAGE="Could not download Library.  Please supply a valid URL to a git repository." ; red_echo )
+      git clone "$3" "$4" || ( echo ; MESSAGE="Could not download Library.  Please supply a valid URL to a git repository." ; red_echo )
+      exit
     else
-    git clone "$3" || ( echo ; MESSAGE="Could not download Library.  Please supply a valid URL to a git repository." ; red_echo )
-  fi
+      git clone "$3" || ( echo ; MESSAGE="Could not download Library.  Please supply a valid URL to a git repository." ; red_echo )
+      exit
+    fi
+
+
     exit
   fi
+
+
+
+
+
+
+
 
   if [ "$2" == "purge" ];  # Delete library from "$LIBRARY"
   then
@@ -796,6 +824,13 @@ Use \"po library add $3 to add the library to ther projects." ; green_echo
         fi
 
       fi
+
+      #Add entries to libs.txt file
+
+      LIB_URL="$( cd $LIBRARY/$3 && git remote show origin | grep Fetch | sed 's/http/\nhttp/g'| sed 's/\(^http[^ <]*\)\(.*\)/\1/g' | grep -v Fetch )"
+
+      echo "$LIB_URL $3" >> "$FIRMWAREDIR/../libs.txt"
+
     echo
     MESSAGE="Imported library $3" ; green_echo
     echo
@@ -831,6 +866,17 @@ Use \"po library add $3 to add the library to ther projects." ; green_echo
       MESSAGE="Library $3 is backed up, removing from project..." ; blue_echo
       rm "$FIRMWAREDIR/$3.cpp"
       rm "$FIRMWAREDIR/$3.h"
+      grep -v "$3" "$FIRMWAREDIR/../libs.txt" > "$FIRMWAREDIR/../libs-temp.txt"
+      rm "$FIRMWAREDIR/../libs.txt"
+      mv "$FIRMWAREDIR/../libs-temp.txt" "$FIRMWAREDIR/../libs.txt"
+
+      if [ -s "$FIRMWAREDIR/../libs.txt" ];
+      then
+         echo " " > /dev/null
+      else
+        rm "$FIRMWAREDIR/../libs.txt"
+      fi
+
       echo
       exit
     else
