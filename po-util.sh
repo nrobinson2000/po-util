@@ -558,7 +558,7 @@ then
 
     # Install ARM toolchain
     MESSAGE="Installing ARM toolchain..." ; blue_echo
-    brew install gcc-arm-none-eabi dfu-util
+    brew install gcc-arm-none-eabi dfu-util gnu-sed
 
     # Install Node.js
     curl -Ss https://nodejs.org/dist/ > node-result.txt
@@ -701,15 +701,34 @@ then
     cd "$LIBRARY"
 
 
-        if [ "$3" == "" ]; # Install from libs.txt
-        then
-
-        echo " " > /dev/null # TODO: In progress
-
-
-
-
-        fi
+        # if [ "$3" == "" ]; # Install from libs.txt
+        # then
+        #   ls -1 "$LIBRARY" > "$FIRMWAREDIR/../libraries.txt"
+        #
+        #   for i in $(cat $FIRMWAREDIR/../libs.txt)
+        #   do
+        #
+        #    for j in $(cat $FIRMWAREDIR/../libraries.txt)
+        #    doa
+        #      echo $i
+        #      echo $j
+        #
+        #      if [ "$i" == *"$j"* ];
+        #      then
+        #        echo
+        #        MESSAGE="Library $j already installed..." ; blue_echo
+        #       else
+        #        echo $i
+        #        git clone $i
+        #        exit
+        #       fi
+        #
+        #    done
+        #
+        #   done
+        #
+        #   exit
+        # fi
 
 
 
@@ -826,8 +845,12 @@ Use \"po library add $3 to add the library to ther projects." ; green_echo
       fi
 
       #Add entries to libs.txt file
-
-      LIB_URL="$( cd $LIBRARY/$3 && git remote show origin | grep Fetch | sed 's/http/\nhttp/g'| sed 's/\(^http[^ <]*\)\(.*\)/\1/g' | grep -v Fetch )"
+      if [ "$OS" == "Darwin" ];
+      then
+        LIB_URL="$( cd $LIBRARY/$3 && git remote show origin | grep Fetch | gsed 's/http/\nhttp/g'| gsed 's/\(^http[^ <]*\)\(.*\)/\1/g' | grep -v Fetch )"
+      else
+        LIB_URL="$( cd $LIBRARY/$3 && git remote show origin | grep Fetch | gsed 's/http/\nhttp/g'| gsed 's/\(^http[^ <]*\)\(.*\)/\1/g' | grep -v Fetch )"
+      fi
 
       echo "$LIB_URL $3" >> "$FIRMWAREDIR/../libs.txt"
 
