@@ -694,6 +694,76 @@ then
     mkdir -p "$LIBRARY"
   fi
 
+  if [ "$2" == "clean" ]; # Prepare for release, remove all symlinks, keeping references in libs.txt
+  then
+  find_objects
+
+  for file in $(ls -1 $FIRMWAREDIR);
+  do
+  file_base="${file%.*}"
+    if (ls -1 "$LIBRARY" | grep "$file_base") &> /dev/null ;
+    then
+      rm "$FIRMWAREDIR/$file_base.h" &> /dev/null
+      rm "$FIRMWAREDIR/$file_base.cpp" &> /dev/null
+    fi
+  done
+
+  echo
+  MESSAGE="Removed all symlinks.  This can be undone with \"po lib setup\"" ; blue_echo
+  echo
+  exit
+  fi
+
+
+  if [ "$2" == "setup" ];
+  then
+    find_objects
+    cd "$LIBRARY"
+
+    cat $FIRMWAREDIR/../libs.txt | while read i  ## Install and add required libs from libs.txt
+    do
+      LIB_NAME="$(echo $i | awk '{ print $NF }' )"
+
+         if (ls -1 "$LIBRARY" | grep "$LIB_NAME") &> /dev/null ;
+         then
+           echo
+           MESSAGE="Library $LIB_NAME is already installed..." ; blue_echo
+         else
+           echo
+           MESSAGE="Dowloading library $LIB_NAME..." ; blue_echo
+           echo
+           git clone $i
+          fi
+
+
+          if [ -f "$FIRMWAREDIR/$LIB_NAME.cpp" ] || [ -f "$FIRMWAREDIR/$LIB_NAME.h" ];
+          then
+            echo
+            MESSAGE="Library $LIB_NAME is already added to this project..." ; red_echo
+          else
+            echo
+            MESSAGE="Adding library $LIB_NAME is to this project..." ; green_echo
+
+            if [ -f "$LIBRARY/$LIB_NAME/$LIB_NAME.cpp" ] || [ -f "$LIBRARY/$LIB_NAME/$LIB_NAME.h" ];
+            then
+              ln -s "$LIBRARY/$LIB_NAME/$LIB_NAME.cpp" "$FIRMWAREDIR"
+              ln -s "$LIBRARY/$LIB_NAME/$LIB_NAME.h" "$FIRMWAREDIR"
+            else
+              if [ -f "$LIBRARY/$LIB_NAME/firmware/$LIB_NAME.cpp" ] || [ -f "$LIBRARY/$LIB_NAME/firmware/$LIB_NAME.h" ];
+              then
+                ln -s "$LIBRARY/$LIB_NAME/firmware/$LIB_NAME.cpp" "$FIRMWAREDIR"
+                ln -s "$LIBRARY/$LIB_NAME/firmware/$LIB_NAME.h" "$FIRMWAREDIR"
+              fi
+
+            fi
+
+          fi
+
+    done
+    echo
+    exit
+  fi
+
   if [ "$2" == "get" ] || [ "$2" == "install" ]; # Download a library with git OR Install from libs.txt
   then
     find_objects
@@ -701,37 +771,28 @@ then
     cd "$LIBRARY"
 
 
-        # if [ "$3" == "" ]; # Install from libs.txt
-        # then
-        #   ls -1 "$LIBRARY" > "$FIRMWAREDIR/../libraries.txt"
-        #
-        #   for i in $(cat $FIRMWAREDIR/../libs.txt)
-        #   do
-        #
-        #    for j in $(cat $FIRMWAREDIR/../libraries.txt)
-        #    doa
-        #      echo $i
-        #      echo $j
-        #
-        #      if [ "$i" == *"$j"* ];
-        #      then
-        #        echo
-        #        MESSAGE="Library $j already installed..." ; blue_echo
-        #       else
-        #        echo $i
-        #        git clone $i
-        #        exit
-        #       fi
-        #
-        #    done
-        #
-        #   done
-        #
-        #   exit
-        # fi
+        if [ "$3" == "" ]; # Install from libs.txt
+        then
 
+          cat $FIRMWAREDIR/../libs.txt | while read i
+          do
+            LIB_NAME="$(echo $i | awk '{ print $NF }' )"
 
+               if (ls -1 "$LIBRARY" | grep "$LIB_NAME") &> /dev/null ;
+               then
+                 echo
+                 MESSAGE="Library $LIB_NAME is already installed..." ; blue_echo
+               else
+                 echo
+                 MESSAGE="Dowloading library $LIB_NAME..." ; blue_echo
+                 echo
+                 git clone $i
+                fi
 
+          done
+          echo
+          exit
+        fi
 
     if [ "$4" != "" ];  # Download a library with git
     then
@@ -747,16 +808,11 @@ then
   fi
 
 
-
-
-
-
-
-
   if [ "$2" == "purge" ];  # Delete library from "$LIBRARY"
   then
     if  [ -d "$LIBRARY/$3" ];
     then
+      echo
       read -rp "Are you sure you want to purge $3? (yes/no): " answer
       if [ "$answer" == "yes" ] || [ "$answer" == "y" ] || [ "$answer" == "y" ];
       then
@@ -765,6 +821,7 @@ then
         rm -rf "${LIBRARY:?}/$3"
         echo
         MESSAGE="Library $3 has been purged." ; green_echo
+        echo
       else
         echo
         MESSAGE="Aborting..." ; blue_echo
@@ -942,12 +999,19 @@ Use \"po library add $3 to add the library to ther projects." ; green_echo
 
 Commands:
   get          Download a Particle Library from GitHub and optionally name it.
-  install      Example:
+  install      If run with no arguments, libraries listed in a \"libs.txt\" are
+               installed.
+
+               Example of getting a library from Git:
                       po lib get https://github.com/user/libraryName libraryName
 
   add          Add a downloaded library to a po-util project.
   import       Libraries are added in the firmware directory as soft links.
-               Example:
+               Additionally, the library information is added to \"libs.txt\"
+               so that you can keep track of your libraries and restore them in
+               the future.
+
+               Example adding an installed library to a project:
                       po lib add libraryName
 
   remove       Remove a library from a po-util project.
@@ -964,6 +1028,17 @@ Commands:
                       po lib purge someLibrary
 
   list         Show all libraries in ~/.po-util/lib
+
+  setup        A combination of \"po lib install\" and \"po lib add\".
+               Libraries listed in \"libs.txt\" are installed and symlinks are
+               created.
+
+  clean        The automatic verision of \"po lib rm\".  All symlinks in the
+               project are removed, but \"libs.txt\" is untouched.  This is
+               ideal for releasing you project, not having to have the library
+               source files in your \"firmware\" directory, but rather just a
+               list that people can \"po lib setup\" to download your project's
+               dependencies.
 
   update       Update all of your libraries.
   refresh
