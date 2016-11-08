@@ -742,7 +742,7 @@ then
             MESSAGE="Library $LIB_NAME is already added to this project..." ; red_echo
           else
             echo
-            MESSAGE="Adding library $LIB_NAME is to this project..." ; green_echo
+            MESSAGE="Adding library $LIB_NAME to this project..." ; green_echo
 
             if [ -f "$LIBRARY/$LIB_NAME/$LIB_NAME.cpp" ] || [ -f "$LIBRARY/$LIB_NAME/$LIB_NAME.h" ];
             then
