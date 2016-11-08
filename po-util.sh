@@ -802,8 +802,6 @@ then
       git clone "$3" || ( echo ; MESSAGE="Could not download Library.  Please supply a valid URL to a git repository." ; red_echo )
       exit
     fi
-
-
     exit
   fi
 
@@ -861,6 +859,7 @@ Use \"po library add $3 to add the library to ther projects." ; green_echo
     else
       MESSAGE="Library files not found." ; red_echo ; exit
     fi
+    exit
   fi
 
 
@@ -918,6 +917,7 @@ Use \"po library add $3 to add the library to ther projects." ; green_echo
     echo
     exit
     fi
+    exit
   fi
 
 
@@ -977,6 +977,7 @@ Use \"po library add $3 to add the library to ther projects." ; green_echo
         exit
       fi
     fi
+    exit
   fi # Close remove
 
 
@@ -1068,15 +1069,6 @@ then
   done
   exit
 fi # Close Update
-
-
-
-
-
-
-
-
-
 
   echo
   MESSAGE="Please choose a valid command, or run \"po lib\" for help." ; red_echo
