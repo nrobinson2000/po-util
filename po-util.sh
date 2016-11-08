@@ -709,7 +709,7 @@ then
   done
 
   echo
-  MESSAGE="Removed all symlinks.  This can be undone with \"po lib setup\"" ; blue_echo
+  MESSAGE="Removed all symlinks. This can be undone with \"po lib setup\"" ; blue_echo
   echo
   exit
   fi
