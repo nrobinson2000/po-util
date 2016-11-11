@@ -986,6 +986,20 @@ Use \"po library add $3 to add the library to ther projects." ; green_echo
     exit
   fi # Close list
 
+    if [ "$2" == "package" ] || [ "$2" == "pack" ];
+    then
+      find_objects
+
+      if [ -d "$FIRMWAREDIR/../packaged-firmware" ];
+      then
+        rm -rf "$FIRMWAREDIR/../packaged-firmware"
+      fi
+
+      mkdir "$FIRMWAREDIR/../packaged-firmware"
+      cp "$FIRMWAREDIR/*" "$FIRMWAREDIR/../packaged-firmware"
+    exit
+    fi
+
   if [ "$2" == "help" ] || [ "$2" == "" ]; # SHOW HELP TEXT FOR "po library"
   then
 
