@@ -996,7 +996,8 @@ Use \"po library add $3 to add the library to ther projects." ; green_echo
       fi
 
       mkdir "$FIRMWAREDIR/../packaged-firmware"
-      cp "$FIRMWAREDIR/*" "$FIRMWAREDIR/../packaged-firmware"
+      cd "$FIRMWAREDIR"
+      cp * "$FIRMWAREDIR/../packaged-firmware"
     exit
     fi
 
