@@ -306,7 +306,7 @@ Atom Build Shortcuts:
   Build        CTRL-ALT-1   These shortcuts allow you     This requires the
   Flash        CTRL-ALT-2   to run common po-util         \"build\" package for
   Clean        CTRL-ALT-3   commands quickly while        Atom.  Get it with:
-  DFU          CTRL-ALT-4   inside of Atom.               \"apm install build\"
+  DFU          CTRL-ALT-4   using Atom.                   \"apm install build\"
   OTA          CTRL-ALT-5
 "
 exit
