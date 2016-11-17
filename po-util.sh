@@ -294,17 +294,21 @@ Commands:
   lib
 
 DFU Commands:
-  dfu         Quickly flash pre-compiled code to your device.
-              Example:
-                      po photon dfu
+  dfu          Quickly flash pre-compiled code to your device.
+               Example:
+                       po photon dfu
 
-  dfu-open    Put device into DFU mode.
+  dfu-open     Put device into DFU mode.
 
-  dfu-close   Get device out of DFU mode.
+  dfu-close    Get device out of DFU mode.
+
+Atom Build Shortcuts:
+  Build        CTRL-ALT-1   These shortcuts allow you     This will require the
+  Flash        CTRL-ALT-2   to run common po-util         \"build\" package for
+  Clean        CTRL-ALT-3   commands quickly inside of    Atom.  Get it with:
+  DFU          CTRL-ALT-4   Atom.                         \"apm install build\"
+  OTA          CTRL-ALT-5
 "
-MESSAGE="If you like po-util, don't forget to share it on social media so that
-more users will be able to discover it.  https://po-util.com/
-" ; green_echo
 exit
 fi
 
@@ -611,10 +615,24 @@ if [ "$1" == "init" ];
 then
   if [ -d firmware ];
   then
+    echo
     MESSAGE="Directory is already Initialized!" ; green_echo
+    echo
     exit
   fi
-  #mkdir lib/ # In development
+
+if [ "$2" == "photon" ] || [ "$2" == "P1" ] || [ "$2" == "electron" ];
+then
+  echo "$2" >/dev/null
+else
+echo
+  MESSAGE="Please specify which device type you will be using.
+Example:
+  po init photon" ; blue_echo
+echo
+  exit
+fi
+
   mkdir firmware/
   echo "#include \"Particle.h\"
 
@@ -627,10 +645,55 @@ void loop() // Put code here to loop forever
 {
 
 }" > firmware/main.cpp
-  # cp *.cpp firmware/
-  # cp *.h firmware/
+
   cp ~/.po-util-README.md README.md
-  MESSAGE="Copied c++ files into firmware directory.  Setup complete." ; green_echo
+
+echo "---
+cmd: ~/po-util.sh $2 build
+
+targets:
+  Build:
+    args:
+      - $2
+      - build
+    cmd: ~/po-util.sh
+    keymap: ctrl-alt-1
+    name: Build
+  Flash:
+    args:
+      - $2
+      - flash
+    cmd: ~/po-util.sh
+    keymap: ctrl-alt-2
+    name: Flash
+  Clean:
+    args:
+      - $2
+      - clean
+    cmd: ~/po-util.sh
+    keymap: ctrl-alt-3
+    name: Clean
+  DFU:
+    args:
+      - $2
+      - dfu
+    cmd: ~/po-util.sh
+    keymap: ctrl-alt-4
+    name: DFU
+  OTA:
+    args:
+      - $2
+      - ota
+      - --multi
+    cmd: ~/po-util.sh
+    keymap: ctrl-alt-5
+    name: DFU
+" > .atom-build.yml
+
+echo
+MESSAGE="Directory initialized as a po-util project for $2" ; green_echo
+echo
+
   exit
 fi
 
@@ -1223,6 +1286,10 @@ then
 
     if [ "$FINDDEVICESFAIL" == "true" ];
     then
+      cd "$CWD"
+      echo "" > devices.txt
+      MESSAGE="Please list your devices in devices.txt" ; red_echo
+      sleep 3
       exit
     fi
 
