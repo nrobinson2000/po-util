@@ -10,7 +10,7 @@
 #   ███████/   ██████/           ██████/     ████/  ██/ ██/
 #   ██ |
 #   ██ |
-#   ██/                               https://po-util.com
+#   ██/                  https://nrobinson2000.github.io/po-util/
 #
 # Particle Offline Utility: A handy script for installing and using the Particle
 # Toolchain on Linux and OSX. This script downloads and installs:
@@ -235,7 +235,7 @@ MESSAGE="                                                     __      __  __
             ███████/   ██████/           ██████/     ████/  ██/ ██/
             ██ |
             ██ |
-            ██/                               https://po-util.com
+            ██/               https://nrobinson2000.github.io/po-util/
 "
 blue_echo
 echo "Copyright (GPL) 2016  Nathan Robinson
@@ -894,34 +894,30 @@ then
     exit
   fi
 
-  if [ "$2" == create ]; # Create a library in "$LIBRARY" from files in "$FIRMWAREDIR"
+
+  if [ "$2" == "create" ]; # Create a libraries in "$LIBRARY" from files in "$FIRMWAREDIR"  This for when mutiple libraries are packaged together and they need to be separated.
   then
     find_objects
 
-    if [ "$3" == "" ];
-    then
-      MESSAGE="Please choose a library to create." ; red_echo ; exit
-    fi
-
-    if [ -f "$FIRMWAREDIR/$3.cpp" ] && [ -f "$FIRMWAREDIR/$3.h" ]; # Test for files
-    then
-      if [ -d "$LIBRARY/$3" ];
+    for file in $(ls -1 $FIRMWAREDIR);
+    do
+    file_base="${file%.*}"
+      if (ls -1 "$LIBRARY" | grep "$file_base") &> /dev/null ;
       then
-        echo
-        MESSAGE="Library already exists." ; red_echo ; exit
+      echo " " > /dev/null
+      else
+        if [ "$file_base" != "examples" ];
+        then
+          mkdir -p "$LIBRARY/$file_base"
+          echo
+          MESSAGE="Creating library $file_base..." ; blue_echo
+          cp "$FIRMWAREDIR/$file_base.h" "$LIBRARY/$file_base" 
+          cp "$FIRMWAREDIR/$file_base.cpp" "$LIBRARY/$file_base"
+        fi
       fi
-
-      mkdir -p "$LIBRARY/$3"
-      cp "$FIRMWAREDIR/$3*" "$LIBRARY/$3"
-      rm "$FIRMWAREDIR/$3*"
-      ln -s "$LIBRARY/$3*" "$FIRMWAREDIR/$3"
-
-      MESSAGE="Library $3 created.  Symlinks have been created in your firmware directory.
-Use \"po library add $3 to add the library to ther projects." ; green_echo
-
-    else
-      MESSAGE="Library files not found." ; red_echo ; exit
-    fi
+    done
+  
+    echo
     exit
   fi
 
@@ -1093,9 +1089,10 @@ Commands:
                Example:
                       po lib rm libraryName
 
-  create       Create a library from C++ files in the project directory.
+  create       Create other libraries from other C++ files in a library.
                Example:
-                      po lib create someLibrary
+                      cd ~/.po-util/lib/someLibWithOtherLibsInside
+                      po lib create
 
   purge        Uninstall (delete) a library from ~/.po-util/lib
                Example:
