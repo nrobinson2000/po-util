@@ -2,7 +2,7 @@
 <img src="https://raw.githubusercontent.com/nrobinson2000/po-util/po-util.com/logos/po-util-updated.png" width="600px">
 </p>
 
-## Particle Offline Utility: The handy script for installing and using the Particle Toolchain on Linux and OSX
+## Particle Offline Utility: The handy script for installing and using the Particle Toolchain on Linux and macOS
 
 [![Slack Status](https://nrobinson2000.herokuapp.com/badge.svg)](https://nrobinson2000.herokuapp.com/)
 [![Donate Bitcoin](https://img.shields.io/badge/donate-bitcoin-orange.svg)](https://nrobinson2000.github.io/donate-bitcoin)
@@ -127,4 +127,4 @@ If you wish to use the default Particle DFU Mode baud rate, you may change the `
 
 # Why I created this script
 
-I created this script because Particle does not currently have a script for easily installing the Particle Toolchain and depedencies on Linux and OSX. I created this script in order to help out other Particle users and to improve my bash scripting skills. It would be my dream come true if Particle added this script to its resources or gave it a shout out in its documentation. If that happened, I would feel very proud of myself for making a meaningful contribution.
+I created this script because Particle does not currently have a script for easily installing the Particle Toolchain and dependencies on Linux and OSX. I created this script in order to help out other Particle users and to improve my bash scripting skills. It would be my dream come true if Particle added this script to its resources or gave it a shout out in its documentation. If that happened, I would feel very proud of myself for making a meaningful contribution.
