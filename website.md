@@ -10,10 +10,7 @@ Wiki](https://github.com/nrobinson2000/po-util/wiki)
 [![](https://img.shields.io/badge/donate-bitcoin-orange.svg)](donate)
 [![](https://img.shields.io/github/issues/nrobinson2000/po-util.svg)](https://github.com/nrobinson2000/po-util/issues)
 [![](https://img.shields.io/github/stars/nrobinson2000/po-util.svg)](https://github.com/nrobinson2000/po-util/stargazers) [![Build Status](https://travis-ci.org/nrobinson2000/po-util.svg?branch=master)](https://travis-ci.org/nrobinson2000/po-util) [![Circle CI](https://circleci.com/gh/nrobinson2000/po-util/tree/master.svg?style=svg)(https://circleci.com/gh/nrobinson2000/po-util/tree/master)
-[![](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&maxAge=2592000)](https://twitter.com/intent/tweet?ref_src=twsrc%5Etfw&text=Check%20out
-%20po-
-util.%20It%27s%20a%20handy%20script%20for%20installing%20and%20using%20the%20%40particle%20Toolchain%20on%20Linux%20and%20macOS.&tw_p=tweetbutton&url=https%3A%2F%2Fnrobinson2000.github.io
-/po-util/)
+[![](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&maxAge=2592000)](https://twitter.com/intent/tweet?ref_src=twsrc%5Etfw&text=Check%20out%20po-util.%20It%27s%20a%20handy%20script%20for%20installing%20and%20using%20the%20%40particle%20Toolchain%20on%20Linux%20and%20macOS.&tw_p=tweetbutton&url=https%3A%2F%2Fnrobinson2000.github.io/po-util/)
 
 # About
 
@@ -218,27 +215,23 @@ because you have made a meaningful contribution to the community. We are all
 very thankful for it - our community regularly impresses us, and you are
 certainly not an exception."
 
-[Will Hart, Particle General Manager](http://nrobinson2000.me/po-util-
-recognition.pdf)
+[Will Hart, Particle General Manager](http://nrobinson2000.me/po-util-recognition.pdf)
 
   
 
 > "Nice! This is great stuff. Definitely helpful for the local dev / offline
 use case. Thanks for sharing."
 
-[Avidan Ross, Particle Investor](http://community.particle.io/t/po-util-a
--toolchain-installer-helper-for-linux-and-osx/21015/2?u=nrobinson2000)
+[Avidan Ross, Particle Investor](http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/2?u=nrobinson2000)
 
   
 
 > "Po-util is a very handy script - thanks for sharing."
 
-[H.S, Particle Community Member](http://community.particle.io/t/po-util-a
--toolchain-installer-helper-for-linux-and-osx/21015/15?u=nrobinson2000)
+[H.S, Particle Community Member](http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/15?u=nrobinson2000)
 
   
 
 > "I can't heart this enough!"
 
-[Josh Fisher, Particle Community Member](http://community.particle.io/t/po-
-util-a-toolchain-installer-helper-for-linux-and-osx/21015/27?u=nrobinson2000)
+[Josh Fisher, Particle Community Member](http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/27?u=nrobinson2000)
