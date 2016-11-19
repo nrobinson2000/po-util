@@ -1,10 +1,6 @@
 ![](logos/po-util-updated.svg)
 
-# Particle Offline Utility: The Ultimate Local Particle Experience for Linux
-and macOS
-
-[View on GitHub](https://github.com/nrobinson2000/po-util) [View
-Wiki](https://github.com/nrobinson2000/po-util/wiki)
+# Particle Offline Utility: The Ultimate Local Particle Experience for Linux and macOS
 
 [![](https://nrobinson2000.herokuapp.com/badge.svg)](https://nrobinson2000.herokuapp.com)
 [![](https://img.shields.io/badge/donate-bitcoin-orange.svg)](donate)
