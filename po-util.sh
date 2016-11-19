@@ -911,12 +911,12 @@ then
           mkdir -p "$LIBRARY/$file_base"
           echo
           MESSAGE="Creating library $file_base..." ; blue_echo
-          cp "$FIRMWAREDIR/$file_base.h" "$LIBRARY/$file_base" 
+          cp "$FIRMWAREDIR/$file_base.h" "$LIBRARY/$file_base"
           cp "$FIRMWAREDIR/$file_base.cpp" "$LIBRARY/$file_base"
         fi
       fi
     done
-  
+
     echo
     exit
   fi
