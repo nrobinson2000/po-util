@@ -1,5 +1,5 @@
 <p align="center" >
-<img src="https://raw.githubusercontent.com/nrobinson2000/po-util/po-util.com/logos/po-util-updated.png" width="600px">
+<img src="https://raw.githubusercontent.com/nrobinson2000/po-util/gh-pages/logos/po-util-updated.png" width="600px">
 </p>
 
 ## Particle Offline Utility: The handy script for installing and using the Particle Toolchain on Linux and macOS
