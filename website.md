@@ -1,4 +1,4 @@
-![](logos/po-util-updated.svg)
+![](https://nrobinson2000.github.io/po-util/logos/po-util-updated.svg)
 
 # Particle Offline Utility: The Ultimate Local Particle Experience for Linux and macOS
 
