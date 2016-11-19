@@ -59,7 +59,7 @@ to run `po` from anywhere to use `po-util`.
 
 # Key Features
 
-  * ### Library Manager
+### Library Manager
 
 The library manager makes it easy to use Particle libraries when developing
 with po-util locally by using `git` to download Particle libraries hosted on
@@ -68,7 +68,7 @@ inside of projects later. [Read more about the Library Manager
 here.](http://community.particle.io/t/how-to-use-po-utils-library-
 manager/26735)
 
-  * ### Full dependency setup
+### Full dependency setup
 
 `po-util` installs all of the dependencies required for local Particle
 Development, including the [ARM toolchain](https://launchpad.net/gcc-arm-
@@ -76,13 +76,13 @@ embedded), [dfu-util](http://dfu-util.sourceforge.net/),
 [nodejs](https://nodejs.org/en/), [particle-cli](https://github.com/spark
 /particle-cli) and the [Particle firmware](https://github.com/spark/firmware).
 
-  * ### Local compilation and support for flashing over USB or OTA
+### Local compilation and support for flashing over USB or OTA
 
 Building firmware locally for Electrons, Photons and P1s, and automatically
 flashing over USB using dfu-util or Over The Air using particle-cli.
 Sequentially flashing multiple devices at once over the air is also supported.
 
-  * ### Shortcuts for Building in Atom
+### Shortcuts for Building in Atom
 
 `po-util` supports shortcuts for [Atom](https://atom.io), the popular open-
 source IDE by GitHub. The shourcuts provide quick access to commonly used
@@ -91,7 +91,7 @@ USB, and flashing firmware Over The Air. [Read more about the shortcuts
 here.](http://community.particle.io/t/po-util-a-toolchain-installer-helper-
 for-linux-and-osx/21015/29?u=nrobinson2000)
 
-![](images/atom.png)
+![](https://nrobinson2000.github.io/po-util/images/atom.png)
 
   * Standardized project directory structure.
   * Upgrading the system firmware of devices.
