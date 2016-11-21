@@ -22,7 +22,9 @@ Particle Platform.
 need for seamless local development, providing understandable commands for
 simplifying complex tasks like properly compiling and flashing firmware.
 
-![](images/build.png)
+<p align="center">
+<img src="images/build.png">
+</p>
 
 # Install
 
@@ -30,32 +32,30 @@ The easiest and most secure way to install `po-util` is to download `po-
 util.sh` from [GitHub](https://raw.githubusercontent.com/nrobinson2000/po-
 util/master/po-util.sh) and run:
 
-    
-    
     $ chmod +x po-util.sh ; ./po-util.sh install
-    
 
 **You can also install `po-util` by cloning the GitHub repository:**
-    
-    
+
     $ git clone https://github.com/nrobinson2000/po-util
     $ cd po-util
     $ ./po-util.sh install
-    
+
 
 **Or you can directly download and run the script in Terminal:**
-    
-    
+
     $ curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
     $ chmod +x po-util.sh ; ./po-util.sh install
-    
+
 
 When installing `po-util`, an alias is added to your `.bashrc` that allows you
 to run `po` from anywhere to use `po-util`.
 
 **Note:** We download everything from well-known locations and GitHub. While we believe this is a reasonable approach, it's always a good idea to know what's going on under the hood. [The `po-util` script can be found on GitHub if you want to manually download and run it.](https://github.com/nrobinson2000/po-util/blob/master/po-util.sh)
 
-![](images/po.png)
+
+<p align="center">
+<img src="images/po.png">
+</p>
 
 # Key Features
 
@@ -86,7 +86,9 @@ commands for `po-util`, including: building firmware, flashing firmware over
 USB, and flashing firmware Over The Air. [Read more about the shortcuts
 here.](http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/29?u=nrobinson2000)
 
-![](https://nrobinson2000.github.io/po-util/images/atom.png)
+<p align="center">
+<img src="https://nrobinson2000.github.io/po-util/images/atom.png">
+</p>
 
   * Standardized project directory structure.
   * Upgrading the system firmware of devices.
@@ -97,8 +99,6 @@ here.](http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-l
 
 The directory structure of a **full** `po-util` project is arranged like so:
 
-    
-    
     po-util_project/
       ├ firmware/
       | ├ main.cpp
@@ -112,17 +112,16 @@ The directory structure of a **full** `po-util` project is arranged like so:
       ├ libs.txt
       ├ .atom-build.yml
       └ README.md
-    
 
-  * All user code is kept inside of `main.cpp`. 
+  * All user code is kept inside of `main.cpp`.
 
-  * The compiled binary will be named `firmware.bin`, and it will be in `bin/`. 
+  * The compiled binary will be named `firmware.bin`, and it will be in `bin/`.
 
-  * You can keep track of which devices are in a project and list which ones to be flashed Over The Air in `devices.txt`. 
+  * You can keep track of which devices are in a project and list which ones to be flashed Over The Air in `devices.txt`.
 
-  * You can easily add libraries to a project. Added libraries are kept track of in `libs.txt`. 
+  * You can easily add libraries to a project. Added libraries are kept track of in `libs.txt`.
 
-  * Atom shortcuts are a new feature of `po-util`, and `.atom-build.yml` contains the configuration for the shortcuts. 
+  * Atom shortcuts are a new feature of `po-util`, and `.atom-build.yml` contains the configuration for the shortcuts.
 
 # Project setup
 
@@ -134,8 +133,6 @@ Creating a project with `po-util` is simple. All that you need to do is create
 a folder and run use the `po init` inside of it to initialize the project by
 creating the appropriate files and directories. Below is an example:
 
-    
-    
     $ mkdir someProject
     $ cd someProject
     $ po init DEVICE_TYPE
@@ -161,7 +158,9 @@ To compile firmware, simply run `po DEVICE build`, substituting `DEVICE` for
 using dfu-util, simply run `po DEVICE flash`. To clean the project, run `po
 DEVICE clean`.
 
-![](images/flash.png)
+<p align="center">
+<img src="images/flash.png">
+</p>
 
 ### DFU Commands
 
@@ -169,7 +168,9 @@ To upload precompiled code over USB, run `po DEVICE dfu`. To put your device
 into dfu mode, run `po dfu-open`. To get your device out of dfu mode, run `po
 dfu-close`.
 
-![](images/dfu.png)
+<p align="center">
+<img src="images/dfu.png">
+</p>
 
 ### Over The Air (OTA) Uploading
 
@@ -185,7 +186,9 @@ project directory.
 
 **NOTE: This is different from the product firmware update feature in the Particle Console because it updates the firmware of devices one at a time and only if the devices are online when the command is run.**
 
-![](images/ota.png)
+<p align="center">
+<img src="images/ota.png">
+</p>
 
 ### Triggering DFU mode on your Device(s)
 
@@ -209,20 +212,17 @@ certainly not an exception."
 
 [Will Hart, Particle General Manager](http://nrobinson2000.me/po-util-recognition.pdf)
 
-  
 
 > "Nice! This is great stuff. Definitely helpful for the local dev / offline
 use case. Thanks for sharing."
 
 [Avidan Ross, Particle Investor](http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/2?u=nrobinson2000)
 
-  
 
 > "Po-util is a very handy script - thanks for sharing."
 
 [H.S, Particle Community Member](http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/15?u=nrobinson2000)
 
-  
 
 > "I can't heart this enough!"
 
