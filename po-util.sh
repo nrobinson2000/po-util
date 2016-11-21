@@ -187,6 +187,20 @@ build, flash, clean, ota, dfu, serial, init, config, setup, library"
 
 build_firmware()
 {
+  MESSAGE="                                                 __      __  __
+                                                /  |    /  |/  |
+          ______    ______           __    __  _██ |_   ██/ ██ |
+         /      \  /      \  ______ /  |  /  |/ ██   |  /  |██ |
+        /██████  |/██████  |/      |██ |  ██ |██████/   ██ |██ |
+        ██ |  ██ |██ |  ██ |██████/ ██ |  ██ |  ██ | __ ██ |██ |
+        ██ |__██ |██ \__██ |        ██ \__██ |  ██ |/  |██ |██ |
+        ██    ██/ ██    ██/         ██    ██/   ██  ██/ ██ |██ |
+        ███████/   ██████/           ██████/     ████/  ██/ ██/
+        ██ |
+        ██ |
+        ██/         Building firmware for $1...
+  "
+  blue_echo
   make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1"
 }
 
@@ -1150,8 +1164,7 @@ fi # Close Library
 # Make sure we are using photon, P1, or electron
 if [ "$1" == "photon" ] || [ "$1" == "P1" ] || [ "$1" == "electron" ];
 then
-  echo
-  MESSAGE="$1 selected." ; blue_echo
+  echo "" > /dev/null
 else
   echo
   MESSAGE="Please choose \"photon\", \"P1\" or \"electron\", or choose a proper command." ; red_echo
