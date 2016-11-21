@@ -30,9 +30,7 @@ simplifying complex tasks like properly compiling and flashing firmware.
 
 # Install
 
-The easiest and most secure way to install `po-util` is to download `po-
-util.sh` from [GitHub](https://raw.githubusercontent.com/nrobinson2000/po-
-util/master/po-util.sh) and run:
+The easiest and most secure way to install `po-util` is to download `po-util.sh` from [GitHub](https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh) and run:
 
     $ chmod +x po-util.sh ; ./po-util.sh install
 
