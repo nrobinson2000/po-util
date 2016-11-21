@@ -25,14 +25,12 @@ need for seamless local development, providing understandable commands for
 simplifying complex tasks like properly compiling and flashing firmware.
 
 <p align="center">
-<img src="images/build.png">
+<img src="http://i.giphy.com/114W3o7tWsT0is.gif" width="800px">
 </p>
 
 # Install
 
-The easiest and most secure way to install `po-util` is to download `po-
-util.sh` from [GitHub](https://raw.githubusercontent.com/nrobinson2000/po-
-util/master/po-util.sh) and run:
+The easiest and most secure way to install `po-util` is to download `po-util.sh` from [GitHub](https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh) and run:
 
     $ chmod +x po-util.sh ; ./po-util.sh install
 
