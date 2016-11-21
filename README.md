@@ -25,7 +25,7 @@ need for seamless local development, providing understandable commands for
 simplifying complex tasks like properly compiling and flashing firmware.
 
 <p align="center">
-<img src="http://i.giphy.com/Q58DDXFiMOpnq.gif" width="600px">
+<img src="http://i.giphy.com/Q58DDXFiMOpnq.gif" width="800px">
 </p>
 
 # Install
