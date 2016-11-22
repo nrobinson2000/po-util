@@ -796,7 +796,8 @@ then
 
   if [ "$2" == "setup" ];
   then
-    find_objects
+    DIRWARNING="true"
+    find_objects "$3"
     cd "$LIBRARY"
 
     cat $FIRMWAREDIR/../libs.txt | while read i  ## Install and add required libs from libs.txt
