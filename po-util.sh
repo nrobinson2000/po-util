@@ -103,6 +103,7 @@ if [ -d "$FIRMWAREDIR" ];
       MESSAGE="Firmware directory not found!" ; red_echo
       MESSAGE="Please run \"po init\" to setup this repository or choose a valid directory." ; blue_echo
       echo
+      exit
     fi
   FINDDIRFAIL="true"
 fi
@@ -773,7 +774,8 @@ then
 
   if [ "$2" == "clean" ]; # Prepare for release, remove all symlinks, keeping references in libs.txt
   then
-  find_objects
+  DIRWARNING="true"
+  find_objects "$3"
 
   for file in $(ls -1 $FIRMWAREDIR);
   do
@@ -843,7 +845,8 @@ then
 
   if [ "$2" == "get" ] || [ "$2" == "install" ]; # Download a library with git OR Install from libs.txt
   then
-    find_objects
+    DIRWARNING="true"
+    find_objects "$4"
 
     cd "$LIBRARY"
 
@@ -911,7 +914,8 @@ then
 
   if [ "$2" == "create" ]; # Create a libraries in "$LIBRARY" from files in "$FIRMWAREDIR"  This for when mutiple libraries are packaged together and they need to be separated.
   then
-    find_objects
+    DIRWARNING="true"
+    find_objects "$3"
 
     for file in $(ls -1 $FIRMWAREDIR);
     do
@@ -938,7 +942,8 @@ then
 
   if [ "$2" == "add" ] || [ "$2" == "import" ]; # Import a library
   then
-    find_objects
+    DIRWARNING="true"
+    find_objects "$4"
 
     if [ "$3" == "" ];
     then
@@ -991,7 +996,8 @@ then
 
   if [ "$2" == "remove" ] || [ "$2" == "rm" ]; # Remove / Unimport a library
   then
-    find_objects
+    DIRWARNING="true"
+    find_objects "$4"
 
     if [ "$3" == "" ];
     then
@@ -1061,7 +1067,8 @@ then
 
     if [ "$2" == "package" ] || [ "$2" == "pack" ];
     then
-      find_objects
+      DIRWARNING="true"
+      find_objects "$3"
 
       if [ -d "$FIRMWAREDIR/../packaged-firmware" ];
       then
@@ -1261,6 +1268,9 @@ then
     exit
   fi
     git stash &> /dev/null
+    echo
+    MESSAGE="Cleaning firmware..." ; blue_echo
+    echo
     make clean -s PLATFORM="$DEVICE_TYPE" 2>&1 /dev/null
     if [ "$FIRMWAREDIR/../bin" != "$HOME/bin" ];
     then
