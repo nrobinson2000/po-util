@@ -198,10 +198,10 @@ build_firmware()
         ███████/   ██████/           ██████/     ████/  ██/ ██/
         ██ |
         ██ |
-        ██/         Building firmware for $1...
+        ██/         Building firmware for $DEVICE_TYPE...
   "
   blue_echo
-  make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1"
+  make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$DEVICE_TYPE"
 }
 
 
@@ -637,7 +637,7 @@ then
 
 if [ "$2" == "photon" ] || [ "$2" == "P1" ] || [ "$2" == "electron" ];
 then
-  echo "$2" >/dev/null
+DEVICE_TYPE="$2"
 else
 echo
   MESSAGE="Please specify which device type you will be using.
@@ -663,40 +663,40 @@ void loop() // Put code here to loop forever
   cp ~/.po-util-README.md README.md
 
 echo "---
-cmd: ~/po-util.sh $2 build
+cmd: ~/po-util.sh $DEVICE_TYPE build
 
 targets:
   Build:
     args:
-      - $2
+      - $DEVICE_TYPE
       - build
     cmd: ~/po-util.sh
     keymap: ctrl-alt-1
     name: Build
   Flash:
     args:
-      - $2
+      - $DEVICE_TYPE
       - flash
     cmd: ~/po-util.sh
     keymap: ctrl-alt-2
     name: Flash
   Clean:
     args:
-      - $2
+      - $DEVICE_TYPE
       - clean
     cmd: ~/po-util.sh
     keymap: ctrl-alt-3
     name: Clean
   DFU:
     args:
-      - $2
+      - $DEVICE_TYPE
       - dfu
     cmd: ~/po-util.sh
     keymap: ctrl-alt-4
     name: DFU
   OTA:
     args:
-      - $2
+      - $DEVICE_TYPE
       - ota
       - --multi
     cmd: ~/po-util.sh
@@ -705,7 +705,7 @@ targets:
 " > .atom-build.yml
 
 echo
-MESSAGE="Directory initialized as a po-util project for $2" ; green_echo
+MESSAGE="Directory initialized as a po-util project for $DEVICE_TYPE" ; green_echo
 echo
 
   exit
@@ -1164,7 +1164,7 @@ fi # Close Library
 # Make sure we are using photon, P1, or electron
 if [ "$1" == "photon" ] || [ "$1" == "P1" ] || [ "$1" == "electron" ];
 then
-  echo "" > /dev/null
+  DEVICE_TYPE="$1"
 else
   echo
   MESSAGE="Please choose \"photon\", \"P1\" or \"electron\", or choose a proper command." ; red_echo
@@ -1174,21 +1174,21 @@ fi
 
 cd "$BASE_FIRMWARE"/firmware || exit
 
-if [ "$1" == "photon" ];
+if [ "$DEVICE_TYPE" == "photon" ];
 then
   switch_branch
   DFU_ADDRESS1="2b04:D006"
   DFU_ADDRESS2="0x080A0000"
 fi
 
-if [ "$1" == "P1" ];
+if [ "$DEVICE_TYPE" == "P1" ];
 then
   switch_branch
   DFU_ADDRESS1="2b04:D008"
   DFU_ADDRESS2="0x080A0000"
 fi
 
-if [ "$1" == "electron" ];
+if [ "$DEVICE_TYPE" == "electron" ];
 then
   switch_branch
   DFU_ADDRESS1="2b04:d00a"
@@ -1200,10 +1200,10 @@ then
   echo
   pause "Connect your device and put it into Listening mode. Press [ENTER] to continue..."
   particle serial identify
-  if [ "$1" != "electron" ];
+  if [ "$DEVICE_TYPE" != "electron" ];
   then
     echo
-  pause "We will now connect your $1 to Wi-Fi. Press [ENTER] to continue..."
+  pause "We will now connect your $DEVICE_TYPE to Wi-Fi. Press [ENTER] to continue..."
   echo
   particle serial wifi
 fi
@@ -1240,11 +1240,11 @@ then
   rm -f "$BASE_FIRMWARE"/firmware/build/module-defaults.mk
   mv temp.particle "$BASE_FIRMWARE"/firmware/build/module-defaults.mk
 
-  cd "$BASE_FIRMWARE/firmware/modules/$1/system-part1" || exit
-  make clean all PLATFORM="$1" program-dfu
+  cd "$BASE_FIRMWARE/firmware/modules/$DEVICE_TYPE/system-part1" || exit
+  make clean all PLATFORM="$DEVICE_TYPE" program-dfu
 
-  cd "$BASE_FIRMWARE/firmware/modules/$1/system-part2" || exit
-  make clean all PLATFORM="$1" program-dfu
+  cd "$BASE_FIRMWARE/firmware/modules/$DEVICE_TYPE/system-part2" || exit
+  make clean all PLATFORM="$DEVICE_TYPE" program-dfu
   cd "$BASE_FIRMWARE/firmware" && git stash || exit
   sleep 1
   dfu-util -d $DFU_ADDRESS1 -a 0 -i 0 -s $DFU_ADDRESS2:leave -D /dev/null &> /dev/null
@@ -1261,7 +1261,7 @@ then
     exit
   fi
     git stash &> /dev/null
-    make clean -s PLATFORM="$1" 2>&1 /dev/null
+    make clean -s PLATFORM="$DEVICE_TYPE" 2>&1 /dev/null
     if [ "$FIRMWAREDIR/../bin" != "$HOME/bin" ];
     then
       rm -rf "$FIRMWAREDIR/../bin"
@@ -1325,7 +1325,7 @@ then
     exit
   fi
     echo
-    build_firmware "$1" || exit
+    build_firmware || exit
     build_message "$@"
 fi
 
@@ -1339,7 +1339,7 @@ then
   fi
     echo
     #configure_makefile
-    make all -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$1" DEBUG_BUILD="y" || exit
+    make all -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$DEVICE_TYPE" DEBUG_BUILD="y" || exit
     build_message "$@"
 fi
 
@@ -1353,7 +1353,7 @@ then
   fi
   dfu_open
   echo
-  build_firmware "$1" || (MESSAGE='Building firmware failed! Closing DFU...' && echo && red_echo && echo && dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D /dev/null &> /dev/null && exit)
+  build_firmware || (MESSAGE='Building firmware failed! Closing DFU...' && echo && red_echo && echo && dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D /dev/null &> /dev/null && exit)
   echo
   MESSAGE="Building firmware was successful! Flashing with dfu-util..."
   green_echo
