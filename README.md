@@ -159,7 +159,7 @@ using dfu-util, simply run `po DEVICE flash`. To clean the project, run `po
 DEVICE clean`.
 
 <p align="center">
-<img src="images/flash.png">
+<img src="http://i.giphy.com/V6LteSojfcxKE.gif" width="800px">
 </p>
 
 ### DFU Commands
