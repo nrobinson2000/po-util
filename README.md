@@ -67,7 +67,7 @@ GitHub and save them to a ~/.po-util/lib directory so that they make be linked
 inside of projects later. [Read more about the Library Manager here.](http://community.particle.io/t/how-to-use-po-utils-library-manager/26735)
 
 <p align="center">
-<img src="http://i.makeagif.com/media/11-22-2016/J9dnNq.gif">
+<img src="http://i.makeagif.com/media/11-22-2016/J9dnNq.gif" width="800px">
 </p>
 
 ### Full dependency setup
