@@ -1234,7 +1234,11 @@ then
   sleep 1
   echo
   MESSAGE="Flashing $FIRMWAREBIN with dfu-util..." ; blue_echo
-  dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$FIRMWAREBIN" &> /dev/null || ( MESSAGE="Device not found." ; red_echo )
+  echo
+  dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$FIRMWAREBIN" || ( MESSAGE="Device not found." ; red_echo )
+  echo
+  MESSAGE="Firmware successfully flashed to $DEVICE_TYPE on $MODEM" ; blue_echo
+  echo
   exit
 fi
 
@@ -1368,7 +1372,10 @@ then
   MESSAGE="Building firmware was successful! Flashing with dfu-util..."
   green_echo
   echo
-  dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$FIRMWAREDIR/../bin/firmware.bin" &> /dev/null
+  dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$FIRMWAREDIR/../bin/firmware.bin" || exit #&> /dev/null
+  echo
+  MESSAGE="Firmware successfully flashed to $DEVICE_TYPE on $MODEM" ; blue_echo
+  echo
   exit
 fi
 
