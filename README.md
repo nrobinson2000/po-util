@@ -87,7 +87,7 @@ USB, and flashing firmware Over The Air. [Read more about the shortcuts
 here.](http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/29?u=nrobinson2000)
 
 <p align="center">
-<img src="https://nrobinson2000.github.io/po-util/images/atom.png">
+<img src="http://i.giphy.com/11w4YEQHmUy06s.gif" width="800px">
 </p>
 
   * Standardized project directory structure.
