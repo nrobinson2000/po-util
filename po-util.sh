@@ -363,7 +363,7 @@ fi
 if [ "$1" == "config" ];
 then
   rm "$SETTINGS"
-  config "$@"
+  config
   exit
 fi
 
@@ -372,7 +372,7 @@ if [ ! -f $SETTINGS ]
 then
   echo
   MESSAGE="Your \"$SETTINGS\" configuration file is missing.  Let's create it:" ; blue_echo
-  config "$@"
+  config
 fi
 
 # Import our overrides from the ~/.po file.
@@ -1341,7 +1341,7 @@ then
   fi
     echo
     build_firmware || exit
-    build_message "$@"
+    build_message
 fi
 
 if [ "$2" == "debug-build" ];
@@ -1355,7 +1355,7 @@ then
     echo
     #configure_makefile
     make all -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$DEVICE_TYPE" DEBUG_BUILD="y" || exit
-    build_message "$@"
+    build_message
 fi
 
 if [ "$2" == "flash" ];
