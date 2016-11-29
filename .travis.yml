@@ -1,15 +1,18 @@
 os:
   - osx
+  - linux
 
+dist: trusty
 sudo: required
+language: generic
 
+install:
+  - if [ "$(uname -s)" == "Linux" ]; then sudo apt-get install -y expect; fi
 script:
+  - time ./config-expect.sh
   - time ./po-util.sh install
-  - cd build-test
-  - time ~/po-util.sh photon build
-  - time ~/po-util.sh electron clean
-  - time ~/po-util.sh electron build
-
-addons:
-    code_climate:
-        repo_token: 029106a12c53af689a6e41dae3f745b02654a46ec5a6d876562c2efb2ea62e4e
+  - time ./po-util.sh photon build build-test/
+  - time ./po-util.sh electron clean build-test/
+  - time ./po-util.sh electron build build-test/
+  - time ./po-util.sh P1 clean build-test/
+  - time ./po-util.sh P1 build build-test/

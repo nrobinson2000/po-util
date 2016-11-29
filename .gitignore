@@ -3,3 +3,8 @@ temp0
 _site/*
 bin/*
 *.bin
+temp.sh
+temp.txt
+test.html
+stylesheets/*
+img.svg

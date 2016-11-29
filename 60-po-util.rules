@@ -3,4 +3,4 @@
 # This will allow reflashing with DFU-util without using sudo
 
 # Photon / P1 / Electron
-SUBSYSTEMS=="usb", ACTION=="add", ATTRS{idProduct}=="[cd]00?", ATTRS{idVendor}=="2b04", GROUP="plugdev", RUN+="chmod a+rw $(ls -1 /dev/* | grep "ttyACM" | tail -1)", ENV{ID_MM_DEVICE_IGNORE}="1"
+SUBSYSTEMS=="usb", ACTION=="add", ATTRS{idProduct}=="[cd]00?", ATTRS{idVendor}=="2b04", GROUP="plugdev", MODE="0666"
