@@ -337,7 +337,7 @@ fi
 # Configuration file is created at "~/.po"
 SETTINGS=~/.po
 BASE_FIRMWARE=~/github # These
-BRANCH="latest"        # can
+BRANCH="stable"        # can
 BINDIR=~/bin           # be
 DFUBAUDRATE=19200      # changed in the "~/.po" file.
 
