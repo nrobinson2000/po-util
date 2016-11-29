@@ -214,7 +214,7 @@ config()
   echo
   MESSAGE="Which branch of the Particle firmware would you like to use?
 You can find the branches at https://github.com/spark/firmware/branches
-If you are unsure, please enter \"latest\"" ; blue_echo
+If you are unsure, please enter \"stable\"" ; blue_echo
   read -rp "Branch: " branch_variable
   BRANCH="$branch_variable"
   echo BRANCH="$BRANCH" >> $SETTINGS
