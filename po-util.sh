@@ -247,8 +247,6 @@ ota()
   if [ "$1" == "--multi" ] || [ "$1" == "-m" ] || [ "$1" == "-ota" ];
   then
     DEVICEWARNING="true"
-    find_objects "$4"
-
     if [ "$FINDDEVICESFAIL" == "true" ];
     then
       cd "$CWD"
