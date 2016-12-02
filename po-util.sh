@@ -281,7 +281,7 @@ config()
   echo
   MESSAGE="Which branch of the Particle firmware would you like to use?
 You can find the branches at https://github.com/spark/firmware/branches
-If you are unsure, please enter \"release/stable\"" ; blue_echo
+If you are unsure, please enter \"latest\"" ; blue_echo
   read -rp "Branch: " branch_variable
   BRANCH="$branch_variable"
   echo BRANCH="$BRANCH" >> $SETTINGS
@@ -404,7 +404,7 @@ fi
 # Configuration file is created at "~/.po"
 SETTINGS=~/.po
 BASE_FIRMWARE=~/github # These
-BRANCH="release/stable"        # can
+BRANCH="latest"        # can
 BINDIR=~/bin           # be
 DFUBAUDRATE=19200      # changed in the "~/.po" file.
 
