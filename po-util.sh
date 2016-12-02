@@ -229,8 +229,9 @@ build_pi()
   fi
 }
 
-ota()
+ota() # device firmware
 {
+  find_objects "$2"
   DIRWARNING="true"
   BINWARNING="true"
   if [ "$FINDDIRFAIL" == "true" ] || [ "$FINDBINFAIL" == "true" ];
@@ -742,13 +743,8 @@ targets:
   Flash:
     args:
       - $DEVICE_TYPE
-      - flash" > .atom-build.yml
-      if [ "$DEVICE_TYPE" == "pi" ];
-      then
-        echo "      - firmware
-      - -ota" >> .atom-build.yml
-      fi
-echo "    cmd: ~/po-util.sh
+      - flash
+    cmd: ~/po-util.sh
     keymap: ctrl-alt-2
     name: Flash
   Clean:
@@ -1371,7 +1367,6 @@ fi
 # Use --multi to flash multiple devices at once.  This reads a file named devices.txt
 if [ "$2" == "ota" ];
 then
-  find_objects "$4"
   ota "$3"
 fi
 
@@ -1419,8 +1414,8 @@ then
   if [ "$DEVICE_TYPE" == "pi" ];
   then
     build_pi
-    ota "$4"
-
+    ota "-m"
+    exit
   fi
   dfu_open
   echo
