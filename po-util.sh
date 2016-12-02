@@ -267,7 +267,7 @@ ota()
     exit
   fi
   echo
-  MESSAGE="Flashing to device $3..." ; blue_echo
+  MESSAGE="Flashing to device $1..." ; blue_echo
   particle flash "$1" "$FIRMWAREBIN" || ( MESSAGE="Try using \"particle flash\" if you are having issues." ; red_echo )
   echo
   exit
