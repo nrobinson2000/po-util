@@ -170,10 +170,20 @@ dfu_open()
 
 switch_branch()
 {
+
+if [ "$1" != "" ];
+then
+  if [ "$(git rev-parse --abbrev-ref HEAD)" != "$1" ];
+  then
+    git checkout "$1" > /dev/null
+  fi
+else
   if [ "$(git rev-parse --abbrev-ref HEAD)" != "$BRANCH" ];
   then
     git checkout "$BRANCH" > /dev/null
   fi
+fi
+
 }
 
 common_commands() #List common commands
@@ -205,6 +215,63 @@ build_firmware()
   make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$DEVICE_TYPE"
 }
 
+build_pi()
+{
+  if hash docker 2>/dev/null;
+  then
+    docker run --rm -v $BASE_FIRMWARE/firmware:/firmware -v $FIRMWAREDIR:/input -v $FIRMWAREDIR/../bin:/output particle/buildpack-raspberrypi
+    echo
+    MESSAGE="Sucessfully built firmware for Raspberry Pi" ; blue_echo
+  else
+    MESSAGE="Docker not found.  Please install docker to build firmware for Raspberry Pi" ; red_echo
+    echo
+    exit
+  fi
+}
+
+ota()
+{
+  DIRWARNING="true"
+  BINWARNING="true"
+  if [ "$FINDDIRFAIL" == "true" ] || [ "$FINDBINFAIL" == "true" ];
+  then
+    exit
+  fi
+
+  if [ "$1" == "" ];
+  then
+    echo
+    MESSAGE="Please specify which device to flash ota." ; red_echo ; echo ; exit
+  fi
+
+  if [ "$1" == "--multi" ] || [ "$1" == "-m" ] || [ "$1" == "-ota" ];
+  then
+    DEVICEWARNING="true"
+    find_objects "$4"
+
+    if [ "$FINDDEVICESFAIL" == "true" ];
+    then
+      cd "$CWD"
+      echo "" > devices.txt
+      MESSAGE="Please list your devices in devices.txt" ; red_echo
+      sleep 3
+      exit
+    fi
+
+    for DEVICE in $DEVICES ; do
+      echo
+      MESSAGE="Flashing to device $DEVICE..." ; blue_echo
+      particle flash "$DEVICE" "$FIRMWAREBIN" || ( MESSAGE="Your device must be online in order to flash firmware OTA." ; red_echo )
+    done
+    echo
+    exit
+  fi
+  echo
+  MESSAGE="Flashing to device $3..." ; blue_echo
+  particle flash "$1" "$FIRMWAREBIN" || ( MESSAGE="Try using \"particle flash\" if you are having issues." ; red_echo )
+  echo
+  exit
+}
 
 config()
 {
@@ -214,7 +281,7 @@ config()
   echo
   MESSAGE="Which branch of the Particle firmware would you like to use?
 You can find the branches at https://github.com/spark/firmware/branches
-If you are unsure, please enter \"stable\"" ; blue_echo
+If you are unsure, please enter \"release/stable\"" ; blue_echo
   read -rp "Branch: " branch_variable
   BRANCH="$branch_variable"
   echo BRANCH="$BRANCH" >> $SETTINGS
@@ -337,7 +404,7 @@ fi
 # Configuration file is created at "~/.po"
 SETTINGS=~/.po
 BASE_FIRMWARE=~/github # These
-BRANCH="stable"        # can
+BRANCH="release/stable"        # can
 BINDIR=~/bin           # be
 DFUBAUDRATE=19200      # changed in the "~/.po" file.
 
@@ -636,7 +703,7 @@ then
     exit
   fi
 
-if [ "$2" == "photon" ] || [ "$2" == "P1" ] || [ "$2" == "electron" ];
+if [ "$2" == "photon" ] || [ "$2" == "P1" ] || [ "$2" == "electron" ] || [ "$2" == "pi" ];
 then
 DEVICE_TYPE="$2"
 else
@@ -677,8 +744,13 @@ targets:
   Flash:
     args:
       - $DEVICE_TYPE
-      - flash
-    cmd: ~/po-util.sh
+      - flash" > .atom-build.yml
+      if [ "$DEVICE_TYPE" == "pi" ];
+      then
+        echo "      - firmware
+      - -ota" >> .atom-build.yml
+      fi
+echo "    cmd: ~/po-util.sh
     keymap: ctrl-alt-2
     name: Flash
   Clean:
@@ -703,7 +775,7 @@ targets:
     cmd: ~/po-util.sh
     keymap: ctrl-alt-5
     name: DFU
-" > .atom-build.yml
+" >> .atom-build.yml
 
 echo
 MESSAGE="Directory initialized as a po-util project for $DEVICE_TYPE" ; green_echo
@@ -1169,36 +1241,41 @@ fi # Close Update
 fi # Close Library
 ####################
 
-# Make sure we are using photon, P1, or electron
-if [ "$1" == "photon" ] || [ "$1" == "P1" ] || [ "$1" == "electron" ];
+cd "$BASE_FIRMWARE"/firmware || exit
+
+# Make sure we are using photon, P1, electron or pi
+if [ "$1" == "photon" ] || [ "$1" == "P1" ] || [ "$1" == "electron" ] || [ "$1" == "pi" ]; # || [ "$1" == "raspberry" ] || [ "$1" == "raspberrypi" ];
 then
   DEVICE_TYPE="$1"
+
+  if [ "$DEVICE_TYPE" == "pi" ];
+  then
+    switch_branch "feature/raspberry-pi"
+  else
+    switch_branch
+  fi
+
 else
   echo
-  MESSAGE="Please choose \"photon\", \"P1\" or \"electron\", or choose a proper command." ; red_echo
+  MESSAGE="Please choose \"photon\", \"P1\", \"electron\", or \"pi\", or choose a proper command." ; red_echo
   common_commands
   exit
 fi
 
-cd "$BASE_FIRMWARE"/firmware || exit
-
 if [ "$DEVICE_TYPE" == "photon" ];
 then
-  switch_branch
   DFU_ADDRESS1="2b04:D006"
   DFU_ADDRESS2="0x080A0000"
 fi
 
 if [ "$DEVICE_TYPE" == "P1" ];
 then
-  switch_branch
   DFU_ADDRESS1="2b04:D008"
   DFU_ADDRESS2="0x080A0000"
 fi
 
 if [ "$DEVICE_TYPE" == "electron" ];
 then
-  switch_branch
   DFU_ADDRESS1="2b04:d00a"
   DFU_ADDRESS2="0x08080000"
 fi
@@ -1276,7 +1353,13 @@ then
     echo
     MESSAGE="Cleaning firmware..." ; blue_echo
     echo
-    make clean -s PLATFORM="$DEVICE_TYPE" 2>&1 /dev/null
+    if [ "$DEVICE_TYPE" == "pi" ];
+    then
+      make clean -s 2>&1 /dev/null
+    else
+      make clean -s PLATFORM="$DEVICE_TYPE"  2>&1 /dev/null
+    fi
+
     if [ "$FIRMWAREDIR/../bin" != "$HOME/bin" ];
     then
       rm -rf "$FIRMWAREDIR/../bin"
@@ -1290,45 +1373,8 @@ fi
 # Use --multi to flash multiple devices at once.  This reads a file named devices.txt
 if [ "$2" == "ota" ];
 then
-  DIRWARNING="true"
-  BINWARNING="true"
   find_objects "$4"
-  if [ "$FINDDIRFAIL" == "true" ] || [ "$FINDBINFAIL" == "true" ];
-  then
-    exit
-  fi
-
-  if [ "$3" == "" ];
-  then
-    echo
-    MESSAGE="Please specify which device to flash ota." ; red_echo ; echo ; exit
-  fi
-
-  if [ "$3" == "--multi" ] || [ "$3" == "-m" ];
-  then
-    DEVICEWARNING="true"
-    find_objects "$4"
-
-    if [ "$FINDDEVICESFAIL" == "true" ];
-    then
-      cd "$CWD"
-      echo "" > devices.txt
-      MESSAGE="Please list your devices in devices.txt" ; red_echo
-      sleep 3
-      exit
-    fi
-
-    for DEVICE in $DEVICES ; do
-      echo
-      MESSAGE="Flashing to device $DEVICE..." ; blue_echo
-      particle flash "$DEVICE" "$FIRMWAREBIN" || ( MESSAGE="Your device must be online in order to flash firmware OTA." ; red_echo )
-    done
-    exit
-  fi
-  echo
-  MESSAGE="Flashing to device $3..." ; blue_echo
-  particle flash "$3" "$FIRMWAREBIN" || ( MESSAGE="Try using \"particle flash\" if you are having issues." ; red_echo )
-  exit
+  ota "$3"
 fi
 
 if [ "$2" == "build" ];
@@ -1340,6 +1386,12 @@ then
     exit
   fi
     echo
+    if [ "$DEVICE_TYPE" == "pi" ];
+    then
+      build_pi
+      echo
+      exit
+    fi
     build_firmware || exit
     build_message
 fi
@@ -1368,6 +1420,12 @@ then
   fi
   dfu_open
   echo
+  if [ "$DEVICE_TYPE" == "pi" ];
+  then
+    build_pi
+    ota "$4"
+
+  fi
   build_firmware || (MESSAGE='Building firmware failed! Closing DFU...' && echo && red_echo && echo && dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D /dev/null &> /dev/null && exit)
   echo
   MESSAGE="Building firmware was successful! Flashing with dfu-util..."
