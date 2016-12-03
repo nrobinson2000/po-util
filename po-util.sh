@@ -219,9 +219,7 @@ build_pi()
 {
   if hash docker 2>/dev/null;
   then
-    docker run --rm -i -v $BASE_FIRMWARE/firmware:/firmware -v $FIRMWAREDIR:/input -v $FIRMWAREDIR/../bin:/output particle/buildpack-raspberrypi
-    echo
-    MESSAGE="Sucessfully built firmware for Raspberry Pi" ; blue_echo
+    docker run --rm -i -v $BASE_FIRMWARE/firmware:/firmware -v $FIRMWAREDIR:/input -v $FIRMWAREDIR/../bin:/output particle/buildpack-raspberrypi && echo && MESSAGE="Sucessfully built firmware for Raspberry Pi" ; blue_echo
   else
     MESSAGE="Docker not found.  Please install docker to build firmware for Raspberry Pi" ; red_echo
     echo
