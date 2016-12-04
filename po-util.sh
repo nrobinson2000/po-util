@@ -199,9 +199,19 @@ build, flash, clean, ota, dfu, serial, init, config, setup, library"
 build_firmware()
 {
 #Temporary fix for http://community.particle.io/t/stm32-usb-otg-driver-error-on-v0-6-0/26814
-sed "213s/.*/#pragma GCC optimize (\"O1\")/" "$BASE_FIRMWARE/firmware/platform/MCU/STM32F2xx/STM32_USB_OTG_Driver/src/usb_core.c" > temp.particle
-rm -f "$BASE_FIRMWARE/firmware/platform/MCU/STM32F2xx/STM32_USB_OTG_Driver/src/usb_core.c"
-mv temp.particle "$BASE_FIRMWARE/firmware/platform/MCU/STM32F2xx/STM32_USB_OTG_Driver/src/usb_core.c"
+
+STRING='CPPSRC += $(call target_files,$(BOOTLOADER_MODULE_PATH)/../hal/src/stm32/,newlib.cpp)'
+echo "$STRING" >> "$BASE_FIRMWARE/firmware/bootloader/src/electron/sources.mk"
+
+#sed "9s/.*/$STRING/" "$BASE_FIRMWARE/firmware/bootloader/src/electron/sources.mk" > temp.particle
+#rm -f "$BASE_FIRMWARE/firmware/bootloader/src/electron/sources.mk"
+#mv temp.particle "$BASE_FIRMWARE/firmware/bootloader/src/electron/sources.mk"
+
+sed "126s/.*/#define USB_OTG_MAX_TX_FIFOS (4*2)/" "$BASE_FIRMWARE/firmware/platform/MCU/STM32F2xx/SPARK_Firmware_Driver/inc/platform_config.h" > temp.particle
+sed "132s/.*/#define USB_OTG_MAX_TX_FIFOS (6*2)/" temp.particle > temp.particle.1
+rm -f "$BASE_FIRMWARE/firmware/platform/MCU/STM32F2xx/SPARK_Firmware_Driver/inc/platform_config.h"
+mv temp.particle.1 "$BASE_FIRMWARE/firmware/platform/MCU/STM32F2xx/SPARK_Firmware_Driver/inc/platform_config.h"
+rm -f temp.particle
 
   MESSAGE="                                                 __      __  __
                                                 /  |    /  |/  |
