@@ -198,6 +198,13 @@ build, flash, clean, ota, dfu, serial, init, config, setup, library"
 
 build_firmware()
 {
+#Temporary fix for http://community.particle.io/t/stm32-usb-otg-driver-error-on-v0-6-0/26814
+
+sed "213s/.*/#pragma GCC optimize (\"O1\")/" "$BASE_FIRMWARE/firmware/platform/MCU/STM32F2xx/STM32_USB_OTG_Driver/src/usb_core.c" > temp.particle
+rm -f "$BASE_FIRMWARE/firmware/platform/MCU/STM32F2xx/STM32_USB_OTG_Driver/src/usb_core.c"
+mv temp.particle "$BASE_FIRMWARE/firmware/platform/MCU/STM32F2xx/STM32_USB_OTG_Driver/src/usb_core.c"
+
+
   MESSAGE="                                                 __      __  __
                                                 /  |    /  |/  |
           ______    ______           __    __  _██ |_   ██/ ██ |
@@ -288,7 +295,7 @@ config()
   echo
   MESSAGE="Which branch of the Particle firmware would you like to use?
 You can find the branches at https://github.com/spark/firmware/branches
-If you are unsure, please enter \"latest\"" ; blue_echo
+If you are unsure, please enter \"release/stable\"" ; blue_echo
   read -rp "Branch: " branch_variable
   BRANCH="$branch_variable"
   echo BRANCH="$BRANCH" >> $SETTINGS
@@ -411,7 +418,7 @@ fi
 # Configuration file is created at "~/.po"
 SETTINGS=~/.po
 BASE_FIRMWARE=~/github # These
-BRANCH="latest"        # can
+BRANCH="release/stable"        # can
 BINDIR=~/bin           # be
 DFUBAUDRATE=19200      # changed in the "~/.po" file.
 
@@ -1327,9 +1334,9 @@ if [ "$2" == "upgrade" ] || [ "$2" == "patch" ] || [ "$2" == "update" ];
 then
   pause "Connect your device and put into DFU mode. Press [ENTER] to continue..."
   cd "$CWD" || exit
-  sed "2s/.*/START_DFU_FLASHER_SERIAL_SPEED=$DFUBAUDRATE/" "$BASE_FIRMWARE/"firmware/build/module-defaults.mk > temp.particle
-  rm -f "$BASE_FIRMWARE"/firmware/build/module-defaults.mk
-  mv temp.particle "$BASE_FIRMWARE"/firmware/build/module-defaults.mk
+  sed "2s/.*/START_DFU_FLASHER_SERIAL_SPEED=$DFUBAUDRATE/" "$BASE_FIRMWARE/firmware/build/module-defaults.mk" > temp.particle
+  rm -f "$BASE_FIRMWARE/firmware/build/module-defaults.mk"
+  mv temp.particle "$BASE_FIRMWARE/firmware/build/module-defaults.mk"
 
   cd "$BASE_FIRMWARE/firmware/modules/$DEVICE_TYPE/system-part1" || exit
   make clean all PLATFORM="$DEVICE_TYPE" program-dfu
