@@ -199,12 +199,9 @@ build, flash, clean, ota, dfu, serial, init, config, setup, library"
 build_firmware()
 {
 #Temporary fix for http://community.particle.io/t/stm32-usb-otg-driver-error-on-v0-6-0/26814
-if [ "$DEVICE_TYPE" == "photon" ] || [ "$DEVICE_TYPE" == "P1" ];
-then
 sed "213s/.*/#pragma GCC optimize (\"O1\")/" "$BASE_FIRMWARE/firmware/platform/MCU/STM32F2xx/STM32_USB_OTG_Driver/src/usb_core.c" > temp.particle
 rm -f "$BASE_FIRMWARE/firmware/platform/MCU/STM32F2xx/STM32_USB_OTG_Driver/src/usb_core.c"
 mv temp.particle "$BASE_FIRMWARE/firmware/platform/MCU/STM32F2xx/STM32_USB_OTG_Driver/src/usb_core.c"
-fi
 
   MESSAGE="                                                 __      __  __
                                                 /  |    /  |/  |
