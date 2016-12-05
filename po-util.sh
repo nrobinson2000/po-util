@@ -472,7 +472,6 @@ then
 
   if [ -f po-util.sh ];
   then
-
     if [ "$CWD" != "$HOME" ];
     then
       cp po-util.sh ~/po-util.sh #Replace ~/po-util.sh with one in current directory.
@@ -481,17 +480,12 @@ then
   else
     if [ -f ~/po-util.sh ];
     then
-
       chmod +x ~/po-util.sh
-
     else
-
     curl -fsSLo ~/po-util.sh https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
     chmod +x ~/po-util.sh
-
     fi
   fi
-
 
   if [ -f ~/.bash_profile ]; #Create .bash_profile
   then
@@ -581,7 +575,6 @@ then
 
         MESSAGE="Creating links in /usr/local/bin..." ; blue_echo
         sudo ln -s $GCC_ARM_PATH* /usr/local/bin # LINK gcc-arm-none-eabi
-
     fi
 
     if [ "$DISTRO" != "arch" ];
@@ -628,7 +621,6 @@ then
         sudo $INSTALLER git nodejs npm python gcc make automake libusb lib32-glibc vim yaourt screen autoconf
         yaourt -S perl-archive-zip
     fi
-
 
     # Install dfu-util
     MESSAGE="Installing dfu-util (requires sudo)..." ; blue_echo
@@ -797,8 +789,7 @@ targets:
 echo
 MESSAGE="Directory initialized as a po-util project for $DEVICE_TYPE" ; green_echo
 echo
-
-  exit
+exit
 fi
 
 # Open serial monitor for device
