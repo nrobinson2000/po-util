@@ -32,7 +32,7 @@ simplifying complex tasks like properly compiling and flashing firmware.
 
 The easiest and most secure way to install `po-util` is to download `po-util.sh` from [GitHub](https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh) and run:
 
-    $ chmod +x po-util.sh ; ./po-util.sh install
+    $ chmod +x po-util.sh ; ./po-util.sh install ; ~/.bashrc
 
 **You can also install `po-util` by cloning the GitHub repository:**
 
@@ -44,7 +44,7 @@ The easiest and most secure way to install `po-util` is to download `po-util.sh`
 **Or you can directly download and run the script in Terminal:**
 
     $ curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
-    $ chmod +x po-util.sh ; ./po-util.sh install
+    $ chmod +x po-util.sh ; ./po-util.sh install ; . ~/.bashrc
 
 
 When installing `po-util`, an alias is added to your `.bashrc` that allows you
