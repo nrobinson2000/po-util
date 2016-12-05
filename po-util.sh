@@ -416,10 +416,10 @@ fi
 
 # Configuration file is created at "~/.po"
 SETTINGS=~/.po
-BASE_FIRMWARE=~/github # These
-BRANCH="release/stable"# can
-BINDIR=~/bin           # be
-DFUBAUDRATE=19200      # changed in the "~/.po" file.
+BASE_FIRMWARE=~/github  # These
+BRANCH="release/stable" # can
+BINDIR=~/bin            # be
+DFUBAUDRATE=19200       # changed in the "~/.po" file.
 
 CWD="$(pwd)" # Global Current Working Directory variable
 
