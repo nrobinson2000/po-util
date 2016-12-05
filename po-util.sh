@@ -170,7 +170,6 @@ dfu_open()
 
 switch_branch()
 {
-
 if [ "$1" != "" ];
 then
   if [ "$(git rev-parse --abbrev-ref HEAD)" != "$1" ];
@@ -183,7 +182,6 @@ else
     git checkout "$BRANCH" > /dev/null
   fi
 fi
-
 }
 
 common_commands() #List common commands
@@ -202,11 +200,6 @@ build_firmware()
 
 STRING='CPPSRC += $(call target_files,$(BOOTLOADER_MODULE_PATH)/../hal/src/stm32/,newlib.cpp)'
 echo "$STRING" >> "$BASE_FIRMWARE/firmware/bootloader/src/electron/sources.mk"
-
-#sed "9s/.*/$STRING/" "$BASE_FIRMWARE/firmware/bootloader/src/electron/sources.mk" > temp.particle
-#rm -f "$BASE_FIRMWARE/firmware/bootloader/src/electron/sources.mk"
-#mv temp.particle "$BASE_FIRMWARE/firmware/bootloader/src/electron/sources.mk"
-
 sed "126s/.*/#define USB_OTG_MAX_TX_FIFOS (4*2)/" "$BASE_FIRMWARE/firmware/platform/MCU/STM32F2xx/SPARK_Firmware_Driver/inc/platform_config.h" > temp.particle
 sed "132s/.*/#define USB_OTG_MAX_TX_FIFOS (6*2)/" temp.particle > temp.particle.1
 rm -f "$BASE_FIRMWARE/firmware/platform/MCU/STM32F2xx/SPARK_Firmware_Driver/inc/platform_config.h"
@@ -244,7 +237,6 @@ build_pi()
       echo
       exit 1
     fi
-
   else
     MESSAGE="Docker not found.  Please install docker to build firmware for Raspberry Pi" ; red_echo
     echo
@@ -279,7 +271,6 @@ ota() # device firmware
       sleep 3
       exit
     fi
-
     for DEVICE in $DEVICES ; do
       echo
       MESSAGE="Flashing to device $DEVICE..." ; blue_echo
@@ -426,7 +417,7 @@ fi
 # Configuration file is created at "~/.po"
 SETTINGS=~/.po
 BASE_FIRMWARE=~/github # These
-BRANCH="release/stable"        # can
+BRANCH="release/stable"# can
 BINDIR=~/bin           # be
 DFUBAUDRATE=19200      # changed in the "~/.po" file.
 
@@ -538,7 +529,6 @@ then
     NOGIT="true"
   fi
 
-
   if [ "$OS" == "Linux" ]; # Linux installation steps
   then
 
@@ -559,7 +549,6 @@ then
       fi
     fi
   fi
-
     cd "$BASE_FIRMWARE" || exit
     # Install dependencies
     MESSAGE="Installing ARM toolchain and dependencies locally in $BINDIR/gcc-arm-embedded/..." ; blue_echo
@@ -603,8 +592,6 @@ then
       rm -rf node-*.txt
     fi
     fi
-
-    #TODO: Work more on supporting other Linux Distributions.
 
     if [ "$DISTRO" == "deb" ];
     then
@@ -728,7 +715,6 @@ Example:
 echo
   exit
 fi
-
   mkdir firmware/
   echo "#include \"Particle.h\"
 
@@ -873,7 +859,6 @@ then
   exit
   fi
 
-
   if [ "$2" == "setup" ];
   then
     DIRWARNING="true"
@@ -992,7 +977,6 @@ then
     exit
   fi
 
-
   if [ "$2" == "create" ]; # Create a libraries in "$LIBRARY" from files in "$FIRMWAREDIR"  This for when mutiple libraries are packaged together and they need to be separated.
   then
     DIRWARNING="true"
@@ -1019,7 +1003,6 @@ then
     echo
     exit
   fi
-
 
   if [ "$2" == "add" ] || [ "$2" == "import" ]; # Import a library
   then
@@ -1074,7 +1057,6 @@ then
     exit
   fi
 
-
   if [ "$2" == "remove" ] || [ "$2" == "rm" ]; # Remove / Unimport a library
   then
     DIRWARNING="true"
@@ -1111,7 +1093,6 @@ then
       else
         rm "$FIRMWAREDIR/../libs.txt"
       fi
-
       echo
       exit
     else
@@ -1134,7 +1115,6 @@ then
     fi
     exit
   fi # Close remove
-
 
   if [ "$2" == "list" ] || [ "$2" == "ls" ];
   then
@@ -1262,26 +1242,22 @@ then
   else
     switch_branch
   fi
-
 else
   echo
   MESSAGE="Please choose \"photon\", \"P1\", \"electron\", or \"pi\", or choose a proper command." ; red_echo
   common_commands
   exit
 fi
-
 if [ "$DEVICE_TYPE" == "photon" ];
 then
   DFU_ADDRESS1="2b04:D006"
   DFU_ADDRESS2="0x080A0000"
 fi
-
 if [ "$DEVICE_TYPE" == "P1" ];
 then
   DFU_ADDRESS1="2b04:D008"
   DFU_ADDRESS2="0x080A0000"
 fi
-
 if [ "$DEVICE_TYPE" == "electron" ];
 then
   DFU_ADDRESS1="2b04:d00a"
