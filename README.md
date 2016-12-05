@@ -50,7 +50,7 @@ The easiest and most secure way to install `po-util` is to download `po-util.sh`
 When installing `po-util`, an alias is added to your `.bashrc` that allows you
 to run `po` from anywhere to use `po-util`.
 
-**Note:** We download everything from well-known locations and GitHub. While we believe this is a reasonable approach, it's always a good idea to know what's going on under the hood. [The `po-util` script can be found on GitHub if you want to manually download and run it.](https://github.com/nrobinson2000/po-util/blob/master/po-util.sh)
+**Note:** We download everything from well-known locations and GitHub. While we believe this is a reasonable approach, it's always a good idea to know what's going on under the hood. [The `po-util` script is hosted on GitHub if you want to manually download and run it.](https://github.com/nrobinson2000/po-util/blob/master/po-util.sh)
 
 
 <p align="center">
@@ -130,7 +130,7 @@ The directory structure of a **full** `po-util` project is arranged like so:
 # Project setup
 
 When using `po-util`, your code is arranged into projects with the structure
-described above. This not only lets easily you work on many projects on one
+described above. This not only lets you easily work on many projects on one
 computer, but it provides a standardized way of building locally.
 
 Creating a project with `po-util` is simple. All that you need to do is create
