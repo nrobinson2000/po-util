@@ -38,7 +38,7 @@ The easiest and most secure way to install `po-util` is to download `po-util.sh`
 
     $ git clone https://github.com/nrobinson2000/po-util
     $ cd po-util
-    $ ./po-util.sh install
+    $ ./po-util.sh install ; ~/.bashrc
 
 
 **Or you can directly download and run the script in Terminal:**
