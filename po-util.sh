@@ -419,7 +419,7 @@ fi
 # Open info page in browser
 if [ "$1" == "info" ];
 then
-  open "https://po-util.com"
+  open "https://nrobinson2000.github.io/po-util/"
   exit
 fi
 
