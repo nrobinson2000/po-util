@@ -812,7 +812,7 @@ then
   MESSAGE="Updating firmware..." ; blue_echo
   cd "$BASE_FIRMWARE"/firmware || exit
   git stash
-  git checkout $BRANCH
+  #git checkout $BRANCH
   git pull
   MESSAGE="Updating particle-cli..." ; blue_echo
   sudo npm update -g particle-cli
