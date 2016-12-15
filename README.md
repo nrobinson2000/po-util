@@ -47,6 +47,7 @@ The easiest and most secure way to install `po-util` is to download `po-util.sh`
     $ chmod +x po-util.sh ; ./po-util.sh install ; . ~/.bashrc
 
 **You can also run:**
+
     $ bash <( curl -sL https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh ) install
 
 When installing `po-util`, an alias is added to your `.bashrc` that allows you
