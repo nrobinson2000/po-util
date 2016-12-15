@@ -661,8 +661,8 @@ then
     MESSAGE="Node.js version $NODEVERSION is already installed." ; blue_echo
     else
     MESSAGE="Installing Node.js version $NODEVERSION..." ; blue_echo
-    # curl -fsSLO "https://nodejs.org/dist/$NODEVERSION/$INSTALLVERSION.pkg"
-    curl -fsSLO "https://nodejs.org/dist/v6.9.1/node-v6.9.1.pkg"
+    curl -fsSLO "https://nodejs.org/dist/$NODEVERSION/$INSTALLVERSION.pkg"
+    #curl -fsSLO "https://nodejs.org/dist/v6.9.1/node-v6.9.1.pkg"
     sudo installer -pkg node-*.pkg -target /
     rm -rf node-*.pkg
     rm -f node-*.txt
