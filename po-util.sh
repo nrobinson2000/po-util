@@ -648,21 +648,25 @@ then
     brew install gcc-arm-none-eabi dfu-util gnu-sed
 
     # Install Node.js
-    curl -Ss https://nodejs.org/dist/ > node-result.txt
-    grep "<a href=\"v" "node-result.txt" > node-new.txt
-    tail -1 node-new.txt > node-oneline.txt
-    sed -n 's/.*\"\(.*.\)\".*/\1/p' node-oneline.txt > node-version.txt
-    NODEVERSION="$(cat node-version.txt)"
-    NODEVERSION="${NODEVERSION%?}"
+
+    # curl -Ss https://nodejs.org/dist/ > node-result.txt
+    # grep "<a href=\"v" "node-result.txt" > node-new.txt
+    # tail -1 node-new.txt > node-oneline.txt
+    # sed -n 's/.*\"\(.*.\)\".*/\1/p' node-oneline.txt > node-version.txt
+    # NODEVERSION="$(cat node-version.txt)"
+    # NODEVERSION="${NODEVERSION%?}"
+
+    NODEVERSION="v6.9.1"
     INSTALLVERSION="node-$NODEVERSION"
-    rm node-*.txt
+
+    # rm node-*.txt
+
     if [ "$(node -v)" == "$NODEVERSION" ];
     then
     MESSAGE="Node.js version $NODEVERSION is already installed." ; blue_echo
     else
     MESSAGE="Installing Node.js version $NODEVERSION..." ; blue_echo
-    #curl -fsSLO "https://nodejs.org/dist/$NODEVERSION/$INSTALLVERSION.pkg"
-    curl -fsSLO "https://nodejs.org/dist/v6.9.1/node-v6.9.1.pkg"
+    curl -fsSLO "https://nodejs.org/dist/$NODEVERSION/$INSTALLVERSION.pkg"
     sudo installer -pkg node-*.pkg -target /
     rm -rf node-*.pkg
     rm -f node-*.txt
