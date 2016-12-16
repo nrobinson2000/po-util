@@ -645,7 +645,7 @@ then
 
     # Install ARM toolchain
     MESSAGE="Installing ARM toolchain..." ; blue_echo
-    brew install gcc-arm-none-eabi dfu-util gnu-sed
+    brew install gcc-arm-none-eabi dfu-util
 
     # Install Node.js
 
