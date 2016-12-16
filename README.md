@@ -50,6 +50,12 @@ The easiest and most secure way to install `po-util` is to download `po-util.sh`
 
     $ bash <( curl -sL https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh ) install
 
+**If you are on macOS, and would like to use the superior [Homebrew version of po-util](https://github.com/nrobinson2000/homebrew-po)**
+
+    $ brew tap nrobinson2000/po
+    $ brew install po
+    $ po install
+
 When installing `po-util`, an alias is added to your `.bashrc` that allows you
 to run `po` from anywhere to use `po-util`.
 
