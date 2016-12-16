@@ -13,9 +13,12 @@ body {
 
 a {
   color: #3c80c4;
-  text-decoration: none; }
+  text-decoration: none;
+}
+
   a:hover {
-    text-decoration: underline; }
+    text-decoration: underline;
+  }
 
 .shell {
     color:#159fcb;
