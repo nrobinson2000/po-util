@@ -30,6 +30,8 @@ simplifying complex tasks like properly compiling and flashing firmware.
 
 # Install
 
+There are many methods of obtaining `po-util`.
+
 The easiest and most secure way to install `po-util` is to download `po-util.sh` from [GitHub](https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh) and run:
 
     $ chmod +x po-util.sh ; ./po-util.sh install ; ~/.bashrc
@@ -46,6 +48,15 @@ The easiest and most secure way to install `po-util` is to download `po-util.sh`
     $ curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
     $ chmod +x po-util.sh ; ./po-util.sh install ; . ~/.bashrc
 
+**You can also run:**
+
+    $ bash <( curl -sL https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh ) install
+
+**If you are on macOS, and would like to use the superior [Homebrew version of `po-util`](https://github.com/nrobinson2000/homebrew-po):**
+
+    $ brew tap nrobinson2000/po
+    $ brew install po
+    $ po install
 
 When installing `po-util`, an alias is added to your `.bashrc` that allows you
 to run `po` from anywhere to use `po-util`.
