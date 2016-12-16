@@ -17,6 +17,11 @@ a {
   a:hover {
     text-decoration: underline; }
 
+.shell {
+    color:#159fcb;
+    font-weight:1050;
+  }
+
 .btn {
   display: inline-block;
   margin-bottom: 1rem;
