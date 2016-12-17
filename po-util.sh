@@ -461,6 +461,32 @@ source "$SETTINGS"
 if [ "$1" == "install" ]; # Install
 then
 
+  if [ "$OS" == "Darwin" ]; #Force homebrew version on macOS.
+  then
+    # Install via Homebrew
+    echo
+    MESSAGE="You are on macOS.  po-util will be installed via Homebrew" ; blue_echo
+
+    if hash brew 2>/dev/null;
+    then
+      echo
+      MESSAGE="Homebrew is installed." ; blue_echo
+    else
+      echo
+      MESSAGE="Installing Brew..." ; blue_echo
+      /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    fi
+
+    echo
+    MESSAGE="Installing po-util with \"brew\"" ; blue_echo
+
+    brew tap nrobinson2000/po
+    brew install po
+    po install
+    exit
+
+  fi
+
   if [ -f po-util.sh ];
   then
     if [ "$CWD" != "$HOME" ];
