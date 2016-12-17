@@ -58,9 +58,6 @@ The easiest and most secure way to install `po-util` is to download `po-util.sh`
     $ brew install po
     $ po install
 
-When installing `po-util`, an alias is added to your `.bashrc` that allows you
-to run `po` from anywhere to use `po-util`.
-
 **Note:** We download everything from well-known locations and GitHub. While we believe this is a reasonable approach, it's always a good idea to know what's going on under the hood. [The `po-util` script is hosted on GitHub if you want to manually download and run it.](https://github.com/nrobinson2000/po-util/blob/master/po-util.sh)
 
 
