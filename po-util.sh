@@ -895,7 +895,7 @@ then
     find_objects "$3"
     cd "$LIBRARY"
 
-    cat $FIRMWAREDIR/../libs.txt | while read i  ## Install and add required libs from libs.txt
+    while read i < "$FIRMWAREDIR/../libs.txt" ## Install and add required libs from libs.txt
     do
       LIB_NAME="$(echo $i | awk '{ print $NF }' )"
 
@@ -941,8 +941,6 @@ then
 
   if [ "$2" == "get" ] || [ "$2" == "install" ]; # Download a library with git OR Install from libs.txt
   then
-    DIRWARNING="true"
-    find_objects "$4"
 
     cd "$LIBRARY"
 
@@ -950,7 +948,10 @@ then
         if [ "$3" == "" ]; # Install from libs.txt
         then
 
-          cat $FIRMWAREDIR/../libs.txt | while read i
+          DIRWARNING="true"
+          find_objects
+
+          while read i < "$FIRMWAREDIR/../libs.txt"
           do
             LIB_NAME="$(echo $i | awk '{ print $NF }' )"
 
@@ -972,10 +973,14 @@ then
 
     if [ "$4" != "" ];  # Download a library with git
     then
+      echo
       git clone "$3" "$4" || ( echo ; MESSAGE="Could not download Library.  Please supply a valid URL to a git repository." ; red_echo )
+      echo
       exit
     else
+      echo
       git clone "$3" || ( echo ; MESSAGE="Could not download Library.  Please supply a valid URL to a git repository." ; red_echo )
+      echo
       exit
     fi
     exit
@@ -1156,7 +1161,7 @@ then
     exit
   fi # Close list
 
-    if [ "$2" == "package" ] || [ "$2" == "pack" ];
+    if [ "$2" == "package" ] || [ "$2" == "pack" ] || [ "$2" == "export" ];
     then
       DIRWARNING="true"
       find_objects "$3"
@@ -1174,6 +1179,20 @@ then
 
   if [ "$2" == "help" ] || [ "$2" == "" ]; # SHOW HELP TEXT FOR "po library"
   then
+  MESSAGE="                                                       __      __  __
+                                                      /  |    /  |/  |
+                ______    ______           __    __  _██ |_   ██/ ██ |
+               /      \  /      \  ______ /  |  /  |/ ██   |  /  |██ |
+              /██████  |/██████  |/      |██ |  ██ |██████/   ██ |██ |
+              ██ |  ██ |██ |  ██ |██████/ ██ |  ██ |  ██ | __ ██ |██ |
+              ██ |__██ |██ \__██ |        ██ \__██ |  ██ |/  |██ |██ |
+              ██    ██/ ██    ██/         ██    ██/   ██  ██/ ██ |██ |
+              ███████/   ██████/           ██████/     ████/  ██/ ██/
+              ██ |
+              ██ |
+              ██/               https://nrobinson2000.github.io/po-util/
+"
+        blue_echo
 
     echo "
 \"po library\": The Particle Library manager for po-util.
@@ -1241,16 +1260,41 @@ then
     exit
   fi
 
+  MESSAGE="Checking for updates..." ; green_echo
+  echo
+
   for OUTPUT in $(ls -1 "$LIBRARY")
   do
   	cd "$LIBRARY/$OUTPUT"
+
+    if [ -d "$LIBRARY/$OUTPUT/.git" ]; # Only do git pull if it is a repository
+    then
     MESSAGE="Updating library $OUTPUT..." ; blue_echo
-    echo
     git pull
     echo
+    fi
+
   done
   exit
 fi # Close Update
+
+if [ "$2" == "source" ];
+then
+  echo
+  MESSAGE="Listing installed libraries that are cloneable..." ; blue_echo
+  echo
+  for OUTPUT in $(ls -1 "$LIBRARY")
+  do
+  	cd "$LIBRARY/$OUTPUT"
+    if [ -d "$LIBRARY/$OUTPUT/.git" ]; # Only if it is a repository
+    then
+      LIB_URL="$( cd $LIBRARY/$OUTPUT && git config --get remote.origin.url )"
+      echo "$LIB_URL $OUTPUT"
+      echo
+    fi
+  done
+  exit
+fi ### Close source
 
   echo
   MESSAGE="Please choose a valid command, or run \"po lib\" for help." ; red_echo
