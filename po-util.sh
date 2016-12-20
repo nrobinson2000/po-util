@@ -895,7 +895,7 @@ then
     find_objects "$3"
     cd "$LIBRARY"
 
-    cat "$FIRMWAREDIR/../libs.txt" | while read i ## Install and add required libs from libs.txt
+    while read i ## Install and add required libs from libs.txt
     do
       LIB_NAME="$(echo $i | awk '{ print $NF }' )"
 
@@ -934,7 +934,7 @@ then
 
           fi
 
-    done
+    done < "$FIRMWAREDIR/../libs.txt"
     echo
     exit
   fi
@@ -951,7 +951,7 @@ then
           DIRWARNING="true"
           find_objects
 
-          cat "$FIRMWAREDIR/../libs.txt" | while read i
+          while read i
           do
             LIB_NAME="$(echo $i | awk '{ print $NF }' )"
 
@@ -966,7 +966,7 @@ then
                  git clone $i
                 fi
 
-          done
+          done < "$FIRMWAREDIR/../libs.txt"
           echo
           exit
         fi
