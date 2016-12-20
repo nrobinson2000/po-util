@@ -34,13 +34,13 @@ There are many methods of obtaining `po-util`.
 
 The easiest and most secure way to install `po-util` is to download `po-util.sh` from [GitHub](https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh) and run:
 
-    $ chmod +x po-util.sh ; ./po-util.sh install ; ~/.bashrc
+    $ chmod +x po-util.sh ; ./po-util.sh install ; . ~/.bashrc
 
 **You can also install `po-util` by cloning the GitHub repository:**
 
     $ git clone https://github.com/nrobinson2000/po-util
     $ cd po-util
-    $ ./po-util.sh install ; ~/.bashrc
+    $ ./po-util.sh install ; . ~/.bashrc
 
 
 **Or you can directly download and run the script in Terminal:**
