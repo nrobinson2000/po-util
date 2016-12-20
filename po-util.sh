@@ -895,7 +895,7 @@ then
     find_objects "$3"
     cd "$LIBRARY"
 
-    while read i < "$FIRMWAREDIR/../libs.txt" ## Install and add required libs from libs.txt
+    cat "$FIRMWAREDIR/../libs.txt" | while read i ## Install and add required libs from libs.txt
     do
       LIB_NAME="$(echo $i | awk '{ print $NF }' )"
 
@@ -951,7 +951,7 @@ then
           DIRWARNING="true"
           find_objects
 
-          while read i < "$FIRMWAREDIR/../libs.txt"
+          cat "$FIRMWAREDIR/../libs.txt" | while read i
           do
             LIB_NAME="$(echo $i | awk '{ print $NF }' )"
 
