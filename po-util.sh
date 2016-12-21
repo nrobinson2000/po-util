@@ -1387,11 +1387,9 @@ then
   rm -f "$BASE_FIRMWARE/firmware/build/module-defaults.mk"
   mv temp.particle "$BASE_FIRMWARE/firmware/build/module-defaults.mk"
 
-  cd "$BASE_FIRMWARE/firmware/modules/$DEVICE_TYPE/system-part1" || exit
+  cd "$BASE_FIRMWARE/firmware/modules" || exit
   make clean all PLATFORM="$DEVICE_TYPE" program-dfu
 
-  cd "$BASE_FIRMWARE/firmware/modules/$DEVICE_TYPE/system-part2" || exit
-  make clean all PLATFORM="$DEVICE_TYPE" program-dfu
   cd "$BASE_FIRMWARE/firmware" && git stash || exit
   sleep 1
   dfu-util -d $DFU_ADDRESS1 -a 0 -i 0 -s $DFU_ADDRESS2:leave -D /dev/null &> /dev/null
