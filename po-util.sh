@@ -12,12 +12,22 @@
 #   ██ |
 #   ██/                  https://nrobinson2000.github.io/po-util/
 #
-# Particle Offline Utility: A handy script for installing and using the Particle
-# Toolchain on Linux and OSX. This script downloads and installs:
-# dfu-util, nodejs, gcc-arm-embedded, particle-cli, and the Particle Firmware
-# source code.
-# Read more at https://github.com/nrobinson2000/po-util
-# ACII Art Generated from: http://www.patorjk.com/software/taag
+#
+#  po-util - The Ultimate Local Particle Experience for Linux and macOS
+# Copyright (C) 2016  Nathan Robinson
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Helper functions
 function pause()
@@ -333,7 +343,7 @@ MESSAGE="                                                     __      __  __
             ██/               https://nrobinson2000.github.io/po-util/
 "
 blue_echo
-echo "Copyright (GPL) 2016  Nathan Robinson
+echo "Copyright (GPL) 2016 Nathan Robinson
 
 Usage: po DEVICE_TYPE COMMAND DEVICE_NAME
        po DFU_COMMAND
@@ -661,48 +671,6 @@ then
 
   fi # CLOSE: "$OS" == "Linux"
 
-  if [ "$OS" == "Darwin" ]; # Mac installation steps
-  then
-    # Install Homebrew
-    MESSAGE="Installing Brew..." ; blue_echo
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-    brew tap PX4/homebrew-px4
-    brew update
-
-    # Install ARM toolchain
-    MESSAGE="Installing ARM toolchain..." ; blue_echo
-    brew install gcc-arm-none-eabi dfu-util
-
-    # Install Node.js
-
-    # curl -Ss https://nodejs.org/dist/ > node-result.txt
-    # grep "<a href=\"v" "node-result.txt" > node-new.txt
-    # tail -1 node-new.txt > node-oneline.txt
-    # sed -n 's/.*\"\(.*.\)\".*/\1/p' node-oneline.txt > node-version.txt
-    # NODEVERSION="$(cat node-version.txt)"
-    # NODEVERSION="${NODEVERSION%?}"
-
-    NODEVERSION="v6.9.1"
-    INSTALLVERSION="node-$NODEVERSION"
-
-    # rm node-*.txt
-
-    if [ "$(node -v)" == "$NODEVERSION" ];
-    then
-    MESSAGE="Node.js version $NODEVERSION is already installed." ; blue_echo
-    else
-    MESSAGE="Installing Node.js version $NODEVERSION..." ; blue_echo
-    curl -fsSLO "https://nodejs.org/dist/$NODEVERSION/$INSTALLVERSION.pkg"
-    sudo installer -pkg node-*.pkg -target /
-    rm -rf node-*.pkg
-    rm -f node-*.txt
-    fi
-
-    # Install particle-cli
-    MESSAGE="Installing particle-cli..." ; blue_echo
-    sudo npm install -g node-pre-gyp npm serialport particle-cli
-  fi # CLOSE: "$OS" == "Darwin"
-
   cd "$BASE_FIRMWARE" || exit
 
   if [ "$NOGIT" == "true" ];
@@ -712,12 +680,13 @@ then
   fi
 
   MESSAGE="
-  Thank you for installing po-util. Be sure to check out https://po-util.com/
-  if you have any questions, suggestions, comments, or problems.  You can use
-  the Message button in the bottom right corner of the site to send me a
-  private message. If need to update po-util just run \"po update\" to download
-  the latest versions of po-util, Particle Firmware and particle-cli, or run
-  \"po install\" to update all dependencies.
+  Thank you for installing po-util. Be sure to check out
+  https://nrobinson2000.github.io/po-util/ if you have any questions,
+  suggestions, comments, or problems.  You can use the message button in the
+  bottom right corner of the site to send me a private message. If need to
+  update po-util just run \"po update\" to download the latest versions of
+  po-util, Particle Firmware and particle-cli, or run \"po install\" to update
+  all dependencies.
   " ; green_echo
   source ~/.bashrc
   exit
