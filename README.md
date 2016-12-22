@@ -30,11 +30,12 @@ simplifying complex tasks like properly compiling and flashing firmware.
 
 # Install
 
-There are many methods of obtaining `po-util`.
+There are two versions of po-util. The first is po-util Classic, which is designed for Linux distributions. The second is po-util Homebrew Edition, which is designed for macOS. Classic can be installed by following the instructions below:
 
-The easiest and most secure way to install `po-util` is to download `po-util.sh` from [GitHub](https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh) and run:
+**The easiest and most secure way to install `po-util` is to download `po-util.sh` directly and run it:**
 
-    $ chmod +x po-util.sh ; ./po-util.sh install ; . ~/.bashrc
+$ curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
+$ chmod +x po-util.sh ; ./po-util.sh install ; . ~/.bashrc
 
 **You can also install `po-util` by cloning the GitHub repository:**
 
@@ -42,24 +43,14 @@ The easiest and most secure way to install `po-util` is to download `po-util.sh`
     $ cd po-util
     $ ./po-util.sh install ; . ~/.bashrc
 
-
-**Or you can directly download and run the script in Terminal:**
-
-    $ curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
-    $ chmod +x po-util.sh ; ./po-util.sh install ; . ~/.bashrc
-
-**You can also run:**
-
-    $ bash <( curl -sL https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh ) install
-
-**If you are on macOS, and would like to use the superior [Homebrew version of `po-util`](https://github.com/nrobinson2000/homebrew-po):**
+**On macOS, [Homebrew Edition](https://github.com/nrobinson2000/homebrew-po) can be installed by running these commands:**
 
     $ brew tap nrobinson2000/po
     $ brew install po
     $ po install
 
-**Note:** We download everything from well-known locations and GitHub. While we believe this is a reasonable approach, it's always a good idea to know what's going on under the hood. [The `po-util` script is hosted on GitHub if you want to manually download and run it.](https://github.com/nrobinson2000/po-util/blob/master/po-util.sh)
-
+**Note:**
+Both versions of po-util have the same features. In December 2016, Homebrew Edition was forked from po-util in order to allow po-util to be installed with Homebrew.  The original po-util was renamed to Classic, and was made Linux exclusive. Both Classic and Homebrew Edition continue to be developed and maintained in parallel.
 
 <p align="center">
 <img src="images/po.png">
