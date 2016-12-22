@@ -1,13 +1,9 @@
-os:
-  - osx
-  - linux
-
 dist: trusty
 sudo: required
 language: generic
 
 install:
-  - if [ "$(uname -s)" == "Linux" ]; then sudo apt-get install -y expect; fi
+  - sudo apt-get install -y expect
 script:
   - time ./config-expect.sh
   - time ./po-util.sh install

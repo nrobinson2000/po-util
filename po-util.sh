@@ -175,7 +175,7 @@ dfu_open()
     echo
     exit
   fi
-  stty "$STTYF" "$MODEM" "$DFUBAUDRATE" > /dev/null
+  stty -F "$MODEM" "$DFUBAUDRATE" > /dev/null
 }
 
 switch_branch()
@@ -325,8 +325,6 @@ Enter \"po\" to use the po-util recommended baud rate of 19200." ; blue_echo
 }
 # End of helper functions
 
-
-
 if [ "$1" == "" ]; # Print help
 then
 MESSAGE="                                                     __      __  __
@@ -430,24 +428,10 @@ BASE_FIRMWARE=~/github  # These
 BRANCH="release/stable" # can
 BINDIR=~/bin            # be
 DFUBAUDRATE=19200       # changed in the "~/.po" file.
-
 CWD="$(pwd)" # Global Current Working Directory variable
-
-# Mac OSX uses lowercase f for stty command
-if [ "$(uname -s)" == "Darwin" ];
-  then
-    OS="Darwin"
-    STTYF="-f"
-    MODEM="$(ls -1 /dev/cu.* | grep -vi bluetooth | tail -1)"
-  else
-    OS="Linux"
-    STTYF="-F"
-    MODEM="$(ls -1 /dev/* | grep "ttyACM" | tail -1)"
-
-    #THIS COULD BE IMPROVED!
-    GCC_ARM_VER=gcc-arm-none-eabi-4_9-2015q3 # Updated to 4.9
-    GCC_ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/
-fi
+MODEM="$(ls -1 /dev/* | grep "ttyACM" | tail -1)"
+GCC_ARM_VER=gcc-arm-none-eabi-4_9-2015q3 # Updated to 4.9
+GCC_ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/
 
 
 if [ "$1" == "config" ];
@@ -471,7 +455,7 @@ source "$SETTINGS"
 if [ "$1" == "install" ]; # Install
 then
 
-  if [ "$OS" == "Darwin" ]; #Force homebrew version on macOS.
+  if [ "$(uname -s)" == "Darwin" ]; #Force homebrew version on macOS.
   then
     # Install via Homebrew
     echo
@@ -564,9 +548,6 @@ then
   else
     NOGIT="true"
   fi
-
-  if [ "$OS" == "Linux" ]; # Linux installation steps
-  then
 
     if hash apt-get 2>/dev/null; # Test if on a Debian-based system
     then
@@ -668,8 +649,6 @@ then
 
     MESSAGE="Adding $USER to plugdev group..." ; blue_echo
     sudo usermod -a -G plugdev "$USER"
-
-  fi # CLOSE: "$OS" == "Linux"
 
   cd "$BASE_FIRMWARE" || exit
 
