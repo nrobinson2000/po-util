@@ -12,7 +12,7 @@
 #   ██ |
 #   ██/                  https://nrobinson2000.github.io/po-util/
 #
-#
+
 #  po-util - The Ultimate Local Particle Experience for Linux and macOS
 # Copyright (C) 2016  Nathan Robinson
 #
