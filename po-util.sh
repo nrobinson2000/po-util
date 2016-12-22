@@ -343,7 +343,7 @@ MESSAGE="                                                     __      __  __
             ██/               https://nrobinson2000.github.io/po-util/
 "
 blue_echo
-echo "Copyright (GPL) 2016 Nathan Robinson
+echo "Copyright (GPL) 2016 Nathan D. Robinson
 
 Usage: po DEVICE_TYPE COMMAND DEVICE_NAME
        po DFU_COMMAND
