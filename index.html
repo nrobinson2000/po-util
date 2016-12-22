@@ -49,29 +49,21 @@
 <script type="text/javascript" src="https://asciinema.org/a/9qvofqis2skl9rihckyv3c0wl.js" id="asciicast-9qvofqis2skl9rihckyv3c0wl" async></script>
 </p>
 <h1>Install</h1>
-<p>There are many methods of obtaining <code>po-util</code>.</p>
-<p>The easiest and most secure way to install <code>po-util</code> is to download <code>po-util.sh</code> from <a href="https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh">GitHub</a> and run:</p>
-<pre><code><strong class="shell">$</strong> chmod +x po-util.sh ; ./po-util.sh install ; . ~/.bashrc
-</code></pre>
+
+<p>There are two versions of <code>po-util</code>. The first is <code>po-util Classic</code>, which is designed for Linux distributions. The second is <code>po-util Homebrew Edition</code>, which is designed for macOS. Classic can be installed by following the instructions below:</p>
+<p><strong>The easiest and most secure way to install <code>po-util</code> is to download <code>po-util.sh</code> directly and run it:</strong></p>
+<pre><code>$ curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
+$ chmod +x po-util.sh ; ./po-util.sh install ; . ~/.bashrc</code></pre>
 <p><strong>You can also install <code>po-util</code> by cloning the GitHub repository:</strong></p>
 <pre><code><strong class="shell">$</strong> git clone https://github.com/nrobinson2000/po-util
 <strong class="shell">$</strong> cd po-util
-<strong class="shell">$</strong> ./po-util.sh install ; . ~/.bashrc
-</code></pre>
-<p><strong>Or you can directly download and run the script in Terminal:</strong></p>
-<pre><code><strong class="shell">$</strong> curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
-<strong class="shell">$</strong> chmod +x po-util.sh ; ./po-util.sh install ; . ~/.bashrc
-</code></pre>
-
-<p><strong>You can also run:</strong></p>
-<pre><code><strong class="shell">$</strong> bash <( curl -sL https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh ) install</code></pre>
-
-<p><strong>If you are on macOS, and would like to use the superior <a href="https://github.com/nrobinson2000/homebrew-po">Homebrew version of po-util</a>:</strong></p>
+<strong class="shell">$</strong> ./po-util.sh install ; . ~/.bashrc</code></pre>
+<p><strong>On macOS, <a href="https://github.com/nrobinson2000/homebrew-po">Homebrew Edition</a> can be installed by running these commands:</strong></p>
 <pre><code><strong class="shell">$</strong> brew tap nrobinson2000/po
 <strong class="shell">$</strong> brew install po
 <strong class="shell">$</strong> po install</code></pre>
-<p>When installing <code>po-util</code>, an alias is added to your <code>.bashrc</code> that allows you to run <code>po</code> from anywhere to use <code>po-util</code>.</p>
-<p><strong>Note:</strong> We download everything from well-known locations and GitHub. While we believe this is a reasonable approach, it's always a good idea to know what's going on under the hood.  <a href="https://github.com/nrobinson2000/po-util/blob/master/po-util.sh">The <code>po-util</code> script is hosted on GitHub if you want to manually download and run it.</a></p>
+<p><strong>Note: </strong>Both versions of po-util have the same features. In December 2016, Homebrew Edition was forked from po-util in order to allow po-util to be installed with Homebrew.  The original po-util was renamed to Classic, and was made Linux exclusive. Both Classic and Homebrew Edition continue to be developed and maintained in parallel.</p>
+
 <p align="center">
 <img src="images/po.png">
 </p>
