@@ -34,8 +34,8 @@ There are two versions of po-util. The first is po-util Classic, which is design
 
 **The easiest and most secure way to install `po-util` is to download `po-util.sh` directly and run it:**
 
-$ curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
-$ chmod +x po-util.sh ; ./po-util.sh install ; . ~/.bashrc
+    $ curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
+    $ chmod +x po-util.sh ; ./po-util.sh install ; . ~/.bashrc
 
 **You can also install `po-util` by cloning the GitHub repository:**
 
