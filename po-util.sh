@@ -203,7 +203,6 @@ build, flash, clean, ota, dfu, serial, init, config, setup, library"
   echo
 }
 
-
 build_firmware()
 {
 #Temporary fix for http://community.particle.io/t/stm32-usb-otg-driver-error-on-v0-6-0/26814
@@ -707,7 +706,8 @@ void loop() // Put code here to loop forever
 }" > firmware/main.cpp
 
   cp ~/.po-util-README.md README.md
-
+if [ "$DEVICE_TYPE" != "" ];
+then
 echo "---
 cmd: ~/po-util.sh $DEVICE_TYPE build
 
@@ -749,6 +749,7 @@ targets:
     keymap: ctrl-alt-5
     name: DFU
 " >> .atom-build.yml
+fi
 
 echo
 MESSAGE="Directory initialized as a po-util project for $DEVICE_TYPE" ; green_echo
@@ -858,7 +859,6 @@ then
            git clone $i
           fi
 
-
           if [ -f "$FIRMWAREDIR/$LIB_NAME.cpp" ] || [ -f "$FIRMWAREDIR/$LIB_NAME.h" ];
           then
             echo
@@ -892,10 +892,8 @@ then
 
     cd "$LIBRARY"
 
-
         if [ "$3" == "" ]; # Install from libs.txt
         then
-
           DIRWARNING="true"
           find_objects
 
@@ -1221,7 +1219,6 @@ then
     git pull
     echo
     fi
-
   done
   exit
 fi # Close Update
