@@ -231,7 +231,7 @@ build_firmware()
         ██/         Building firmware for $DEVICE_TYPE...
   "
   blue_echo
-  make all -s -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$DEVICE_TYPE"
+  make all -s -C "$BASE_FIRMWARE/firmware/main" APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$DEVICE_TYPE"
 }
 
 build_pi()
