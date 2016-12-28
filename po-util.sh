@@ -1266,7 +1266,7 @@ else
   echo
   if [ "$1" == "redbear" ] || [ "$1" == "bluz" ] || [ "$1" == "oak" ];
   then
-    MESSAGE="This compound is not supported yet." ; red_echo
+    MESSAGE="This compound is not supported yet. Find out more here: https://git.io/vMTAw" ; red_echo
     echo
   fi
   MESSAGE="Please choose \"photon\", \"P1\", \"electron\", \"core\", or \"pi\",
