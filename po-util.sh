@@ -1252,7 +1252,7 @@ fi # Close Library
 cd "$BASE_FIRMWARE"/firmware || exit
 
 # Make sure we are using photon, P1, electron, core or pi
-if [ "$1" == "photon" ] || [ "$1" == "P1" ] || [ "$1" == "electron" ] || [ "$1" == "pi" ] || ["$1" == "core" ];
+if [ "$1" == "photon" ] || [ "$1" == "P1" ] || [ "$1" == "electron" ] || [ "$1" == "pi" ] || [ "$1" == "core" ];
 then
   DEVICE_TYPE="$1"
 
