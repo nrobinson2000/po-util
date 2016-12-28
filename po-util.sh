@@ -1264,7 +1264,13 @@ then
   fi
 else
   echo
-  MESSAGE="Please choose \"photon\", \"P1\", \"electron\", \"core\", or \"pi\", or choose a proper command." ; red_echo
+  if [ "$1" == "redbear" ] || [ "$1" == "bluz" ] || [ "$1" == "oak" ];
+  then
+    MESSAGE="This compound is not supported yet." ; red_echo
+    echo
+  fi
+  MESSAGE="Please choose \"photon\", \"P1\", \"electron\", \"core\", or \"pi\",
+or choose a proper command." ; red_echo
   common_commands
   exit
 fi
