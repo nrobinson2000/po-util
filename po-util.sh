@@ -683,7 +683,7 @@ then
     exit
   fi
 
-if [ "$2" == "photon" ] || [ "$2" == "P1" ] || [ "$2" == "electron" ] || [ "$2" == "pi" ];
+if [ "$2" == "photon" ] || [ "$2" == "P1" ] || [ "$2" == "electron" ] || [ "$2" == "pi" ] || ["$2" == "core" ];
 then
 DEVICE_TYPE="$2"
 else
@@ -692,7 +692,6 @@ echo
 Example:
   po init photon" ; blue_echo
 echo
-  exit
 fi
   mkdir firmware/
   echo "#include \"Particle.h\"
@@ -1252,8 +1251,8 @@ fi # Close Library
 
 cd "$BASE_FIRMWARE"/firmware || exit
 
-# Make sure we are using photon, P1, electron or pi
-if [ "$1" == "photon" ] || [ "$1" == "P1" ] || [ "$1" == "electron" ] || [ "$1" == "pi" ]; # || [ "$1" == "raspberry" ] || [ "$1" == "raspberrypi" ];
+# Make sure we are using photon, P1, electron, core or pi
+if [ "$1" == "photon" ] || [ "$1" == "P1" ] || [ "$1" == "electron" ] || [ "$1" == "pi" ] || ["$1" == "core" ];
 then
   DEVICE_TYPE="$1"
 
@@ -1265,7 +1264,7 @@ then
   fi
 else
   echo
-  MESSAGE="Please choose \"photon\", \"P1\", \"electron\", or \"pi\", or choose a proper command." ; red_echo
+  MESSAGE="Please choose \"photon\", \"P1\", \"electron\", \"core\", or \"pi\", or choose a proper command." ; red_echo
   common_commands
   exit
 fi
@@ -1283,6 +1282,11 @@ if [ "$DEVICE_TYPE" == "electron" ];
 then
   DFU_ADDRESS1="2b04:d00a"
   DFU_ADDRESS2="0x08080000"
+fi
+if [ "$DEVICE_TYPE" == "core" ];
+then
+  DFU_ADDRESS1="1d50:607f"
+  DFU_ADDRESS2="0x08005000"
 fi
 
 if [ "$2" == "setup" ];
