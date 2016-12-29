@@ -217,6 +217,11 @@ build_firmware()
 
 # FIXED in release/v0.6.1-rc.1
 
+cd "$CWD" || exit
+sed "2s/.*/START_DFU_FLASHER_SERIAL_SPEED=$DFUBAUDRATE/" "$BASE_FIRMWARE/firmware/build/module-defaults.mk" > temp.particle
+rm -f "$BASE_FIRMWARE/firmware/build/module-defaults.mk"
+mv temp.particle "$BASE_FIRMWARE/firmware/build/module-defaults.mk"
+
   MESSAGE="                                                 __      __  __
                                                 /  |    /  |/  |
           ______    ______           __    __  _██ |_   ██/ ██ |
@@ -683,7 +688,7 @@ then
     exit
   fi
 
-if [ "$2" == "photon" ] || [ "$2" == "P1" ] || [ "$2" == "electron" ] || [ "$2" == "pi" ] || ["$2" == "core" ];
+if [ "$2" == "photon" ] || [ "$2" == "P1" ] || [ "$2" == "electron" ] || [ "$2" == "pi" ] || [ "$2" == "core" ];
 then
 DEVICE_TYPE="$2"
 else
@@ -881,6 +886,16 @@ then
 
             fi
 
+            if (grep "#include \"$LIB_NAME.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ;
+            then
+              echo "Already imported" &> /dev/null
+            else
+              echo "#include \"$LIB_NAME.h\"" > "$FIRMWAREDIR/main.cpp.temp"
+              cat "$FIRMWAREDIR/main.cpp" >> "$FIRMWAREDIR/main.cpp.temp"
+              rm "$FIRMWAREDIR/main.cpp"
+              mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
+            fi
+
           fi
 
     done < "$FIRMWAREDIR/../libs.txt"
@@ -1029,10 +1044,18 @@ then
 
       echo "$LIB_URL $3" >> "$FIRMWAREDIR/../libs.txt"
 
+    if (grep "#include \"$3.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ;
+    then
+      echo "Already imported" &> /dev/null
+    else
+      echo "#include \"$3.h\"" > "$FIRMWAREDIR/main.cpp.temp"
+      cat "$FIRMWAREDIR/main.cpp" >> "$FIRMWAREDIR/main.cpp.temp"
+      rm "$FIRMWAREDIR/main.cpp"
+      mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
+    fi
+
     echo
     MESSAGE="Imported library $3" ; green_echo
-    echo
-    MESSAGE="Add #include \"$3.h\" to your main.cpp to use the library" ; blue_echo
     echo
     exit
     fi
@@ -1076,6 +1099,14 @@ then
         rm "$FIRMWAREDIR/../libs.txt"
       fi
       echo
+
+      if (grep "#include \"$3.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ;
+      then
+        grep -v "#include \"$3.h\"" "$FIRMWAREDIR/main.cpp" > "$FIRMWAREDIR/main.cpp.temp"
+        rm "$FIRMWAREDIR/main.cpp"
+        mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
+      fi
+
       exit
     else
       echo
@@ -1086,6 +1117,14 @@ then
         MESSAGE="Removing library $3..." ; blue_echo
         rm "$FIRMWAREDIR/$3.cpp"
         rm "$FIRMWAREDIR/$3.h"
+
+        if (grep "#include \"$3.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ;
+        then
+          grep -v "#include \"$3.h\"" "$FIRMWAREDIR/main.cpp" > "$FIRMWAREDIR/main.cpp.temp"
+          rm "$FIRMWAREDIR/main.cpp"
+          mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
+        fi
+
         echo
         MESSAGE="Library $3 has been purged." ; green_echo
         exit
