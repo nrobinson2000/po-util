@@ -133,7 +133,7 @@ described above. This not only lets you easily work on many projects on one
 computer, but it provides a standardized way of building locally.
 
 Creating a project with `po-util` is simple. All that you need to do is create
-a folder and run use the `po init` inside of it to initialize the project by
+a folder and run `po init` inside of it to initialize the project by
 creating the appropriate files and directories. Below is an example:
 
     $ mkdir someProject
