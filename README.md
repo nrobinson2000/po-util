@@ -140,7 +140,7 @@ creating the appropriate files and directories. Below is an example:
     $ cd someProject
     $ po init DEVICE_TYPE
 
-You can set `DEVICE_TYPE` to either `photon`, `P1` or `electron`. This is
+You can set `DEVICE_TYPE` to either `photon`, `P1`, `electron`, `core`, or `pi`. This is
 necessary for generating the Atom shortcuts file appropriately.
 
 # More Information
