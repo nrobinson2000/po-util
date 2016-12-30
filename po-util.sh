@@ -328,6 +328,18 @@ Enter \"po\" to use the po-util recommended baud rate of 19200." ; blue_echo
     DFUBAUDRATE=19200
   fi
   echo DFUBAUDRATE="$DFUBAUDRATE" >> $SETTINGS
+  echo
+  MESSAGE="Shoud po-util automatically add and remove headers when using
+libraries?" ; blue_echo
+  read -rp "(yes/no): " response
+  if [ "$response" == "yes" ] || [ "$response" == "y" ] || [ "$response" == "Y" ];
+  then
+  AUTO_HEADER="true"
+  else
+  AUTO_HEADER="false"
+  fi
+  echo AUTO_HEADER="$AUTO_HEADER" >> $SETTINGS
+  echo
 }
 # End of helper functions
 
@@ -886,6 +898,8 @@ then
 
             fi
 
+            if [ "$AUTO_HEADER" == "true" ];
+            then
             if (grep "#include \"$LIB_NAME.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ;
             then
               echo "Already imported" &> /dev/null
@@ -894,6 +908,7 @@ then
               cat "$FIRMWAREDIR/main.cpp" >> "$FIRMWAREDIR/main.cpp.temp"
               rm "$FIRMWAREDIR/main.cpp"
               mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
+            fi
             fi
 
           fi
@@ -955,7 +970,7 @@ then
     then
       echo
       read -rp "Are you sure you want to purge $3? (yes/no): " answer
-      if [ "$answer" == "yes" ] || [ "$answer" == "y" ] || [ "$answer" == "y" ];
+      if [ "$answer" == "yes" ] || [ "$answer" == "y" ] || [ "$answer" == "Y" ];
       then
         echo
         MESSAGE="Purging library $3..." ; blue_echo
@@ -1044,6 +1059,8 @@ then
 
       echo "$LIB_URL $3" >> "$FIRMWAREDIR/../libs.txt"
 
+    if [ "$AUTO_HEADER" == "true" ];
+    then
     if (grep "#include \"$3.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ;
     then
       echo "Already imported" &> /dev/null
@@ -1052,6 +1069,7 @@ then
       cat "$FIRMWAREDIR/main.cpp" >> "$FIRMWAREDIR/main.cpp.temp"
       rm "$FIRMWAREDIR/main.cpp"
       mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
+    fi
     fi
 
     echo
@@ -1100,29 +1118,35 @@ then
       fi
       echo
 
+      if [ "$AUTO_HEADER" == "true" ];
+      then
       if (grep "#include \"$3.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ;
       then
         grep -v "#include \"$3.h\"" "$FIRMWAREDIR/main.cpp" > "$FIRMWAREDIR/main.cpp.temp"
         rm "$FIRMWAREDIR/main.cpp"
         mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
       fi
+      fi
 
       exit
     else
       echo
       read -rp "Library $3 is not backed up.  Are you sure you want to remove it ? (yes/no): " answer
-      if [ "$answer" == "yes" ] || [ "$answer" == "y" ] || [ "$answer" == "y" ];
+      if [ "$answer" == "yes" ] || [ "$answer" == "y" ] || [ "$answer" == "Y" ];
       then
         echo
         MESSAGE="Removing library $3..." ; blue_echo
         rm "$FIRMWAREDIR/$3.cpp"
         rm "$FIRMWAREDIR/$3.h"
 
+        if [ "$AUTO_HEADER" == "true" ];
+        then
         if (grep "#include \"$3.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ;
         then
           grep -v "#include \"$3.h\"" "$FIRMWAREDIR/main.cpp" > "$FIRMWAREDIR/main.cpp.temp"
           rm "$FIRMWAREDIR/main.cpp"
           mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
+        fi
         fi
 
         echo
