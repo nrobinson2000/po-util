@@ -427,7 +427,7 @@ Atom Build Shortcuts:
   Build        CTRL-ALT-1   These shortcuts allow you     This requires the
   Flash        CTRL-ALT-2   to run common po-util         \"build\" package for
   Clean        CTRL-ALT-3   commands quickly while        Atom.  Get it with:
-  DFU          CTRL-ALT-4   using Atom.                   \"apm install build\"
+  DFU          CTRL-ALT-4   using Atom.                   \"po setup-atom\"
   OTA          CTRL-ALT-5
 "
 exit
@@ -437,6 +437,16 @@ fi
 if [ "$1" == "info" ];
 then
   open "https://nrobinson2000.github.io/po-util/"
+  exit
+fi
+
+if [ "$1" == "setup-atom" ];
+then
+  echo
+  MESSAGE="Installing Atom packages to enhance po-util experience..." ; blue_echo
+  echo
+  apm install build minimap file-icons language-particle
+  echo
   exit
 fi
 
