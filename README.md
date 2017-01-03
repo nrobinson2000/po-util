@@ -206,27 +206,31 @@ If you wish to use the default Particle DFU Mode baud rate, you may change the
 
 # Praise for po-util
 
-> "I think you identified a common pain point for a lot of users, and the
-automated installation of the Particle toolchain is a problem that we've been
-focused on a lot recently ... you should already feel proud of yourself
-because you have made a meaningful contribution to the community. We are all
-very thankful for it - our community regularly impresses us, and you are
-certainly not an exception."
+> "I think you identified a common pain point for a lot of users, and the automated installation of the Particle toolchain is a problem that we've been focused on a lot recently ... you should already feel proud of yourself because you have made a meaningful contribution to the community. We are all very thankful for it - our community regularly impresses us, and you are certainly not an exception."
+>
+> [Will Hart, Particle General Manager](http://nrobinson2000.me/po-util-recognition.pdf)
 
-[Will Hart, Particle General Manager](http://nrobinson2000.me/po-util-recognition.pdf)
+* * *
 
+> "Nice! This is great stuff. Definitely helpful for the local dev / offline use case. Thanks for sharing."
+>
+> [Avidan Ross, Particle Investor](http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/2?u=nrobinson2000)
 
-> "Nice! This is great stuff. Definitely helpful for the local dev / offline
-use case. Thanks for sharing."
+* * *
 
-[Avidan Ross, Particle Investor](http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/2?u=nrobinson2000)
+> "Thanks a lot for this amazing tool. I finally managed to get everything as I wanted: to be able to work off-line."
+>
+> [Yannick, Particle Community Member](https://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/34?u=nrobinson2000)
 
+* * *
 
 > "Po-util is a very handy script - thanks for sharing."
+>
+> [H.S, Particle Community Member](http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/15?u=nrobinson2000)
 
-[H.S, Particle Community Member](http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/15?u=nrobinson2000)
-
+* * *
 
 > "I can't heart this enough!"
+>
+> [Josh Fisher, Particle Community Member](http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/27?u=nrobinson2000)
 
-[Josh Fisher, Particle Community Member](http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/27?u=nrobinson2000)
