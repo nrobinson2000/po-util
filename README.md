@@ -16,9 +16,7 @@
 Particle Offline Utility, pronounced `po-util`, is a script for installing and
 using the Particle Toolchain on Linux and macOS.
 
-`po-util` makes it easy for developers to download the Particle Toolchain and
-install the required dependencies to quickly begin creating projects using the
-Particle Platform.
+`po-util` makes it easy for developers to download the Particle Toolchain and install the required dependencies to quickly begin creating projects using the Particle Platform.
 
 `po-util` features a responsive experience, giving developers the tools they
 need for seamless local development, providing understandable commands for
