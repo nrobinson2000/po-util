@@ -675,6 +675,12 @@ then
     curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/60-po-util.rules
     sudo mv 60-po-util.rules /etc/udev/rules.d/60-po-util.rules
 
+    # Install manpage
+    MESSAGE="Installing po manpage..." ; blue_echo
+    curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/homebrew-po/master/man/po.1
+    sudo mv po.1 /usr/local/share/man/man1/
+    sudo mandb
+
     MESSAGE="Adding $USER to plugdev group..." ; blue_echo
     sudo usermod -a -G plugdev "$USER"
 
@@ -829,6 +835,9 @@ then
   chmod +x ~/po-util.sh
   rm ~/.po-util-README.md
   curl -fsSLo ~/.po-util-README.md https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util-README.md
+  curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/homebrew-po/master/man/po.1
+  sudo mv po.1 /usr/local/share/man/man1/
+  sudo mandb
   exit
 fi
 
@@ -1181,21 +1190,28 @@ then
     exit
   fi # Close list
 
-    if [ "$2" == "package" ] || [ "$2" == "pack" ] || [ "$2" == "export" ];
+  if [ "$2" == "package" ] || [ "$2" == "pack" ] || [ "$2" == "export" ];
+  then
+    DIRWARNING="true"
+    find_objects "$3"
+    PROJECTDIR="$(cd $FIRMWAREDIR/.. && pwd)"
+    PROJECTDIR="${PROJECTDIR##*/}"
+    if [ -d "$FIRMWAREDIR/../$PROJECTDIR-packaged" ];
     then
-      DIRWARNING="true"
-      find_objects "$3"
-
-      if [ -d "$FIRMWAREDIR/../packaged-firmware" ];
-      then
-        rm -rf "$FIRMWAREDIR/../packaged-firmware"
-      fi
-
-      mkdir "$FIRMWAREDIR/../packaged-firmware"
-      cd "$FIRMWAREDIR"
-      cp * "$FIRMWAREDIR/../packaged-firmware"
-    exit
+      rm -rf "$FIRMWAREDIR/../$PROJECTDIR-packaged"
+      rm -rf "$FIRMWAREDIR/../$PROJECTDIR-packaged.tar.gz"
     fi
+
+    mkdir "$FIRMWAREDIR/../$PROJECTDIR-packaged"
+    cd "$FIRMWAREDIR"
+    cp * "$FIRMWAREDIR/../$PROJECTDIR-packaged"
+    tar -cvzf "$FIRMWAREDIR/../$PROJECTDIR-packaged.tar.gz" "$FIRMWAREDIR/../$PROJECTDIR-packaged" &> /dev/null
+    echo
+    MESSAGE="Firmware has been packaged as \"$PROJECTDIR-packaged\" and \"$PROJECTDIR-packaged.tar.gz\"
+in \"$PROJECTDIR\". Feel free to use either when sharing your firmware." ; blue_echo
+    echo
+  exit
+  fi
 
   if [ "$2" == "help" ] || [ "$2" == "" ]; # SHOW HELP TEXT FOR "po library"
   then
