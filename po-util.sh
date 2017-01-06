@@ -366,69 +366,7 @@ Usage: po DEVICE_TYPE COMMAND DEVICE_NAME
        po install [full_install_path]
        po library LIBRARY_COMMAND
 
-Commands:
-  install      Download all of the tools needed for development.
-               Requires sudo. You can also re-install with this command.
-               You can optionally install to an alternate location by
-               specifying [full_install_path].
-               Example:
-                       po install ~/particle
-
-               By default, Firmware is installed in ~/github.
-
-  build        Compile code in \"firmware\" subdirectory.
-
-  flash        Compile code and flash to device using dfu-util.
-
-               NOTE: You can supply another argument to \"build\" and \"flash\"
-               to specify which firmware directory to compile.
-               Example:
-                       po photon flash photon-firmware/
-
-  clean        Refresh all code (Run after switching device or directory).
-
-  init         Initialize a new po-util project.
-
-  update       Update Particle firmware, particle-cli and po-util.
-
-  upgrade      Upgrade system firmware on device.
-
-  ota          Upload code Over The Air using particle-cli.
-
-               NOTE: You can flash code to multiple devices at once by passing
-               the -m or --multi argument to \"ota\".
-               Example:
-                       po photon ota -m product-firmware/
-
-               NOTE: This is different from the product firmware update feature
-               in the Particle Console because it updates the firmware of
-               devices one at a time and only if the devices are online when
-               the command is run.
-
-  serial       Monitor a device's serial output (Close with CRTL-A +D)
-
-  config       Select Particle firmware branch and DFU trigger baud rate.
-
-  setup        Get a device's ID and connect it Wi-Fi. Manually claim it after.
-
-  library      Library manager for po-util.  Run \"po lib\" for more info.
-  lib
-
-DFU Commands:
-  dfu          Quickly flash pre-compiled code to your device.
-               Example:
-                       po photon dfu
-
-  dfu-open     Put device into DFU mode.
-
-  dfu-close    Get device out of DFU mode.
-
-Atom Build Shortcuts:
-  Build        CTRL-ALT-1   These shortcuts allow you     This requires the
-  Flash        CTRL-ALT-2   to run common po-util         \"build\" package for
-  Clean        CTRL-ALT-3   commands quickly while        Atom.  Get it with:
-  DFU          CTRL-ALT-4   using Atom.                   \"po setup-atom\"
-  OTA          CTRL-ALT-5
+Run \"man po\" for help.
 "
 exit
 fi
@@ -679,7 +617,7 @@ then
     MESSAGE="Installing po manpage..." ; blue_echo
     curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/homebrew-po/master/man/po.1
     sudo mv po.1 /usr/local/share/man/man1/
-    sudo mandb
+    sudo mandb &> /dev/null
 
     MESSAGE="Adding $USER to plugdev group..." ; blue_echo
     sudo usermod -a -G plugdev "$USER"
@@ -837,7 +775,7 @@ then
   curl -fsSLo ~/.po-util-README.md https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util-README.md
   curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/homebrew-po/master/man/po.1
   sudo mv po.1 /usr/local/share/man/man1/
-  sudo mandb
+  sudo mandb &> /dev/null
   exit
 fi
 
@@ -1230,58 +1168,10 @@ in \"$PROJECTDIR\". Feel free to use either when sharing your firmware." ; blue_
 "
         blue_echo
 
-    echo "
+        echo "
 \"po library\": The Particle Library manager for po-util.
-                Libraries are kept in ~/.po-util/lib
 
-Commands:
-  get          Download a Particle Library from GitHub and optionally name it.
-  install      If run with no arguments, libraries listed in a \"libs.txt\" are
-               installed.
-
-               Example of getting a library from Git:
-                      po lib get https://github.com/user/libraryName libraryName
-
-  add          Add a downloaded library to a po-util project.
-  import       Libraries are added in the firmware directory as soft links.
-               Additionally, the library information is added to \"libs.txt\"
-               so that you can keep track of your libraries and restore them in
-               the future.
-
-               Example adding an installed library to a project:
-                      po lib add libraryName
-
-  remove       Remove a library from a po-util project.
-  rm           Just the soft links are deleted.
-               Example:
-                      po lib rm libraryName
-
-  create       Create other libraries from other C++ files in a library.
-               Example:
-                      cd ~/.po-util/lib/someLibWithOtherLibsInside
-                      po lib create
-
-  purge        Uninstall (delete) a library from ~/.po-util/lib
-               Example:
-                      po lib purge someLibrary
-
-  list         Show all libraries in ~/.po-util/lib
-
-  setup        A combination of \"po lib install\" and \"po lib add\".
-               Libraries listed in \"libs.txt\" are installed and symlinks are
-               created.
-
-  clean        The automatic verision of \"po lib rm\".  All symlinks in the
-               project are removed, but \"libs.txt\" is untouched.  This is
-               ideal for releasing you project, not having to have the library
-               source files in your \"firmware\" directory, but rather just a
-               list that people can \"po lib setup\" to download your project's
-               dependencies.
-
-  update       Update all of your libraries.
-  refresh
-
-  help         Show this help documentation.
+For help, read the LIBRARY MANAGER section of \"man po\"
     "
   exit
 fi # Close help
