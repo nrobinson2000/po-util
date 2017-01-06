@@ -341,6 +341,73 @@ libraries?" ; blue_echo
   echo AUTO_HEADER="$AUTO_HEADER" >> $SETTINGS
   echo
 }
+
+ addLib()
+  {
+    if [ -f "$FIRMWAREDIR/$LIB_NAME.cpp" ] || [ -f "$FIRMWAREDIR/$LIB_NAME.h" ];
+    then
+      echo
+      MESSAGE="Library $LIB_NAME is already added to this project..." ; red_echo
+    else
+      echo
+      MESSAGE="Adding library $LIB_NAME to this project..." ; green_echo
+
+      if [ -f "$LIBRARY/$LIB_NAME/$LIB_NAME.cpp" ] || [ -f "$LIBRARY/$LIB_NAME/$LIB_NAME.h" ];
+      then
+        ln -s "$LIBRARY/$LIB_NAME/$LIB_NAME.cpp" "$FIRMWAREDIR"
+        ln -s "$LIBRARY/$LIB_NAME/$LIB_NAME.h" "$FIRMWAREDIR"
+      else
+        if [ -f "$LIBRARY/$LIB_NAME/firmware/$LIB_NAME.cpp" ] || [ -f "$LIBRARY/$LIB_NAME/firmware/$LIB_NAME.h" ];
+        then
+          ln -s "$LIBRARY/$LIB_NAME/firmware/$LIB_NAME.cpp" "$FIRMWAREDIR"
+          ln -s "$LIBRARY/$LIB_NAME/firmware/$LIB_NAME.h" "$FIRMWAREDIR"
+        fi
+      fi
+    fi
+  }
+
+  getLib()
+  {
+    if (ls -1 "$LIBRARY" | grep "$LIB_NAME") &> /dev/null ;
+    then
+      echo
+      MESSAGE="Library $LIB_NAME is already installed..." ; blue_echo
+    else
+      echo
+      MESSAGE="Dowloading library $LIB_NAME..." ; blue_echo
+      echo
+      git clone $i
+     fi
+  }
+
+  addHeaders()
+  {
+    if [ "$AUTO_HEADER" == "true" ];
+    then
+    if (grep "#include \"$LIB_NAME.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ;
+    then
+      echo "Already imported" &> /dev/null
+    else
+      echo "#include \"$LIB_NAME.h\"" > "$FIRMWAREDIR/main.cpp.temp"
+      cat "$FIRMWAREDIR/main.cpp" >> "$FIRMWAREDIR/main.cpp.temp"
+      rm "$FIRMWAREDIR/main.cpp"
+      mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
+    fi
+    fi
+  }
+
+  rmHeaders()
+  {
+    if [ "$AUTO_HEADER" == "true" ];
+    then
+    if (grep "#include \"$3.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ;
+    then
+      grep -v "#include \"$3.h\"" "$FIRMWAREDIR/main.cpp" > "$FIRMWAREDIR/main.cpp.temp"
+      rm "$FIRMWAREDIR/main.cpp"
+      mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
+    fi
+    fi
+  }
 # End of helper functions
 
 if [ "$1" == "" ]; # Print help
@@ -822,53 +889,9 @@ then
     while read i ## Install and add required libs from libs.txt
     do
       LIB_NAME="$(echo $i | awk '{ print $NF }' )"
-
-         if (ls -1 "$LIBRARY" | grep "$LIB_NAME") &> /dev/null ;
-         then
-           echo
-           MESSAGE="Library $LIB_NAME is already installed..." ; blue_echo
-         else
-           echo
-           MESSAGE="Dowloading library $LIB_NAME..." ; blue_echo
-           echo
-           git clone $i
-          fi
-
-          if [ -f "$FIRMWAREDIR/$LIB_NAME.cpp" ] || [ -f "$FIRMWAREDIR/$LIB_NAME.h" ];
-          then
-            echo
-            MESSAGE="Library $LIB_NAME is already added to this project..." ; red_echo
-          else
-            echo
-            MESSAGE="Adding library $LIB_NAME to this project..." ; green_echo
-
-            if [ -f "$LIBRARY/$LIB_NAME/$LIB_NAME.cpp" ] || [ -f "$LIBRARY/$LIB_NAME/$LIB_NAME.h" ];
-            then
-              ln -s "$LIBRARY/$LIB_NAME/$LIB_NAME.cpp" "$FIRMWAREDIR"
-              ln -s "$LIBRARY/$LIB_NAME/$LIB_NAME.h" "$FIRMWAREDIR"
-            else
-              if [ -f "$LIBRARY/$LIB_NAME/firmware/$LIB_NAME.cpp" ] || [ -f "$LIBRARY/$LIB_NAME/firmware/$LIB_NAME.h" ];
-              then
-                ln -s "$LIBRARY/$LIB_NAME/firmware/$LIB_NAME.cpp" "$FIRMWAREDIR"
-                ln -s "$LIBRARY/$LIB_NAME/firmware/$LIB_NAME.h" "$FIRMWAREDIR"
-              fi
-
-            fi
-
-            if [ "$AUTO_HEADER" == "true" ];
-            then
-            if (grep "#include \"$LIB_NAME.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ;
-            then
-              echo "Already imported" &> /dev/null
-            else
-              echo "#include \"$LIB_NAME.h\"" > "$FIRMWAREDIR/main.cpp.temp"
-              cat "$FIRMWAREDIR/main.cpp" >> "$FIRMWAREDIR/main.cpp.temp"
-              rm "$FIRMWAREDIR/main.cpp"
-              mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
-            fi
-            fi
-
-          fi
+      getLib
+      addLib
+      addHeaders
 
     done < "$FIRMWAREDIR/../libs.txt"
     echo
@@ -888,18 +911,7 @@ then
           while read i
           do
             LIB_NAME="$(echo $i | awk '{ print $NF }' )"
-
-               if (ls -1 "$LIBRARY" | grep "$LIB_NAME") &> /dev/null ;
-               then
-                 echo
-                 MESSAGE="Library $LIB_NAME is already installed..." ; blue_echo
-               else
-                 echo
-                 MESSAGE="Dowloading library $LIB_NAME..." ; blue_echo
-                 echo
-                 git clone $i
-                fi
-
+            getLib
           done < "$FIRMWAREDIR/../libs.txt"
           echo
           exit
@@ -998,36 +1010,11 @@ then
       MESSAGE="Library $3 is already imported" ; red_echo ; echo ; exit
     else
 
-      if [ -f "$LIBRARY/$3/$3.cpp" ] || [ -f "$LIBRARY/$3/$3.h" ];
-      then
-        ln -s "$LIBRARY/$3/$3.cpp" "$FIRMWAREDIR"
-        ln -s "$LIBRARY/$3/$3.h" "$FIRMWAREDIR"
-      else
-        if [ -f "$LIBRARY/$3/firmware/$3.cpp" ] || [ -f "$LIBRARY/$3/firmware/$3.h" ];
-        then
-          ln -s "$LIBRARY/$3/firmware/$3.cpp" "$FIRMWAREDIR"
-          ln -s "$LIBRARY/$3/firmware/$3.h" "$FIRMWAREDIR"
-        fi
-
-      fi
-
+      addLib
       #Add entries to libs.txt file
       LIB_URL="$( cd $LIBRARY/$3 && git config --get remote.origin.url )"
-
       echo "$LIB_URL $3" >> "$FIRMWAREDIR/../libs.txt"
-
-    if [ "$AUTO_HEADER" == "true" ];
-    then
-    if (grep "#include \"$3.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ;
-    then
-      echo "Already imported" &> /dev/null
-    else
-      echo "#include \"$3.h\"" > "$FIRMWAREDIR/main.cpp.temp"
-      cat "$FIRMWAREDIR/main.cpp" >> "$FIRMWAREDIR/main.cpp.temp"
-      rm "$FIRMWAREDIR/main.cpp"
-      mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
-    fi
-    fi
+      addHeaders
 
     echo
     MESSAGE="Imported library $3" ; green_echo
@@ -1074,17 +1061,7 @@ then
         rm "$FIRMWAREDIR/../libs.txt"
       fi
       echo
-
-      if [ "$AUTO_HEADER" == "true" ];
-      then
-      if (grep "#include \"$3.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ;
-      then
-        grep -v "#include \"$3.h\"" "$FIRMWAREDIR/main.cpp" > "$FIRMWAREDIR/main.cpp.temp"
-        rm "$FIRMWAREDIR/main.cpp"
-        mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
-      fi
-      fi
-
+      rmHeaders
       exit
     else
       echo
@@ -1095,17 +1072,7 @@ then
         MESSAGE="Removing library $3..." ; blue_echo
         rm "$FIRMWAREDIR/$3.cpp"
         rm "$FIRMWAREDIR/$3.h"
-
-        if [ "$AUTO_HEADER" == "true" ];
-        then
-        if (grep "#include \"$3.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ;
-        then
-          grep -v "#include \"$3.h\"" "$FIRMWAREDIR/main.cpp" > "$FIRMWAREDIR/main.cpp.temp"
-          rm "$FIRMWAREDIR/main.cpp"
-          mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
-        fi
-        fi
-
+        rmHeaders
         echo
         MESSAGE="Library $3 has been purged." ; green_echo
         exit
