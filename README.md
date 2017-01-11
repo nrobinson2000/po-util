@@ -5,7 +5,7 @@
 # Particle Offline Utility: The Ultimate Local Particle Experience for Linux and macOS
 
 [![](https://nrobinson2000.herokuapp.com/badge.svg)](https://nrobinson2000.herokuapp.com)
-[![](https://img.shields.io/badge/donate-bitcoin-orange.svg)](donate)
+[![](https://img.shields.io/badge/donate-bitcoin-orange.svg)](https://nrobinson2000.github.io/po-util/donate)
 [![](https://img.shields.io/github/issues/nrobinson2000/po-util.svg)](https://github.com/nrobinson2000/po-util/issues)
 [![](https://img.shields.io/github/stars/nrobinson2000/po-util.svg)](https://github.com/nrobinson2000/po-util/stargazers) [![Build Status](https://travis-ci.org/nrobinson2000/po-util.svg?branch=master)](https://travis-ci.org/nrobinson2000/po-util)
 [![Circle CI](https://circleci.com/gh/nrobinson2000/po-util/tree/master.svg?style=svg)](https://circleci.com/gh/nrobinson2000/po-util/tree/master)
