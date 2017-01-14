@@ -1061,7 +1061,7 @@ then
         rm "$FIRMWAREDIR/../libs.txt"
       fi
       echo
-      rmHeaders
+      rmHeaders "$3"
       exit
     else
       echo
@@ -1072,7 +1072,7 @@ then
         MESSAGE="Removing library $3..." ; blue_echo
         rm "$FIRMWAREDIR/$3.cpp"
         rm "$FIRMWAREDIR/$3.h"
-        rmHeaders
+        rmHeaders "$3"
         echo
         MESSAGE="Library $3 has been purged." ; green_echo
         exit
