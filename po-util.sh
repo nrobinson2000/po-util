@@ -400,9 +400,9 @@ libraries?" ; blue_echo
   {
     if [ "$AUTO_HEADER" == "true" ];
     then
-    if (grep "#include \"$3.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ;
+    if (grep "#include \"$1.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ;
     then
-      grep -v "#include \"$3.h\"" "$FIRMWAREDIR/main.cpp" > "$FIRMWAREDIR/main.cpp.temp"
+      grep -v "#include \"$1.h\"" "$FIRMWAREDIR/main.cpp" > "$FIRMWAREDIR/main.cpp.temp"
       rm "$FIRMWAREDIR/main.cpp"
       mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
     fi
@@ -1009,7 +1009,7 @@ then
       echo
       MESSAGE="Library $3 is already imported" ; red_echo ; echo ; exit
     else
-
+      LIB_NAME="$3"
       addLib
       #Add entries to libs.txt file
       LIB_URL="$( cd $LIBRARY/$3 && git config --get remote.origin.url )"
