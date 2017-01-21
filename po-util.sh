@@ -342,29 +342,35 @@ libraries?" ; blue_echo
   echo
 }
 
- addLib()
-  {
-    if [ -f "$FIRMWAREDIR/$LIB_NAME.cpp" ] || [ -f "$FIRMWAREDIR/$LIB_NAME.h" ];
-    then
-      echo
-      MESSAGE="Library $LIB_NAME is already added to this project..." ; red_echo
-    else
-      echo
-      MESSAGE="Adding library $LIB_NAME to this project..." ; green_echo
+addLib()
+{
+ if [ -f "$FIRMWAREDIR/$LIB_NAME.cpp" ] || [ -f "$FIRMWAREDIR/$LIB_NAME.h" ];
+ then
+   echo
+   MESSAGE="Library $LIB_NAME is already added to this project..." ; red_echo
+ else
+   echo
+   MESSAGE="Adding library $LIB_NAME to this project..." ; green_echo
 
-      if [ -f "$LIBRARY/$LIB_NAME/$LIB_NAME.cpp" ] || [ -f "$LIBRARY/$LIB_NAME/$LIB_NAME.h" ];
-      then
-        ln -s "$LIBRARY/$LIB_NAME/$LIB_NAME.cpp" "$FIRMWAREDIR"
-        ln -s "$LIBRARY/$LIB_NAME/$LIB_NAME.h" "$FIRMWAREDIR"
-      else
-        if [ -f "$LIBRARY/$LIB_NAME/firmware/$LIB_NAME.cpp" ] || [ -f "$LIBRARY/$LIB_NAME/firmware/$LIB_NAME.h" ];
-        then
-          ln -s "$LIBRARY/$LIB_NAME/firmware/$LIB_NAME.cpp" "$FIRMWAREDIR"
-          ln -s "$LIBRARY/$LIB_NAME/firmware/$LIB_NAME.h" "$FIRMWAREDIR"
-        fi
-      fi
-    fi
-  }
+   if [ -f "$LIBRARY/$LIB_NAME/$LIB_NAME.h" ];
+   then
+     if [ -f "$LIBRARY/$LIB_NAME/$LIB_NAME.cpp" ];
+     then
+       ln -s "$LIBRARY/$LIB_NAME/$LIB_NAME.cpp" "$FIRMWAREDIR"
+     fi
+     ln -s "$LIBRARY/$LIB_NAME/$LIB_NAME.h" "$FIRMWAREDIR"
+   else
+     if [ -f "$LIBRARY/$LIB_NAME/firmware/$LIB_NAME.h" ];
+     then
+       if [ -f "$LIBRARY/$LIB_NAME/firmware/$LIB_NAME.cpp" ];
+       then
+         ln -s "$LIBRARY/$LIB_NAME/firmware/$LIB_NAME.cpp" "$FIRMWAREDIR"
+       fi
+       ln -s "$LIBRARY/$LIB_NAME/firmware/$LIB_NAME.h" "$FIRMWAREDIR"
+     fi
+   fi
+ fi
+}
 
   getLib()
   {
@@ -958,7 +964,7 @@ then
     exit
   fi
 
-  if [ "$2" == "create" ]; # Create a libraries in "$LIBRARY" from files in "$FIRMWAREDIR"  This for when mutiple libraries are packaged together and they need to be separated.
+  if [ "$2" == "create" ]; # Create a libraries in "$LIBRARY" from files in "$FIRMWAREDIR"  This for when multiple libraries are packaged together and they need to be separated.
   then
     DIRWARNING="true"
     find_objects "$3"
@@ -976,7 +982,7 @@ then
           echo
           MESSAGE="Creating library $file_base..." ; blue_echo
           cp "$FIRMWAREDIR/$file_base.h" "$LIBRARY/$file_base"
-          cp "$FIRMWAREDIR/$file_base.cpp" "$LIBRARY/$file_base"
+          cp "$FIRMWAREDIR/$file_base.cpp" "$LIBRARY/$file_base" &> /dev/null
         fi
       fi
     done
