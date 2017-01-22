@@ -14,7 +14,7 @@
 #
 
 #  po-util - The Ultimate Local Particle Experience for Linux and macOS
-# Copyright (C) 2016  Nathan Robinson
+# Copyright (C) 2017  Nathan Robinson
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -432,7 +432,7 @@ MESSAGE="                                                     __      __  __
             ██/               https://nrobinson2000.github.io/po-util/
 "
 blue_echo
-echo "Copyright (GPL) 2016 Nathan D. Robinson
+echo "Copyright (GPL) 2017 Nathan D. Robinson
 
 Usage: po DEVICE_TYPE COMMAND DEVICE_NAME
        po DFU_COMMAND
