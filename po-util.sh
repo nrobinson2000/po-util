@@ -679,7 +679,7 @@ then
 
     # Install particle-cli
     MESSAGE="Installing particle-cli..." ; blue_echo
-    sudo npm install -g node-pre-gyp npm particle-cli
+    sudo npm install -g --unsafe-perm node-pre-gyp npm serialport particle-cli
 
     # Install udev rules file
     MESSAGE="Installing udev rule (requires sudo) ..." ; blue_echo
