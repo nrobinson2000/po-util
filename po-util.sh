@@ -360,6 +360,7 @@ addLib()
      fi
      ln -s "$LIBRARY/$LIB_NAME/$LIB_NAME.h" "$FIRMWAREDIR"
    else
+     
      if [ -f "$LIBRARY/$LIB_NAME/firmware/$LIB_NAME.h" ];
      then
        if [ -f "$LIBRARY/$LIB_NAME/firmware/$LIB_NAME.cpp" ];
@@ -368,6 +369,16 @@ addLib()
        fi
        ln -s "$LIBRARY/$LIB_NAME/firmware/$LIB_NAME.h" "$FIRMWAREDIR"
      fi
+
+     if [ -f "$LIBRARY/$LIB_NAME/src/$LIB_NAME.h" ];
+     then
+       if [ -f "$LIBRARY/$LIB_NAME/src/$LIB_NAME.cpp" ];
+       then
+         ln -s "$LIBRARY/$LIB_NAME/src/$LIB_NAME.cpp" "$FIRMWAREDIR"
+       fi
+       ln -s "$LIBRARY/$LIB_NAME/src/$LIB_NAME.h" "$FIRMWAREDIR"
+     fi
+
    fi
  fi
 }
