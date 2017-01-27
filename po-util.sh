@@ -344,43 +344,36 @@ libraries?" ; blue_echo
 
 addLib()
 {
- if [ -f "$FIRMWAREDIR/$LIB_NAME.cpp" ] || [ -f "$FIRMWAREDIR/$LIB_NAME.h" ];
- then
-   echo
-   MESSAGE="Library $LIB_NAME is already added to this project..." ; red_echo
- else
-   echo
-   MESSAGE="Adding library $LIB_NAME to this project..." ; green_echo
+  if [ -f "$FIRMWAREDIR/$LIB_NAME.cpp" ] || [ -f "$FIRMWAREDIR/$LIB_NAME.h" ] || [ -d "$FIRMWAREDIR/$LIB_NAME" ];
+  then
+    echo
+    MESSAGE="Library $LIB_NAME is already added to this project..." ; red_echo
+  else
+    echo
+    MESSAGE="Adding library $LIB_NAME to this project..." ; green_echo
 
-   if [ -f "$LIBRARY/$LIB_NAME/$LIB_NAME.h" ];
-   then
-     if [ -f "$LIBRARY/$LIB_NAME/$LIB_NAME.cpp" ];
-     then
-       ln -s "$LIBRARY/$LIB_NAME/$LIB_NAME.cpp" "$FIRMWAREDIR"
-     fi
-     ln -s "$LIBRARY/$LIB_NAME/$LIB_NAME.h" "$FIRMWAREDIR"
-   else
-     
-     if [ -f "$LIBRARY/$LIB_NAME/firmware/$LIB_NAME.h" ];
-     then
-       if [ -f "$LIBRARY/$LIB_NAME/firmware/$LIB_NAME.cpp" ];
-       then
-         ln -s "$LIBRARY/$LIB_NAME/firmware/$LIB_NAME.cpp" "$FIRMWAREDIR"
-       fi
-       ln -s "$LIBRARY/$LIB_NAME/firmware/$LIB_NAME.h" "$FIRMWAREDIR"
-     fi
+# Include library as a folder full of symlinks -- This is the new feature
 
-     if [ -f "$LIBRARY/$LIB_NAME/src/$LIB_NAME.h" ];
-     then
-       if [ -f "$LIBRARY/$LIB_NAME/src/$LIB_NAME.cpp" ];
-       then
-         ln -s "$LIBRARY/$LIB_NAME/src/$LIB_NAME.cpp" "$FIRMWAREDIR"
-       fi
-       ln -s "$LIBRARY/$LIB_NAME/src/$LIB_NAME.h" "$FIRMWAREDIR"
-     fi
+mkdir -p "$FIRMWAREDIR/$LIB_NAME"
 
-   fi
- fi
+if [ -d "$LIBRARY/$LIB_NAME/firmware" ];
+then
+  ln -s $LIBRARY/$LIB_NAME/firmware/*.h "$FIRMWAREDIR/$LIB_NAME"
+  ln -s $LIBRARY/$LIB_NAME/firmware/*.cpp "$FIRMWAREDIR/$LIB_NAME"
+else
+  if [ -d "$LIBRARY/$LIB_NAME/src" ];
+  then
+    ln -s $LIBRARY/$LIB_NAME/src/*.h "$FIRMWAREDIR/$LIB_NAME"
+    ln -s $LIBRARY/$LIB_NAME/src/*.cpp "$FIRMWAREDIR/$LIB_NAME"
+  else
+
+    ln -s $LIBRARY/$LIB_NAME/*.h "$FIRMWAREDIR/$LIB_NAME"
+    ln -s $LIBRARY/$LIB_NAME/*.cpp "$FIRMWAREDIR/$LIB_NAME"
+  fi
+fi
+
+
+  fi
 }
 
   getLib()
@@ -401,11 +394,11 @@ addLib()
   {
     if [ "$AUTO_HEADER" == "true" ];
     then
-    if (grep "#include \"$LIB_NAME.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ;
+    if (grep "#include \"$LIB_NAME/$LIB_NAME.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ;
     then
       echo "Already imported" &> /dev/null
     else
-      echo "#include \"$LIB_NAME.h\"" > "$FIRMWAREDIR/main.cpp.temp"
+      echo "#include \"$LIB_NAME/$LIB_NAME.h\"" > "$FIRMWAREDIR/main.cpp.temp"
       cat "$FIRMWAREDIR/main.cpp" >> "$FIRMWAREDIR/main.cpp.temp"
       rm "$FIRMWAREDIR/main.cpp"
       mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
@@ -417,9 +410,9 @@ addLib()
   {
     if [ "$AUTO_HEADER" == "true" ];
     then
-    if (grep "#include \"$1.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ;
+    if (grep "#include \"$1/$1.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ;
     then
-      grep -v "#include \"$1.h\"" "$FIRMWAREDIR/main.cpp" > "$FIRMWAREDIR/main.cpp.temp"
+      grep -v "#include \"$1/$1.h\"" "$FIRMWAREDIR/main.cpp" > "$FIRMWAREDIR/main.cpp.temp"
       rm "$FIRMWAREDIR/main.cpp"
       mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
     fi
@@ -886,8 +879,9 @@ then
   file_base="${file%.*}"
     if (ls -1 "$LIBRARY" | grep "$file_base") &> /dev/null ;
     then
-      rm "$FIRMWAREDIR/$file_base.h" &> /dev/null
-      rm "$FIRMWAREDIR/$file_base.cpp" &> /dev/null
+      rm -rf "$FIRMWAREDIR/$file_base" &> /dev/null # Transition
+      rm "$FIRMWAREDIR/$file_base.h" &> /dev/null   # to new
+      rm "$FIRMWAREDIR/$file_base.cpp" &> /dev/null # system
     fi
   done
 
@@ -1052,7 +1046,7 @@ then
       MESSAGE="Please choose a library to remove." ; red_echo ; exit
     fi
 
-    if [ -f "$FIRMWAREDIR/$3.cpp" ] && [ -f "$FIRMWAREDIR/$3.h" ];
+    if [ -f "$FIRMWAREDIR/$3.cpp" ] && [ -f "$FIRMWAREDIR/$3.h" ] || [ -d "$FIRMWAREDIR/$3" ];  # Improve this to only check for [ -d "$FIRMWAREDIR/$3" ] once new system is adopted
     then
       echo
       MESSAGE="Found library $3" ; green_echo
@@ -1065,8 +1059,11 @@ then
     then
       echo
       MESSAGE="Library $3 is backed up, removing from project..." ; blue_echo
-      rm "$FIRMWAREDIR/$3.cpp"
-      rm "$FIRMWAREDIR/$3.h"
+
+      rm "$FIRMWAREDIR/$3.cpp" &> /dev/null # Transition
+      rm "$FIRMWAREDIR/$3.h" &> /dev/null   # to new
+      rm -rf "$FIRMWAREDIR/$3" &> /dev/null # system
+
       grep -v "$3" "$FIRMWAREDIR/../libs.txt" > "$FIRMWAREDIR/../libs-temp.txt"
       rm "$FIRMWAREDIR/../libs.txt"
       mv "$FIRMWAREDIR/../libs-temp.txt" "$FIRMWAREDIR/../libs.txt"
@@ -1087,8 +1084,11 @@ then
       then
         echo
         MESSAGE="Removing library $3..." ; blue_echo
-        rm "$FIRMWAREDIR/$3.cpp"
-        rm "$FIRMWAREDIR/$3.h"
+
+        rm "$FIRMWAREDIR/$3.cpp" &> /dev/null # Transition
+        rm "$FIRMWAREDIR/$3.h" &> /dev/null   # to new
+        rm -rf "$FIRMWAREDIR/$3" &> /dev/null # system
+
         rmHeaders "$3"
         echo
         MESSAGE="Library $3 has been purged." ; green_echo
