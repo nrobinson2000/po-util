@@ -16,9 +16,7 @@
 Particle Offline Utility, pronounced `po-util`, is a script for installing and
 using the Particle Toolchain on Linux and macOS.
 
-`po-util` makes it easy for developers to download the Particle Toolchain and
-install the required dependencies to quickly begin creating projects using the
-Particle Platform.
+`po-util` makes it easy for developers to download the Particle Toolchain and install the required dependencies to quickly begin creating projects using the Particle Platform.
 
 `po-util` features a responsive experience, giving developers the tools they
 need for seamless local development, providing understandable commands for
@@ -102,19 +100,22 @@ here.](http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-l
 
 The directory structure of a **full** `po-util` project is arranged like so:
 
-    po-util_project/
-      ├ firmware/
-      | ├ main.cpp
-      | ├ lib1.cpp
-      | ├ lib1.h
-      | └ ...
-      ├ bin/
-      | ├ firmware.bin
-      | └ ...
-      ├ devices.txt
-      ├ libs.txt
-      ├ .atom-build.yml
-      └ README.md
+```
+po-util_project/
+  ├ firmware/
+  | ├ main.cpp
+  | └ lib1/
+  |   ├ lib1.cpp
+  |   ├ lib1.h
+  |   └ ...
+  ├ bin/
+  | ├ firmware.bin
+  | └ ...
+  ├ devices.txt
+  ├ libs.txt
+  ├ .atom-build.yml
+  └ README.md
+```
 
   * All user code is kept inside of `main.cpp`.
 
@@ -133,14 +134,14 @@ described above. This not only lets you easily work on many projects on one
 computer, but it provides a standardized way of building locally.
 
 Creating a project with `po-util` is simple. All that you need to do is create
-a folder and run use the `po init` inside of it to initialize the project by
+a folder and run `po init` inside of it to initialize the project by
 creating the appropriate files and directories. Below is an example:
 
     $ mkdir someProject
     $ cd someProject
     $ po init DEVICE_TYPE
 
-You can set `DEVICE_TYPE` to either `photon`, `P1` or `electron`. This is
+You can set `DEVICE_TYPE` to either `photon`, `P1`, `electron`, `core`, or `pi`. This is
 necessary for generating the Atom shortcuts file appropriately.
 
 # More Information

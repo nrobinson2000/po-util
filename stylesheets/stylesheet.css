@@ -25,6 +25,16 @@ a {
     font-weight:1050;
   }
 
+  .file {
+      color:#29cb15;
+      font-weight:1050;
+    }
+
+    .config {
+        color:#dd2929;
+        font-weight:1050;
+      }
+
 .btn {
   display: inline-block;
   margin-bottom: 1rem;
