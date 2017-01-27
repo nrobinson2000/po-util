@@ -416,6 +416,14 @@ fi
       rm "$FIRMWAREDIR/main.cpp"
       mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
     fi
+    
+    if (grep "#include \"$1.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ; # Backwards support
+    then
+      grep -v "#include \"$1.h\"" "$FIRMWAREDIR/main.cpp" > "$FIRMWAREDIR/main.cpp.temp"
+      rm "$FIRMWAREDIR/main.cpp"
+      mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
+    fi
+
     fi
   }
 # End of helper functions
