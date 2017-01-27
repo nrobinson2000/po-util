@@ -101,20 +101,19 @@ here.](http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-l
 The directory structure of a **full** `po-util` project is arranged like so:
 
 ```
-po-util_project/
-  ├ firmware/
-  | ├ main.cpp
-  | └ lib1/
-  |   ├ lib1.cpp
-  |   ├ lib1.h
-  |   └ ...
-  ├ bin/
-  | ├ firmware.bin
-  | └ ...
-  ├ devices.txt
-  ├ libs.txt
-  ├ .atom-build.yml
-  └ README.md
+firmware/
+├ main.cpp
+└ lib1/
+  ├ lib1.cpp
+  ├ lib1.h
+  └ ...
+bin/
+  ├ firmware.bin
+  └ ...
+ devices.txt
+ libs.txt
+ .atom-build.yml
+ README.md
 ```
 
   * All user code is kept inside of `main.cpp`.
