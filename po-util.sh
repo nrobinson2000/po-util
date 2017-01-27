@@ -416,7 +416,7 @@ fi
       rm "$FIRMWAREDIR/main.cpp"
       mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
     fi
-    
+
     if (grep "#include \"$1.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ; # Backwards support
     then
       grep -v "#include \"$1.h\"" "$FIRMWAREDIR/main.cpp" > "$FIRMWAREDIR/main.cpp.temp"
@@ -890,6 +890,7 @@ then
       rm -rf "$FIRMWAREDIR/$file_base" &> /dev/null # Transition
       rm "$FIRMWAREDIR/$file_base.h" &> /dev/null   # to new
       rm "$FIRMWAREDIR/$file_base.cpp" &> /dev/null # system
+      rmHeaders "$file_base"
     fi
   done
 
