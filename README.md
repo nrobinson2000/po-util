@@ -102,14 +102,14 @@ The directory structure of a **full** `po-util` project is arranged like so:
 
 ```
 firmware/
- ├ main.cpp
- └ lib1/
+├ main.cpp
+└ lib1/
   ├ lib1.cpp
   ├ lib1.h
   └ ...
 bin/
- ├ firmware.bin
- └ ...
+├ firmware.bin
+└ ...
  devices.txt
  libs.txt
  .atom-build.yml
