@@ -108,8 +108,8 @@ firmware/
   ├ lib1.h
   └ ...
 bin/
-  ├ firmware.bin
-  └ ...
+├ firmware.bin
+└ ...
  devices.txt
  libs.txt
  .atom-build.yml
