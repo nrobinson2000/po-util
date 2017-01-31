@@ -1219,7 +1219,7 @@ then
   exit
 fi # Close Update
 
-if [ "$2" == "source" ];
+if [ "$2" == "source" ] || [ "$2" == "src" ] ;
 then
   echo
   MESSAGE="Listing installed libraries that are cloneable..." ; blue_echo
