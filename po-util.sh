@@ -942,7 +942,7 @@ then
         echo "Valid URL" > /dev/null
         else
           echo
-          MESSAGE="Not a valid URL, attempting to download $3 using particle-cli..." ; blue_echo
+          MESSAGE="Attempting to download $3 using Particle Libraries 2.0..." ; blue_echo
           echo
 
           if [ -f "$LIBRARY/../project.properties" ];
@@ -955,7 +955,7 @@ then
           fi
 
           cd "$LIBRARY/.."
-          particle library copy "$3" || exit
+          particle library copy "$3" || ( echo && particle library search "$3" )
           echo
           exit
         fi
