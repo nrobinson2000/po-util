@@ -937,6 +937,29 @@ then
           exit
         fi
 
+        if grep -q "://" <<<"$3";
+        then
+        echo "Valid URL" > /dev/null
+        else
+          echo
+          MESSAGE="Not a valid URL, attempting to download $3 using particle-cli..." ; blue_echo
+          echo
+
+          if [ -f "$LIBRARY/../project.properties" ];
+          then
+            echo "Exists!" > /dev/null
+          else
+          cd "$LIBRARY/.."
+          mkdir src
+          echo "name=particle-lib" > "project.properties"
+          fi
+
+          cd "$LIBRARY/.."
+          particle library copy "$3" || exit
+          echo
+          exit
+        fi
+
     if [ "$4" != "" ];  # Download a library with git
     then
       echo
