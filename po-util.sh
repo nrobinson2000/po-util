@@ -1433,11 +1433,7 @@ then
   fi
   dfu_open
   echo
-  build_firmware || (MESSAGE='Building firmware failed! Closing DFU...' && echo && red_echo && echo && dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D /dev/null &> /dev/null && exit)
-  echo
-  MESSAGE="Building firmware was successful! Flashing with dfu-util..."
-  green_echo
-  echo
+  (build_firmware && echo && MESSAGE="Building firmware was successful! Flashing with dfu-util..." && green_echo && echo) || (MESSAGE='Building firmware failed! Closing DFU...' && echo && red_echo && echo && dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D /dev/null &> /dev/null && exit)
   dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$FIRMWAREDIR/../bin/firmware.bin" || exit #&> /dev/null
   echo
   MESSAGE="Firmware successfully flashed to $DEVICE_TYPE on $MODEM" ; blue_echo
