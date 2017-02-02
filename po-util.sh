@@ -82,18 +82,24 @@ function find_objects() #Consolidated function
           FIRMWAREDIR="$DIRECTORY/firmware"
           FIRMWAREBIN="$DIRECTORY/bin/firmware.bin"
         else
-          if [ -d "$CWD/$DIRECTORY" ];
+          if [ -d "$CWD/$DIRECTORY" ] && [ -d "$CWD/firmware" ];
           then
             DEVICESFILE="$CWD/$DIRECTORY/../devices.txt"
             FIRMWAREDIR="$CWD/$DIRECTORY"
             FIRMWAREBIN="$CWD/$DIRECTORY/../bin/firmware.bin"
           else
-            if [ "$DIRECTORY" == "." ];
+            if [ "$DIRECTORY" == "." ] && [ -f "$CWD/main.cpp" ];
             then
               cd "$CWD/.."
               DEVICESFILE="$(pwd)/devices.txt"
               FIRMWAREDIR="$CWD"
               FIRMWAREBIN="$(pwd)/bin/firmware.bin"
+            else
+              echo
+              MESSAGE="Firmware not found!" ; red_echo
+              MESSAGE="Please run \"po init\" to setup this repository or choose a valid directory." ; blue_echo
+              echo
+              exit
             fi
           fi
         fi
