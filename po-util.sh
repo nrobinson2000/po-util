@@ -67,6 +67,7 @@ function find_objects() #Consolidated function
      DEVICESFILE="$1"
      FIRMWAREDIR="$1"
      FIRMWAREBIN="$1"
+     DIRECTORY="$1"
        ;;
     esac
       if [ -f "$CWD/$DEVICESFILE/devices.txt" ] || [ -d "$CWD/$FIRMWAREDIR/firmware" ] || [ -f "$CWD/$FIRMWAREBIN/bin/firmware.bin" ];
