@@ -399,13 +399,14 @@ fi
 
   addHeaders()
   {
+    [ "$1" != "" ] && HEADER="$1" || HEADER="$LIB_NAME"
     if [ "$AUTO_HEADER" == "true" ];
     then
-    if (grep "#include \"$LIB_NAME/$LIB_NAME.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ;
+    if (grep "#include \"$HEADER/$HEADER.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ;
     then
       echo "Already imported" &> /dev/null
     else
-      echo "#include \"$LIB_NAME/$LIB_NAME.h\"" > "$FIRMWAREDIR/main.cpp.temp"
+      echo "#include \"$HEADER/$HEADER.h\"" > "$FIRMWAREDIR/main.cpp.temp"
       cat "$FIRMWAREDIR/main.cpp" >> "$FIRMWAREDIR/main.cpp.temp"
       rm "$FIRMWAREDIR/main.cpp"
       mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
@@ -414,25 +415,32 @@ fi
   }
 
   rmHeaders()
-  {
-    if [ "$AUTO_HEADER" == "true" ];
-    then
-    if (grep "#include \"$1/$1.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ;
-    then
-      grep -v "#include \"$1/$1.h\"" "$FIRMWAREDIR/main.cpp" > "$FIRMWAREDIR/main.cpp.temp"
-      rm "$FIRMWAREDIR/main.cpp"
-      mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
-    fi
+{
+  if [ "$AUTO_HEADER" == "true" ];
+  then
+  if (grep "#include \"$1/$1.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ;
+  then
+    grep -v "#include \"$1/$1.h\"" "$FIRMWAREDIR/main.cpp" > "$FIRMWAREDIR/main.cpp.temp"
+    rm "$FIRMWAREDIR/main.cpp"
+    mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
+  fi
 
-    if (grep "#include \"$1.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ; # Backwards support
-    then
-      grep -v "#include \"$1.h\"" "$FIRMWAREDIR/main.cpp" > "$FIRMWAREDIR/main.cpp.temp"
-      rm "$FIRMWAREDIR/main.cpp"
-      mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
-    fi
+  if (grep "#include \"$1.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ; # Backwards support
+  then
+    grep -v "#include \"$1.h\"" "$FIRMWAREDIR/main.cpp" > "$FIRMWAREDIR/main.cpp.temp"
+    rm "$FIRMWAREDIR/main.cpp"
+    mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
+  fi
 
-    fi
-  }
+  if (grep "#include <$1.h>" "$FIRMWAREDIR/main.cpp") &> /dev/null ; # Other support
+  then
+    grep -v "#include <$1.h>" "$FIRMWAREDIR/main.cpp" > "$FIRMWAREDIR/main.cpp.temp"
+    rm "$FIRMWAREDIR/main.cpp"
+    mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
+  fi
+
+  fi
+}
 # End of helper functions
 
 if [ "$1" == "" ]; # Print help
@@ -902,7 +910,7 @@ then
   done
 
   echo
-  MESSAGE="Removed all symlinks. This can be undone with \"po lib setup\"" ; blue_echo
+  MESSAGE="Removed all symlinks. This can be undone with \"po lib add\"" ; blue_echo
   echo
   exit
   fi
@@ -918,7 +926,7 @@ then
       LIB_NAME="$(echo $i | awk '{ print $NF }' )"
       getLib
       addLib
-      addHeaders
+      addHeaders "$LIB_NAME"
 
     done < "$FIRMWAREDIR/../libs.txt"
     echo
@@ -1042,8 +1050,14 @@ then
 
     if [ "$3" == "" ];
     then
+      while read i ## Install and add required libs from libs.txt
+      do
+        LIB_NAME="$(echo $i | awk '{ print $NF }' )"
+        addLib
+        addHeaders "$LIB_NAME"
+      done < "$FIRMWAREDIR/../libs.txt"
       echo
-      MESSAGE="Please choose a library to add." ; red_echo ; exit
+      exit
     fi
 
     if [ -d "$LIBRARY/$3" ];
@@ -1064,7 +1078,7 @@ then
       #Add entries to libs.txt file
       LIB_URL="$( cd $LIBRARY/$3 && git config --get remote.origin.url )"
       echo "$LIB_URL $3" >> "$FIRMWAREDIR/../libs.txt"
-      addHeaders
+      addHeaders "$LIB_NAME"
 
     echo
     MESSAGE="Imported library $3" ; green_echo
@@ -1243,6 +1257,180 @@ then
   done
   exit
 fi ### Close source
+
+
+# commands for listing and loading examples in a lib
+
+if [ "$2" == "examples" ] || [ "$2" == "ex" ];
+then
+
+if [ "$3" == "" ];
+then
+echo
+MESSAGE="Please choose a library." ; red_echo
+echo
+exit
+else
+
+if [ -d "$LIBRARY/$4" ];
+then
+echo " " > /dev/null
+else
+echo
+MESSAGE="Library $4 not found." ; red_echo
+echo
+exit
+fi
+
+if [ "$3" == "ls" ] || [ "$3" == "list" ]; #po lib ex ls
+then
+
+
+  if [ -d "$LIBRARY/$4/examples" ];
+  then
+    echo
+    MESSAGE="Found the following $4 examples:" ; blue_echo
+    echo
+    ls -m "$LIBRARY/$4/examples"
+    echo
+fi
+
+fi
+
+if [ "$3" == "load" ] || [ "$3" == "copy" ] && [ -d "$LIBRARY/$4/examples" ]; #po lib ex copy LIBNAME EXNAME
+then
+DATE=$(date +%Y-%m-%d)
+TIME=$(date +"%H-%M")
+find_objects "$CWD"
+
+if [ -d "$LIBRARY/$4/examples/$5" ];
+then
+  echo " " > /dev/null
+  if [ "$5" == "" ];
+  then
+    echo
+    MESSAGE="Please choose a valid example.  Use \"po lib ex ls libraryName\" to find examples." ; red_echo
+    echo
+    exit
+  fi
+else
+echo
+MESSAGE="Please choose a valid example.  Use \"po lib ex ls libraryName\" to find examples." ; red_echo
+echo
+exit
+fi
+
+cp "$FIRMWAREDIR/main.cpp" "$FIRMWAREDIR/main.cpp.$DATE-$TIME.txt"
+rm "$FIRMWAREDIR/main.cpp"
+
+if [ -d "$LIBRARY/$4/examples/$5" ];
+then
+if [ -f "$LIBRARY/$4/examples/$5/$5.cpp" ];
+then
+cp "$LIBRARY/$4/examples/$5/$5.cpp" "$FIRMWAREDIR/main.cpp"
+fi
+
+if [ -f "$LIBRARY/$4/examples/$5/$5.ino" ];
+then
+cp "$LIBRARY/$4/examples/$5/$5.ino" "$FIRMWAREDIR/main.cpp"
+fi
+
+if [ -f "$FIRMWAREDIR/../libs.txt" ];
+then
+
+while read i ## Install and add required libs from libs.txt
+do
+  LIB_NAME="$(echo $i | awk '{ print $NF }' )"
+  addLib
+  rmHeaders "$LIB_NAME"
+  addHeaders "$LIB_NAME"
+done < "$FIRMWAREDIR/../libs.txt"
+
+else # get dependencies
+
+grep "#include" "$FIRMWAREDIR/main.cpp" | grep -v "Particle" | grep -v "application" > "$FIRMWAREDIR/../libs.temp.txt"
+
+sed 's/^[^"]*"//; s/".*//' "$FIRMWAREDIR/../libs.temp.txt" > "$FIRMWAREDIR/../libs.temp1.txt"
+
+while read i ## remove the < >
+do
+  crap="#include <"
+  j=$i
+  j="${i#${crap}}"
+  j="${j%>}"
+  grep -v "${crap}$j>" "$FIRMWAREDIR/main.cpp" > "$FIRMWAREDIR/main.cpp.temp"
+  rm "$FIRMWAREDIR/main.cpp"
+  mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
+
+  echo $j
+echo "$j" >> "$FIRMWAREDIR/../libs.temp2.txt"
+done < "$FIRMWAREDIR/../libs.temp1.txt"
+
+rm "$FIRMWAREDIR/../libs.temp.txt"
+
+while read i ## remove .h
+do
+echo "${i%.h}" >> "$FIRMWAREDIR/../libs.temp.txt"
+done < "$FIRMWAREDIR/../libs.temp2.txt"
+
+rm "$FIRMWAREDIR/../libs.temp1.txt"
+rm "$FIRMWAREDIR/../libs.temp2.txt"
+
+while read i ## create libs.txt
+do
+  LIB_NAME="$i"
+  if (ls -1 "$LIBRARY" | grep "$LIB_NAME") &> /dev/null ;
+  then
+
+
+    if [ -d "$LIBRARY/$LIB_NAME/.git" ]; # Only if it is a repository
+    then
+      LIB_URL="$( cd $LIBRARY/$LIB_NAME && git config --get remote.origin.url )"
+      LIB_STR="$LIB_URL $LIB_NAME"
+      echo "$LIB_STR" >> "$FIRMWAREDIR/../libs.txt"
+    fi
+
+else
+echo "$LIB_NAME" >> "$FIRMWAREDIR/../libs.txt"
+
+  fi
+
+done < "$FIRMWAREDIR/../libs.temp.txt"
+
+rm "$FIRMWAREDIR/../libs.temp.txt"
+
+
+while read i ## Install and add required libs from libs.txt
+do
+  LIB_NAME="$(echo $i | awk '{ print $NF }' )"
+  addLib
+  rmHeaders "$LIB_NAME"
+  addHeaders "$LIB_NAME"
+done < "$FIRMWAREDIR/../libs.txt"
+
+fi
+
+echo
+MESSAGE="Loaded example $5 from $4." ; blue_echo
+echo
+MESSAGE="Original main.cpp has been backed up as main.cpp.$DATE-$TIME.txt" ; green_echo
+echo
+
+else
+
+  echo
+  MESSAGE="Example $5 not found." ; red_echo
+  echo
+
+fi
+
+fi
+
+
+fi
+
+exit
+fi
 
   echo
   MESSAGE="Please choose a valid command, or run \"po lib\" for help." ; red_echo
