@@ -927,7 +927,6 @@ then
       getLib
       addLib
       addHeaders "$LIB_NAME"
-
     done < "$FIRMWAREDIR/../libs.txt"
     echo
     exit
@@ -1285,6 +1284,15 @@ fi
 if [ "$3" == "ls" ] || [ "$3" == "list" ]; #po lib ex ls
 then
 
+if [ "$3" == "" ];
+then
+
+echo
+MESSAGE="Please choose a library." ; red_echo
+echo
+exit
+
+fi
 
   if [ -d "$LIBRARY/$4/examples" ];
   then
@@ -1293,6 +1301,12 @@ then
     echo
     ls -m "$LIBRARY/$4/examples"
     echo
+    exit
+  else
+    echo
+    MESSAGE="Examples not found." ; red_echo
+    echo
+    exit
 fi
 
 fi
