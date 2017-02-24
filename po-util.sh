@@ -564,31 +564,39 @@ then
     fi
   fi
 
-  if [ -f ~/.bash_profile ]; #Create .bash_profile
-  then
-    MESSAGE=".bash_profile present." ; green_echo
-  else
-    MESSAGE="No .bash_profile present. Installing.." ; red_echo
-    echo "
-    if [ -f ~/.bashrc ]; then
-        . ~/.bashrc
-    fi" >> ~/.bash_profile
-  fi
+  # if [ -f ~/.bash_profile ]; #Create .bash_profile
+  # then
+  #   MESSAGE=".bash_profile present." ; green_echo
+  # else
+  #   MESSAGE="No .bash_profile present. Installing.." ; red_echo
+  #   echo "
+  #   if [ -f ~/.bashrc ]; then
+  #       . ~/.bashrc
+  #   fi" >> ~/.bash_profile
+  # fi
+  #
+  # if [ -f ~/.bashrc ];  #Add po alias to .bashrc
+  # then
+  #   MESSAGE=".bashrc present." ; green_echo
+  #   if grep "po-util.sh" ~/.bashrc ;
+  #   then
+  #     MESSAGE="po alias already in place." ; green_echo
+  #   else
+  #     MESSAGE="no po alias.  Installing..." ; red_echo
+  #     echo 'alias po="~/po-util.sh"' >> ~/.bashrc
+  #     echo 'alias p="particle"' >> ~/.bashrc  #Also add 'p' alias for 'particle'
+  #   fi
+  # else
+  #   MESSAGE="No .bashrc present.  Installing..." ; red_echo
+  #   echo 'alias po="~/po-util.sh"' >> ~/.bashrc
+  # fi
 
-  if [ -f ~/.bashrc ];  #Add po alias to .bashrc
+  if [ -f /usr/local/bin/po ]
   then
-    MESSAGE=".bashrc present." ; green_echo
-    if grep "po-util.sh" ~/.bashrc ;
-    then
-      MESSAGE="po alias already in place." ; green_echo
-    else
-      MESSAGE="no po alias.  Installing..." ; red_echo
-      echo 'alias po="~/po-util.sh"' >> ~/.bashrc
-      echo 'alias p="particle"' >> ~/.bashrc  #Also add 'p' alias for 'particle'
-    fi
+    MESSAGE="po already linked in /usr/local/bin."
   else
-    MESSAGE="No .bashrc present.  Installing..." ; red_echo
-    echo 'alias po="~/po-util.sh"' >> ~/.bashrc
+    MESSAGE="Creating \"po\" link in /usr/local/bin..." ; blue_echo
+    sudo ln -s ~/po-util.sh /usr/local/bin/po
   fi
 
   # Download po-util-README.md
@@ -781,35 +789,35 @@ void loop() // Put code here to loop forever
 if [ "$DEVICE_TYPE" != "" ];
 then
 echo "---
-cmd: ~/po-util.sh $DEVICE_TYPE build
+cmd: po $DEVICE_TYPE build
 
 targets:
   Build:
     args:
       - $DEVICE_TYPE
       - build
-    cmd: ~/po-util.sh
+    cmd: po
     keymap: ctrl-alt-1
     name: Build
   Flash:
     args:
       - $DEVICE_TYPE
       - flash
-    cmd: ~/po-util.sh
+    cmd: po
     keymap: ctrl-alt-2
     name: Flash
   Clean:
     args:
       - $DEVICE_TYPE
       - clean
-    cmd: ~/po-util.sh
+    cmd: po
     keymap: ctrl-alt-3
     name: Clean
   DFU:
     args:
       - $DEVICE_TYPE
       - dfu
-    cmd: ~/po-util.sh
+    cmd: po
     keymap: ctrl-alt-4
     name: DFU
   OTA:
@@ -817,7 +825,7 @@ targets:
       - $DEVICE_TYPE
       - ota
       - --multi
-    cmd: ~/po-util.sh
+    cmd: po
     keymap: ctrl-alt-5
     name: DFU
 " >> .atom-build.yml
