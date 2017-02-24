@@ -6,7 +6,7 @@ install:
   - sudo apt-get install -y expect
 script:
   - time ./config-expect.sh
-  - time po install
+  - time ./po-util.sh install
   - time po photon build build-test/
   - time po electron clean build-test/
   - time po electron build build-test/
