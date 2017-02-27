@@ -5,7 +5,7 @@
 # Particle Offline Utility: The Ultimate Local Particle Experience for Linux and macOS
 
 [![](https://nrobinson2000.herokuapp.com/badge.svg)](https://nrobinson2000.herokuapp.com)
-[![](https://img.shields.io/badge/donate-bitcoin-orange.svg)](donate)
+[![](https://img.shields.io/badge/donate-bitcoin-orange.svg)](https://nrobinson2000.github.io/po-util/donate)
 [![](https://img.shields.io/github/issues/nrobinson2000/po-util.svg)](https://github.com/nrobinson2000/po-util/issues)
 [![](https://img.shields.io/github/stars/nrobinson2000/po-util.svg)](https://github.com/nrobinson2000/po-util/stargazers) [![Build Status](https://travis-ci.org/nrobinson2000/po-util.svg?branch=master)](https://travis-ci.org/nrobinson2000/po-util)
 [![Circle CI](https://circleci.com/gh/nrobinson2000/po-util/tree/master.svg?style=svg)](https://circleci.com/gh/nrobinson2000/po-util/tree/master)
@@ -16,9 +16,7 @@
 Particle Offline Utility, pronounced `po-util`, is a script for installing and
 using the Particle Toolchain on Linux and macOS.
 
-`po-util` makes it easy for developers to download the Particle Toolchain and
-install the required dependencies to quickly begin creating projects using the
-Particle Platform.
+`po-util` makes it easy for developers to download the Particle Toolchain and install the required dependencies to quickly begin creating projects using the Particle Platform.
 
 `po-util` features a responsive experience, giving developers the tools they
 need for seamless local development, providing understandable commands for
@@ -30,28 +28,27 @@ simplifying complex tasks like properly compiling and flashing firmware.
 
 # Install
 
-The easiest and most secure way to install `po-util` is to download `po-util.sh` from [GitHub](https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh) and run:
+There are two versions of po-util. The first is po-util Classic, which is designed for Linux distributions. The second is po-util Homebrew Edition, which is designed for macOS. Classic can be installed by following the instructions below:
 
-    $ chmod +x po-util.sh ; ./po-util.sh install
+**The easiest and most secure way to install `po-util` is to download `po-util.sh` directly and run it:**
+
+    $ curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
+    $ chmod +x po-util.sh ; ./po-util.sh install ; . ~/.bashrc
 
 **You can also install `po-util` by cloning the GitHub repository:**
 
     $ git clone https://github.com/nrobinson2000/po-util
     $ cd po-util
-    $ ./po-util.sh install
+    $ ./po-util.sh install ; . ~/.bashrc
 
+**On macOS, [Homebrew Edition](https://github.com/nrobinson2000/homebrew-po) can be installed by running these commands:**
 
-**Or you can directly download and run the script in Terminal:**
+    $ brew tap nrobinson2000/po
+    $ brew install po
+    $ po install
 
-    $ curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
-    $ chmod +x po-util.sh ; ./po-util.sh install
-
-
-When installing `po-util`, an alias is added to your `.bashrc` that allows you
-to run `po` from anywhere to use `po-util`.
-
-**Note:** We download everything from well-known locations and GitHub. While we believe this is a reasonable approach, it's always a good idea to know what's going on under the hood. [The `po-util` script can be found on GitHub if you want to manually download and run it.](https://github.com/nrobinson2000/po-util/blob/master/po-util.sh)
-
+**Note:**
+Both versions of po-util have the same features. In December 2016, Homebrew Edition was forked from po-util in order to allow po-util to be installed with Homebrew.  The original po-util was renamed to Classic, and was made Linux exclusive. Both Classic and Homebrew Edition continue to be developed and maintained in parallel.
 
 <p align="center">
 <img src="images/po.png">
@@ -103,19 +100,21 @@ here.](http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-l
 
 The directory structure of a **full** `po-util` project is arranged like so:
 
-    po-util_project/
-      ├ firmware/
-      | ├ main.cpp
-      | ├ lib1.cpp
-      | ├ lib1.h
-      | └ ...
-      ├ bin/
-      | ├ firmware.bin
-      | └ ...
-      ├ devices.txt
-      ├ libs.txt
-      ├ .atom-build.yml
-      └ README.md
+```
+firmware/
+├ main.cpp
+└ lib1/
+  ├ lib1.cpp
+  ├ lib1.h
+  └ ...
+bin/
+├ firmware.bin
+└ ...
+ devices.txt
+ libs.txt
+ .atom-build.yml
+ README.md
+```
 
   * All user code is kept inside of `main.cpp`.
 
@@ -130,18 +129,18 @@ The directory structure of a **full** `po-util` project is arranged like so:
 # Project setup
 
 When using `po-util`, your code is arranged into projects with the structure
-described above. This not only lets easily you work on many projects on one
+described above. This not only lets you easily work on many projects on one
 computer, but it provides a standardized way of building locally.
 
 Creating a project with `po-util` is simple. All that you need to do is create
-a folder and run use the `po init` inside of it to initialize the project by
+a folder and run `po init` inside of it to initialize the project by
 creating the appropriate files and directories. Below is an example:
 
     $ mkdir someProject
     $ cd someProject
     $ po init DEVICE_TYPE
 
-You can set `DEVICE_TYPE` to either `photon`, `P1` or `electron`. This is
+You can set `DEVICE_TYPE` to either `photon`, `P1`, `electron`, `core`, or `pi`. This is
 necessary for generating the Atom shortcuts file appropriately.
 
 # More Information
@@ -207,27 +206,26 @@ If you wish to use the default Particle DFU Mode baud rate, you may change the
 
 # Praise for po-util
 
-> "I think you identified a common pain point for a lot of users, and the
-automated installation of the Particle toolchain is a problem that we've been
-focused on a lot recently ... you should already feel proud of yourself
-because you have made a meaningful contribution to the community. We are all
-very thankful for it - our community regularly impresses us, and you are
-certainly not an exception."
+<blockquote style="background:#22282d"><p>"I think you identified a common pain point for a lot of users, and the automated installation of the Particle toolchain is a problem that we've been focused on a lot recently ... you should already feel proud of yourself because you have made a meaningful contribution to the community. We are all very thankful for it - our community regularly impresses us, and you are certainly not an exception."</p>
+<p style="text-align: left"><a href="http://nrobinson2000.me/po-util-recognition.pdf">Will Hart, Particle General Manager</a></p></blockquote>
+<hr>
 
-[Will Hart, Particle General Manager](http://nrobinson2000.me/po-util-recognition.pdf)
+<blockquote style="background:#22282d"><p>"It has been nearly flawless and a HUGE productivity booster... I cannot believe your steps worked installing so many utils and dependencies perfectly... The Particle world owes you a big debt. If there were Emmy awards for Particle contribs, you would get one."</p>
+<p style="text-align: left"><a href="http://community.particle.io/t/moving-project-from-web-ide-to-particle-dev-on-a-mac/28398/5?u=nrobinson2000">Andrew Ward, Particle Community Member</a></p></blockquote>
+<hr>
 
+<blockquote style="background:#22282d"><p>"Nice! This is great stuff. Definitely helpful for the local dev / offline use case.
+Thanks for sharing."</p>
+<p style="text-align: left"><a href="http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/2?u=nrobinson2000">Avidan Ross, Particle Investor</a></p></blockquote>
+<hr>
 
-> "Nice! This is great stuff. Definitely helpful for the local dev / offline
-use case. Thanks for sharing."
+<blockquote style="background:#22282d"><p>"Thanks a lot for this amazing tool. I finally managed to get everything as I wanted: to be able to work off-line."</p>
+<p style="text-align: left"><a href="https://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/34?u=nrobinson2000">Yannick, Particle Community Member</a></p></blockquote>
+<hr>
 
-[Avidan Ross, Particle Investor](http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/2?u=nrobinson2000)
+<blockquote style="background:#22282d"><p>"Po-util is a very handy script - thanks for sharing."</p>
+<p style="text-align: left"><a href="http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/15?u=nrobinson2000">H.S, Particle Community Member</a></p></blockquote>
+<hr>
 
-
-> "Po-util is a very handy script - thanks for sharing."
-
-[H.S, Particle Community Member](http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/15?u=nrobinson2000)
-
-
-> "I can't heart this enough!"
-
-[Josh Fisher, Particle Community Member](http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/27?u=nrobinson2000)
+<blockquote style="background:#22282d"><p>"I can't heart this enough!"</p>
+<p style="text-align: left"><a href="http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/27?u=nrobinson2000">Josh Fisher, Particle Community Member</a></p></blockquote>
