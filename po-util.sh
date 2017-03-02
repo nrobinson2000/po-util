@@ -369,6 +369,7 @@ If you are unsure, please enter \"release/stable\"" ; blue_echo
   read -rp "Branch: " branch_variable
   BRANCH="$branch_variable"
   echo BRANCH="$BRANCH" >> $SETTINGS
+  echo
 
   # RedBear DUO
   MESSAGE="Which branch of the RedBear DUO firmware would you like to use?
@@ -393,8 +394,7 @@ Enter \"po\" to use the po-util recommended baud rate of 19200." ; blue_echo
   fi
   echo DFUBAUDRATE="$DFUBAUDRATE" >> $SETTINGS
   echo
-  MESSAGE="Shoud po-util automatically add and remove headers when using
-libraries?" ; blue_echo
+  MESSAGE="Shoud po-util automatically add and remove headers when using libraries?" ; blue_echo
   read -rp "(yes/no): " response
   if [ "$response" == "yes" ] || [ "$response" == "y" ] || [ "$response" == "Y" ];
   then
