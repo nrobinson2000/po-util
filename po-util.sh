@@ -200,7 +200,7 @@ dfu_open()
 
   if [ "$MODEM" ];
   then
-    stty -f "$MODEM" "$DFUBAUDRATE" > /dev/null
+    stty -F "$MODEM" "$DFUBAUDRATE" > /dev/null
   fi
 }
 
@@ -231,7 +231,7 @@ build, flash, clean, ota, dfu, serial, init, config, setup, library"
 
 build_firmware()
 {
-  
+
 #Temporary fix for http://community.particle.io/t/stm32-usb-otg-driver-error-on-v0-6-0/26814
 
 # STRING='CPPSRC += $(call target_files,$(BOOTLOADER_MODULE_PATH)/../hal/src/stm32/,newlib.cpp)'
@@ -671,7 +671,7 @@ then
   # create Particle dir
   [ -d "$FIRMWARE_PARTICLE" ] || mkdir -p "$FIRMWARE_PARTICLE"  # If FIRMWARE_PARTICLE does not exist, create it
   # create redbearduo dir
-  [ -d "$FIRMWARE_DUO" ] || mkdir -p "$FIRMWARE_DUO"  # If FIRMWARE_DUO does not exist, create it  
+  [ -d "$FIRMWARE_DUO" ] || mkdir -p "$FIRMWARE_DUO"  # If FIRMWARE_DUO does not exist, create it
 
   # clone Particle firmware repository
   cd "$FIRMWARE_PARTICLE" || exit
@@ -714,7 +714,7 @@ then
       fi
     fi
   fi
-    
+
     cd "$BASE_DIR" || exit
 
     # Install dependencies
