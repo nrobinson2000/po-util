@@ -284,7 +284,7 @@ build_pi()
 {
   if hash docker 2>/dev/null;
   then
-    if docker run --rm -i -v $BASE_FIRMWARE/firmware:/firmware -v $FIRMWAREDIR:/input -v $FIRMWAREDIR/../bin:/output particle/buildpack-raspberrypi 2> echo;
+    if docker run --rm -i -v $FIRMWARE_PARTICLE/firmware:/firmware -v $FIRMWAREDIR:/input -v $FIRMWAREDIR/../bin:/output particle/buildpack-raspberrypi 2> echo;
     then
       echo
       MESSAGE="Successfully built firmware for Raspberry Pi" ; blue_echo
@@ -681,6 +681,7 @@ then
   if hash git 2>/dev/null;
   then
     NOGIT="false"
+    echo
     MESSAGE="Installing Particle firmware from Github..." ; blue_echo
     git clone https://github.com/spark/firmware.git
   else
@@ -693,6 +694,7 @@ then
   if hash git 2>/dev/null;
   then
     NOGIT="false"
+    echo
     MESSAGE="Installing RedBear Duo firmware from Github..." ; blue_echo
     git clone https://github.com/redbear/firmware.git
   else
@@ -718,6 +720,8 @@ then
   fi
 
     cd "$BASE_DIR" || exit
+
+    echo
 
     # Install dependencies
     MESSAGE="Installing ARM toolchain and dependencies locally in $BINDIR/gcc-arm-embedded/..." ; blue_echo
@@ -954,20 +958,47 @@ fi
 # Update po-util
 if [ "$1" == "update" ];
 then
-  if [ "$2" == "duo" ];
+
+  if [ "$2" == "duo" ]; # Update just duo firmware
   then
     MESSAGE="Updating RedBear DUO firmware..." ; blue_echo
     cd "$FIRMWARE_DUO"/firmware || exit
     git stash
     #git checkout $BRANCH
     git pull
-  else
+    exit
+  fi
+
+  if [ "$2" == "firmware" ]; # update just particle firmware
+  then
     MESSAGE="Updating Particle firmware..." ; blue_echo
     cd "$FIRMWARE_PARTICLE"/firmware || exit
+    switch_branch
     git stash
     #git checkout $BRANCH
     git pull
+    exit
   fi
+
+#update both and everything else if not specified
+
+echo
+
+  MESSAGE="Updating RedBear DUO firmware..." ; blue_echo
+  cd "$FIRMWARE_DUO"/firmware || exit
+  git stash
+  #git checkout $BRANCH
+  git pull
+
+echo
+
+  MESSAGE="Updating Particle firmware..." ; blue_echo
+  cd "$FIRMWARE_PARTICLE"/firmware || exit
+  switch_branch
+  git stash
+  #git checkout $BRANCH
+  git pull
+
   MESSAGE="Updating particle-cli..." ; blue_echo
   sudo npm update -g particle-cli
   MESSAGE="Updating po-util.." ; blue_echo
