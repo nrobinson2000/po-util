@@ -11,3 +11,7 @@ test:
   - time po electron build build-test/
   - time po P1 clean build-test/
   - time po P1 build build-test/
+  - time po core clean build-test/
+  - time po core build build-test/
+  - time po duo clean build-test/
+  - time po duo build build-test/
