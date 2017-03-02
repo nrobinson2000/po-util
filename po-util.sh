@@ -171,18 +171,37 @@ build_message()
 
 dfu_open()
 {
-  if [ "$MODEM" != "" ];
+  if [ "$DEVICE_TYPE" == "duo" ];
   then
-  MODEM="$MODEM"
+    if [ "$MODEM_DUO" != "" ];
+    then
+    MODEM="$MODEM_DUO"
+    else
+      echo
+      MESSAGE="Device not found!" ; red_echo
+      echo
+      MESSAGE="Your device must be connected by USB."; blue_echo
+      echo
+      exit
+    fi
   else
-    echo
-    MESSAGE="Device not found!" ; red_echo
-    echo
-    MESSAGE="Your device must be connected by USB."; blue_echo
-    echo
-    exit
+    if [ "$MODEM" != "" ];
+    then
+    MODEM="$MODEM"
+    else
+      echo
+      MESSAGE="Device not found!" ; red_echo
+      echo
+      MESSAGE="Your device must be connected by USB."; blue_echo
+      echo
+      exit
+    fi
   fi
-  stty -F "$MODEM" "$DFUBAUDRATE" > /dev/null
+
+  if [ "$MODEM" ];
+  then
+    stty -f "$MODEM" "$DFUBAUDRATE" > /dev/null
+  fi
 }
 
 switch_branch()
@@ -212,6 +231,7 @@ build, flash, clean, ota, dfu, serial, init, config, setup, library"
 
 build_firmware()
 {
+  
 #Temporary fix for http://community.particle.io/t/stm32-usb-otg-driver-error-on-v0-6-0/26814
 
 # STRING='CPPSRC += $(call target_files,$(BOOTLOADER_MODULE_PATH)/../hal/src/stm32/,newlib.cpp)'
@@ -223,11 +243,19 @@ build_firmware()
 # rm -f temp.particle
 
 # FIXED in release/v0.6.1-rc.1
-
-cd "$CWD" || exit
-sed "2s/.*/START_DFU_FLASHER_SERIAL_SPEED=$DFUBAUDRATE/" "$BASE_FIRMWARE/firmware/build/module-defaults.mk" > temp.particle
-rm -f "$BASE_FIRMWARE/firmware/build/module-defaults.mk"
-mv temp.particle "$BASE_FIRMWARE/firmware/build/module-defaults.mk"
+if [ "$DEVICE_TYPE" == "duo" ];
+then
+  # RedBear DUO
+  cd "$CWD" || exit
+  sed "2s/.*/START_DFU_FLASHER_SERIAL_SPEED=$DFUBAUDRATE/" "$FIRMWARE_DUO/firmware/build/module-defaults.mk" > temp.particle
+  rm -f "$FIRMWARE_DUO/firmware/build/module-defaults.mk"
+  mv temp.particle "$FIRMWARE_DUO/firmware/build/module-defaults.mk"
+else
+  cd "$CWD" || exit
+  sed "2s/.*/START_DFU_FLASHER_SERIAL_SPEED=$DFUBAUDRATE/" "$FIRMWARE_PARTICLE/firmware/build/module-defaults.mk" > temp.particle
+  rm -f "$FIRMWARE_PARTICLE/firmware/build/module-defaults.mk"
+  mv temp.particle "$FIRMWARE_PARTICLE/firmware/build/module-defaults.mk"
+fi
 
   MESSAGE="                                                 __      __  __
                                                 /  |    /  |/  |
@@ -243,7 +271,13 @@ mv temp.particle "$BASE_FIRMWARE/firmware/build/module-defaults.mk"
         ██/         Building firmware for $DEVICE_TYPE...
   "
   blue_echo
-  make all -s -C "$BASE_FIRMWARE/firmware/main" APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$DEVICE_TYPE"
+
+  if [ "$DEVICE_TYPE" == "duo" ];
+  then
+    make all -s -C "$FIRMWARE_DUO/firmware/main" APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$DEVICE_TYPE"
+  else
+    make all -s -C "$FIRMWARE_PARTICLE/firmware/main" APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$DEVICE_TYPE"
+  fi
 }
 
 build_pi()
@@ -311,9 +345,23 @@ ota() # device firmware
 
 config()
 {
-  echo BASE_FIRMWARE="$BASE_FIRMWARE" >> $SETTINGS
+
+  SETTINGS=~/.po
+  BASE_DIR=~/github  # These
+  FIRMWARE_PARTICLE=$BASE_LOCATION/particle
+  FIRMWARE_DUO=$BASE_LOCATION/redbearduo
+  BRANCH="release/stable" # can
+  BRANCH_DUO="duo"
+  ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/
+  MODEM_DUO=$MODEM_DUO
+
+  echo BASE_DIR="$BASE_DIR" >> $SETTINGS
+  echo FIRMWARE_PARTICLE="$FIRMWARE_PARTICLE" >> $SETTINGS
+  echo FIRMWARE_DUO="$FIRMWARE_DUO" >> $SETTINGS
   echo "export PARTICLE_DEVELOP=1" >> $SETTINGS
   echo BINDIR="$BINDIR" >> $SETTINGS
+
+  # Particle
   echo
   MESSAGE="Which branch of the Particle firmware would you like to use?
 You can find the branches at https://github.com/spark/firmware/branches
@@ -321,6 +369,15 @@ If you are unsure, please enter \"release/stable\"" ; blue_echo
   read -rp "Branch: " branch_variable
   BRANCH="$branch_variable"
   echo BRANCH="$BRANCH" >> $SETTINGS
+
+  # RedBear DUO
+  MESSAGE="Which branch of the RedBear DUO firmware would you like to use?
+You can find the branches at https://github.com/redbear/Duo/branches
+If you are unsure, please enter \"duo\"" ; blue_echo
+  read -rp "Branch: " branch_variable
+  BRANCH_DUO="$branch_variable"
+  echo BRANCH_DUO="$BRANCH_DUO" >> $SETTINGS
+
   echo
   MESSAGE="Which baud rate would you like to use to put devices into DFU mode?
 Enter \"default\" for the default Particle baud rate of 14400.
@@ -490,15 +547,18 @@ fi
 
 # Configuration file is created at "~/.po"
 SETTINGS=~/.po
-BASE_FIRMWARE=~/github  # These
+BASE_DIR=~/github  # These
+FIRMWARE_PARTICLE=$BASE_DIR/particle
+FIRMWARE_DUO=$BASE_DIR/redbearduo
 BRANCH="release/stable" # can
+BRANCH_DUO="duo"
 BINDIR=~/bin            # be
 DFUBAUDRATE=19200       # changed in the "~/.po" file.
 CWD="$(pwd)" # Global Current Working Directory variable
 MODEM="$(ls -1 /dev/* | grep "ttyACM" | tail -1)"
+MODEM_DUO="$(ls -1 /dev/* | grep "usbmodem" | tail -1)"
 GCC_ARM_VER=gcc-arm-none-eabi-4_9-2015q3 # Updated to 4.9
 GCC_ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/
-
 
 if [ "$1" == "config" ];
 then
@@ -520,7 +580,6 @@ source "$SETTINGS"
 
 if [ "$1" == "install" ]; # Install
 then
-
   if [ "$(uname -s)" == "Darwin" ]; #Force homebrew version on macOS.
   then
     # Install via Homebrew
@@ -603,22 +662,37 @@ then
   curl -fsSLo ~/.po-util-README.md https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util-README.md
 
   # Check to see if we need to override the install directory.
-  if [ "$2" ] && [ "$2" != $BASE_FIRMWARE ]
+  if [ "$2" ] && [ "$2" != $BASE_DIR ]
   then
-    BASE_FIRMWARE="$2"
-    echo BASE_FIRMWARE="$BASE_FIRMWARE" >  $SETTINGS
+    BASE_DIR="$2"
+    echo BASE_DIR="$BASE_DIR" > $SETTINGS
   fi
 
-  [ -d "$BASE_FIRMWARE" ] || mkdir -p "$BASE_FIRMWARE"  # If BASE_FIRMWARE does not exist, create it
+  # create Particle dir
+  [ -d "$FIRMWARE_PARTICLE" ] || mkdir -p "$FIRMWARE_PARTICLE"  # If FIRMWARE_PARTICLE does not exist, create it
+  # create redbearduo dir
+  [ -d "$FIRMWARE_DUO" ] || mkdir -p "$FIRMWARE_DUO"  # If FIRMWARE_DUO does not exist, create it  
 
-  # clone firmware repository
-  cd "$BASE_FIRMWARE" || exit
+  # clone Particle firmware repository
+  cd "$FIRMWARE_PARTICLE" || exit
 
   if hash git 2>/dev/null;
   then
     NOGIT="false"
     MESSAGE="Installing Particle firmware from Github..." ; blue_echo
     git clone https://github.com/spark/firmware.git
+  else
+    NOGIT="true"
+  fi
+
+  # clone RedBear DUO firmware repository
+  cd "$FIRMWARE_DUO" || exit
+
+  if hash git 2>/dev/null;
+  then
+    NOGIT="false"
+    MESSAGE="Installing RedBear Duo firmware from Github..." ; blue_echo
+    git clone https://github.com/redbear/firmware.git
   else
     NOGIT="true"
   fi
@@ -640,7 +714,9 @@ then
       fi
     fi
   fi
-    cd "$BASE_FIRMWARE" || exit
+    
+    cd "$BASE_DIR" || exit
+
     # Install dependencies
     MESSAGE="Installing ARM toolchain and dependencies locally in $BINDIR/gcc-arm-embedded/..." ; blue_echo
     mkdir -p $BINDIR/gcc-arm-embedded && cd "$_" || exit
@@ -702,7 +778,7 @@ then
 
     # Install dfu-util
     MESSAGE="Installing dfu-util (requires sudo)..." ; blue_echo
-    cd "$BASE_FIRMWARE" || exit
+    cd "$BASE_DIR" || exit
     git clone git://git.code.sf.net/p/dfu-util/dfu-util
     cd dfu-util || exit
     git pull
@@ -730,12 +806,20 @@ then
     MESSAGE="Adding $USER to plugdev group..." ; blue_echo
     sudo usermod -a -G plugdev "$USER"
 
-  cd "$BASE_FIRMWARE" || exit
+  cd "$FIRMWARE_PARTICLE" || exit
 
   if [ "$NOGIT" == "true" ];
   then
     MESSAGE="Installing Particle firmware from Github..." ; blue_echo
     git clone https://github.com/spark/firmware.git
+  fi
+
+  cd "$FIRMWARE_DUO" || exit
+
+  if [ "$NOGIT" == "true" ];
+  then
+    MESSAGE="Installing RedBear DUO firmware from Github..." ; blue_echo
+    git clone https://github.com/redbear/firmware.git
   fi
 
   MESSAGE="
@@ -762,7 +846,7 @@ then
     exit
   fi
 
-if [ "$2" == "photon" ] || [ "$2" == "P1" ] || [ "$2" == "electron" ] || [ "$2" == "pi" ] || [ "$2" == "core" ];
+if [ "$2" == "photon" ] || [ "$2" == "P1" ] || [ "$2" == "electron" ] || [ "$2" == "pi" ] || [ "$2" == "core" ] || [ "$2" == "duo" ];
 then
 DEVICE_TYPE="$2"
 else
@@ -868,11 +952,20 @@ fi
 # Update po-util
 if [ "$1" == "update" ];
 then
-  MESSAGE="Updating firmware..." ; blue_echo
-  cd "$BASE_FIRMWARE"/firmware || exit
-  git stash
-  #git checkout $BRANCH
-  git pull
+  if [ "$2" == "duo" ];
+  then
+    MESSAGE="Updating RedBear DUO firmware..." ; blue_echo
+    cd "$FIRMWARE_DUO"/firmware || exit
+    git stash
+    #git checkout $BRANCH
+    git pull
+  else
+    MESSAGE="Updating Particle firmware..." ; blue_echo
+    cd "$FIRMWARE_PARTICLE"/firmware || exit
+    git stash
+    #git checkout $BRANCH
+    git pull
+  fi
   MESSAGE="Updating particle-cli..." ; blue_echo
   sudo npm update -g particle-cli
   MESSAGE="Updating po-util.." ; blue_echo
@@ -1461,16 +1554,24 @@ fi
 fi # Close Library
 ####################
 
-cd "$BASE_FIRMWARE"/firmware || exit
-
 # Make sure we are using photon, P1, electron, core or pi
-if [ "$1" == "photon" ] || [ "$1" == "P1" ] || [ "$1" == "electron" ] || [ "$1" == "pi" ] || [ "$1" == "core" ];
+if [ "$1" == "photon" ] || [ "$1" == "P1" ] || [ "$1" == "electron" ] || [ "$1" == "pi" ] || [ "$1" == "core" ] || [ "$1" == "duo" ];
 then
   DEVICE_TYPE="$1"
+
+  if [ "$DEVICE_TYPE" == "duo" ];
+  then
+    cd "$FIRMWARE_DUO"/firmware || exit
+  else
+    cd "$FIRMWARE_PARTICLE"/firmware || exit
+  fi
 
   if [ "$DEVICE_TYPE" == "pi" ];
   then
     switch_branch "feature/raspberry-pi"
+  elif [ "$DEVICE_TYPE" == "duo" ];
+  then
+    switch_branch $BRANCH_DUO
   else
     switch_branch
   fi
@@ -1481,7 +1582,7 @@ else
     MESSAGE="This compound is not supported yet. Find out more here: https://git.io/vMTAw" ; red_echo
     echo
   fi
-  MESSAGE="Please choose \"photon\", \"P1\", \"electron\", \"core\", or \"pi\",
+  MESSAGE="Please choose \"photon\", \"P1\", \"electron\", \"core\", \"pi\", or \"duo\",
 or choose a proper command." ; red_echo
   common_commands
   exit
@@ -1505,6 +1606,11 @@ if [ "$DEVICE_TYPE" == "core" ];
 then
   DFU_ADDRESS1="1d50:607f"
   DFU_ADDRESS2="0x08005000"
+fi
+if [ "$DEVICE_TYPE" == "duo" ];
+then
+  DFU_ADDRESS1="2b04:d058"
+  DFU_ADDRESS2="0x80C0000"
 fi
 
 if [ "$2" == "setup" ];
