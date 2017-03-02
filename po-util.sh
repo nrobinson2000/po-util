@@ -345,11 +345,10 @@ ota() # device firmware
 
 config()
 {
-
   SETTINGS=~/.po
   BASE_DIR=~/github  # These
-  FIRMWARE_PARTICLE=$BASE_LOCATION/particle
-  FIRMWARE_DUO=$BASE_LOCATION/redbearduo
+  FIRMWARE_PARTICLE=$BASE_DIR/particle
+  FIRMWARE_DUO=$BASE_DIR/redbearduo
   BRANCH="release/stable" # can
   BRANCH_DUO="duo"
   ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/
@@ -667,6 +666,9 @@ then
     BASE_DIR="$2"
     echo BASE_DIR="$BASE_DIR" > $SETTINGS
   fi
+
+  # create base dir
+  [ -d "$BASE_DIR" ] || mkdir -p "$BASE_DIR"  # If BASE_DIR does not exist, create it
 
   # create Particle dir
   [ -d "$FIRMWARE_PARTICLE" ] || mkdir -p "$FIRMWARE_PARTICLE"  # If FIRMWARE_PARTICLE does not exist, create it
