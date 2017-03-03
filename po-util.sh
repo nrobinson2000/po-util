@@ -577,6 +577,10 @@ fi
 # Import our overrides from the ~/.po file.
 source "$SETTINGS"
 
+#Import nvm if installed
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
 if [ "$1" == "install" ]; # Install
 then
   if [ "$(uname -s)" == "Darwin" ]; #Force homebrew version on macOS.
