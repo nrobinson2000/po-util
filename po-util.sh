@@ -960,21 +960,25 @@ then
 
   if [ "$2" == "duo" ]; # Update just duo firmware
   then
+    echo
     MESSAGE="Updating RedBear DUO firmware..." ; blue_echo
     cd "$FIRMWARE_DUO"/firmware || exit
     git stash
     switch_branch "$BRANCH_DUO" &> /dev/null
     git pull
+    echo
     exit
   fi
 
   if [ "$2" == "firmware" ]; # update just particle firmware
   then
+    echo
     MESSAGE="Updating Particle firmware..." ; blue_echo
     cd "$FIRMWARE_PARTICLE"/firmware || exit
     git stash
     switch_branch &> /dev/null
     git pull
+    echo
     exit
   fi
 
