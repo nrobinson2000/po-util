@@ -1011,6 +1011,7 @@ echo
   curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/homebrew-po/master/man/po.1
   sudo mv po.1 /usr/local/share/man/man1/
   sudo mandb &> /dev/null
+  echo
   exit
 fi
 
