@@ -235,11 +235,11 @@ build_firmware()
 #Temporary fix for http://community.particle.io/t/stm32-usb-otg-driver-error-on-v0-6-0/26814
 
 # STRING='CPPSRC += $(call target_files,$(BOOTLOADER_MODULE_PATH)/../hal/src/stm32/,newlib.cpp)'
-# echo "$STRING" >> "$BASE_FIRMWARE/firmware/bootloader/src/electron/sources.mk"
-# sed "126s/.*/#define USB_OTG_MAX_TX_FIFOS (4*2)/" "$BASE_FIRMWARE/firmware/platform/MCU/STM32F2xx/SPARK_Firmware_Driver/inc/platform_config.h" > temp.particle
+# echo "$STRING" >> "$FIRMWARE_PARTICLE/firmware/bootloader/src/electron/sources.mk"
+# sed "126s/.*/#define USB_OTG_MAX_TX_FIFOS (4*2)/" "$FIRMWARE_PARTICLE/firmware/platform/MCU/STM32F2xx/SPARK_Firmware_Driver/inc/platform_config.h" > temp.particle
 # sed "132s/.*/#define USB_OTG_MAX_TX_FIFOS (6*2)/" temp.particle > temp.particle.1
-# rm -f "$BASE_FIRMWARE/firmware/platform/MCU/STM32F2xx/SPARK_Firmware_Driver/inc/platform_config.h"
-# mv temp.particle.1 "$BASE_FIRMWARE/firmware/platform/MCU/STM32F2xx/SPARK_Firmware_Driver/inc/platform_config.h"
+# rm -f "$FIRMWARE_PARTICLE/firmware/platform/MCU/STM32F2xx/SPARK_Firmware_Driver/inc/platform_config.h"
+# mv temp.particle.1 "$FIRMWARE_PARTICLE/firmware/platform/MCU/STM32F2xx/SPARK_Firmware_Driver/inc/platform_config.h"
 # rm -f temp.particle
 
 # FIXED in release/v0.6.1-rc.1
@@ -1691,14 +1691,14 @@ if [ "$2" == "upgrade" ] || [ "$2" == "patch" ] || [ "$2" == "update" ];
 then
   pause "Connect your device and put into DFU mode. Press [ENTER] to continue..."
   cd "$CWD" || exit
-  sed "2s/.*/START_DFU_FLASHER_SERIAL_SPEED=$DFUBAUDRATE/" "$BASE_FIRMWARE/firmware/build/module-defaults.mk" > temp.particle
-  rm -f "$BASE_FIRMWARE/firmware/build/module-defaults.mk"
-  mv temp.particle "$BASE_FIRMWARE/firmware/build/module-defaults.mk"
+  sed "2s/.*/START_DFU_FLASHER_SERIAL_SPEED=$DFUBAUDRATE/" "$FIRMWARE_PARTICLE/firmware/build/module-defaults.mk" > temp.particle
+  rm -f "$FIRMWARE_PARTICLE/firmware/build/module-defaults.mk"
+  mv temp.particle "$FIRMWARE_PARTICLE/firmware/build/module-defaults.mk"
 
-  cd "$BASE_FIRMWARE/firmware/modules" || exit
+  cd "$FIRMWARE_PARTICLE/firmware/modules" || exit
   make clean all PLATFORM="$DEVICE_TYPE" program-dfu
 
-  cd "$BASE_FIRMWARE/firmware" && git stash || exit
+  cd "$FIRMWARE_PARTICLE/firmware" && git stash || exit
   sleep 1
   dfu-util -d $DFU_ADDRESS1 -a 0 -i 0 -s $DFU_ADDRESS2:leave -D /dev/null &> /dev/null
   exit
@@ -1769,7 +1769,7 @@ then
   fi
     echo
     #configure_makefile
-    make all -C "$BASE_FIRMWARE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$DEVICE_TYPE" DEBUG_BUILD="y" || exit
+    make all -C "$FIRMWARE_PARTICLE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$DEVICE_TYPE" DEBUG_BUILD="y" || exit
     build_message
 fi
 
