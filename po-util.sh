@@ -837,7 +837,6 @@ then
   po-util, Particle Firmware and particle-cli, or run \"po install\" to update
   all dependencies.
   " ; green_echo
-  source ~/.bashrc
   exit
 fi
 
@@ -964,7 +963,7 @@ then
     MESSAGE="Updating RedBear DUO firmware..." ; blue_echo
     cd "$FIRMWARE_DUO"/firmware || exit
     git stash
-    #git checkout $BRANCH
+    switch_branch "$BRANCH_DUO" &> /dev/null
     git pull
     exit
   fi
@@ -973,9 +972,8 @@ then
   then
     MESSAGE="Updating Particle firmware..." ; blue_echo
     cd "$FIRMWARE_PARTICLE"/firmware || exit
-    switch_branch
     git stash
-    #git checkout $BRANCH
+    switch_branch &> /dev/null
     git pull
     exit
   fi
@@ -999,8 +997,11 @@ echo
   #git checkout $BRANCH
   git pull
 
+  echo
+
   MESSAGE="Updating particle-cli..." ; blue_echo
   sudo npm update -g particle-cli
+  echo
   MESSAGE="Updating po-util.." ; blue_echo
   rm ~/po-util.sh
   curl -fsSLo ~/po-util.sh https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
@@ -1587,7 +1588,7 @@ fi
 fi # Close Library
 ####################
 
-# Make sure we are using photon, P1, electron, core or pi
+# Make sure we are using photon, P1, electron, pi, core, or duo
 if [ "$1" == "photon" ] || [ "$1" == "P1" ] || [ "$1" == "electron" ] || [ "$1" == "pi" ] || [ "$1" == "core" ] || [ "$1" == "duo" ];
 then
   DEVICE_TYPE="$1"
@@ -1601,12 +1602,12 @@ then
 
   if [ "$DEVICE_TYPE" == "pi" ];
   then
-    switch_branch "feature/raspberry-pi"
+    switch_branch "feature/raspberry-pi"  &> /dev/null
   elif [ "$DEVICE_TYPE" == "duo" ];
   then
-    switch_branch $BRANCH_DUO
+    switch_branch $BRANCH_DUO &> /dev/null
   else
-    switch_branch
+    switch_branch &> /dev/null
   fi
 else
   echo
@@ -1689,6 +1690,10 @@ fi
 #Upgrade our firmware on device
 if [ "$2" == "upgrade" ] || [ "$2" == "patch" ] || [ "$2" == "update" ];
 then
+
+if [ "$DEVICE_TYPE" == "photon" ] || [ "$DEVICE_TYPE" == "P1" ] || [ "$DEVICE_TYPE" == "electron" ]
+then
+
   pause "Connect your device and put into DFU mode. Press [ENTER] to continue..."
   cd "$CWD" || exit
   sed "2s/.*/START_DFU_FLASHER_SERIAL_SPEED=$DFUBAUDRATE/" "$FIRMWARE_PARTICLE/firmware/build/module-defaults.mk" > temp.particle
@@ -1702,6 +1707,36 @@ then
   sleep 1
   dfu-util -d $DFU_ADDRESS1 -a 0 -i 0 -s $DFU_ADDRESS2:leave -D /dev/null &> /dev/null
   exit
+
+else
+  echo
+  MESSAGE="This command can only be used to update the system firmware for
+photon, P1, electron, or duo." ; red_echo
+echo
+
+if [ "$DEVICE_TYPE" == "core" ];
+then
+MESSAGE="On the Spark Core, firmware is monolithic, meaning that the system
+firmware is packaged with the user firmware.  To use a core with po-util
+just manually put it into DFU mode the first time you flash to it." ; blue_echo
+
+echo
+fi
+
+if [ "$DEVICE_TYPE" == "pi" ];
+then
+MESSAGE="Raspberry Pi is still in beta and you must be registered in the beta
+to use Particle on Raspberry Pi.
+
+To \"update\" the system firmware on Raspberry Pi, simply re-install
+particle-agent. https://git.io/vynBd" ; blue_echo
+
+echo
+fi
+
+exit
+fi
+
 fi
 
 # Clean firmware directory
