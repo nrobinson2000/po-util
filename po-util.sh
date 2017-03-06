@@ -37,17 +37,32 @@ function pause()
 
 blue_echo()
 {
-  echo "$(tput setaf 6)$(tput bold)$MESSAGE$(tput sgr0)"
+  if [ -t 1 ];
+  then
+   echo "$(tput setaf 6)$(tput bold)$MESSAGE$(tput sgr0)"
+  else
+   echo "$MESSAGE"
+fi
 }
 
 green_echo()
 {
-  echo "$(tput setaf 2)$(tput bold)$MESSAGE$(tput sgr0)"
+  if [ -t 1 ];
+  then
+    echo "$(tput setaf 2)$(tput bold)$MESSAGE$(tput sgr0)"
+  else
+    echo "$MESSAGE"
+ fi
 }
 
 red_echo()
 {
-  echo "$(tput setaf 1)$(tput bold)$MESSAGE$(tput sgr0)"
+  if [ -t 1 ];
+  then
+   echo "$(tput setaf 1)$(tput bold)$MESSAGE$(tput sgr0)"
+  else
+   echo "$MESSAGE"
+ fi
 }
 
 function find_objects() #Consolidated function
@@ -1407,13 +1422,35 @@ fi ### Close source
 if [ "$2" == "examples" ] || [ "$2" == "ex" ];
 then
 
-if [ "$3" == "" ];
-then
-echo
-MESSAGE="Please choose a library." ; red_echo
-echo
-exit
-else
+  if [ "$3" == "" ];
+  then
+  # echo
+  MESSAGE="                                                     __      __  __
+                                                      /  |    /  |/  |
+                ______    ______           __    __  _██ |_   ██/ ██ |
+               /      \  /      \  ______ /  |  /  |/ ██   |  /  |██ |
+              /██████  |/██████  |/      |██ |  ██ |██████/   ██ |██ |
+              ██ |  ██ |██ |  ██ |██████/ ██ |  ██ |  ██ | __ ██ |██ |
+              ██ |__██ |██ \__██ |        ██ \__██ |  ██ |/  |██ |██ |
+              ██    ██/ ██    ██/         ██    ██/   ██  ██/ ██ |██ |
+              ███████/   ██████/           ██████/     ████/  ██/ ██/
+              ██ |
+              ██ |
+              ██/               https://nrobinson2000.github.io/po-util/
+  "
+      blue_echo
+
+  MESSAGE="
+  \"po lib ex\": Particle Library Example Manager
+
+  ls - List the examples in a library
+
+  load - Load an example from a library
+
+  For help, read the LIBRARY EXAMPLE MANAGER section of \"man po\"
+  " ; echo "$MESSAGE"
+  exit
+  else
 
 if [ -d "$LIBRARY/$4" ];
 then
@@ -1428,9 +1465,8 @@ fi
 if [ "$3" == "ls" ] || [ "$3" == "list" ]; #po lib ex ls
 then
 
-if [ "$3" == "" ];
+if [ "$4" == "" ];
 then
-
 echo
 MESSAGE="Please choose a library." ; red_echo
 echo
@@ -1448,7 +1484,7 @@ fi
     exit
   else
     echo
-    MESSAGE="Examples not found." ; red_echo
+    MESSAGE="Could not find any $4 examples." ; red_echo
     echo
     exit
 fi
