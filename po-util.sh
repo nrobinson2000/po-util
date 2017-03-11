@@ -542,13 +542,6 @@ Run \"man po\" for help.
 exit
 fi
 
-# Open info page in browser
-if [ "$1" == "info" ];
-then
-  open "https://nrobinson2000.github.io/po-util/"
-  exit
-fi
-
 if [ "$1" == "setup-atom" ];
 then
   echo
@@ -576,22 +569,6 @@ GCC_ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/
 
 if [ "$1" == "config" ];
 then
-  if [ "$2" == "info" ];
-  then
-    source "$SETTINGS"
-    echo
-    echo "$(tput bold)Configured po-util Settings:$(tput sgr0)"
-    echo
-    echo "$(tput bold)Firmware Branches:$(tput sgr0)"
-    echo "$(tput bold)Particle: $(tput setaf 6)$BRANCH$(tput sgr0)"
-    echo "$(tput bold)Duo: $(tput setaf 6)$BRANCH_DUO$(tput sgr0)"
-    echo
-    echo "$(tput bold)DFU Baud Rate: $(tput setaf 6)$DFUBAUDRATE$(tput sgr0)"
-    echo "$(tput bold)Automatic Headers: $(tput setaf 6)$AUTO_HEADER$(tput sgr0)"
-    echo
-    exit
-  fi
-
   rm "$SETTINGS"
   config
   exit
@@ -607,6 +584,23 @@ fi
 
 # Import our overrides from the ~/.po file.
 source "$SETTINGS"
+
+if [ "$1" == "info" ];
+then
+  echo
+  echo "$(tput bold)$(tput setaf 3)$(date)$(tput sgr0)"
+  echo
+  echo "$(tput bold)Configured Settings:$(tput sgr0)"
+  echo
+  echo "$(tput bold)Firmware Branches:$(tput sgr0)"
+  echo "$(tput bold)Particle: $(tput setaf 6)$BRANCH$(tput sgr0)"
+  echo "$(tput bold)Duo: $(tput setaf 6)$BRANCH_DUO$(tput sgr0)"
+  echo
+  echo "$(tput bold)DFU Baud Rate: $(tput setaf 6)$DFUBAUDRATE$(tput sgr0)"
+  echo "$(tput bold)Automatic Headers: $(tput setaf 6)$AUTO_HEADER$(tput sgr0)"
+  echo
+  exit
+fi
 
 #Import nvm if installed
 export NVM_DIR="$HOME/.nvm"
