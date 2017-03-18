@@ -32,259 +32,259 @@
 # Helper functions
 function pause()
 {
-  read -rp "$*"
+    read -rp "$*"
 }
 
 blue_echo()
 {
-  if [ -t 1 ];
-  then
-   echo "$(tput setaf 6)$(tput bold)$MESSAGE$(tput sgr0)"
-  else
-   echo "$MESSAGE"
-fi
+    if [ -t 1 ];
+    then
+        echo "$(tput setaf 6)$(tput bold)$MESSAGE$(tput sgr0)"
+    else
+        echo "$MESSAGE"
+    fi
 }
 
 green_echo()
 {
-  if [ -t 1 ];
-  then
-    echo "$(tput setaf 2)$(tput bold)$MESSAGE$(tput sgr0)"
-  else
-    echo "$MESSAGE"
- fi
+    if [ -t 1 ];
+    then
+        echo "$(tput setaf 2)$(tput bold)$MESSAGE$(tput sgr0)"
+    else
+        echo "$MESSAGE"
+    fi
 }
 
 red_echo()
 {
-  if [ -t 1 ];
-  then
-   echo "$(tput setaf 1)$(tput bold)$MESSAGE$(tput sgr0)"
-  else
-   echo "$MESSAGE"
- fi
+    if [ -t 1 ];
+    then
+        echo "$(tput setaf 1)$(tput bold)$MESSAGE$(tput sgr0)"
+    else
+        echo "$MESSAGE"
+    fi
 }
 
 function find_objects() #Consolidated function
 {
-  if [ "$1" != "" ];
-  then
-    case "$1" in
-      */)
-       #"has slash"
-       DEVICESFILE="${1%?}"
-       FIRMWAREDIR="${1%?}"
-       FIRMWAREBIN="${1%?}"
-       DIRECTORY="${1%?}"
-       ;;
-     *)
-       echo "doesn't have a slash" > /dev/null
-     DEVICESFILE="$1"
-     FIRMWAREDIR="$1"
-     FIRMWAREBIN="$1"
-     DIRECTORY="$1"
-       ;;
-    esac
-      if [ -f "$CWD/$DEVICESFILE/devices.txt" ] || [ -d "$CWD/$FIRMWAREDIR/firmware" ] || [ -f "$CWD/$FIRMWAREBIN/bin/firmware.bin" ];
-      then
-      DEVICESFILE="$CWD/$DEVICESFILE/devices.txt"
-      FIRMWAREDIR="$CWD/$FIRMWAREDIR/firmware"
-      FIRMWAREBIN="$CWD/$FIRMWAREBIN/bin/firmware.bin"
-  else
-        if [ -d "$DIRECTORY" ] && [ -d "$DIRECTORY/firmware" ];
+    if [ "$1" != "" ];
+    then
+        case "$1" in
+            */)
+                #"has slash"
+                DEVICESFILE="${1%?}"
+                FIRMWAREDIR="${1%?}"
+                FIRMWAREBIN="${1%?}"
+                DIRECTORY="${1%?}"
+            ;;
+            *)
+                echo "doesn't have a slash" > /dev/null
+                DEVICESFILE="$1"
+                FIRMWAREDIR="$1"
+                FIRMWAREBIN="$1"
+                DIRECTORY="$1"
+            ;;
+        esac
+        if [ -f "$CWD/$DEVICESFILE/devices.txt" ] || [ -d "$CWD/$FIRMWAREDIR/firmware" ] || [ -f "$CWD/$FIRMWAREBIN/bin/firmware.bin" ];
         then
-          DEVICESFILE="$DIRECTORY/devices.txt"
-          FIRMWAREDIR="$DIRECTORY/firmware"
-          FIRMWAREBIN="$DIRECTORY/bin/firmware.bin"
+            DEVICESFILE="$CWD/$DEVICESFILE/devices.txt"
+            FIRMWAREDIR="$CWD/$FIRMWAREDIR/firmware"
+            FIRMWAREBIN="$CWD/$FIRMWAREBIN/bin/firmware.bin"
         else
-          if [ -d "$CWD/$DIRECTORY" ] && [ -d "$CWD/firmware" ];
-          then
-            DEVICESFILE="$CWD/$DIRECTORY/../devices.txt"
-            FIRMWAREDIR="$CWD/$DIRECTORY"
-            FIRMWAREBIN="$CWD/$DIRECTORY/../bin/firmware.bin"
-          else
-            if [ "$DIRECTORY" == "." ] && [ -f "$CWD/main.cpp" ];
+            if [ -d "$DIRECTORY" ] && [ -d "$DIRECTORY/firmware" ];
             then
-              cd "$CWD/.."
-              DEVICESFILE="$(pwd)/devices.txt"
-              FIRMWAREDIR="$CWD"
-              FIRMWAREBIN="$(pwd)/bin/firmware.bin"
+                DEVICESFILE="$DIRECTORY/devices.txt"
+                FIRMWAREDIR="$DIRECTORY/firmware"
+                FIRMWAREBIN="$DIRECTORY/bin/firmware.bin"
             else
-              echo
-              MESSAGE="Firmware not found!" ; red_echo
-              MESSAGE="Please run \"po init\" to setup this repository or choose a valid directory." ; blue_echo
-              echo
-              exit
+                if [ -d "$CWD/$DIRECTORY" ] && [ -d "$CWD/firmware" ];
+                then
+                    DEVICESFILE="$CWD/$DIRECTORY/../devices.txt"
+                    FIRMWAREDIR="$CWD/$DIRECTORY"
+                    FIRMWAREBIN="$CWD/$DIRECTORY/../bin/firmware.bin"
+                else
+                    if [ "$DIRECTORY" == "." ] && [ -f "$CWD/main.cpp" ];
+                    then
+                        cd "$CWD/.."
+                        DEVICESFILE="$(pwd)/devices.txt"
+                        FIRMWAREDIR="$CWD"
+                        FIRMWAREBIN="$(pwd)/bin/firmware.bin"
+                    else
+                        echo
+                        MESSAGE="Firmware not found!" ; red_echo
+                        MESSAGE="Please run \"po init\" to setup this repository or choose a valid directory." ; blue_echo
+                        echo
+                        exit
+                    fi
+                fi
             fi
-          fi
         fi
-  fi
-else
-  DEVICESFILE="$CWD/devices.txt"
-  FIRMWAREDIR="$CWD/firmware"
-  FIRMWAREBIN="$CWD/bin/firmware.bin"
-fi
-
-if [ -d "$FIRMWAREDIR" ];
-  then
-    FIRMWAREDIR="$FIRMWAREDIR"
-  else
-    if [ "$DIRWARNING" == "true" ];
-    then
-      echo
-      MESSAGE="Firmware directory not found!" ; red_echo
-      MESSAGE="Please run \"po init\" to setup this repository or choose a valid directory." ; blue_echo
-      echo
-      exit
+    else
+        DEVICESFILE="$CWD/devices.txt"
+        FIRMWAREDIR="$CWD/firmware"
+        FIRMWAREBIN="$CWD/bin/firmware.bin"
     fi
-  FINDDIRFAIL="true"
-fi
 
-if [ -f "$DEVICESFILE" ];
-  then
-    DEVICES="$(cat $DEVICESFILE)"
-  else
-    if [ "$DEVICEWARNING" == "true" ];
+    if [ -d "$FIRMWAREDIR" ];
     then
-    echo
-    MESSAGE="devices.txt not found!" ; red_echo
-    MESSAGE="You need to create a \"devices.txt\" file in your project directory with the names
-of your devices on each line." ; blue_echo
-    MESSAGE="Example:" ; green_echo
-    echo "    product1
+        FIRMWAREDIR="$FIRMWAREDIR"
+    else
+        if [ "$DIRWARNING" == "true" ];
+        then
+            echo
+            MESSAGE="Firmware directory not found!" ; red_echo
+            MESSAGE="Please run \"po init\" to setup this repository or choose a valid directory." ; blue_echo
+            echo
+            exit
+        fi
+        FINDDIRFAIL="true"
+    fi
+
+    if [ -f "$DEVICESFILE" ];
+    then
+        DEVICES="$(cat $DEVICESFILE)"
+    else
+        if [ "$DEVICEWARNING" == "true" ];
+        then
+            echo
+            MESSAGE="devices.txt not found!" ; red_echo
+            MESSAGE="You need to create a \"devices.txt\" file in your project directory with the names
+            of your devices on each line." ; blue_echo
+            MESSAGE="Example:" ; green_echo
+            echo "    product1
     product2
     product3
-"
-fi
-FINDDEVICESFAIL="true"
-fi
-
-if [ -f "$FIRMWAREBIN" ];
-  then
-    FIRMWAREBIN="$FIRMWAREBIN"
-  else
-    if [ "$BINWARNING" == "true" ];
-    then
-      echo
-      MESSAGE="Firmware Binary not found!" ; red_echo
-      MESSAGE="Perhaps you need to build your firmware?" ; blue_echo
-      echo
+            "
+        fi
+        FINDDEVICESFAIL="true"
     fi
-  FINDBINFAIL="true"
-fi
+
+    if [ -f "$FIRMWAREBIN" ];
+    then
+        FIRMWAREBIN="$FIRMWAREBIN"
+    else
+        if [ "$BINWARNING" == "true" ];
+        then
+            echo
+            MESSAGE="Firmware Binary not found!" ; red_echo
+            MESSAGE="Perhaps you need to build your firmware?" ; blue_echo
+            echo
+        fi
+        FINDBINFAIL="true"
+    fi
 }
 
 build_message()
 {
-  echo
-  cd "$FIRMWAREDIR"/.. || exit
-  BINARYDIR="$(pwd)/bin"
-  MESSAGE="Binary saved to $BINARYDIR/firmware.bin" ; green_echo
-  echo
-  exit
+    echo
+    cd "$FIRMWAREDIR"/.. || exit
+    BINARYDIR="$(pwd)/bin"
+    MESSAGE="Binary saved to $BINARYDIR/firmware.bin" ; green_echo
+    echo
+    exit
 }
 
 dfu_open()
 {
-  if [ "$DEVICE_TYPE" == "duo" ];
-  then
-    if [ "$MODEM_DUO" != "" ];
+    if [ "$DEVICE_TYPE" == "duo" ];
     then
-    MODEM="$MODEM_DUO"
+        if [ "$MODEM_DUO" != "" ];
+        then
+            MODEM="$MODEM_DUO"
+        else
+            echo
+            MESSAGE="Device not found!" ; red_echo
+            echo
+            MESSAGE="Your device must be connected by USB."; blue_echo
+            echo
+            exit
+        fi
     else
-      echo
-      MESSAGE="Device not found!" ; red_echo
-      echo
-      MESSAGE="Your device must be connected by USB."; blue_echo
-      echo
-      exit
+        if [ "$MODEM" != "" ];
+        then
+            MODEM="$MODEM"
+        else
+            echo
+            MESSAGE="Device not found!" ; red_echo
+            echo
+            MESSAGE="Your device must be connected by USB."; blue_echo
+            echo
+            exit
+        fi
     fi
-  else
-    if [ "$MODEM" != "" ];
-    then
-    MODEM="$MODEM"
-    else
-      echo
-      MESSAGE="Device not found!" ; red_echo
-      echo
-      MESSAGE="Your device must be connected by USB."; blue_echo
-      echo
-      exit
-    fi
-  fi
 
-  if [ "$MODEM" ];
-  then
-    stty -F "$MODEM" "$DFUBAUDRATE" > /dev/null
-  fi
+    if [ "$MODEM" ];
+    then
+        stty -F "$MODEM" "$DFUBAUDRATE" > /dev/null
+    fi
 }
 
 switch_branch()
 {
-if [ "$1" != "" ];
-then
-  if [ "$(git rev-parse --abbrev-ref HEAD)" != "$1" ];
-  then
-    git checkout "$1" > /dev/null
-  fi
-else
-  if [ "$(git rev-parse --abbrev-ref HEAD)" != "$BRANCH" ];
-  then
-    git checkout "$BRANCH" > /dev/null
-  fi
-fi
+    if [ "$1" != "" ];
+    then
+        if [ "$(git rev-parse --abbrev-ref HEAD)" != "$1" ];
+        then
+            git checkout "$1" > /dev/null
+        fi
+    else
+        if [ "$(git rev-parse --abbrev-ref HEAD)" != "$BRANCH" ];
+        then
+            git checkout "$BRANCH" > /dev/null
+        fi
+    fi
 }
 
 common_commands() #List common commands
 {
-  echo
-  MESSAGE="Common commands include:
-build, flash, clean, ota, dfu, serial, init, config, setup, library"
-  blue_echo
-  echo
+    echo
+    MESSAGE="Common commands include:
+    build, flash, clean, ota, dfu, serial, init, config, setup, library"
+    blue_echo
+    echo
 }
 
 build_firmware()
 {
 
-#Temporary fix for http://community.particle.io/t/stm32-usb-otg-driver-error-on-v0-6-0/26814
+    #Temporary fix for http://community.particle.io/t/stm32-usb-otg-driver-error-on-v0-6-0/26814
 
-# STRING='CPPSRC += $(call target_files,$(BOOTLOADER_MODULE_PATH)/../hal/src/stm32/,newlib.cpp)'
-# echo "$STRING" >> "$FIRMWARE_PARTICLE/firmware/bootloader/src/electron/sources.mk"
-# sed "126s/.*/#define USB_OTG_MAX_TX_FIFOS (4*2)/" "$FIRMWARE_PARTICLE/firmware/platform/MCU/STM32F2xx/SPARK_Firmware_Driver/inc/platform_config.h" > temp.particle
-# sed "132s/.*/#define USB_OTG_MAX_TX_FIFOS (6*2)/" temp.particle > temp.particle.1
-# rm -f "$FIRMWARE_PARTICLE/firmware/platform/MCU/STM32F2xx/SPARK_Firmware_Driver/inc/platform_config.h"
-# mv temp.particle.1 "$FIRMWARE_PARTICLE/firmware/platform/MCU/STM32F2xx/SPARK_Firmware_Driver/inc/platform_config.h"
-# rm -f temp.particle
+    # STRING='CPPSRC += $(call target_files,$(BOOTLOADER_MODULE_PATH)/../hal/src/stm32/,newlib.cpp)'
+    # echo "$STRING" >> "$FIRMWARE_PARTICLE/firmware/bootloader/src/electron/sources.mk"
+    # sed "126s/.*/#define USB_OTG_MAX_TX_FIFOS (4*2)/" "$FIRMWARE_PARTICLE/firmware/platform/MCU/STM32F2xx/SPARK_Firmware_Driver/inc/platform_config.h" > temp.particle
+    # sed "132s/.*/#define USB_OTG_MAX_TX_FIFOS (6*2)/" temp.particle > temp.particle.1
+    # rm -f "$FIRMWARE_PARTICLE/firmware/platform/MCU/STM32F2xx/SPARK_Firmware_Driver/inc/platform_config.h"
+    # mv temp.particle.1 "$FIRMWARE_PARTICLE/firmware/platform/MCU/STM32F2xx/SPARK_Firmware_Driver/inc/platform_config.h"
+    # rm -f temp.particle
 
-# FIXED in release/v0.6.1-rc.1
-if [ "$DEVICE_TYPE" == "duo" ];
-then
-  # RedBear DUO
-  cd "$CWD" || exit
-  sed "2s/.*/START_DFU_FLASHER_SERIAL_SPEED=$DFUBAUDRATE/" "$FIRMWARE_DUO/firmware/build/module-defaults.mk" > temp.particle
-  rm -f "$FIRMWARE_DUO/firmware/build/module-defaults.mk"
-  mv temp.particle "$FIRMWARE_DUO/firmware/build/module-defaults.mk"
-else
-  cd "$CWD" || exit
-  sed "2s/.*/START_DFU_FLASHER_SERIAL_SPEED=$DFUBAUDRATE/" "$FIRMWARE_PARTICLE/firmware/build/module-defaults.mk" > temp.particle
-  rm -f "$FIRMWARE_PARTICLE/firmware/build/module-defaults.mk"
-  mv temp.particle "$FIRMWARE_PARTICLE/firmware/build/module-defaults.mk"
-fi
+    # FIXED in release/v0.6.1-rc.1
+    if [ "$DEVICE_TYPE" == "duo" ];
+    then
+        # RedBear DUO
+        cd "$CWD" || exit
+        sed "2s/.*/START_DFU_FLASHER_SERIAL_SPEED=$DFUBAUDRATE/" "$FIRMWARE_DUO/firmware/build/module-defaults.mk" > temp.particle
+        rm -f "$FIRMWARE_DUO/firmware/build/module-defaults.mk"
+        mv temp.particle "$FIRMWARE_DUO/firmware/build/module-defaults.mk"
+    else
+        cd "$CWD" || exit
+        sed "2s/.*/START_DFU_FLASHER_SERIAL_SPEED=$DFUBAUDRATE/" "$FIRMWARE_PARTICLE/firmware/build/module-defaults.mk" > temp.particle
+        rm -f "$FIRMWARE_PARTICLE/firmware/build/module-defaults.mk"
+        mv temp.particle "$FIRMWARE_PARTICLE/firmware/build/module-defaults.mk"
+    fi
 
-  MESSAGE="                                                 __      __  __
-                                                /  |    /  |/  |
-          ______    ______           __    __  _██ |_   ██/ ██ |
-         /      \  /      \  ______ /  |  /  |/ ██   |  /  |██ |
-        /██████  |/██████  |/      |██ |  ██ |██████/   ██ |██ |
-        ██ |  ██ |██ |  ██ |██████/ ██ |  ██ |  ██ | __ ██ |██ |
-        ██ |__██ |██ \__██ |        ██ \__██ |  ██ |/  |██ |██ |
-        ██    ██/ ██    ██/         ██    ██/   ██  ██/ ██ |██ |
-        ███████/   ██████/           ██████/     ████/  ██/ ██/
-        ██ |
-        ██ |
-        ██/         Building firmware for $DEVICE_TYPE...
-  "
+    MESSAGE="                                                     __      __  __
+                                                    /  |    /  |/  |
+              ______    ______           __    __  _██ |_   ██/ ██ |
+             /      \  /      \  ______ /  |  /  |/ ██   |  /  |██ |
+            /██████  |/██████  |/      |██ |  ██ |██████/   ██ |██ |
+            ██ |  ██ |██ |  ██ |██████/ ██ |  ██ |  ██ | __ ██ |██ |
+            ██ |__██ |██ \__██ |        ██ \__██ |  ██ |/  |██ |██ |
+            ██    ██/ ██    ██/         ██    ██/   ██  ██/ ██ |██ |
+            ███████/   ██████/           ██████/     ████/  ██/ ██/
+            ██ |
+            ██ |
+            ██/         Building firmware for $DEVICE_TYPE...
+    "
   blue_echo
 
   if [ "$DEVICE_TYPE" == "duo" ];
@@ -377,168 +377,168 @@ config()
 
   # Particle
   echo
-  MESSAGE="Which branch of the Particle firmware would you like to use?
-You can find the branches at https://github.com/spark/firmware/branches
-If you are unsure, please enter \"release/stable\"" ; blue_echo
-  read -rp "Branch: " branch_variable
-  BRANCH="$branch_variable"
-  echo BRANCH="$BRANCH" >> $SETTINGS
-  echo
+    MESSAGE="Which branch of the Particle firmware would you like to use?
+    You can find the branches at https://github.com/spark/firmware/branches
+    If you are unsure, please enter \"release/stable\"" ; blue_echo
+    read -rp "Branch: " branch_variable
+    BRANCH="$branch_variable"
+    echo BRANCH="$BRANCH" >> $SETTINGS
+    echo
 
-  # RedBear DUO
-  MESSAGE="Which branch of the RedBear DUO firmware would you like to use?
-You can find the branches at https://github.com/redbear/Duo/branches
-If you are unsure, please enter \"duo\"" ; blue_echo
-  read -rp "Branch: " branch_variable
-  BRANCH_DUO="$branch_variable"
-  echo BRANCH_DUO="$BRANCH_DUO" >> $SETTINGS
+    # RedBear DUO
+    MESSAGE="Which branch of the RedBear DUO firmware would you like to use?
+    You can find the branches at https://github.com/redbear/Duo/branches
+    If you are unsure, please enter \"duo\"" ; blue_echo
+    read -rp "Branch: " branch_variable
+    BRANCH_DUO="$branch_variable"
+    echo BRANCH_DUO="$BRANCH_DUO" >> $SETTINGS
 
-  echo
-  MESSAGE="Which baud rate would you like to use to put devices into DFU mode?
-Enter \"default\" for the default Particle baud rate of 14400.
-Enter \"po\" to use the po-util recommended baud rate of 19200." ; blue_echo
-  read -rp "Baud Rate: " dfu_variable
-  if [ "$dfu_variable" == "default" ];
-  then
-    DFUBAUDRATE=14400
-  fi
-  if [ "$dfu_variable" == "po" ];
-  then
-    DFUBAUDRATE=19200
-  fi
-  echo DFUBAUDRATE="$DFUBAUDRATE" >> $SETTINGS
-  echo
-  MESSAGE="Shoud po-util automatically add and remove headers when using libraries?" ; blue_echo
-  read -rp "(yes/no): " response
-  if [ "$response" == "yes" ] || [ "$response" == "y" ] || [ "$response" == "Y" ];
-  then
-  AUTO_HEADER="true"
-  else
-  AUTO_HEADER="false"
-  fi
-  echo AUTO_HEADER="$AUTO_HEADER" >> $SETTINGS
-  echo
+    echo
+    MESSAGE="Which baud rate would you like to use to put devices into DFU mode?
+    Enter \"default\" for the default Particle baud rate of 14400.
+    Enter \"po\" to use the po-util recommended baud rate of 19200." ; blue_echo
+    read -rp "Baud Rate: " dfu_variable
+    if [ "$dfu_variable" == "default" ];
+    then
+        DFUBAUDRATE=14400
+    fi
+    if [ "$dfu_variable" == "po" ];
+    then
+        DFUBAUDRATE=19200
+    fi
+    echo DFUBAUDRATE="$DFUBAUDRATE" >> $SETTINGS
+    echo
+    MESSAGE="Shoud po-util automatically add and remove headers when using libraries?" ; blue_echo
+    read -rp "(yes/no): " response
+    if [ "$response" == "yes" ] || [ "$response" == "y" ] || [ "$response" == "Y" ];
+    then
+        AUTO_HEADER="true"
+    else
+        AUTO_HEADER="false"
+    fi
+    echo AUTO_HEADER="$AUTO_HEADER" >> $SETTINGS
+    echo
 }
 
 addLib()
 {
-  if [ -f "$FIRMWAREDIR/$LIB_NAME.cpp" ] || [ -f "$FIRMWAREDIR/$LIB_NAME.h" ] || [ -d "$FIRMWAREDIR/$LIB_NAME" ];
-  then
-    echo
-    MESSAGE="Library $LIB_NAME is already added to this project..." ; red_echo
-  else
-    echo
-    MESSAGE="Adding library $LIB_NAME to this project..." ; green_echo
+    if [ -f "$FIRMWAREDIR/$LIB_NAME.cpp" ] || [ -f "$FIRMWAREDIR/$LIB_NAME.h" ] || [ -d "$FIRMWAREDIR/$LIB_NAME" ];
+    then
+        echo
+        MESSAGE="Library $LIB_NAME is already added to this project..." ; red_echo
+    else
+        echo
+        MESSAGE="Adding library $LIB_NAME to this project..." ; green_echo
 
-# Include library as a folder full of symlinks -- This is the new feature
+        # Include library as a folder full of symlinks -- This is the new feature
 
-mkdir -p "$FIRMWAREDIR/$LIB_NAME"
+        mkdir -p "$FIRMWAREDIR/$LIB_NAME"
 
-if [ -d "$LIBRARY/$LIB_NAME/firmware" ];
-then
-  ln -s $LIBRARY/$LIB_NAME/firmware/*.h "$FIRMWAREDIR/$LIB_NAME"
-  ln -s $LIBRARY/$LIB_NAME/firmware/*.cpp "$FIRMWAREDIR/$LIB_NAME"
-else
-  if [ -d "$LIBRARY/$LIB_NAME/src" ];
-  then
-    ln -s $LIBRARY/$LIB_NAME/src/*.h "$FIRMWAREDIR/$LIB_NAME"
-    ln -s $LIBRARY/$LIB_NAME/src/*.cpp "$FIRMWAREDIR/$LIB_NAME"
-  else
+        if [ -d "$LIBRARY/$LIB_NAME/firmware" ];
+        then
+            ln -s $LIBRARY/$LIB_NAME/firmware/*.h "$FIRMWAREDIR/$LIB_NAME"
+            ln -s $LIBRARY/$LIB_NAME/firmware/*.cpp "$FIRMWAREDIR/$LIB_NAME"
+        else
+            if [ -d "$LIBRARY/$LIB_NAME/src" ];
+            then
+                ln -s $LIBRARY/$LIB_NAME/src/*.h "$FIRMWAREDIR/$LIB_NAME"
+                ln -s $LIBRARY/$LIB_NAME/src/*.cpp "$FIRMWAREDIR/$LIB_NAME"
+            else
 
-    ln -s $LIBRARY/$LIB_NAME/*.h "$FIRMWAREDIR/$LIB_NAME"
-    ln -s $LIBRARY/$LIB_NAME/*.cpp "$FIRMWAREDIR/$LIB_NAME"
-  fi
-fi
+                ln -s $LIBRARY/$LIB_NAME/*.h "$FIRMWAREDIR/$LIB_NAME"
+                ln -s $LIBRARY/$LIB_NAME/*.cpp "$FIRMWAREDIR/$LIB_NAME"
+            fi
+        fi
 
 
-  fi
+    fi
 }
 
-  getLib()
-  {
+getLib()
+{
     if (ls -1 "$LIBRARY" | grep "$LIB_NAME") &> /dev/null ;
     then
-      echo
-      MESSAGE="Library $LIB_NAME is already installed..." ; blue_echo
+        echo
+        MESSAGE="Library $LIB_NAME is already installed..." ; blue_echo
     else
-      echo
-      MESSAGE="Dowloading library $LIB_NAME..." ; blue_echo
-      echo
-      git clone $i
-     fi
-  }
+        echo
+        MESSAGE="Dowloading library $LIB_NAME..." ; blue_echo
+        echo
+        git clone $i
+    fi
+}
 
-  addHeaders()
-  {
+addHeaders()
+{
     [ "$1" != "" ] && HEADER="$1" || HEADER="$LIB_NAME"
     if [ "$AUTO_HEADER" == "true" ];
     then
-    if (grep "#include \"$HEADER/$HEADER.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ;
-    then
-      echo "Already imported" &> /dev/null
-    else
-      echo "#include \"$HEADER/$HEADER.h\"" > "$FIRMWAREDIR/main.cpp.temp"
-      cat "$FIRMWAREDIR/main.cpp" >> "$FIRMWAREDIR/main.cpp.temp"
-      rm "$FIRMWAREDIR/main.cpp"
-      mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
+        if (grep "#include \"$HEADER/$HEADER.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ;
+        then
+            echo "Already imported" &> /dev/null
+        else
+            echo "#include \"$HEADER/$HEADER.h\"" > "$FIRMWAREDIR/main.cpp.temp"
+            cat "$FIRMWAREDIR/main.cpp" >> "$FIRMWAREDIR/main.cpp.temp"
+            rm "$FIRMWAREDIR/main.cpp"
+            mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
+        fi
     fi
-    fi
-  }
+}
 
-  rmHeaders()
+rmHeaders()
 {
-  if [ "$AUTO_HEADER" == "true" ];
-  then
-  if (grep "#include \"$1/$1.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ;
-  then
-    grep -v "#include \"$1/$1.h\"" "$FIRMWAREDIR/main.cpp" > "$FIRMWAREDIR/main.cpp.temp"
-    rm "$FIRMWAREDIR/main.cpp"
-    mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
-  fi
+    if [ "$AUTO_HEADER" == "true" ];
+    then
+        if (grep "#include \"$1/$1.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ;
+        then
+            grep -v "#include \"$1/$1.h\"" "$FIRMWAREDIR/main.cpp" > "$FIRMWAREDIR/main.cpp.temp"
+            rm "$FIRMWAREDIR/main.cpp"
+            mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
+        fi
 
-  if (grep "#include \"$1.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ; # Backwards support
-  then
-    grep -v "#include \"$1.h\"" "$FIRMWAREDIR/main.cpp" > "$FIRMWAREDIR/main.cpp.temp"
-    rm "$FIRMWAREDIR/main.cpp"
-    mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
-  fi
+        if (grep "#include \"$1.h\"" "$FIRMWAREDIR/main.cpp") &> /dev/null ; # Backwards support
+        then
+            grep -v "#include \"$1.h\"" "$FIRMWAREDIR/main.cpp" > "$FIRMWAREDIR/main.cpp.temp"
+            rm "$FIRMWAREDIR/main.cpp"
+            mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
+        fi
 
-  if (grep "#include <$1.h>" "$FIRMWAREDIR/main.cpp") &> /dev/null ; # Other support
-  then
-    grep -v "#include <$1.h>" "$FIRMWAREDIR/main.cpp" > "$FIRMWAREDIR/main.cpp.temp"
-    rm "$FIRMWAREDIR/main.cpp"
-    mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
-  fi
+        if (grep "#include <$1.h>" "$FIRMWAREDIR/main.cpp") &> /dev/null ; # Other support
+        then
+            grep -v "#include <$1.h>" "$FIRMWAREDIR/main.cpp" > "$FIRMWAREDIR/main.cpp.temp"
+            rm "$FIRMWAREDIR/main.cpp"
+            mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
+        fi
 
-  fi
+    fi
 }
 # End of helper functions
 
 if [ "$1" == "" ]; # Print help
 then
-MESSAGE="                                                     __      __  __
-                                                    /  |    /  |/  |
-              ______    ______           __    __  _██ |_   ██/ ██ |
-             /      \  /      \  ______ /  |  /  |/ ██   |  /  |██ |
-            /██████  |/██████  |/      |██ |  ██ |██████/   ██ |██ |
-            ██ |  ██ |██ |  ██ |██████/ ██ |  ██ |  ██ | __ ██ |██ |
-            ██ |__██ |██ \__██ |        ██ \__██ |  ██ |/  |██ |██ |
-            ██    ██/ ██    ██/         ██    ██/   ██  ██/ ██ |██ |
-            ███████/   ██████/           ██████/     ████/  ██/ ██/
-            ██ |
-            ██ |
-            ██/               https://nrobinson2000.github.io/po-util/
-"
+    MESSAGE="                                                     __      __  __
+                                                  /  |    /  |/  |
+            ______    ______           __    __  _██ |_   ██/ ██ |
+           /      \  /      \  ______ /  |  /  |/ ██   |  /  |██ |
+          /██████  |/██████  |/      |██ |  ██ |██████/   ██ |██ |
+          ██ |  ██ |██ |  ██ |██████/ ██ |  ██ |  ██ | __ ██ |██ |
+          ██ |__██ |██ \__██ |        ██ \__██ |  ██ |/  |██ |██ |
+          ██    ██/ ██    ██/         ██    ██/   ██  ██/ ██ |██ |
+          ███████/   ██████/           ██████/     ████/  ██/ ██/
+          ██ |
+          ██ |
+          ██/               https://nrobinson2000.github.io/po-util/
+  "
 blue_echo
-echo "Copyright (GPL) 2017 Nathan D. Robinson
+    echo "Copyright (GPL) 2017 Nathan D. Robinson
 
-Usage: po DEVICE_TYPE COMMAND DEVICE_NAME
-       po DFU_COMMAND
-       po install [full_install_path]
-       po library LIBRARY_COMMAND
+    Usage: po DEVICE_TYPE COMMAND DEVICE_NAME
+    po DFU_COMMAND
+    po install [full_install_path]
+    po library LIBRARY_COMMAND
 
-Run \"man po\" for help.
-"
+    Run \"man po\" for help.
+    "
 exit
 fi
 
@@ -782,90 +782,90 @@ then
     rm node-*.txt
     if [ "$(node -v)" == "$NODEVERSION" ];
     then
-    MESSAGE="Node.js version $NODEVERSION is already installed."; blue_echo
+        MESSAGE="Node.js version $NODEVERSION is already installed."; blue_echo
     else
-      # MESSAGE="Installing Node.js version $NODEVERSION..." ; blue_echo
-      curl -Ss https://api.github.com/repos/nodesource/distributions/contents/"$DISTRO" | grep "name"  | grep "setup_"| grep -v "setup_iojs"| grep -v "setup_dev" > node-files.txt
-      tail -1 node-files.txt > node-oneline.txt
-      sed -n 's/.*\"\(.*.\)\".*/\1/p' node-oneline.txt > node-version.txt
-      # MESSAGE="Installing Node.js version $(cat node-version.txt)..." blue_echo
-      # curl -sL https://"$DISTRO".nodesource.com/"$(cat node-version.txt)" | sudo -E bash -
-      curl -sL https://"$DISTRO".nodesource.com/setup_6.x | sudo -E bash -
-      rm -rf node-*.txt
+        # MESSAGE="Installing Node.js version $NODEVERSION..." ; blue_echo
+        curl -Ss https://api.github.com/repos/nodesource/distributions/contents/"$DISTRO" | grep "name"  | grep "setup_"| grep -v "setup_iojs"| grep -v "setup_dev" > node-files.txt
+        tail -1 node-files.txt > node-oneline.txt
+        sed -n 's/.*\"\(.*.\)\".*/\1/p' node-oneline.txt > node-version.txt
+        # MESSAGE="Installing Node.js version $(cat node-version.txt)..." blue_echo
+        # curl -sL https://"$DISTRO".nodesource.com/"$(cat node-version.txt)" | sudo -E bash -
+        curl -sL https://"$DISTRO".nodesource.com/setup_6.x | sudo -E bash -
+        rm -rf node-*.txt
     fi
-    fi
+fi
 
-    if [ "$DISTRO" == "deb" ];
-    then
-        sudo $INSTALLER git nodejs python-software-properties python g++ make build-essential libusb-1.0-0-dev libarchive-zip-perl screen libc6-i386 autoconf automake
-    fi
+if [ "$DISTRO" == "deb" ];
+then
+    sudo $INSTALLER git nodejs python-software-properties python g++ make build-essential libusb-1.0-0-dev libarchive-zip-perl screen libc6-i386 autoconf automake
+fi
 
-    if [ "$DISTRO" == "rpm" ];
-    then
-        sudo $INSTALLER git nodejs python make automake gcc gcc-c++ kernel-devel libusb glibc.i686 vim-common perl-Archive-Zip-1.58-1.fc24.noarch screen autoconf
-    fi
+if [ "$DISTRO" == "rpm" ];
+then
+    sudo $INSTALLER git nodejs python make automake gcc gcc-c++ kernel-devel libusb glibc.i686 vim-common perl-Archive-Zip-1.58-1.fc24.noarch screen autoconf
+fi
 
-    if [ "$DISTRO" == "arch" ];
-    then
-        sudo $INSTALLER git nodejs npm python gcc make automake libusb lib32-glibc vim yaourt screen autoconf
-        yaourt -S perl-archive-zip
-    fi
+if [ "$DISTRO" == "arch" ];
+then
+    sudo $INSTALLER git nodejs npm python gcc make automake libusb lib32-glibc vim yaourt screen autoconf
+    yaourt -S perl-archive-zip
+fi
 
-    # Install dfu-util
-    MESSAGE="Installing dfu-util (requires sudo)..." ; blue_echo
-    cd "$BASE_DIR" || exit
-    git clone git://git.code.sf.net/p/dfu-util/dfu-util
-    cd dfu-util || exit
-    git pull
-    ./autogen.sh
-    ./configure
-    make
-    sudo make install
-    cd ..
+# Install dfu-util
+MESSAGE="Installing dfu-util (requires sudo)..." ; blue_echo
+cd "$BASE_DIR" || exit
+git clone git://git.code.sf.net/p/dfu-util/dfu-util
+cd dfu-util || exit
+git pull
+./autogen.sh
+./configure
+make
+sudo make install
+cd ..
 
-    # Install particle-cli
-    MESSAGE="Installing particle-cli..." ; blue_echo
-    sudo npm install -g --unsafe-perm node-pre-gyp npm serialport particle-cli
+# Install particle-cli
+MESSAGE="Installing particle-cli..." ; blue_echo
+sudo npm install -g --unsafe-perm node-pre-gyp npm serialport particle-cli
 
-    # Install udev rules file
-    MESSAGE="Installing udev rule (requires sudo) ..." ; blue_echo
-    curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/60-po-util.rules
-    sudo mv 60-po-util.rules /etc/udev/rules.d/60-po-util.rules
+# Install udev rules file
+MESSAGE="Installing udev rule (requires sudo) ..." ; blue_echo
+curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/60-po-util.rules
+sudo mv 60-po-util.rules /etc/udev/rules.d/60-po-util.rules
 
-    # Install manpage
-    MESSAGE="Installing po manpage..." ; blue_echo
-    curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/homebrew-po/master/man/po.1
-    sudo mv po.1 /usr/local/share/man/man1/
-    sudo mandb &> /dev/null
+# Install manpage
+MESSAGE="Installing po manpage..." ; blue_echo
+curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/homebrew-po/master/man/po.1
+sudo mv po.1 /usr/local/share/man/man1/
+sudo mandb &> /dev/null
 
-    MESSAGE="Adding $USER to plugdev group..." ; blue_echo
-    sudo usermod -a -G plugdev "$USER"
+MESSAGE="Adding $USER to plugdev group..." ; blue_echo
+sudo usermod -a -G plugdev "$USER"
 
-  cd "$FIRMWARE_PARTICLE" || exit
+cd "$FIRMWARE_PARTICLE" || exit
 
-  if [ "$NOGIT" == "true" ];
-  then
+if [ "$NOGIT" == "true" ];
+then
     MESSAGE="Installing Particle firmware from Github..." ; blue_echo
     git clone https://github.com/spark/firmware.git
-  fi
+fi
 
-  cd "$FIRMWARE_DUO" || exit
+cd "$FIRMWARE_DUO" || exit
 
-  if [ "$NOGIT" == "true" ];
-  then
+if [ "$NOGIT" == "true" ];
+then
     MESSAGE="Installing RedBear DUO firmware from Github..." ; blue_echo
     git clone https://github.com/redbear/firmware.git
-  fi
+fi
 
-  MESSAGE="
-  Thank you for installing po-util. Be sure to check out
-  https://nrobinson2000.github.io/po-util/ if you have any questions,
-  suggestions, comments, or problems.  You can use the message button in the
-  bottom right corner of the site to send me a private message. If need to
-  update po-util just run \"po update\" to download the latest versions of
-  po-util, Particle Firmware and particle-cli, or run \"po install\" to update
-  all dependencies.
-  " ; green_echo
+MESSAGE="
+Thank you for installing po-util. Be sure to check out
+https://nrobinson2000.github.io/po-util/ if you have any questions,
+suggestions, comments, or problems.  You can use the message button in the
+bottom right corner of the site to send me a private message. If need to
+update po-util just run \"po update\" to download the latest versions of
+po-util, Particle Firmware and particle-cli, or run \"po install\" to update
+all dependencies.
+" ; green_echo
   exit
 fi
 
@@ -885,13 +885,13 @@ then
 DEVICE_TYPE="$2"
 else
 echo
-  MESSAGE="Please specify which device type you will be using.
+MESSAGE="Please specify which device type you will be using.
 Example:
-  po init photon" ; blue_echo
+po init photon" ; blue_echo
 echo
 fi
-  mkdir firmware/
-  echo "#include \"Particle.h\"
+mkdir firmware/
+echo "#include \"Particle.h\"
 
 void setup() // Put setup code here to run once
 {
@@ -903,7 +903,7 @@ void loop() // Put code here to loop forever
 
 }" > firmware/main.cpp
 
-  cp ~/.po-util-README.md README.md
+cp ~/.po-util-README.md README.md
 if [ "$DEVICE_TYPE" != "" ];
 then
 echo "---
@@ -958,94 +958,94 @@ fi
 # Open serial monitor for device
 if [ "$1" == "serial" ];
 then
-  if [ "$MODEM" == "" ]; # Don't run screen if device is not connected
-  then
-    MESSAGE="No device connected!" red_echo ; exit
-  else
-    screen -S particle "$MODEM"
-    screen -S particle -X quit && exit || MESSAGE="If \"po serial\" is putting device into DFU mode, power off device, removing battery for Electron, and run \"po serial\" several times.
+if [ "$MODEM" == "" ]; # Don't run screen if device is not connected
+then
+MESSAGE="No device connected!" red_echo ; exit
+else
+screen -S particle "$MODEM"
+screen -S particle -X quit && exit || MESSAGE="If \"po serial\" is putting device into DFU mode, power off device, removing battery for Electron, and run \"po serial\" several times.
 This bug will hopefully be fixed in a later release." && blue_echo
-  fi
-  exit
+fi
+exit
 fi
 
 # Put device into DFU mode
 if [ "$1" == "dfu-open" ];
 then
-  dfu_open
-  exit
+dfu_open
+exit
 fi
 
 # Get device out of DFU mode
 if [ "$1" == "dfu-close" ];
 then
-  dfu-util -d 2b04:D006 -a 0 -i 0 -s 0x080A0000:leave -D /dev/null &> /dev/null
-  exit
+dfu-util -d 2b04:D006 -a 0 -i 0 -s 0x080A0000:leave -D /dev/null &> /dev/null
+exit
 fi
 
 # Update po-util
 if [ "$1" == "update" ];
 then
 
-  if [ "$2" == "duo" ]; # Update just duo firmware
-  then
-    echo
-    MESSAGE="Updating RedBear DUO firmware..." ; blue_echo
-    cd "$FIRMWARE_DUO"/firmware || exit
-    git stash
-    switch_branch "$BRANCH_DUO" &> /dev/null
-    git pull
-    echo
-    exit
-  fi
+if [ "$2" == "duo" ]; # Update just duo firmware
+then
+echo
+MESSAGE="Updating RedBear DUO firmware..." ; blue_echo
+cd "$FIRMWARE_DUO"/firmware || exit
+git stash
+switch_branch "$BRANCH_DUO" &> /dev/null
+git pull
+echo
+exit
+fi
 
-  if [ "$2" == "firmware" ]; # update just particle firmware
-  then
-    echo
-    MESSAGE="Updating Particle firmware..." ; blue_echo
-    cd "$FIRMWARE_PARTICLE"/firmware || exit
-    git stash
-    switch_branch &> /dev/null
-    git pull
-    echo
-    exit
-  fi
+if [ "$2" == "firmware" ]; # update just particle firmware
+then
+echo
+MESSAGE="Updating Particle firmware..." ; blue_echo
+cd "$FIRMWARE_PARTICLE"/firmware || exit
+git stash
+switch_branch &> /dev/null
+git pull
+echo
+exit
+fi
 
 #update both and everything else if not specified
 
 echo
 
-  MESSAGE="Updating RedBear DUO firmware..." ; blue_echo
-  cd "$FIRMWARE_DUO"/firmware || exit
-  git stash
-  #git checkout $BRANCH
-  git pull
+MESSAGE="Updating RedBear DUO firmware..." ; blue_echo
+cd "$FIRMWARE_DUO"/firmware || exit
+git stash
+#git checkout $BRANCH
+git pull
 
 echo
 
-  MESSAGE="Updating Particle firmware..." ; blue_echo
-  cd "$FIRMWARE_PARTICLE"/firmware || exit
-  switch_branch
-  git stash
-  #git checkout $BRANCH
-  git pull
+MESSAGE="Updating Particle firmware..." ; blue_echo
+cd "$FIRMWARE_PARTICLE"/firmware || exit
+switch_branch
+git stash
+#git checkout $BRANCH
+git pull
 
-  echo
+echo
 
-  MESSAGE="Updating particle-cli..." ; blue_echo
-  sudo npm update -g particle-cli
-  echo
-  MESSAGE="Updating po-util.." ; blue_echo
-  rm ~/po-util.sh
-  curl -fsSLo ~/po-util.sh https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
-  chmod +x ~/po-util.sh
-  rm ~/.po-util-README.md
-  curl -fsSLo ~/.po-util-README.md https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util-README.md
-  curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/homebrew-po/master/man/po.1
-  sudo mv po.1 /usr/local/share/man/man1/
-  sudo mandb &> /dev/null
-  echo
-  exit
+MESSAGE="Updating particle-cli..." ; blue_echo
+sudo npm update -g particle-cli
+echo
+MESSAGE="Updating po-util.." ; blue_echo
+rm ~/po-util.sh
+curl -fsSLo ~/po-util.sh https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
+chmod +x ~/po-util.sh
+rm ~/.po-util-README.md
+curl -fsSLo ~/.po-util-README.md https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util-README.md
+curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/homebrew-po/master/man/po.1
+sudo mv po.1 /usr/local/share/man/man1/
+sudo mandb &> /dev/null
+echo
+exit
 fi
 
 #################### Library Manager
@@ -1053,72 +1053,72 @@ fi
 if [ "$1" == "library" ] || [ "$1" == "lib" ];
 then
 
-  LIBRARY=~/.po-util/lib # Create library directory
-  if [ -d "$LIBRARY" ];    # if it is not found.
-  then
-      LIBRARY=~/.po-util/lib
-  else
-    mkdir -p "$LIBRARY"
-  fi
+LIBRARY=~/.po-util/lib # Create library directory
+if [ -d "$LIBRARY" ];    # if it is not found.
+then
+LIBRARY=~/.po-util/lib
+else
+mkdir -p "$LIBRARY"
+fi
 
-  if [ "$2" == "clean" ]; # Prepare for release, remove all symlinks, keeping references in libs.txt
-  then
-  DIRWARNING="true"
-  find_objects "$3"
+if [ "$2" == "clean" ]; # Prepare for release, remove all symlinks, keeping references in libs.txt
+then
+DIRWARNING="true"
+find_objects "$3"
 
-  for file in $(ls -1 $FIRMWAREDIR);
-  do
-  file_base="${file%.*}"
+for file in $(ls -1 $FIRMWAREDIR);
+do
+    file_base="${file%.*}"
     if (ls -1 "$LIBRARY" | grep "$file_base") &> /dev/null ;
     then
-      rm -rf "$FIRMWAREDIR/$file_base" &> /dev/null # Transition
-      rm "$FIRMWAREDIR/$file_base.h" &> /dev/null   # to new
-      rm "$FIRMWAREDIR/$file_base.cpp" &> /dev/null # system
-      rmHeaders "$file_base"
+        rm -rf "$FIRMWAREDIR/$file_base" &> /dev/null # Transition
+        rm "$FIRMWAREDIR/$file_base.h" &> /dev/null   # to new
+        rm "$FIRMWAREDIR/$file_base.cpp" &> /dev/null # system
+        rmHeaders "$file_base"
     fi
-  done
+done
 
-  echo
-  MESSAGE="Removed all symlinks. This can be undone with \"po lib add\"" ; blue_echo
-  echo
-  exit
-  fi
+echo
+MESSAGE="Removed all symlinks. This can be undone with \"po lib add\"" ; blue_echo
+echo
+exit
+fi
 
-  if [ "$2" == "setup" ];
-  then
+if [ "$2" == "setup" ];
+then
+DIRWARNING="true"
+find_objects "$3"
+cd "$LIBRARY"
+
+while read i ## Install and add required libs from libs.txt
+do
+    LIB_NAME="$(echo $i | awk '{ print $NF }' )"
+    getLib
+    addLib
+    addHeaders "$LIB_NAME"
+done < "$FIRMWAREDIR/../libs.txt"
+echo
+exit
+fi
+
+if [ "$2" == "get" ] || [ "$2" == "install" ]; # Download a library with git OR Install from libs.txt
+then
+
+cd "$LIBRARY"
+
+if [ "$3" == "" ]; # Install from libs.txt
+then
     DIRWARNING="true"
-    find_objects "$3"
-    cd "$LIBRARY"
+    find_objects
 
-    while read i ## Install and add required libs from libs.txt
+    while read i
     do
-      LIB_NAME="$(echo $i | awk '{ print $NF }' )"
-      getLib
-      addLib
-      addHeaders "$LIB_NAME"
+        LIB_NAME="$(echo $i | awk '{ print $NF }' )"
+        getLib
     done < "$FIRMWAREDIR/../libs.txt"
     echo
     exit
-  fi
-
-  if [ "$2" == "get" ] || [ "$2" == "install" ]; # Download a library with git OR Install from libs.txt
-  then
-
-    cd "$LIBRARY"
-
-        if [ "$3" == "" ]; # Install from libs.txt
-        then
-          DIRWARNING="true"
-          find_objects
-
-          while read i
-          do
-            LIB_NAME="$(echo $i | awk '{ print $NF }' )"
-            getLib
-          done < "$FIRMWAREDIR/../libs.txt"
-          echo
-          exit
-        fi
+fi
 
         if grep -q "://" <<<"$3";
         then
