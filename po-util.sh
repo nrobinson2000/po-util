@@ -569,7 +569,10 @@ GCC_ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/
 
 if [ "$1" == "config" ];
 then
-  rm "$SETTINGS"
+  if [ -f "$SETTINGS" ];
+  then
+     rm "$SETTINGS"
+  fi
   config
   exit
 fi
