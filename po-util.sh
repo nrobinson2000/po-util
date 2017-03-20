@@ -536,9 +536,9 @@ then
     echo "Copyright (GPL) 2017 Nathan D. Robinson
 
     Usage: po DEVICE_TYPE COMMAND DEVICE_NAME
-    po DFU_COMMAND
-    po install [full_install_path]
-    po library LIBRARY_COMMAND
+           po DFU_COMMAND
+           po install [full_install_path]
+           po library LIBRARY_COMMAND
 
     Run \"man po\" for help.
     "
