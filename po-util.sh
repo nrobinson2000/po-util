@@ -880,18 +880,18 @@ then
   if [ "$2" == "photon" ] || [ "$2" == "P1" ] || [ "$2" == "electron" ] || [ "$2" == "pi" ] || [ "$2" == "core" ] || [ "$2" == "duo" ];
   then
     DEVICE_TYPE="$2"
+    FOLDER="$3"
   else
-    red_echo "
-Please chose a device type.
-    "
-    exit
+    blue_echo "
+Please chose a device type next time :)"
+  FOLDER="$2"
   fi
 
-  if [[ "$3" == "/"* ]]; # Check for absolute or relative
+  if [[ "$FOLDER" == "/"* ]]; # Check for absolute or relative
   then
-    FIRMWAREDIR="$3/firmware"
+    FIRMWAREDIR="$FOLDER/firmware"
   else
-    FIRMWAREDIR="$CWD/$3/firmware"
+    FIRMWAREDIR="$CWD/$FOLDER/firmware"
   fi
 
   if [ -d "$FIRMWAREDIR" ];
@@ -915,7 +915,7 @@ void loop() // Put code here to loop forever
 
 }" > "$FIRMWAREDIR/main.cpp"
 
-    cp ~/.po-util-README.md README.md
+        cp ~/.po-util-README.md "$FIRMWAREDIR/../README.md"
 
     if [ "$DEVICE_TYPE" != "" ];
     then
