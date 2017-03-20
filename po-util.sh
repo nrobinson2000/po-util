@@ -616,20 +616,20 @@ then
   then
     # Install via Homebrew
     echo
-    MESSAGE="You are on macOS.  po-util will be installed via Homebrew" ; blue_echo
+    blue_echo "You are on macOS.  po-util will be installed via Homebrew"
 
     if hash brew 2>/dev/null;
     then
       echo
-      MESSAGE="Homebrew is installed." ; blue_echo
+      blue_echo "Homebrew is installed."
     else
       echo
-      MESSAGE="Installing Brew..." ; blue_echo
+      blue_echo "Installing Brew..."
       /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     fi
 
     echo
-    MESSAGE="Installing po-util with \"brew\"" ; blue_echo
+    blue_echo "Installing po-util with \"brew\""
 
     brew tap nrobinson2000/po
     brew install po
@@ -684,9 +684,9 @@ then
 
   if [ -f /usr/local/bin/po ]
   then
-    MESSAGE="po already linked in /usr/local/bin."
+    blue_echo "po already linked in /usr/local/bin."
   else
-    MESSAGE="Creating \"po\" link in /usr/local/bin..." ; blue_echo
+    blue_echo "Creating \"po\" link in /usr/local/bin..."
     sudo ln -s ~/po-util.sh /usr/local/bin/po
   fi
 
@@ -715,7 +715,7 @@ then
   then
     NOGIT="false"
     echo
-    MESSAGE="Installing Particle firmware from Github..." ; blue_echo
+    blue_echo "Installing Particle firmware from Github..."
     git clone https://github.com/spark/firmware.git
   else
     NOGIT="true"
@@ -728,7 +728,7 @@ then
   then
     NOGIT="false"
     echo
-    MESSAGE="Installing RedBear Duo firmware from Github..." ; blue_echo
+    blue_echo "Installing RedBear Duo firmware from Github..."
     git clone https://github.com/redbear/firmware.git
   else
     NOGIT="true"
@@ -757,18 +757,18 @@ then
     echo
 
     # Install dependencies
-    MESSAGE="Installing ARM toolchain and dependencies locally in $BINDIR/gcc-arm-embedded/..." ; blue_echo
+    blue_echo "Installing ARM toolchain and dependencies locally in $BINDIR/gcc-arm-embedded/..."
     mkdir -p $BINDIR/gcc-arm-embedded && cd "$_" || exit
 
     if [ -d "$GCC_ARM_VER" ]; #
     then
         echo
-        MESSAGE="ARM toolchain version $GCC_ARM_VER is already downloaded... Continuing..." ; blue_echo
+        blue_echo "ARM toolchain version $GCC_ARM_VER is already downloaded... Continuing..."
     else
         curl -LO https://launchpad.net/gcc-arm-embedded/4.9/4.9-2015-q3-update/+download/gcc-arm-none-eabi-4_9-2015q3-20150921-linux.tar.bz2 #Update to v4.9
         tar xjf gcc-arm-none-eabi-*-linux.tar.bz2
 
-        MESSAGE="Creating links in /usr/local/bin..." ; blue_echo
+        blue_echo "Creating links in /usr/local/bin..."
         sudo ln -s $GCC_ARM_PATH* /usr/local/bin # LINK gcc-arm-none-eabi
     fi
 
@@ -786,7 +786,7 @@ then
     rm node-*.txt
     if [ "$(node -v)" == "$NODEVERSION" ];
     then
-        MESSAGE="Node.js version $NODEVERSION is already installed."; blue_echo
+        blue_echo "Node.js version $NODEVERSION is already installed."
     else
         # MESSAGE="Installing Node.js version $NODEVERSION..." ; blue_echo
         curl -Ss https://api.github.com/repos/nodesource/distributions/contents/"$DISTRO" | grep "name"  | grep "setup_"| grep -v "setup_iojs"| grep -v "setup_dev" > node-files.txt
@@ -816,7 +816,7 @@ then
 fi
 
 # Install dfu-util
-MESSAGE="Installing dfu-util (requires sudo)..." ; blue_echo
+blue_echo "Installing dfu-util (requires sudo)..."
 cd "$BASE_DIR" || exit
 git clone git://git.code.sf.net/p/dfu-util/dfu-util
 cd dfu-util || exit
@@ -828,28 +828,28 @@ sudo make install
 cd ..
 
 # Install particle-cli
-MESSAGE="Installing particle-cli..." ; blue_echo
+blue_echo "Installing particle-cli..."
 sudo npm install -g --unsafe-perm node-pre-gyp npm serialport particle-cli
 
 # Install udev rules file
-MESSAGE="Installing udev rule (requires sudo) ..." ; blue_echo
+blue_echo "Installing udev rule (requires sudo) ..."
 curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/60-po-util.rules
 sudo mv 60-po-util.rules /etc/udev/rules.d/60-po-util.rules
 
 # Install manpage
-MESSAGE="Installing po manpage..." ; blue_echo
+blue_echo "Installing po manpage..."
 curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/homebrew-po/master/man/po.1
 sudo mv po.1 /usr/local/share/man/man1/
 sudo mandb &> /dev/null
 
-MESSAGE="Adding $USER to plugdev group..." ; blue_echo
+blue_echo "Adding $USER to plugdev group..."
 sudo usermod -a -G plugdev "$USER"
 
 cd "$FIRMWARE_PARTICLE" || exit
 
 if [ "$NOGIT" == "true" ];
 then
-    MESSAGE="Installing Particle firmware from Github..." ; blue_echo
+    blue_echo "Installing Particle firmware from Github..."
     git clone https://github.com/spark/firmware.git
 fi
 
@@ -857,11 +857,11 @@ cd "$FIRMWARE_DUO" || exit
 
 if [ "$NOGIT" == "true" ];
 then
-    MESSAGE="Installing RedBear DUO firmware from Github..." ; blue_echo
+    blue_echo "Installing RedBear DUO firmware from Github..."
     git clone https://github.com/redbear/firmware.git
 fi
 
-MESSAGE="
+green_echo "
 Thank you for installing po-util. Be sure to check out
 https://nrobinson2000.github.io/po-util/ if you have any questions,
 suggestions, comments, or problems.  You can use the message button in the
@@ -869,7 +869,7 @@ bottom right corner of the site to send me a private message. If need to
 update po-util just run \"po update\" to download the latest versions of
 po-util, Particle Firmware and particle-cli, or run \"po install\" to update
 all dependencies.
-" ; green_echo
+"
   exit
 fi
 
@@ -973,11 +973,12 @@ if [ "$1" == "serial" ];
 then
 if [ "$MODEM" == "" ]; # Don't run screen if device is not connected
 then
-MESSAGE="No device connected!" red_echo ; exit
+red_echo "No device connected!"
+exit
 else
 screen -S particle "$MODEM"
-screen -S particle -X quit && exit || MESSAGE="If \"po serial\" is putting device into DFU mode, power off device, removing battery for Electron, and run \"po serial\" several times.
-This bug will hopefully be fixed in a later release." && blue_echo
+screen -S particle -X quit && exit || blue_echo "If \"po serial\" is putting device into DFU mode, power off device, removing battery for Electron, and run \"po serial\" several times.
+This bug will hopefully be fixed in a later release."
 fi
 exit
 fi
@@ -1003,7 +1004,7 @@ then
 if [ "$2" == "duo" ]; # Update just duo firmware
 then
 echo
-MESSAGE="Updating RedBear DUO firmware..." ; blue_echo
+blue_echo "Updating RedBear DUO firmware..."
 cd "$FIRMWARE_DUO"/firmware || exit
 git stash
 switch_branch "$BRANCH_DUO" &> /dev/null
@@ -1015,7 +1016,7 @@ fi
 if [ "$2" == "firmware" ]; # update just particle firmware
 then
 echo
-MESSAGE="Updating Particle firmware..." ; blue_echo
+blue_echo "Updating Particle firmware..."
 cd "$FIRMWARE_PARTICLE"/firmware || exit
 git stash
 switch_branch &> /dev/null
@@ -1028,7 +1029,7 @@ fi
 
 echo
 
-MESSAGE="Updating RedBear DUO firmware..." ; blue_echo
+blue_echo "Updating RedBear DUO firmware..."
 cd "$FIRMWARE_DUO"/firmware || exit
 git stash
 switch_branch "$BRANCH_DUO" &> /dev/null
@@ -1036,7 +1037,7 @@ git pull
 
 echo
 
-MESSAGE="Updating Particle firmware..." ; blue_echo
+blue_echo "Updating Particle firmware..."
 cd "$FIRMWARE_PARTICLE"/firmware || exit
 git stash
 switch_branch &> /dev/null
@@ -1044,10 +1045,10 @@ git pull
 
 echo
 
-MESSAGE="Updating particle-cli..." ; blue_echo
+blue_echo "Updating particle-cli..."
 sudo npm update -g particle-cli
 echo
-MESSAGE="Updating po-util.." ; blue_echo
+blue_echo "Updating po-util.."
 rm ~/po-util.sh
 curl -fsSLo ~/po-util.sh https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
 chmod +x ~/po-util.sh
@@ -1091,7 +1092,7 @@ do
 done
 
 echo
-MESSAGE="Removed all symlinks. This can be undone with \"po lib add\"" ; blue_echo
+blue_echo "Removed all symlinks. This can be undone with \"po lib add\""
 echo
 exit
 fi
@@ -1137,7 +1138,7 @@ fi
         echo "Valid URL" > /dev/null
         else
           echo
-          MESSAGE="Attempting to download $3 using Particle Libraries 2.0..." ; blue_echo
+          blue_echo "Attempting to download $3 using Particle Libraries 2.0..."
           echo
 
           if [ -f "$LIBRARY/../project.properties" ];
@@ -1158,12 +1159,12 @@ fi
     if [ "$4" != "" ];  # Download a library with git
     then
       echo
-      git clone "$3" "$4" || ( echo ; MESSAGE="Could not download Library.  Please supply a valid URL to a git repository." ; red_echo )
+      git clone "$3" "$4" || ( echo ; red_echo "Could not download Library.  Please supply a valid URL to a git repository." )
       echo
       exit
     else
       echo
-      git clone "$3" || ( echo ; MESSAGE="Could not download Library.  Please supply a valid URL to a git repository." ; red_echo )
+      git clone "$3" || ( echo ; red_echo "Could not download Library.  Please supply a valid URL to a git repository." )
       echo
       exit
     fi
@@ -1180,18 +1181,20 @@ fi
       if [ "$answer" == "yes" ] || [ "$answer" == "y" ] || [ "$answer" == "Y" ];
       then
         echo
-        MESSAGE="Purging library $3..." ; blue_echo
+        blue_echo "Purging library $3..."
         rm -rf "${LIBRARY:?}/$3"
         echo
-        MESSAGE="Library $3 has been purged." ; green_echo
+        green_echo "Library $3 has been purged."
         echo
       else
         echo
-        MESSAGE="Aborting..." ; blue_echo
+        blue_echo "Aborting..."
+        echo
         exit
       fi
     else
-      MESSAGE="Library not found." ; red_echo
+      red_echo "Library not found."
+      echo
     fi
     exit
   fi
@@ -1212,7 +1215,7 @@ fi
         then
           mkdir -p "$LIBRARY/$file_base"
           echo
-          MESSAGE="Creating library $file_base..." ; blue_echo
+          blue_echo "Creating library $file_base..."
           cp "$FIRMWAREDIR/$file_base.h" "$LIBRARY/$file_base"
           cp "$FIRMWAREDIR/$file_base.cpp" "$LIBRARY/$file_base" &> /dev/null
         fi
@@ -1245,13 +1248,17 @@ fi
       echo "Found" > /dev/null
     else
       echo
-      MESSAGE="Library $3 not found" ; red_echo ; echo ; exit
+      red_echo "Library $3 not found"
+      echo
+      exit
     fi
 
     if [ -f "$FIRMWAREDIR/$3.cpp" ] || [ -f "$FIRMWAREDIR/$3.h" ];
     then
       echo
-      MESSAGE="Library $3 is already imported" ; red_echo ; echo ; exit
+      red_echo "Library $3 is already imported"
+      echo
+      exit
     else
       LIB_NAME="$3"
       addLib
@@ -1261,7 +1268,7 @@ fi
       addHeaders "$LIB_NAME"
 
     echo
-    MESSAGE="Imported library $3" ; green_echo
+    green_echo "Imported library $3"
     echo
     exit
     fi
@@ -1276,22 +1283,25 @@ fi
     if [ "$3" == "" ];
     then
       echo
-      MESSAGE="Please choose a library to remove." ; red_echo ; exit
+      red_echo "Please choose a library to remove."
+      exit
     fi
 
     if [ -f "$FIRMWAREDIR/$3.cpp" ] && [ -f "$FIRMWAREDIR/$3.h" ] || [ -d "$FIRMWAREDIR/$3" ];  # Improve this to only check for [ -d "$FIRMWAREDIR/$3" ] once new system is adopted
     then
       echo
-      MESSAGE="Found library $3" ; green_echo
+      green_echo "Found library $3"
     else
       echo
-      MESSAGE="Library $3 not found" ; red_echo ; echo ; exit
+      red_echo "Library $3 not found"
+      echo
+      exit
     fi
 
     if [ -d "$LIBRARY/$3" ];
     then
       echo
-      MESSAGE="Library $3 is backed up, removing from project..." ; blue_echo
+      blue_echo "Library $3 is backed up, removing from project..."
 
       rm "$FIRMWAREDIR/$3.cpp" &> /dev/null # Transition
       rm "$FIRMWAREDIR/$3.h" &> /dev/null   # to new
@@ -1316,7 +1326,7 @@ fi
       if [ "$answer" == "yes" ] || [ "$answer" == "y" ] || [ "$answer" == "Y" ];
       then
         echo
-        MESSAGE="Removing library $3..." ; blue_echo
+        blue_echo "Removing library $3..."
 
         rm "$FIRMWAREDIR/$3.cpp" &> /dev/null # Transition
         rm "$FIRMWAREDIR/$3.h" &> /dev/null   # to new
@@ -1324,11 +1334,11 @@ fi
 
         rmHeaders "$3"
         echo
-        MESSAGE="Library $3 has been purged." ; green_echo
+        green_echo "Library $3 has been purged."
         exit
       else
         echo
-        MESSAGE="Aborting..." ; blue_echo
+        blue_echo "Aborting..."
         exit
       fi
     fi
@@ -1338,7 +1348,7 @@ fi
   if [ "$2" == "list" ] || [ "$2" == "ls" ];
   then
     echo
-    MESSAGE="The following Particle libraries have been downloaded:" ; blue_echo
+    blue_echo "The following Particle libraries have been downloaded:"
     echo
     ls -m "$LIBRARY"
     echo
@@ -1362,26 +1372,26 @@ fi
     cp * "$FIRMWAREDIR/../$PROJECTDIR-packaged"
     tar -cvzf "$FIRMWAREDIR/../$PROJECTDIR-packaged.tar.gz" "$FIRMWAREDIR/../$PROJECTDIR-packaged" &> /dev/null
     echo
-    MESSAGE="Firmware has been packaged as \"$PROJECTDIR-packaged\" and \"$PROJECTDIR-packaged.tar.gz\"
-in \"$PROJECTDIR\". Feel free to use either when sharing your firmware." ; blue_echo
+    blue_echo "Firmware has been packaged as \"$PROJECTDIR-packaged\" and \"$PROJECTDIR-packaged.tar.gz\"
+in \"$PROJECTDIR\". Feel free to use either when sharing your firmware."
     echo
   exit
   fi
 
   if [ "$2" == "help" ] || [ "$2" == "" ]; # SHOW HELP TEXT FOR "po library"
   then
-  MESSAGE="                                                       __      __  __
-                                                      /  |    /  |/  |
-                ______    ______           __    __  _██ |_   ██/ ██ |
-               /      \  /      \  ______ /  |  /  |/ ██   |  /  |██ |
-              /██████  |/██████  |/      |██ |  ██ |██████/   ██ |██ |
-              ██ |  ██ |██ |  ██ |██████/ ██ |  ██ |  ██ | __ ██ |██ |
-              ██ |__██ |██ \__██ |        ██ \__██ |  ██ |/  |██ |██ |
-              ██    ██/ ██    ██/         ██    ██/   ██  ██/ ██ |██ |
-              ███████/   ██████/           ██████/     ████/  ██/ ██/
-              ██ |
-              ██ |
-              ██/               https://nrobinson2000.github.io/po-util/
+  blue_echo "                                                     __      __  __
+                                                    /  |    /  |/  |
+              ______    ______           __    __  _██ |_   ██/ ██ |
+             /      \  /      \  ______ /  |  /  |/ ██   |  /  |██ |
+            /██████  |/██████  |/      |██ |  ██ |██████/   ██ |██ |
+            ██ |  ██ |██ |  ██ |██████/ ██ |  ██ |  ██ | __ ██ |██ |
+            ██ |__██ |██ \__██ |        ██ \__██ |  ██ |/  |██ |██ |
+            ██    ██/ ██    ██/         ██    ██/   ██  ██/ ██ |██ |
+            ███████/   ██████/           ██████/     ████/  ██/ ██/
+            ██ |
+            ██ |
+            ██/               https://nrobinson2000.github.io/po-util/
 "
         blue_echo
 
@@ -1399,11 +1409,11 @@ then
 
   if [ "$(ls -1 $LIBRARY)" == "" ];
   then
-    MESSAGE="No libraries installed.  Use \"po lib get\" to download some." ; red_echo
+    red_echo "No libraries installed.  Use \"po lib get\" to download some."
     exit
   fi
 
-  MESSAGE="Checking for updates..." ; green_echo
+  green_echo "Checking for updates..."
   echo
 
   for OUTPUT in $(ls -1 "$LIBRARY")
@@ -1412,7 +1422,7 @@ then
 
     if [ -d "$LIBRARY/$OUTPUT/.git" ]; # Only do git pull if it is a repository
     then
-    MESSAGE="Updating library $OUTPUT..." ; blue_echo
+    blue_echo "Updating library $OUTPUT..."
     git pull
     echo
     fi
@@ -1423,7 +1433,7 @@ fi # Close Update
 if [ "$2" == "source" ] || [ "$2" == "src" ] ;
 then
   echo
-  MESSAGE="Listing installed libraries that are cloneable..." ; blue_echo
+  blue_echo "Listing installed libraries that are cloneable..."
   echo
   for OUTPUT in $(ls -1 "$LIBRARY")
   do
@@ -1447,22 +1457,21 @@ then
   if [ "$3" == "" ];
   then
   # echo
-  MESSAGE="                                                     __      __  __
-                                                      /  |    /  |/  |
-                ______    ______           __    __  _██ |_   ██/ ██ |
-               /      \  /      \  ______ /  |  /  |/ ██   |  /  |██ |
-              /██████  |/██████  |/      |██ |  ██ |██████/   ██ |██ |
-              ██ |  ██ |██ |  ██ |██████/ ██ |  ██ |  ██ | __ ██ |██ |
-              ██ |__██ |██ \__██ |        ██ \__██ |  ██ |/  |██ |██ |
-              ██    ██/ ██    ██/         ██    ██/   ██  ██/ ██ |██ |
-              ███████/   ██████/           ██████/     ████/  ██/ ██/
-              ██ |
-              ██ |
-              ██/               https://nrobinson2000.github.io/po-util/
+  blue_echo "                                                     __      __  __
+                                                    /  |    /  |/  |
+              ______    ______           __    __  _██ |_   ██/ ██ |
+             /      \  /      \  ______ /  |  /  |/ ██   |  /  |██ |
+            /██████  |/██████  |/      |██ |  ██ |██████/   ██ |██ |
+            ██ |  ██ |██ |  ██ |██████/ ██ |  ██ |  ██ | __ ██ |██ |
+            ██ |__██ |██ \__██ |        ██ \__██ |  ██ |/  |██ |██ |
+            ██    ██/ ██    ██/         ██    ██/   ██  ██/ ██ |██ |
+            ███████/   ██████/           ██████/     ████/  ██/ ██/
+            ██ |
+            ██ |
+            ██/               https://nrobinson2000.github.io/po-util/
   "
-      blue_echo
 
-  MESSAGE="
+  echo "
   \"po lib ex\": Particle Library Example Manager
 
   ls - List the examples in a library
@@ -1470,7 +1479,7 @@ then
   load - Load an example from a library
 
   For help, read the LIBRARY EXAMPLE MANAGER section of \"man po\"
-  " ; echo "$MESSAGE"
+  "
   exit
   else
 
@@ -1479,7 +1488,7 @@ then
 echo " " > /dev/null
 else
 echo
-MESSAGE="Library $4 not found." ; red_echo
+red_echo "Library $4 not found."
 echo
 exit
 fi
@@ -1490,7 +1499,7 @@ then
 if [ "$4" == "" ];
 then
 echo
-MESSAGE="Please choose a library." ; red_echo
+red_echo "Please choose a library."
 echo
 exit
 
@@ -1499,14 +1508,14 @@ fi
   if [ -d "$LIBRARY/$4/examples" ];
   then
     echo
-    MESSAGE="Found the following $4 examples:" ; blue_echo
+    blue_echo "Found the following $4 examples:"
     echo
     ls -m "$LIBRARY/$4/examples"
     echo
     exit
   else
     echo
-    MESSAGE="Could not find any $4 examples." ; red_echo
+    red_echo "Could not find any $4 examples."
     echo
     exit
 fi
@@ -1525,13 +1534,13 @@ then
   if [ "$5" == "" ];
   then
     echo
-    MESSAGE="Please choose a valid example.  Use \"po lib ex ls libraryName\" to find examples." ; red_echo
+    red_echo "Please choose a valid example.  Use \"po lib ex ls libraryName\" to find examples."
     echo
     exit
   fi
 else
 echo
-MESSAGE="Please choose a valid example.  Use \"po lib ex ls libraryName\" to find examples." ; red_echo
+red_echo "Please choose a valid example.  Use \"po lib ex ls libraryName\" to find examples."
 echo
 exit
 fi
@@ -1627,15 +1636,15 @@ done < "$FIRMWAREDIR/../libs.txt"
 fi
 
 echo
-MESSAGE="Loaded example $5 from $4." ; blue_echo
+blue_echo "Loaded example $5 from $4."
 echo
-MESSAGE="Original main.cpp has been backed up as main.cpp.$DATE-$TIME.txt" ; green_echo
+green_echo "Original main.cpp has been backed up as main.cpp.$DATE-$TIME.txt"
 echo
 
 else
 
   echo
-  MESSAGE="Example $5 not found." ; red_echo
+  red_echo"Example $5 not found."
   echo
 
 fi
@@ -1649,7 +1658,7 @@ exit
 fi
 
   echo
-  MESSAGE="Please choose a valid command, or run \"po lib\" for help." ; red_echo
+  red_echo"Please choose a valid command, or run \"po lib\" for help."
   echo
   exit
 fi # Close Library
@@ -1680,11 +1689,11 @@ else
   echo
   if [ "$1" == "redbear" ] || [ "$1" == "bluz" ] || [ "$1" == "oak" ];
   then
-    MESSAGE="This compound is not supported yet. Find out more here: https://git.io/vMTAw" ; red_echo
+    red_echo "This compound is not supported yet. Find out more here: https://git.io/vMTAw"
     echo
   fi
-  MESSAGE="Please choose \"photon\", \"P1\", \"electron\", \"core\", \"pi\", or \"duo\",
-or choose a proper command." ; red_echo
+  red_echo "Please choose \"photon\", \"P1\", \"electron\", \"core\", \"pi\", or \"duo\",
+or choose a proper command."
   common_commands
   exit
 fi
@@ -1727,8 +1736,8 @@ then
   particle serial wifi
 fi
 echo
-MESSAGE="You should now be able to claim your device.  Please run
-\"particle device add Device_ID\", using the Device_ID we found above." ; blue_echo
+blue_echo "You should now be able to claim your device.  Please run
+\"particle device add Device_ID\", using the Device_ID we found above."
 echo
 exit
 fi
@@ -1745,11 +1754,11 @@ then
   dfu_open
   sleep 1
   echo
-  MESSAGE="Flashing $FIRMWAREBIN with dfu-util..." ; blue_echo
+  blue_echo "Flashing $FIRMWAREBIN with dfu-util..."
   echo
-  dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$FIRMWAREBIN" || ( MESSAGE="Device not found." ; red_echo )
+  dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$FIRMWAREBIN" || ( echo && red_echo "Device not found." && echo && exit )
   echo
-  MESSAGE="Firmware successfully flashed to $DEVICE_TYPE on $MODEM" ; blue_echo
+  blue_echo "Firmware successfully flashed to $DEVICE_TYPE on $MODEM"
   echo
   exit
 fi
@@ -1777,26 +1786,26 @@ then
 
 else
   echo
-  MESSAGE="This command can only be used to update the system firmware for
-photon, P1, electron, or duo." ; red_echo
+  red_echo "This command can only be used to update the system firmware for
+photon, P1, electron, or duo."
 echo
 
 if [ "$DEVICE_TYPE" == "core" ];
 then
-MESSAGE="On the Spark Core, firmware is monolithic, meaning that the system
+blue_echo "On the Spark Core, firmware is monolithic, meaning that the system
 firmware is packaged with the user firmware.  To use a core with po-util
-just manually put it into DFU mode the first time you flash to it." ; blue_echo
+just manually put it into DFU mode the first time you flash to it."
 
 echo
 fi
 
 if [ "$DEVICE_TYPE" == "pi" ];
 then
-MESSAGE="Raspberry Pi is still in beta and you must be registered in the beta
+blue_echo "Raspberry Pi is still in beta and you must be registered in the beta
 to use Particle on Raspberry Pi.
 
-To \"update\" the system firmware on Raspberry Pi, simply re-install
-particle-agent. https://git.io/vynBd" ; blue_echo
+To update the \"system firmware\" on Raspberry Pi, simply re-install
+particle-agent. https://git.io/vynBd"
 
 echo
 fi
@@ -1817,7 +1826,7 @@ then
   fi
     git stash &> /dev/null
     echo
-    MESSAGE="Cleaning firmware..." ; blue_echo
+    blue_echo "Cleaning firmware..."
     echo
     if [ "$DEVICE_TYPE" == "pi" ];
     then
@@ -1830,7 +1839,7 @@ then
     then
       rm -rf "$FIRMWAREDIR/../bin"
     fi
-    MESSAGE="Sucessfully cleaned." ; blue_echo
+    blue_echo "Sucessfully cleaned."
     echo
   exit
 fi
@@ -1891,15 +1900,15 @@ then
   fi
   dfu_open
   echo
-  (build_firmware && echo && MESSAGE="Building firmware was successful! Flashing with dfu-util..." && green_echo && echo) || (MESSAGE='Building firmware failed! Closing DFU...' && echo && red_echo && echo && dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D /dev/null &> /dev/null && exit)
+  ( build_firmware && echo && green_echo "Building firmware was successful! Flashing with dfu-util..." && echo ) || ( echo && red_echo 'Building firmware failed! Closing DFU...' && echo && dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D /dev/null &> /dev/null && exit )
   dfu-util -d "$DFU_ADDRESS1" -a 0 -i 0 -s "$DFU_ADDRESS2":leave -D "$FIRMWAREDIR/../bin/firmware.bin" || exit #&> /dev/null
   echo
-  MESSAGE="Firmware successfully flashed to $DEVICE_TYPE on $MODEM" ; blue_echo
+  blue_echo "Firmware successfully flashed to $DEVICE_TYPE on $MODEM"
   echo
   exit
 fi
 
 # If an improper command is chosen:
 echo
-MESSAGE="Please choose a proper command." ; red_echo
+red_echo "Please choose a proper command."
 common_commands
