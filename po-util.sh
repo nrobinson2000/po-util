@@ -39,9 +39,9 @@ blue_echo()
 {
     if [ -t 1 ];
     then
-        echo "$(tput setaf 6)$(tput bold)$MESSAGE$(tput sgr0)"
+        echo "$(tput setaf 6)$(tput bold)$1$(tput sgr0)"
     else
-        echo "$MESSAGE"
+        echo "$1"
     fi
 }
 
@@ -49,9 +49,9 @@ green_echo()
 {
     if [ -t 1 ];
     then
-        echo "$(tput setaf 2)$(tput bold)$MESSAGE$(tput sgr0)"
+        echo "$(tput setaf 2)$(tput bold)$1$(tput sgr0)"
     else
-        echo "$MESSAGE"
+        echo "$1"
     fi
 }
 
@@ -59,9 +59,9 @@ red_echo()
 {
     if [ -t 1 ];
     then
-        echo "$(tput setaf 1)$(tput bold)$MESSAGE$(tput sgr0)"
+        echo "$(tput setaf 1)$(tput bold)$1$(tput sgr0)"
     else
-        echo "$MESSAGE"
+        echo "$1"
     fi
 }
 
@@ -111,8 +111,8 @@ function find_objects() #Consolidated function
                         FIRMWAREBIN="$(pwd)/bin/firmware.bin"
                     else
                         echo
-                        MESSAGE="Firmware not found!" ; red_echo
-                        MESSAGE="Please run \"po init\" to setup this repository or choose a valid directory." ; blue_echo
+                        red_echo "Firmware not found!"
+                        blue_echo "Please run \"po init\" to setup this repository or choose a valid directory."
                         echo
                         exit
                     fi
@@ -132,8 +132,8 @@ function find_objects() #Consolidated function
         if [ "$DIRWARNING" == "true" ];
         then
             echo
-            MESSAGE="Firmware directory not found!" ; red_echo
-            MESSAGE="Please run \"po init\" to setup this repository or choose a valid directory." ; blue_echo
+            red_echo "Firmware directory not found!"
+            blue_echo "Please run \"po init\" to setup this repository or choose a valid directory."
             echo
             exit
         fi
@@ -147,10 +147,10 @@ function find_objects() #Consolidated function
         if [ "$DEVICEWARNING" == "true" ];
         then
             echo
-            MESSAGE="devices.txt not found!" ; red_echo
-            MESSAGE="You need to create a \"devices.txt\" file in your project directory with the names
-            of your devices on each line." ; blue_echo
-            MESSAGE="Example:" ; green_echo
+            red_echo "devices.txt not found!"
+            blue_echo "You need to create a \"devices.txt\" file in your project directory with the names
+of your devices on each line."
+            green_echo "Example:"
             echo "    product1
     product2
     product3
@@ -166,8 +166,8 @@ function find_objects() #Consolidated function
         if [ "$BINWARNING" == "true" ];
         then
             echo
-            MESSAGE="Firmware Binary not found!" ; red_echo
-            MESSAGE="Perhaps you need to build your firmware?" ; blue_echo
+            red_echo "Firmware Binary not found!"
+            blue_echo "Perhaps you need to build your firmware?"
             echo
         fi
         FINDBINFAIL="true"
@@ -179,7 +179,7 @@ build_message()
     echo
     cd "$FIRMWAREDIR"/.. || exit
     BINARYDIR="$(pwd)/bin"
-    MESSAGE="Binary saved to $BINARYDIR/firmware.bin" ; green_echo
+    green_echo "Binary saved to $BINARYDIR/firmware.bin"
     echo
     exit
 }
@@ -193,9 +193,9 @@ dfu_open()
             MODEM="$MODEM_DUO"
         else
             echo
-            MESSAGE="Device not found!" ; red_echo
+            red_echo "Device not found!"
             echo
-            MESSAGE="Your device must be connected by USB."; blue_echo
+            blue_echo "Your device must be connected by USB."
             echo
             exit
         fi
@@ -205,9 +205,9 @@ dfu_open()
             MODEM="$MODEM"
         else
             echo
-            MESSAGE="Device not found!" ; red_echo
+            red_echo "Device not found!"
             echo
-            MESSAGE="Your device must be connected by USB."; blue_echo
+            blue_echo "Your device must be connected by USB."
             echo
             exit
         fi
@@ -215,7 +215,7 @@ dfu_open()
 
     if [ "$MODEM" ];
     then
-        stty -F "$MODEM" "$DFUBAUDRATE" > /dev/null
+        stty -f "$MODEM" "$DFUBAUDRATE" > /dev/null
     fi
 }
 
@@ -238,9 +238,8 @@ switch_branch()
 common_commands() #List common commands
 {
     echo
-    MESSAGE="Common commands include:
+    blue_echo "Common commands include:
     build, flash, clean, ota, dfu, serial, init, config, setup, library"
-    blue_echo
     echo
 }
 
@@ -248,7 +247,6 @@ build_firmware()
 {
 
     #Temporary fix for http://community.particle.io/t/stm32-usb-otg-driver-error-on-v0-6-0/26814
-
     # STRING='CPPSRC += $(call target_files,$(BOOTLOADER_MODULE_PATH)/../hal/src/stm32/,newlib.cpp)'
     # echo "$STRING" >> "$FIRMWARE_PARTICLE/firmware/bootloader/src/electron/sources.mk"
     # sed "126s/.*/#define USB_OTG_MAX_TX_FIFOS (4*2)/" "$FIRMWARE_PARTICLE/firmware/platform/MCU/STM32F2xx/SPARK_Firmware_Driver/inc/platform_config.h" > temp.particle
@@ -256,8 +254,8 @@ build_firmware()
     # rm -f "$FIRMWARE_PARTICLE/firmware/platform/MCU/STM32F2xx/SPARK_Firmware_Driver/inc/platform_config.h"
     # mv temp.particle.1 "$FIRMWARE_PARTICLE/firmware/platform/MCU/STM32F2xx/SPARK_Firmware_Driver/inc/platform_config.h"
     # rm -f temp.particle
-
     # FIXED in release/v0.6.1-rc.1
+
     if [ "$DEVICE_TYPE" == "duo" ];
     then
         # RedBear DUO
@@ -272,7 +270,7 @@ build_firmware()
         mv temp.particle "$FIRMWARE_PARTICLE/firmware/build/module-defaults.mk"
     fi
 
-    MESSAGE="                                                     __      __  __
+    blue_echo "                                                     __      __  __
                                                     /  |    /  |/  |
               ______    ______           __    __  _██ |_   ██/ ██ |
              /      \  /      \  ______ /  |  /  |/ ██   |  /  |██ |
@@ -285,7 +283,6 @@ build_firmware()
             ██ |
             ██/         Building firmware for $DEVICE_TYPE...
     "
-  blue_echo
 
   if [ "$DEVICE_TYPE" == "duo" ];
   then
@@ -302,15 +299,15 @@ build_pi()
     if docker run --rm -i -v $FIRMWARE_PARTICLE/firmware:/firmware -v $FIRMWAREDIR:/input -v $FIRMWAREDIR/../bin:/output particle/buildpack-raspberrypi 2> echo;
     then
       echo
-      MESSAGE="Successfully built firmware for Raspberry Pi" ; blue_echo
+      blue_echo "Successfully built firmware for Raspberry Pi"
     else
       echo
-      MESSAGE="Build failed." ; red_echo
+      red_echo "Build failed."
       echo
       exit 1
     fi
   else
-    MESSAGE="Docker not found.  Please install docker to build firmware for Raspberry Pi" ; red_echo
+    red_echo "Docker not found.  Please install docker to build firmware for Raspberry Pi"
     echo
     exit
   fi
@@ -329,7 +326,9 @@ ota() # device firmware
   if [ "$1" == "" ];
   then
     echo
-    MESSAGE="Please specify which device to flash ota." ; red_echo ; echo ; exit
+    red_echo "Please specify which device to flash ota."
+    echo
+    exit
   fi
 
   if [ "$1" == "--multi" ] || [ "$1" == "-m" ] || [ "$1" == "-ota" ];
@@ -339,21 +338,21 @@ ota() # device firmware
     then
       cd "$CWD"
       echo "" > devices.txt
-      MESSAGE="Please list your devices in devices.txt" ; red_echo
+      red_echo "Please list your devices in devices.txt"
       sleep 3
       exit
     fi
     for DEVICE in $DEVICES ; do
       echo
-      MESSAGE="Flashing to device $DEVICE..." ; blue_echo
-      particle flash "$DEVICE" "$FIRMWAREBIN" || ( MESSAGE="Your device must be online in order to flash firmware OTA." ; red_echo )
+      blue_echo "Flashing to device $DEVICE..."
+      particle flash "$DEVICE" "$FIRMWAREBIN" || ( red_echo "Your device must be online in order to flash firmware OTA." )
     done
     echo
     exit
   fi
   echo
-  MESSAGE="Flashing to device $1..." ; blue_echo
-  particle flash "$1" "$FIRMWAREBIN" || ( MESSAGE="Try using \"particle flash\" if you are having issues." ; red_echo )
+  blue_echo "Flashing to device $1..."
+  particle flash "$1" "$FIRMWAREBIN" || ( red_echo "Try using \"particle flash\" if you are having issues." )
   echo
   exit
 }
@@ -361,10 +360,10 @@ ota() # device firmware
 config()
 {
   SETTINGS=~/.po
-  BASE_DIR=~/github  # These
+  BASE_DIR=~/github
   FIRMWARE_PARTICLE=$BASE_DIR/particle
   FIRMWARE_DUO=$BASE_DIR/redbearduo
-  BRANCH="release/stable" # can
+  BRANCH="release/stable"
   BRANCH_DUO="duo"
   ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/
   MODEM_DUO=$MODEM_DUO
@@ -377,26 +376,26 @@ config()
 
   # Particle
   echo
-    MESSAGE="Which branch of the Particle firmware would you like to use?
+    blue_echo "Which branch of the Particle firmware would you like to use?
     You can find the branches at https://github.com/spark/firmware/branches
-    If you are unsure, please enter \"release/stable\"" ; blue_echo
+    If you are unsure, please enter \"release/stable\""
     read -rp "Branch: " branch_variable
     BRANCH="$branch_variable"
     echo BRANCH="$BRANCH" >> $SETTINGS
     echo
 
     # RedBear DUO
-    MESSAGE="Which branch of the RedBear DUO firmware would you like to use?
+    blue_echo "Which branch of the RedBear DUO firmware would you like to use?
     You can find the branches at https://github.com/redbear/Duo/branches
-    If you are unsure, please enter \"duo\"" ; blue_echo
+    If you are unsure, please enter \"duo\""
     read -rp "Branch: " branch_variable
     BRANCH_DUO="$branch_variable"
     echo BRANCH_DUO="$BRANCH_DUO" >> $SETTINGS
 
     echo
-    MESSAGE="Which baud rate would you like to use to put devices into DFU mode?
+    blue_echo "Which baud rate would you like to use to put devices into DFU mode?
     Enter \"default\" for the default Particle baud rate of 14400.
-    Enter \"po\" to use the po-util recommended baud rate of 19200." ; blue_echo
+    Enter \"po\" to use the po-util recommended baud rate of 19200."
     read -rp "Baud Rate: " dfu_variable
     if [ "$dfu_variable" == "default" ];
     then
@@ -408,7 +407,8 @@ config()
     fi
     echo DFUBAUDRATE="$DFUBAUDRATE" >> $SETTINGS
     echo
-    MESSAGE="Shoud po-util automatically add and remove headers when using libraries?" ; blue_echo
+    blue_echo "Shoud po-util automatically add and remove headers when using
+    libraries?"
     read -rp "(yes/no): " response
     if [ "$response" == "yes" ] || [ "$response" == "y" ] || [ "$response" == "Y" ];
     then
@@ -425,10 +425,10 @@ addLib()
     if [ -f "$FIRMWAREDIR/$LIB_NAME.cpp" ] || [ -f "$FIRMWAREDIR/$LIB_NAME.h" ] || [ -d "$FIRMWAREDIR/$LIB_NAME" ];
     then
         echo
-        MESSAGE="Library $LIB_NAME is already added to this project..." ; red_echo
+        red_echo "Library $LIB_NAME is already added to this project..."
     else
         echo
-        MESSAGE="Adding library $LIB_NAME to this project..." ; green_echo
+        green_echo "Adding library $LIB_NAME to this project..."
 
         # Include library as a folder full of symlinks -- This is the new feature
 
@@ -459,10 +459,10 @@ getLib()
     if (ls -1 "$LIBRARY" | grep "$LIB_NAME") &> /dev/null ;
     then
         echo
-        MESSAGE="Library $LIB_NAME is already installed..." ; blue_echo
+        blue_echo "Library $LIB_NAME is already installed..."
     else
         echo
-        MESSAGE="Dowloading library $LIB_NAME..." ; blue_echo
+        blue_echo "Dowloading library $LIB_NAME..."
         echo
         git clone $i
     fi
@@ -512,24 +512,25 @@ rmHeaders()
 
     fi
 }
+
 # End of helper functions
 
 if [ "$1" == "" ]; # Print help
 then
-    MESSAGE="                                                     __      __  __
-                                                  /  |    /  |/  |
-            ______    ______           __    __  _██ |_   ██/ ██ |
-           /      \  /      \  ______ /  |  /  |/ ██   |  /  |██ |
-          /██████  |/██████  |/      |██ |  ██ |██████/   ██ |██ |
-          ██ |  ██ |██ |  ██ |██████/ ██ |  ██ |  ██ | __ ██ |██ |
-          ██ |__██ |██ \__██ |        ██ \__██ |  ██ |/  |██ |██ |
-          ██    ██/ ██    ██/         ██    ██/   ██  ██/ ██ |██ |
-          ███████/   ██████/           ██████/     ████/  ██/ ██/
-          ██ |
-          ██ |
-          ██/               https://nrobinson2000.github.io/po-util/
-  "
-blue_echo
+    blue_echo "                                                     __      __  __
+                                                    /  |    /  |/  |
+              ______    ______           __    __  _██ |_   ██/ ██ |
+             /      \  /      \  ______ /  |  /  |/ ██   |  /  |██ |
+            /██████  |/██████  |/      |██ |  ██ |██████/   ██ |██ |
+            ██ |  ██ |██ |  ██ |██████/ ██ |  ██ |  ██ | __ ██ |██ |
+            ██ |__██ |██ \__██ |        ██ \__██ |  ██ |/  |██ |██ |
+            ██    ██/ ██    ██/         ██    ██/   ██  ██/ ██ |██ |
+            ███████/   ██████/           ██████/     ████/  ██/ ██/
+            ██ |
+            ██ |
+            ██/               https://nrobinson2000.github.io/po-util/
+    "
+
     echo "Copyright (GPL) 2017 Nathan D. Robinson
 
     Usage: po DEVICE_TYPE COMMAND DEVICE_NAME
@@ -545,7 +546,7 @@ fi
 if [ "$1" == "setup-atom" ];
 then
   echo
-  MESSAGE="Installing Atom packages to enhance po-util experience..." ; blue_echo
+  blue_echo "Installing Atom packages to enhance po-util experience..."
   echo
   apm install build minimap file-icons language-particle
   echo
@@ -581,7 +582,7 @@ fi
 if [ ! -f $SETTINGS ]
 then
   echo
-  MESSAGE="Your \"$SETTINGS\" configuration file is missing.  Let's create it:" ; blue_echo
+  blue_echo "Your \"$SETTINGS\" configuration file is missing.  Let's create it!"
   config
 fi
 
@@ -873,28 +874,36 @@ all dependencies.
 fi
 
 # Create our project files
-if [ "$1" == "init" ];
+if [ "$1" == "init" ]; # Syntax: po init DEVICE dir
 then
-  if [ -d firmware ];
+
+  if [ "$2" == "photon" ] || [ "$2" == "P1" ] || [ "$2" == "electron" ] || [ "$2" == "pi" ] || [ "$2" == "core" ] || [ "$2" == "duo" ];
+  then
+    DEVICE_TYPE="$2"
+  else
+    red_echo "
+Please chose a device type.
+    "
+    exit
+  fi
+
+  if [[ "$3" == "/"* ]]; # Check for absolute or relative
+  then
+    FIRMWAREDIR="$3/firmware"
+  else
+    FIRMWAREDIR="$CWD/$3/firmware"
+  fi
+
+  if [ -d "$FIRMWAREDIR" ];
   then
     echo
-    MESSAGE="Directory is already Initialized!" ; green_echo
+    green_echo "Directory is already Initialized!"
     echo
     exit
   fi
 
-if [ "$2" == "photon" ] || [ "$2" == "P1" ] || [ "$2" == "electron" ] || [ "$2" == "pi" ] || [ "$2" == "core" ] || [ "$2" == "duo" ];
-then
-DEVICE_TYPE="$2"
-else
-echo
-MESSAGE="Please specify which device type you will be using.
-Example:
-po init photon" ; blue_echo
-echo
-fi
-mkdir firmware/
-echo "#include \"Particle.h\"
+  mkdir -p "$FIRMWAREDIR"
+  echo "#include \"Particle.h\"
 
 void setup() // Put setup code here to run once
 {
@@ -904,12 +913,13 @@ void setup() // Put setup code here to run once
 void loop() // Put code here to loop forever
 {
 
-}" > firmware/main.cpp
+}" > "$FIRMWAREDIR/main.cpp"
 
-cp ~/.po-util-README.md README.md
-if [ "$DEVICE_TYPE" != "" ];
-then
-echo "---
+    cp ~/.po-util-README.md README.md
+
+    if [ "$DEVICE_TYPE" != "" ];
+    then
+        echo "---
 cmd: po $DEVICE_TYPE build
 
 targets:
@@ -949,13 +959,13 @@ targets:
     cmd: po
     keymap: ctrl-alt-5
     name: DFU
-" >> .atom-build.yml
-fi
+        " >> "$FIRMWAREDIR/../.atom-build.yml"
+    fi
 
-echo
-MESSAGE="Directory initialized as a po-util project for $DEVICE_TYPE" ; green_echo
-echo
-exit
+    echo
+    green_echo "Directory initialized as a po-util project for $DEVICE_TYPE"
+    echo
+    exit
 fi
 
 # Open serial monitor for device
@@ -1021,16 +1031,15 @@ echo
 MESSAGE="Updating RedBear DUO firmware..." ; blue_echo
 cd "$FIRMWARE_DUO"/firmware || exit
 git stash
-#git checkout $BRANCH
+switch_branch "$BRANCH_DUO" &> /dev/null
 git pull
 
 echo
 
 MESSAGE="Updating Particle firmware..." ; blue_echo
 cd "$FIRMWARE_PARTICLE"/firmware || exit
-switch_branch
 git stash
-#git checkout $BRANCH
+switch_branch &> /dev/null
 git pull
 
 echo
