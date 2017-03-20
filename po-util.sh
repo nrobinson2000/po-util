@@ -112,7 +112,8 @@ function find_objects() #Consolidated function
                     else
                         echo
                         red_echo "Firmware not found!"
-                        blue_echo "Please run \"po init\" to setup this repository or choose a valid directory."
+                        blue_echo "Please run \"po init DEVICE FOLDER\" to setup a project,
+or choose a valid directory."
                         echo
                         exit
                     fi
@@ -133,7 +134,8 @@ function find_objects() #Consolidated function
         then
             echo
             red_echo "Firmware directory not found!"
-            blue_echo "Please run \"po init\" to setup this repository or choose a valid directory."
+            blue_echo "Please run \"po init DEVICE FOLDER\" to setup a project,
+or choose a valid directory."
             echo
             exit
         fi
@@ -862,13 +864,13 @@ then
 fi
 
 green_echo "
-Thank you for installing po-util. Be sure to check out
-https://nrobinson2000.github.io/po-util/ if you have any questions,
-suggestions, comments, or problems.  You can use the message button in the
-bottom right corner of the site to send me a private message. If need to
-update po-util just run \"po update\" to download the latest versions of
-po-util, Particle Firmware and particle-cli, or run \"po install\" to update
-all dependencies.
+    Thank you for installing po-util. Be sure to check out
+    https://nrobinson2000.github.io/po-util/ if you have any questions,
+    suggestions, comments, or problems.  You can use the message button in the
+    bottom right corner of the site to send me a private message. If need to
+    update po-util just run \"po update\" to download the latest versions of
+    po-util, Particle Firmware and particle-cli, or run \"po install\" to update
+    all dependencies.
 "
   exit
 fi
