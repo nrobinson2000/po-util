@@ -217,7 +217,7 @@ dfu_open()
 
     if [ "$MODEM" ];
     then
-        stty -f "$MODEM" "$DFUBAUDRATE" > /dev/null
+        stty -F "$MODEM" "$DFUBAUDRATE" > /dev/null
     fi
 }
 
