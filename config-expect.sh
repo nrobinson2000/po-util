@@ -10,6 +10,6 @@ send -- "duo\n"
 expect -exact "Baud Rate: "
 send -- "po\n"
 expect -exact "(yes/no): "
-send -- "no\n"
+send -- "yes\n"
 
 interact
