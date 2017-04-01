@@ -987,6 +987,7 @@ chmod +x config-expect.sh
 
 ./po-util.sh install
 
+po lib setup
 po $DEVICE_TYPE build" > "$FIRMWAREDIR/../ci/travis.sh"
 
 chmod +x "$FIRMWAREDIR/../ci/travis.sh"
