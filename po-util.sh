@@ -1119,6 +1119,14 @@ find_objects "$3"
 for file in $(ls -1 $FIRMWAREDIR);
 do
     file_base="${file%.*}"
+
+    if [ "$3" == "-f" ] || [ "$4" == "-f" ];
+    then
+      rm -rf "$FIRMWAREDIR/$file_base" &> /dev/null # Transition
+      rm "$FIRMWAREDIR/$file_base.h" &> /dev/null   # to new
+      rm "$FIRMWAREDIR/$file_base.cpp" &> /dev/null # system
+      rmHeaders "$file_base"
+    else
     if (ls -1 "$LIBRARY" | grep "$file_base") &> /dev/null ;
     then
         rm -rf "$FIRMWAREDIR/$file_base" &> /dev/null # Transition
@@ -1126,6 +1134,7 @@ do
         rm "$FIRMWAREDIR/$file_base.cpp" &> /dev/null # system
         rmHeaders "$file_base"
     fi
+  fi
 done
 
 echo
