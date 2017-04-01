@@ -1122,7 +1122,7 @@ do
 
     if [ "$4" == "-f" ];
     then
-      rm -rf "$file_base" &> /dev/null
+      rm -rf "$FIRMWAREDIR/$file_base" &> /dev/null
       rmHeaders "$file_base"
 
     else
