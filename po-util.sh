@@ -1369,9 +1369,7 @@ fi
       rm -rf "$FIRMWAREDIR/../$PROJECTDIR-packaged.tar.gz"
     fi
 
-    mkdir "$FIRMWAREDIR/../$PROJECTDIR-packaged"
-    cd "$FIRMWAREDIR"
-    cp * "$FIRMWAREDIR/../$PROJECTDIR-packaged"
+    cp -r "$FIRMWAREDIR" "$FIRMWAREDIR/../$PROJECTDIR-packaged"
     tar -cvzf "$FIRMWAREDIR/../$PROJECTDIR-packaged.tar.gz" "$FIRMWAREDIR/../$PROJECTDIR-packaged" &> /dev/null
     echo
     blue_echo "Firmware has been packaged as \"$PROJECTDIR-packaged\" and \"$PROJECTDIR-packaged.tar.gz\"
