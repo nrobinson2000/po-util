@@ -1116,16 +1116,15 @@ then
 DIRWARNING="true"
 find_objects "$3"
 
-for file in $(ls -1 $FIRMWAREDIR);
+for file in $(cd $FIRMWAREDIR && ls -d1 */);
 do
-    file_base="${file%.*}"
+    file_base="${file%/}"
 
     if [ "$4" == "-f" ];
     then
-      rm -rf "$FIRMWAREDIR/$file_base" &> /dev/null # Transition
-      rm "$FIRMWAREDIR/$file_base.h" &> /dev/null   # to new
-      rm "$FIRMWAREDIR/$file_base.cpp" &> /dev/null # system
+      rm -rf "$file_base" &> /dev/null
       rmHeaders "$file_base"
+
     else
     if (ls -1 "$LIBRARY" | grep "$file_base") &> /dev/null ;
     then
