@@ -1120,7 +1120,7 @@ for file in $(ls -1 $FIRMWAREDIR);
 do
     file_base="${file%.*}"
 
-    if [ "$3" == "-f" ] || [ "$4" == "-f" ];
+    if [ "$4" == "-f" ];
     then
       rm -rf "$FIRMWAREDIR/$file_base" &> /dev/null # Transition
       rm "$FIRMWAREDIR/$file_base.h" &> /dev/null   # to new
