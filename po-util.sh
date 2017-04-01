@@ -962,7 +962,34 @@ targets:
     keymap: ctrl-alt-5
     name: DFU
         " >> "$FIRMWAREDIR/../.atom-build.yml"
+
+mkdir -p "$FIRMWAREDIR/../ci"
+
+echo "dist: trusty
+sudo: required
+language: generic
+
+script:
+  - ci/travis.sh" > "$FIRMWAREDIR/../.travis.yml"
+
+echo "#!/bin/bash
+sudo apt install -y expect
+
+curl -sLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
+
+bash <( curl -sL https://raw.githubusercontent.com/nrobinson2000/po-util/master/config-expect.sh )
+
+./po-util.sh install
+
+po $DEVICE_TYPE build" > "$FIRMWAREDIR/../ci/travis.sh"
+
+chmod +x "$FIRMWAREDIR/../ci/travis.sh"
+
     fi
+
+    echo "bin/*" > "$FIRMWAREDIR/../.gitignore"
+    cd "$FIRMWAREDIR/.."
+    git init &> /dev/null
 
     echo
     green_echo "Directory initialized as a po-util project for $DEVICE_TYPE"
