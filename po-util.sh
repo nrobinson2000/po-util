@@ -640,6 +640,15 @@ then
 
   fi
 
+  if hash curl 2>/dev/null;
+  then
+    red_echo "
+po-util requires curl for the installation and updating of various tools.
+Please install \"curl\" with your package manager.
+"
+    exit
+  fi
+
   if [ -f po-util.sh ];
   then
     if [ "$CWD" != "$HOME" ];

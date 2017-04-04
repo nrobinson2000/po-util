@@ -9,3 +9,4 @@ test.html
 stylesheets/*
 img.svg
 po-util.sh.bak
+*.DS_Store
