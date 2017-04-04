@@ -642,6 +642,8 @@ then
 
   if hash curl 2>/dev/null;
   then
+    echo "CURL FOUND!" > /dev/null
+  else
     red_echo "
 po-util requires curl for the installation and updating of various tools.
 Please install \"curl\" with your package manager.
