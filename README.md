@@ -35,7 +35,7 @@ There are two versions of po-util. The first is [po-util Classic](https://github
 **The most secure way to install `po-util` is to download `po-util.sh` directly and run it:**
 
     $ curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
-    $ chmod +x po-util.sh ; ./po-util.sh install ; . ~/.bashrc
+    $ chmod +x po-util.sh ; ./po-util.sh install
 
 **A quickest and easiest way to install `po-util` is to run this command:**
 
@@ -45,7 +45,7 @@ There are two versions of po-util. The first is [po-util Classic](https://github
 
     $ git clone https://github.com/nrobinson2000/po-util
     $ cd po-util
-    $ ./po-util.sh install ; . ~/.bashrc
+    $ ./po-util.sh install
 
 **On macOS, [Homebrew Edition](https://github.com/nrobinson2000/homebrew-po) can be installed by running these commands:**
 
