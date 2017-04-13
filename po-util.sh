@@ -1933,7 +1933,6 @@ then
     exit
   fi
     echo
-    #configure_makefile
     make all -C "$FIRMWARE_PARTICLE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$DEVICE_TYPE" DEBUG_BUILD="y" || exit
     build_message
 fi
