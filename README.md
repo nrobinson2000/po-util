@@ -13,9 +13,7 @@
 [![Circle CI](https://circleci.com/gh/nrobinson2000/po-util/tree/master.svg?style=svg)](https://circleci.com/gh/nrobinson2000/po-util/tree/master)
 [![](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&maxAge=2592000)](https://twitter.com/intent/tweet?ref_src=twsrc%5Etfw&text=Check%20out%20po-util.%20It%27s%20a%20handy%20script%20for%20installing%20and%20using%20the%20%40particle%20Toolchain%20on%20Linux%20and%20macOS.&tw_p=tweetbutton&url=https%3A%2F%2Fnrobinson2000.github.io/po-util/)
 
-# About
-
-Particle Offline Utility, pronounced `po-util`, is a script for installing and
+Particle Offline Utility, pronounced `po-util`, is a tool for installing and
 using the Particle Toolchain on Linux and macOS.
 
 `po-util` makes it easy for developers to download the Particle Toolchain and install the required dependencies to quickly begin creating projects using the Particle Platform.
@@ -97,14 +95,9 @@ here.](http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-l
 <img src="http://i.giphy.com/11w4YEQHmUy06s.gif" width="800px">
 </p>
 
-  * Standardized project directory structure.
-  * Upgrading the system firmware of devices.
-  * Monitoring the serial output of devices.
-  * Manually putting devices into DFU mode and out of DFU mode.
+# Project Structure
 
-# Project Directory Structure
-
-The directory structure of a **full** `po-util` project is arranged like so:
+The directory structure of a full `po-util` project is arranged like so:
 
 ```
 firmware/
@@ -116,21 +109,22 @@ firmware/
 bin/
 ├ firmware.bin
 └ ...
+ ci/
  devices.txt
  libs.txt
  .atom-build.yml
+ .travis.yml
+ .gitignore
+ .git/
  README.md
 ```
 
-  * All user code is kept inside of `main.cpp`.
-
+  * All user code is kept inside of `firmware/`.
   * The compiled binary will be named `firmware.bin`, and it will be in `bin/`.
-
   * You can keep track of which devices are in a project and list which ones to be flashed Over The Air in `devices.txt`.
-
-  * You can easily add libraries to a project. Added libraries are kept track of in `libs.txt`.
-
-  * Atom shortcuts are a new feature of `po-util`, and `.atom-build.yml` contains the configuration for the shortcuts.
+  * Libraries are kept track of in `libs.txt`.
+  * Atom shortcuts are configured in`.atom-build.yml`.
+  * Every `po-util` project is initialized as a repository with scripts in `ci/` to use [Travis CI](https://travis-ci.org/) for testing.
 
 # Project setup
 
@@ -138,15 +132,11 @@ When using `po-util`, your code is arranged into projects with the structure
 described above. This not only lets you easily work on many projects on one
 computer, but it provides a standardized way of building locally.
 
-Creating a project with `po-util` is simple. All that you need to do is create
-a folder and run `po init` inside of it to initialize the project by
-creating the appropriate files and directories. Below is an example:
+Creating a project with `po-util` is simple when you use `po init` to initialize a project by creating the necessary files. Below is an example:
 
-    $ mkdir someProject
-    $ cd someProject
-    $ po init DEVICE_TYPE
+    $ po init DEVICE_TYPE someProject
 
-You can set `DEVICE_TYPE` to either `photon`, `P1`, `electron`, `core`, or `pi`. This is
+You can set `DEVICE_TYPE` to either `photon`, `P1`, `electron`, `core`, `pi`, or `duo`. This is
 necessary for generating the Atom shortcuts file appropriately.
 
 # More Information
