@@ -1,324 +1,246 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
-    <meta charset="UTF-8">
-    <title>po-util</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
-    <link rel="shortcut icon" type="image/x-icon" href="logos/favicon.ico.png">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-    <script src="jquery.js"></script>
-    <script>
+
+<head>
+  <meta charset="UTF-8">
+  <title>po-util</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  <link rel="shortcut icon" type="image/x-icon" href="logos/favicon.ico.png">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+  <script src="jquery.js"></script>
+  <script>
     $(window).resize(function() {
-      if ($(window).width() < 600)
-      {
+      if ($(window).width() < 600) {
         document.getElementById("logo").width = 400;
-      }
-      else {
+      } else {
         document.getElementById("logo").width = 550;
       }
-});
-    </script>
-  </head>
-  <body>
-    <section class="page-header">
-      <img id="logo" onload="if (screen.width < 600){this.width = 400;}else{this.width=550;}"src="logos/po-util-updated.svg" width="550px">
-      <h1 class="project-tagline">Particle Offline Utility: The Ultimate Local Particle Experience for Linux and macOS</h1>
-      <a href="https://github.com/nrobinson2000/po-util" class="btn">View on GitHub</a>
-      <a href="https://github.com/nrobinson2000/po-util/wiki" class="btn">View Wiki</a>
-    </section>
+    });
+  </script>
+</head>
 
-    <section class="main-content">
-      <p>
-        <a href="https://nrobinson2000.herokuapp.com"><img src="https://nrobinson2000.herokuapp.com/badge.svg"></a>
-        <a href="donate"><img src="https://img.shields.io/badge/donate-bitcoin-orange.svg"></a>
-        <a href="https://github.com/nrobinson2000/po-util/issues"><img src="https://img.shields.io/github/issues/nrobinson2000/po-util.svg"></a>
-        <a href="https://github.com/nrobinson2000/po-util/stargazers"><img src="https://img.shields.io/github/stars/nrobinson2000/po-util.svg"></a>
-        <a href="https://travis-ci.org/nrobinson2000/po-util"><img src="https://travis-ci.org/nrobinson2000/po-util.svg?branch=master" alt="Build Status"></a>
-        <a href="https://circleci.com/gh/nrobinson2000/po-util/tree/master"><img src="https://circleci.com/gh/nrobinson2000/po-util/tree/master.svg?style=svg" alt="Circle CI"></a>
-        <a href="https://twitter.com/intent/tweet?ref_src=twsrc%5Etfw&text=Check%20out%20po-util.%20It%27s%20a%20handy%20script%20for%20installing%20and%20using%20the%20%40particle%20Toolchain%20on%20Linux%20and%20macOS.&tw_p=tweetbutton&url=https%3A%2F%2Fnrobinson2000.github.io/po-util/"><img src="https://img.shields.io/twitter/url/http/shields.io.svg?style=social&maxAge=2592000"></a>
-      </p>
+<body>
+  <section class="page-header">
+    <img id="logo" onload="if (screen.width < 600){this.width = 400;}else{this.width=550;}" src="logos/po-util-updated.svg" width="550px">
+    <h1 class="project-tagline">Particle Offline Utility: The Ultimate Local Particle Experience for Linux and macOS</h1>
+    <a href="https://github.com/nrobinson2000/po-util" class="btn">View on GitHub</a>
+    <a href="https://github.com/nrobinson2000/po-util/wiki" class="btn">View Wiki</a>
+  </section>
 
-<h1>About</h1>
-<p>Particle Offline Utility, pronounced <code>po-util</code>, is a script for installing and using the Particle Toolchain on Linux and macOS.</p>
-<p><code>po-util</code> makes it easy for developers to download the Particle Toolchain and install the required dependencies to quickly begin creating projects using the Particle Platform.</p>
-<p><code>po-util</code> features a responsive experience, giving developers the tools they need for seamless local development, providing understandable commands for simplifying complex tasks like properly compiling and flashing firmware.</p>
-<p align="center">
-<script type="text/javascript" src="https://asciinema.org/a/9qvofqis2skl9rihckyv3c0wl.js" id="asciicast-9qvofqis2skl9rihckyv3c0wl" async></script>
-</p>
-<h1>Install</h1>
+  <section class="main-content">
+    <p>
+      <a href="https://gitter.im/po-util/Lobby?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/po-util/Lobby.svg" alt="Join the chat at https://gitter.im/po-util/Lobby" /></a>
+      <a href="https://nrobinson2000.herokuapp.com"><img src="https://nrobinson2000.herokuapp.com/badge.svg" alt="" /></a>
+      <a href="https://www.paypal.me/nrobinson2000"><img src="https://img.shields.io/badge/donate-PayPal-009cde.svg" alt="" /></a>
+      <a href="https://nrobinson2000.github.io/po-util/donate"><img src="https://img.shields.io/badge/donate-bitcoin-orange.svg" alt="" /></a>
+      <a href="https://github.com/nrobinson2000/po-util/issues"><img src="https://img.shields.io/github/issues/nrobinson2000/po-util.svg" alt="" /></a>
+      <a href="https://github.com/nrobinson2000/po-util/stargazers"><img src="https://img.shields.io/github/stars/nrobinson2000/po-util.svg" alt="" /></a>
+      <a href="https://travis-ci.org/nrobinson2000/po-util"><img src="https://travis-ci.org/nrobinson2000/po-util.svg?branch=master" alt="Build Status" /></a>
+      <a href="https://circleci.com/gh/nrobinson2000/po-util/tree/master"><img src="https://circleci.com/gh/nrobinson2000/po-util/tree/master.svg?style=svg" alt="Circle CI" /></a>
+      <a href="https://twitter.com/intent/tweet?ref_src=twsrc%5Etfw&amp;text=Check%20out%20po-util.%20It's%20a%20handy%20script%20for%20installing%20and%20using%20the%20%2540particle%20Toolchain%20on%20Linux%20and%20macOS.&amp;tw_p=tweetbutton&amp;url=https%253A%252F%252Fnrobinson2000.github.io/po-util/"><img src="https://img.shields.io/twitter/url/http/shields.io.svg?style=social&amp;maxAge=2592000" alt="" /></a>
+    </p>
 
-<p>There are two versions of <code>po-util</code>. The first is <code>po-util Classic</code>, which is designed for Linux distributions. The second is <code>po-util Homebrew Edition</code>, which is designed for macOS. Classic can be installed by following the instructions below:</p>
-<p><strong>The easiest and most secure way to install <code>po-util</code> is to download <code>po-util.sh</code> directly and run it:</strong></p>
-<pre><code><strong class="shell">$</strong> curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
-<strong class="shell">$</strong> chmod +x po-util.sh ; ./po-util.sh install ; . ~/.bashrc</code></pre>
-<p><strong>You can also install <code>po-util</code> by cloning the GitHub repository:</strong></p>
-<pre><code><strong class="shell">$</strong> git clone https://github.com/nrobinson2000/po-util
-<strong class="shell">$</strong> cd po-util
-<strong class="shell">$</strong> ./po-util.sh install ; . ~/.bashrc</code></pre>
-<p><strong>On macOS, <a href="https://github.com/nrobinson2000/homebrew-po">Homebrew Edition</a> can be installed by running these commands:</strong></p>
-<pre><code><strong class="shell">$</strong> brew tap nrobinson2000/po
-<strong class="shell">$</strong> brew install po
-<strong class="shell">$</strong> po install</code></pre>
-<p><strong>Note: </strong>Both versions of po-util have the same features. In December 2016, Homebrew Edition was forked from po-util in order to allow po-util to be installed with Homebrew.  The original po-util was renamed to Classic, and was made Linux exclusive. Both Classic and Homebrew Edition continue to be developed and maintained in parallel.</p>
+    <h1>About</h1>
+    <p>Particle Offline Utility, pronounced <code>po-util</code>, is a script for installing and using the Particle Toolchain on Linux and macOS.</p>
+    <p><code>po-util</code> makes it easy for developers to download the Particle Toolchain and install the required dependencies to quickly begin creating projects using the Particle Platform.</p>
+    <p><code>po-util</code> features a responsive experience, giving developers the tools they need for seamless local development, providing understandable commands for simplifying complex tasks like properly compiling and flashing firmware.</p>
+    <p align="center">
+      <img src="images/build.gif">
+    </p>
+    <h1>Install</h1>
+    <p>There are two versions of po-util. The first is <a href="https://github.com/nrobinson2000/po-util">po-util Classic</a>, which is designed for Linux distributions. The second is <a href="https://github.com/nrobinson2000/homebrew-po">po-util Homebrew Edition</a>,
+      which is designed for macOS. Classic can be installed by following the instructions below:</p>
+    <p><strong>The most secure way to install <code>po-util</code> is to download <code>po-util.sh</code> directly and run it:</strong></p>
+    <pre><code>$ curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
+      $ chmod +x po-util.sh ; ./po-util.sh install
+      </code></pre>
+    <p><strong>A quickest and easiest way to install <code>po-util</code> is to run this command:</strong></p>
+    <pre><code>$ bash &lt;( curl -sL https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh ) install
+      </code></pre>
+    <p><strong>You can also install <code>po-util</code> by cloning the GitHub repository:</strong></p>
+    <pre><code>$ git clone https://github.com/nrobinson2000/po-util
+      $ cd po-util
+      $ ./po-util.sh install
+      </code></pre>
+    <p><strong>On macOS, <a href="https://github.com/nrobinson2000/homebrew-po">Homebrew Edition</a> can be installed by running these commands:</strong></p>
+    <pre><code>$ brew tap nrobinson2000/po
+      $ brew install po
+      $ po install
+      </code></pre>
+    <p><strong>Note:</strong> Both versions of po-util have the same features. In December 2016, Homebrew Edition was forked from po-util in order to allow po-util to be installed with Homebrew. The original po-util was renamed to Classic, and was made Linux
+      exclusive. Both Classic and Homebrew Edition continue to be developed and maintained in parallel.</p>
+    <p align="center">
+      <img src="images/po.gif">
+    </p>
+    <h1>Key Features</h1>
+    <h3>Library Manager</h3>
+    <p>The library manager makes it easy to use Particle libraries when developing with po-util locally by using <code>git</code> to download Particle libraries hosted on GitHub and save them to a ~/.po-util/lib directory so that they make be linked inside
+      of projects later. <a href="http://community.particle.io/t/how-to-use-po-utils-library-manager/26735">Read more about the Library Manager here.</a></p>
+    <p align="center">
+      <img src="images/lib.gif">
+    </p>
+    <h3>Full dependency setup</h3>
+    <p><code>po-util</code> installs all of the dependencies required for local Particle Development, including the <a href="https://launchpad.net/gcc-arm-embedded">ARM toolchain</a>, <a href="http://dfu-util.sourceforge.net/">dfu-util</a>,
+      <a href="https://nodejs.org/en/">nodejs</a>, <a href="https://github.com/spark/particle-cli">particle-cli</a> and the <a href="https://github.com/spark/firmware">Particle firmware</a>.</p>
+    <h3>Local compilation and support for flashing over USB or OTA</h3>
+    <p>Building firmware locally for Electrons, Photons and P1s, and automatically flashing over USB using dfu-util or Over The Air using particle-cli. Sequentially flashing multiple devices at once over the air is also supported.</p>
+    <h3>Shortcuts for Building in Atom</h3>
+    <p><code>po-util</code> supports shortcuts for <a href="https://atom.io">Atom</a>, the popular open- source IDE by GitHub. The shourcuts provide quick access to commonly used commands for <code>po-util</code>, including: building firmware, flashing firmware
+      over USB, and flashing firmware Over The Air. <a href="http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/29?u=nrobinson2000">Read more about the shortcuts
+      here.</a></p>
+    <p align="center">
+      <img src="http://i.giphy.com/11w4YEQHmUy06s.gif" width="800px">
+    </p>
+    <ul>
+      <li>Standardized project directory structure.</li>
+      <li>Upgrading the system firmware of devices.</li>
+      <li>Monitoring the serial output of devices.</li>
+      <li>Manually putting devices into DFU mode and out of DFU mode.</li>
+    </ul>
+    <h1>Project Directory Structure</h1>
+    <p>The directory structure of a <strong>full</strong> <code>po-util</code> project is arranged like so:</p>
+    <pre><code>firmware/
+      ├ main.cpp
+      └ lib1/
+        ├ lib1.cpp
+        ├ lib1.h
+        └ ...
+      bin/
+      ├ firmware.bin
+      └ ...
+       devices.txt
+       libs.txt
+       .atom-build.yml
+       README.md
+      </code></pre>
+    <ul>
+      <li>
+        <p>All user code is kept inside of <code>main.cpp</code>.</p>
+      </li>
+      <li>
+        <p>The compiled binary will be named <code>firmware.bin</code>, and it will be in <code>bin/</code>.</p>
+      </li>
+      <li>
+        <p>You can keep track of which devices are in a project and list which ones to be flashed Over The Air in <code>devices.txt</code>.</p>
+      </li>
+      <li>
+        <p>You can easily add libraries to a project. Added libraries are kept track of in <code>libs.txt</code>.</p>
+      </li>
+      <li>
+        <p>Atom shortcuts are a new feature of <code>po-util</code>, and <code>.atom-build.yml</code> contains the configuration for the shortcuts.</p>
+      </li>
+    </ul>
+    <h1>Project setup</h1>
+    <p>When using <code>po-util</code>, your code is arranged into projects with the structure described above. This not only lets you easily work on many projects on one computer, but it provides a standardized way of building locally.</p>
+    <p>Creating a project with <code>po-util</code> is simple. All that you need to do is create a folder and run <code>po init</code> inside of it to initialize the project by creating the appropriate files and directories. Below is an example:</p>
+    <pre><code>$ mkdir someProject
+      $ cd someProject
+      $ po init DEVICE_TYPE
+      </code></pre>
+    <p>You can set <code>DEVICE_TYPE</code> to either <code>photon</code>, <code>P1</code>, <code>electron</code>, <code>core</code>, or <code>pi</code>. This is necessary for generating the Atom shortcuts file appropriately.</p>
+    <h1>More Information</h1>
+    <p>Here is some more information about using <code>po-util</code>.</p>
+    <h3>Writing Firmware</h3>
+    <p><code>po-util</code> compiles any <code>.cpp</code> and <code>.h</code> files found in the <code>firmware/</code> directory, but not <code>.ino</code> files, so <code>#include &quot;application.h&quot;</code> must be present in your <code>main.cpp</code>      file. This is done for you when you run the <code>po init</code> command to create a project directory.</p>
+    <h3>Building Firmware</h3>
+    <p>To compile firmware, simply run <code>po DEVICE build</code>, substituting <code>DEVICE</code> for
+      <code>photon</code>, <code>P1</code>, or <code>electron</code>. To compile and flash firmware to your device using dfu-util, simply run <code>po DEVICE flash</code>. To clean the project, run <code>po DEVICE clean</code>.</p>
+    <p align="center">
+      <img src="http://i.giphy.com/V6LteSojfcxKE.gif" width="800px">
+    </p>
+    <h3>DFU Commands</h3>
+    <p>To upload precompiled code over USB, run <code>po DEVICE dfu</code>. To put your device into dfu mode, run <code>po dfu-open</code>. To get your device out of dfu mode, run <code>po dfu-close</code>.</p>
+    <p align="center">
+      <img src="images/dfu.png">
+    </p>
+    <h3>Over The Air (OTA) Uploading</h3>
+    <p>To upload precompiled code over the air using particle-cli, run <code>po DEVICE ota DEVICE_NAME</code>, where <code>DEVICE_NAME</code> is the name of your device in the Particle cloud. You must be logged into particle-cli to use this feature. You
+      can log into particle-cli with <code>particle cloud login</code>.</p>
+    <p>You can also flash code to multiple devices at once by passing the <code>-m</code> or
+      <code>--multi</code> argument to <code>ota</code>. This would look like <code>po DEVICE ota -m</code>. This relies on a file called <code>devices.txt</code> that you must create in your <code>po-util</code> project directory.</p>
+    <p><strong>NOTE: This is different from the product firmware update feature in the Particle Console because it updates the firmware of devices one at a time and only if the devices are online when the command is run.</strong></p>
+    <p align="center">
+      <img src="images/ota.png">
+    </p>
+    <h3>Triggering DFU mode on your Device(s)</h3>
+    <p>By default, <code>po-util</code> changes the trigger DFU Mode baud rate to <code>19200</code>, as it is a more friendly baud rate for Linux Distributions. To make your device(s) recognize this baud rate, you must run <code>po DEVICE upgrade</code>.
+      This will also update the system firmware on your device(s).</p>
+    <p>If you wish to use the default Particle DFU Mode baud rate, you may change the
+      <code>DFUBAUDRATE=19200</code> line in the <code>~/.po</code> configuration file to
+      <code>DFUBAUDRATE=14400</code>.</p>
+    <h1>Praise for po-util</h1>
+    <blockquote style="background:#22282d">
+      <p>"I think you identified a common pain point for a lot of users, and the automated installation of the Particle toolchain is a problem that we've been focused on a lot recently ... you should already feel proud of yourself because you have made a
+        meaningful contribution to the community. We are all very thankful for it - our community regularly impresses us, and you are certainly not an exception."</p>
+      <p style="text-align: left"><a href="http://nrobinson2000.me/po-util-recognition.pdf">Will Hart, Particle General Manager</a></p>
+    </blockquote>
+    <hr>
+    <blockquote style="background:#22282d">
+      <p>"It has been nearly flawless and a HUGE productivity booster... I cannot believe your steps worked installing so many utils and dependencies perfectly... The Particle world owes you a big debt. If there were Emmy awards for Particle contribs, you
+        would get one."</p>
+      <p style="text-align: left"><a href="http://community.particle.io/t/moving-project-from-web-ide-to-particle-dev-on-a-mac/28398/5?u=nrobinson2000">Andrew Ward, Particle Community Member</a></p>
+    </blockquote>
+    <hr>
+    <blockquote style="background:#22282d">
+      <p>"Nice! This is great stuff. Definitely helpful for the local dev / offline use case. Thanks for sharing."</p>
+      <p style="text-align: left"><a href="http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/2?u=nrobinson2000">Avidan Ross, Particle Investor</a></p>
+    </blockquote>
+    <hr>
+    <blockquote style="background:#22282d">
+      <p>"Thanks a lot for this amazing tool. I finally managed to get everything as I wanted: to be able to work off-line."</p>
+      <p style="text-align: left"><a href="https://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/34?u=nrobinson2000">Yannick, Particle Community Member</a></p>
+    </blockquote>
+    <hr>
+    <blockquote style="background:#22282d">
+      <p>"Po-util is a very handy script - thanks for sharing."</p>
+      <p style="text-align: left"><a href="http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/15?u=nrobinson2000">H.S, Particle Community Member</a></p>
+    </blockquote>
+    <hr>
+    <blockquote style="background:#22282d">
+      <p>"I can't heart this enough!"</p>
+      <p style="text-align: left"><a href="http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/27?u=nrobinson2000">Josh Fisher, Particle Community Member</a></p>
+    </blockquote>
 
-<p align="center">
-<img src="images/po.png">
-</p>
-<h1>Key Features</h1>
-<ul>
-<li><h3>Library Manager</h3>
-<p>The library manager makes it easy to use Particle libraries when developing with po-util locally by using <code>git</code> to download Particle libraries hosted on GitHub and save them to a ~/.po-util/lib directory so that they make be linked inside of projects later.  <a href="http://community.particle.io/t/how-to-use-po-utils-library-manager/26735">Read more about the Library Manager here.</a></p>
-<p align="center">
-<script type="text/javascript" src="https://asciinema.org/a/82fgnpnhx5qxwvyvsgin1509v.js" id="asciicast-82fgnpnhx5qxwvyvsgin1509v" async></script>
-<p>
-</li>
-<li>
-<h3>Full dependency setup</h3>
-<p>
-<code>po-util</code> installs all of the dependencies required for local Particle Development, including the <a href="https://launchpad.net/gcc-arm-embedded">ARM toolchain</a>, <a href="http://dfu-util.sourceforge.net/">dfu-util</a>, <a href="https://nodejs.org/en/">nodejs</a>, <a href="https://github.com/spark/particle-cli">particle-cli</a> and the <a href="https://github.com/spark/firmware">Particle firmware</a>.
-</p>
-</li>
-<li>
-<h3>Local compilation and support for flashing over USB or OTA</h3>
-<p>
-Building firmware locally for Electrons, Photons and P1s, and automatically flashing over USB using dfu-util or Over The Air using particle-cli.  Sequentially flashing multiple devices at once over the air is also supported.
-</p>
-</li>
-<li>
-<h3>Shortcuts for Building in Atom</h3>
-<p>
-<code>po-util</code> supports shortcuts for <a href="https://atom.io">Atom</a>, the popular open-source IDE by GitHub.  The shourcuts provide quick access to commonly used commands for <code>po-util</code>, including: building firmware, flashing firmware over USB, and flashing firmware Over The Air. <a href="http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/29?u=nrobinson2000">Read more about the shortcuts here.</a>
-<p align="center">
-<img src="images/atom.png">
-</p>
-</p>
-</li>
-<li>Standardized project directory structure.</li>
-<li>Upgrading the system firmware of devices.</li>
-<li>Monitoring the serial output of devices.</li>
-<li>Manually putting devices into DFU mode and out of DFU mode.</li>
-</ul>
+  </section>
 
-<h1>Project Directory Structure</h1>
-<p>The directory structure of a <strong>full</strong> <code>po-util</code> project is arranged like so:</p>
-<pre><code><strong class="shell">firmware/</strong>
-├ <strong class="file">main.cpp</strong>
-└ <strong class="shell">lib1/</strong>
-  ├ lib1.cpp
-  ├ lib1.h
-  └ ...
-<strong class="shell">bin/</strong>
-├ firmware.bin
-└ ...
- <strong class="config">devices.txt</strong>
- <strong class="config">libs.txt</strong>
- <strong class="config">.atom-build.yml</strong>
- README.md</code></pre>
-
-<!-- <p>All of the C++ files go in the <code>firmware/</code> directory, and the compiled binary
-will appear in the <code>bin/</code> directory, named <code>firmware.bin</code>.</p> -->
-<ul>
-<li>
-<p>
-All user code is kept inside of <code>main.cpp</code>.
-</p>
-</li>
-
-<li>
-<p>
-The compiled binary will be named <code>firmware.bin</code>, and it will be in <code>bin/</code>.
-</p>
-</li>
-
-<li>
-<p>
-You can keep track of which devices are in a project and list which ones to be flashed Over The Air in <code>devices.txt</code>.
-</p>
-</li>
-
-<li>
-<p>
-You can easily add libraries to a project.  Added libraries are kept track of in <code>libs.txt</code>.
-</p>
-</li>
-
-<li>
-<p>
-Atom shortcuts are a new feature of <code>po-util</code>, and <code>.atom-build.yml</code> contains the configuration for the shortcuts.
-</p>
-</li>
-</ul>
-
-
-<h1>Project setup</h1>
-<p>
-When using <code>po-util</code>, your code is arranged into projects with the structure described above.  This not only lets you easily work on many projects on one computer, but it provides a standardized way of building locally.</p>
-
-<p>Creating a project with <code>po-util</code> is simple.  All that you need to do is create a folder and run use the <code>po init</code> inside of it to initialize the project by creating the appropriate files and directories.  Below is an example:</p>
-<pre><code>$ mkdir someProject
-$ cd someProject
-$ po init DEVICE_TYPE</code></pre>
-<p>You can set <code>DEVICE_TYPE</code> to either <code>photon</code>, <code>P1</code> or <code>electron</code>.  This is necessary for generating the Atom shortcuts file appropriately.
-</p>
-<h1>More Information</h1>
-<p>Here is some more information about using <code>po-util</code>.
-<h3>Writing Firmware</h3>
-<p><code>po-util</code> compiles any <code>.cpp</code> and <code>.h</code> files found in the <code>firmware/</code> directory, but not <code>.ino</code> files, so <code>#include &quot;application.h&quot;</code> must be present in your <code>main.cpp</code> file.  This is done for you when you run the <code>po init</code> command to create a project directory.</p>
-<h3>Building Firmware</h3>
-<p>To compile firmware, simply run <code>po DEVICE build</code>, substituting <code>DEVICE</code> for
-<code>photon</code>, <code>P1</code>, or <code>electron</code>. To compile and flash firmware to your device using dfu-util, simply run <code>po DEVICE flash</code>. To clean the project, run <code>po DEVICE clean</code>.</p>
-<p align="center">
-  <script type="text/javascript" src="https://asciinema.org/a/af6y159xvhhq25lysbrzhl872.js" id="asciicast-af6y159xvhhq25lysbrzhl872" async></script>
-</p>
-<h3>DFU Commands</h3>
-<p>To upload precompiled code over USB, run <code>po DEVICE dfu</code>. To put your device into dfu mode, run <code>po dfu-open</code>. To get your device out of dfu mode, run <code>po dfu-close</code>.</p>
-<p align="center">
-<img src="images/dfu.png">
-</p>
-<h3>Over The Air (OTA) Uploading</h3>
-<p>To upload precompiled code over the air using particle-cli,
-run <code>po DEVICE ota DEVICE_NAME</code>, where <code>DEVICE_NAME</code> is the name of your device
-in the Particle cloud. You must be logged into particle-cli to use this
-feature. You can log into particle-cli with <code>particle cloud login</code>.
-</p>
-<p>You can also flash code to multiple devices at once by passing the <code>-m</code> or
-<code>--multi</code> argument to <code>ota</code>.  This would look like <code>po DEVICE ota -m</code>.
-This relies on a file called <code>devices.txt</code> that you must create in your <code>po-util</code>
-project directory.</p>
-<p><strong>NOTE: This is different from the product firmware update feature in the Particle Console because it updates the firmware of devices one at a time and only if the devices are online when the command is run.</strong></p>
-<p align="center">
-<img src="images/ota.png">
-</p>
-<h3>Triggering DFU mode on your Device(s)</h3>
-<p>By default, <code>po-util</code> changes the trigger DFU Mode
-baud rate to <code>19200</code>, as it is a more friendly baud rate for
-Linux Distributions.  To make your device(s) recognize this baud rate,
-you must run <code>po DEVICE upgrade</code>. This will also update the
-system firmware on your device(s).</p>
-<p>If you wish to use the default Particle DFU Mode baud rate, you may change the <code>DFUBAUDRATE=19200</code> line in the <code>~/.po</code> configuration file to <code>DFUBAUDRATE=14400</code>.</p>
-
-<h1>Praise for po-util</h1>
-
-<blockquote style="background:#22282d"><p>"I think you identified a common pain point for a lot of users, and the automated installation of the Particle toolchain is a problem that we've been focused on a lot recently ... you should already feel proud of yourself because you have made a meaningful contribution to the community. We are all very thankful for it - our community regularly impresses us, and you are certainly not an exception."</p>
-<p style="text-align: left"><a href="http://nrobinson2000.me/po-util-recognition.pdf">Will Hart, Particle General Manager</a></p></blockquote>
-<hr>
-
-<blockquote style="background:#22282d"><p>"It has been nearly flawless and a HUGE productivity booster... I cannot believe your steps worked installing so many utils and dependencies perfectly... The Particle world owes you a big debt. If there were Emmy awards for Particle contribs, you would get one."</p>
-<p style="text-align: left"><a href="http://community.particle.io/t/moving-project-from-web-ide-to-particle-dev-on-a-mac/28398/5?u=nrobinson2000">Andrew Ward, Particle Community Member</a></p></blockquote>
-<hr>
-
-<blockquote style="background:#22282d"><p>"Nice! This is great stuff. Definitely helpful for the local dev / offline use case.
-Thanks for sharing."</p>
-<p style="text-align: left"><a href="http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/2?u=nrobinson2000">Avidan Ross, Particle Investor</a></p></blockquote>
-<hr>
-
-<blockquote style="background:#22282d"><p>"Thanks a lot for this amazing tool. I finally managed to get everything as I wanted: to be able to work off-line."</p>
-<p style="text-align: left"><a href="https://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/34?u=nrobinson2000">Yannick, Particle Community Member</a></p></blockquote>
-<hr>
-
-<blockquote style="background:#22282d"><p>"Po-util is a very handy script - thanks for sharing."</p>
-<p style="text-align: left"><a href="http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/15?u=nrobinson2000">H.S, Particle Community Member</a></p></blockquote>
-<hr>
-
-<blockquote style="background:#22282d"><p>"I can't heart this enough!"</p>
-<p style="text-align: left"><a href="http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/27?u=nrobinson2000">Josh Fisher, Particle Community Member</a></p></blockquote>
-
-
-
-
-
-
-
-
-
-<!-- <h1>Why I created this script</h1>
-<p>I created this script because Particle does not currently have a script for easily installing the Particle Toolchain and dependencies on Linux and macOS. I created this script in order to help out other Particle users and to improve my bash scripting skills. It would be my dream come true if Particle added this script to its resources or gave it a shout out in its documentation. If that happened, I would feel very proud of myself for making a meaningful contribution.</p>
-
-<h1>How you can help po-util</h1>
-<p>
-Contributions and starring of the <a href="https://github.com/nrobinson2000/po-util">GitHub Repository</a> are greatly appreciated.  Bitcoin is also accepted to help pay for hosting expenses. <a href="https://po-util.com/donate">Donate Bitcoin Here.</a>  You can also share <code>po-util</code> on social media to help other users discover it.
-</p>
-
-<h1>Share po-util:</h1>
-<p>Sharing <code>po-util</code> on social media or discussing it on social media platforms is crucial for other users to discover and use <code>po-util</code>.  <code>po-util</code> is a great tool, and if you are reading this page, you most likely agree.  Please share <code>po-util</code> on whatever platform(s) you prefer, so that it may be found by people who need it.</p>
-
-<p>If you like <code>po-util</code>, I would recommend starring it on GitHub so that I can get a broad idea of the number of users interested in it.
-  <a href="https://github.com/nrobinson2000/po-util/stargazers"><img src="https://img.shields.io/github/stars/nrobinson2000/po-util.svg?style=social&label=Star&maxAge=2592000"></a>
-</p>
-
-<p>
-  You can also Tweet about <code>po-util</code>, <a href="https://twitter.com/intent/tweet?ref_src=twsrc%5Etfw&text=Check%20out%20po-util.%20It%27s%20a%20handy%20script%20for%20installing%20and%20using%20the%20%40particle%20Toolchain%20on%20Linux%20and%20macOS.&tw_p=tweetbutton&url=https%3A%2F%2Fnrobinson2000.github.io/po-util/"><img src="https://img.shields.io/twitter/url/http/shields.io.svg?style=social&maxAge=2592000"></a>
-</p>
-
-<p>
-  Or share it on Google+,
-  <div class="g-plusone" data-href="https://po-util.com"></div>
-</p>
+  <!--Start of Zopim Live Chat Script-->
+  <script type="text/javascript">
+    window.$zopim || (function(d, s) {
+      var z = $zopim = function(c) {
+          z._.push(c)
+        },
+        $ = z.s =
+        d.createElement(s),
+        e = d.getElementsByTagName(s)[0];
+      z.set = function(o) {
+        z.set.
+        _.push(o)
+      };
+      z._ = [];
+      z.set._ = [];
+      $.async = !0;
+      $.setAttribute("charset", "utf-8");
+      $.src = "//v2.zopim.com/?41kmCV2jBFucpRrqfY0kSkVUGJBA44aA";
+      z.t = +new Date;
+      $.
+      type = "text/javascript";
+      e.parentNode.insertBefore($, e)
+    })(document, "script");
+  </script>
+  <!--End of Zopim Live Chat Script-->
 
 
-<div id="disqus_thread"></div>
-<script>
-/**
-* RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-* LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
-*/
-
-var disqus_config = function () {
-this.page.url = PAGE_URL; // Replace PAGE_URL with your page's canonical URL variable
-this.page.identifier = 'main'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-};
-
-(function() { // DON'T EDIT BELOW THIS LINE
-var d = document, s = d.createElement('script');
-
-s.src = '//po-util.disqus.com/embed.js';
-
-s.setAttribute('data-timestamp', +new Date());
-(d.head || d.body).appendChild(s);
-})();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-
-
-<p>
-  <a href="https://nrobinson2000.herokuapp.com"><img src="https://nrobinson2000.herokuapp.com/badge.svg"></a>
-  <a href="donate"><img src="https://img.shields.io/badge/donate-bitcoin-orange.svg"></a>
-  <a href="https://github.com/nrobinson2000/po-util/issues"><img src="https://img.shields.io/github/issues/nrobinson2000/po-util.svg"></a>
-  <a href="https://github.com/nrobinson2000/po-util/stargazers"><img src="https://img.shields.io/github/stars/nrobinson2000/po-util.svg"></a>
-  <a href="https://travis-ci.org/nrobinson2000/po-util"><img src="https://travis-ci.org/nrobinson2000/po-util.svg?branch=master" alt="Build Status"></a>
-  <a href="https://circleci.com/gh/nrobinson2000/po-util"><img src="https://circleci.com/gh/nrobinson2000/po-util.svg?style=svg" alt="Circle CI"></a>
-  <a href="https://twitter.com/intent/tweet?ref_src=twsrc%5Etfw&text=Check%20out%20po-util.%20It%27s%20a%20handy%20script%20for%20installing%20and%20using%20the%20%40particle%20Toolchain%20on%20Linux%20and%20macOS.&tw_p=tweetbutton&url=https%3A%2F%2Fnrobinson2000.github.io/po-util/"><img src="https://img.shields.io/twitter/url/http/shields.io.svg?style=social&maxAge=2592000"></a>
-</p>
-
--->
-
-      <!-- <footer class="site-footer">
-
-      </footer> -->
-
-    </section>
-
-    <!--Start of Zopim Live Chat Script-->
-    <script type="text/javascript">
-    window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
-    d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
-    _.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");
-    $.src="//v2.zopim.com/?41kmCV2jBFucpRrqfY0kSkVUGJBA44aA";z.t=+new Date;$.
-    type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
-    </script>
-    <!--End of Zopim Live Chat Script-->
-
-
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57ccc3d648ee060b"></script>
+  <!-- Go to www.addthis.com/dashboard to customize your tools -->
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57ccc3d648ee060b"></script>
 
   <script src="https://apis.google.com/js/platform.js" async defer></script>
 
 
 
 
-  </body>
+</body>
+
 </html>
