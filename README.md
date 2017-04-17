@@ -4,7 +4,9 @@
 
 # Particle Offline Utility: The Ultimate Local Particle Experience for Linux and macOS
 
+[![Join the chat at https://gitter.im/po-util/Lobby](https://badges.gitter.im/po-util/Lobby.svg)](https://gitter.im/po-util/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![](https://nrobinson2000.herokuapp.com/badge.svg)](https://nrobinson2000.herokuapp.com)
+[![](https://img.shields.io/badge/donate-PayPal-009cde.svg)](https://www.paypal.me/nrobinson2000)
 [![](https://img.shields.io/badge/donate-bitcoin-orange.svg)](https://nrobinson2000.github.io/po-util/donate)
 [![](https://img.shields.io/github/issues/nrobinson2000/po-util.svg)](https://github.com/nrobinson2000/po-util/issues)
 [![](https://img.shields.io/github/stars/nrobinson2000/po-util.svg)](https://github.com/nrobinson2000/po-util/stargazers) [![Build Status](https://travis-ci.org/nrobinson2000/po-util.svg?branch=master)](https://travis-ci.org/nrobinson2000/po-util)
@@ -28,18 +30,22 @@ simplifying complex tasks like properly compiling and flashing firmware.
 
 # Install
 
-There are two versions of po-util. The first is po-util Classic, which is designed for Linux distributions. The second is po-util Homebrew Edition, which is designed for macOS. Classic can be installed by following the instructions below:
+There are two versions of po-util. The first is [po-util Classic](https://github.com/nrobinson2000/po-util), which is designed for Linux distributions. The second is [po-util Homebrew Edition](https://github.com/nrobinson2000/homebrew-po), which is designed for macOS. Classic can be installed by following the instructions below:
 
-**The easiest and most secure way to install `po-util` is to download `po-util.sh` directly and run it:**
+**The most secure way to install `po-util` is to download `po-util.sh` directly and run it:**
 
     $ curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
-    $ chmod +x po-util.sh ; ./po-util.sh install ; . ~/.bashrc
+    $ chmod +x po-util.sh ; ./po-util.sh install
+
+**A quickest and easiest way to install `po-util` is to run this command:**
+
+    $ bash <( curl -sL https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh ) install
 
 **You can also install `po-util` by cloning the GitHub repository:**
 
     $ git clone https://github.com/nrobinson2000/po-util
     $ cd po-util
-    $ ./po-util.sh install ; . ~/.bashrc
+    $ ./po-util.sh install
 
 **On macOS, [Homebrew Edition](https://github.com/nrobinson2000/homebrew-po) can be installed by running these commands:**
 
@@ -64,7 +70,7 @@ GitHub and save them to a ~/.po-util/lib directory so that they make be linked
 inside of projects later. [Read more about the Library Manager here.](http://community.particle.io/t/how-to-use-po-utils-library-manager/26735)
 
 <p align="center">
-<img src="images/lib.gif">
+<img src="images/lib.gif" width="800px">
 </p>
 
 ### Full dependency setup
