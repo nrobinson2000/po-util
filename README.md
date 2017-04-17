@@ -25,7 +25,7 @@ need for seamless local development, providing understandable commands for
 simplifying complex tasks like properly compiling and flashing firmware.
 
 <p align="center">
-<img src="images/build.gif" width="800px">
+<img src="images/build.gif">
 </p>
 
 # Install
@@ -70,7 +70,7 @@ GitHub and save them to a ~/.po-util/lib directory so that they make be linked
 inside of projects later. [Read more about the Library Manager here.](http://community.particle.io/t/how-to-use-po-utils-library-manager/26735)
 
 <p align="center">
-<img src="images/lib.gif" width="800px">
+<img src="images/lib.gif">
 </p>
 
 ### Full dependency setup
