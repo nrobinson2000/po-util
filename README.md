@@ -23,7 +23,7 @@ need for seamless local development, providing understandable commands for
 simplifying complex tasks like properly compiling and flashing firmware.
 
 <p align="center">
-<img src="http://i.giphy.com/114W3o7tWsT0is.gif" width="800px">
+<img src="images/build.gif" width="800px">
 </p>
 
 # Install
@@ -51,7 +51,7 @@ There are two versions of po-util. The first is po-util Classic, which is design
 Both versions of po-util have the same features. In December 2016, Homebrew Edition was forked from po-util in order to allow po-util to be installed with Homebrew.  The original po-util was renamed to Classic, and was made Linux exclusive. Both Classic and Homebrew Edition continue to be developed and maintained in parallel.
 
 <p align="center">
-<img src="images/po.png">
+<img src="images/po.gif">
 </p>
 
 # Key Features
@@ -64,7 +64,7 @@ GitHub and save them to a ~/.po-util/lib directory so that they make be linked
 inside of projects later. [Read more about the Library Manager here.](http://community.particle.io/t/how-to-use-po-utils-library-manager/26735)
 
 <p align="center">
-<img src="http://i.makeagif.com/media/11-22-2016/J9dnNq.gif" width="800px">
+<img src="images/lib.gif">
 </p>
 
 ### Full dependency setup
