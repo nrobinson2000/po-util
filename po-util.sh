@@ -815,8 +815,12 @@ then
     yaourt -S perl-archive-zip
 fi
 
-if [ BASIC_INSTALL != "true" ];
+if [ BASIC_INSTALL == "true" ];
 then
+  echo
+  green_echo "BASIC INSTALL: Skipping dfu-util, particle-cli, etc."
+  echo
+else
 
 # Install dfu-util
 blue_echo "Installing dfu-util (requires sudo)..."
