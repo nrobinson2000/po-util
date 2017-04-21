@@ -770,6 +770,13 @@ Please install \"curl\" with your package manager.
     echo
 
     # Install dependencies
+
+    if hash arm-none-eabi-gcc 2>/dev/null; #Test for arm-none-eabi-gcc
+    then
+      blue_echo "ARM toolchain version $GCC_ARM_VER is already installed... Continuing..."
+    else
+
+
     blue_echo "Installing ARM toolchain and dependencies locally in $BINDIR/gcc-arm-embedded/..."
     mkdir -p $BINDIR/gcc-arm-embedded && cd "$_" || exit
 
@@ -780,10 +787,12 @@ Please install \"curl\" with your package manager.
     else
         curl -LO https://launchpad.net/gcc-arm-embedded/4.9/4.9-2015-q3-update/+download/gcc-arm-none-eabi-4_9-2015q3-20150921-linux.tar.bz2 #Update to v4.9
         tar xjf gcc-arm-none-eabi-*-linux.tar.bz2
-
-        blue_echo "Creating links in /usr/local/bin..."
-        sudo ln -s $GCC_ARM_PATH* /usr/local/bin # LINK gcc-arm-none-eabi
     fi
+
+    blue_echo "Creating ARM toolchain links in /usr/local/bin..."
+    sudo ln -s $GCC_ARM_PATH* /usr/local/bin # LINK gcc-arm-none-eabi
+
+  fi
 
     if [ "$DISTRO" != "arch" ];
     then
