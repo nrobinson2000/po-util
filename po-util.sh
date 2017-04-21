@@ -612,8 +612,14 @@ fi
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
-if [ "$1" == "install" ]; # Install
+if [ "$1" == "install" ]; # Install : "$2 specify alternate" : "$3 if 'basic' then just install arm toolchain for CI use"
 then
+
+if [ "$3" == "basic" ];
+then
+BASIC_INSTALL="true"
+fi
+
   if [ "$(uname -s)" == "Darwin" ]; #Force homebrew version on macOS.
   then
     # Install via Homebrew
@@ -766,7 +772,7 @@ Please install \"curl\" with your package manager.
 
   fi
 
-    if [ "$DISTRO" != "arch" ];
+    if [ "$DISTRO" != "arch" ] && [ BASIC_INSTALL != "true" ];
     then
 
     # Install Node.js
@@ -809,6 +815,9 @@ then
     yaourt -S perl-archive-zip
 fi
 
+if [ BASIC_INSTALL != "true" ];
+then
+  
 # Install dfu-util
 blue_echo "Installing dfu-util (requires sudo)..."
 cd "$BASE_DIR" || exit
@@ -838,6 +847,8 @@ sudo mandb &> /dev/null
 
 blue_echo "Adding $USER to plugdev group..."
 sudo usermod -a -G plugdev "$USER"
+
+fi
 
 cd "$FIRMWARE_PARTICLE" || exit
 
