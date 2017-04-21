@@ -977,7 +977,11 @@ sudo: required
 language: generic
 
 script:
-  - ci/travis.sh" > "$FIRMWAREDIR/../.travis.yml"
+  - ci/travis.sh
+
+cache:
+  directories:
+  - $HOME/bin" > "$FIRMWAREDIR/../.travis.yml"
 
 echo "#!/bin/bash
 sudo apt install -y expect
