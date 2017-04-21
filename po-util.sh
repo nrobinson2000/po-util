@@ -1650,7 +1650,6 @@ do
   rm "$FIRMWAREDIR/main.cpp"
   mv "$FIRMWAREDIR/main.cpp.temp" "$FIRMWAREDIR/main.cpp"
 
-  echo $j
 echo "$j" >> "$FIRMWAREDIR/../libs.temp2.txt"
 done < "$FIRMWAREDIR/../libs.temp1.txt"
 
