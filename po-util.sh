@@ -1686,6 +1686,9 @@ done < "$FIRMWAREDIR/../libs.temp.txt"
 
 rm "$FIRMWAREDIR/../libs.temp.txt"
 
+awk '!a[$0]++' "$FIRMWAREDIR/../libs.txt" > "$FIRMWAREDIR/../libs.temp.txt"
+rm "$FIRMWAREDIR/../libs.txt"
+mv "$FIRMWAREDIR/../libs.temp.txt" "$FIRMWAREDIR/../libs.txt"
 
 while read i ## Install and add required libs from libs.txt
 do
