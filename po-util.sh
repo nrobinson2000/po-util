@@ -772,7 +772,7 @@ Please install \"curl\" with your package manager.
 
   fi
 
-    if [ "$DISTRO" != "arch" ] && [ BASIC_INSTALL != "true" ];
+    if [ "$DISTRO" != "arch" ];
     then
 
     # Install Node.js
@@ -817,7 +817,7 @@ fi
 
 if [ BASIC_INSTALL != "true" ];
 then
-  
+
 # Install dfu-util
 blue_echo "Installing dfu-util (requires sudo)..."
 cd "$BASE_DIR" || exit
