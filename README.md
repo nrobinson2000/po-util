@@ -146,7 +146,7 @@ Here is some more information about using `po-util`.
 ### Writing Firmware
 
 `po-util` compiles any `.cpp` and `.h` files found in the `firmware/`
-directory, but not `.ino` files, so `#include "application.h"` must be present
+directory, but not `.ino` files, so `#include "Particle.h"` must be present
 in your `main.cpp` file. This is done for you when you run the `po init`
 command to create a project directory.
 
