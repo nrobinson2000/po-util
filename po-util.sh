@@ -996,7 +996,7 @@ chmod +x config-expect.sh
 
 ./config-expect.sh
 
-./po-util.sh install
+./po-util.sh install ~/github basic
 
 po lib clean . -f &> /dev/null
 po lib setup
