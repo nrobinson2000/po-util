@@ -130,7 +130,7 @@ bin/
     <h1>More Information</h1>
     <p>Here is some more information about using <code>po-util</code>.</p>
     <h3>Writing Firmware</h3>
-    <p><code>po-util</code> compiles any <code>.cpp</code> and <code>.h</code> files found in the <code>firmware/</code> directory, but not <code>.ino</code> files, so <code>#include &quot;application.h&quot;</code> must be present in your <code>main.cpp</code>      file. This is done for you when you run the <code>po init</code> command to create a project directory.</p>
+    <p><code>po-util</code> compiles any <code>.cpp</code> and <code>.h</code> files found in the <code>firmware/</code> directory, but not <code>.ino</code> files, so <code>#include &quot;Particle.h&quot;</code> must be present in your <code>main.cpp</code>      file. This is done for you when you run the <code>po init</code> command to create a project directory.</p>
     <h3>Building Firmware</h3>
     <p>To compile firmware, simply run <code>po DEVICE build</code>, substituting <code>DEVICE</code> for
       <code>photon</code>, <code>P1</code>, or <code>electron</code>. To compile and flash firmware to your device using dfu-util, simply run <code>po DEVICE flash</code>. To clean the project, run <code>po DEVICE clean</code>.</p>
