@@ -815,7 +815,7 @@ then
     yaourt -S perl-archive-zip
 fi
 
-if [ BASIC_INSTALL == "true" ];
+if [ "$BASIC_INSTALL" == "true" ];
 then
   echo
   green_echo "BASIC INSTALL: Skipping dfu-util, particle-cli, etc."
