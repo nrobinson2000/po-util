@@ -422,8 +422,68 @@ config()
     echo
 }
 
+getLib() # "$i" "$LIB_NAME"
+{
+
+if [ "$2" == "" ];
+then
+  LIB_QUERY="$1"
+else
+  LIB_QUERY="$2"
+fi
+
+    if (ls -1 "$LIBRARY" | grep "$LIB_QUERY") &> /dev/null ;
+    then
+        echo
+        blue_echo "Library $LIB_QUERY is already installed..."
+    else
+
+    if grep -q "://" <<<"$1";
+    then
+    GIT_ARGS=($1)
+
+    if [ "${GIT_ARGS[1]}" == "" ];
+    then
+      git clone "${GIT_ARGS[0]}" || ( echo ; red_echo "Could not download Library.  Please supply a valid URL to a git repository." )
+    else
+      git clone "${GIT_ARGS[0]}" "${GIT_ARGS[1]}" || ( echo ; red_echo "Could not download Library.  Please supply a valid URL to a git repository." )
+    fi
+
+
+    else
+      echo
+      blue_echo "Attempting to download $LIB_QUERY using Particle Libraries 2.0..."
+      echo
+
+      if [ -f "$LIBRARY/../project.properties" ];
+      then
+        echo "Exists!" > /dev/null
+      else
+      cd "$LIBRARY/.."
+      mkdir src
+      echo "name=particle-lib" > "project.properties"
+      fi
+
+      cd "$LIBRARY/.."
+      particle library copy "$LIB_QUERY" || ( echo && particle library search "$LIB_QUERY" && echo && return 1 )
+      echo
+    fi
+
+fi
+
+}
+
+
 addLib()
 {
+
+  if (ls -1 "$LIBRARY" | grep "$LIB_NAME") &> /dev/null ; # Try to automatically get library if not found
+  then
+    echo "FOUND LIBRARY!" &> /dev/null
+  else
+    getLib "$LIB_NAME" || ( echo && exit)
+  fi
+
     if [ -f "$FIRMWAREDIR/$LIB_NAME.cpp" ] || [ -f "$FIRMWAREDIR/$LIB_NAME.h" ] || [ -d "$FIRMWAREDIR/$LIB_NAME" ];
     then
         echo
@@ -451,22 +511,6 @@ addLib()
                 ln -s $LIBRARY/$LIB_NAME/*.cpp "$FIRMWAREDIR/$LIB_NAME"
             fi
         fi
-
-
-    fi
-}
-
-getLib()
-{
-    if (ls -1 "$LIBRARY" | grep "$LIB_NAME") &> /dev/null ;
-    then
-        echo
-        blue_echo "Library $LIB_NAME is already installed..."
-    else
-        echo
-        blue_echo "Dowloading library $LIB_NAME..."
-        echo
-        git clone $i
     fi
 }
 
@@ -1154,76 +1198,44 @@ exit
 fi
 
 if [ "$2" == "setup" ];
-then
-DIRWARNING="true"
-find_objects "$3"
-cd "$LIBRARY"
-
-while read i ## Install and add required libs from libs.txt
-do
-    LIB_NAME="$(echo $i | awk '{ print $NF }' )"
-    getLib
-    addLib
-    addHeaders "$LIB_NAME"
-done < "$FIRMWAREDIR/../libs.txt"
-echo
-exit
-fi
-
-if [ "$2" == "get" ] || [ "$2" == "install" ]; # Download a library with git OR Install from libs.txt
-then
-
-cd "$LIBRARY"
-
-if [ "$3" == "" ]; # Install from libs.txt
-then
-    DIRWARNING="true"
-    find_objects
-
-    while read i
-    do
-        LIB_NAME="$(echo $i | awk '{ print $NF }' )"
-        getLib
-    done < "$FIRMWAREDIR/../libs.txt"
-    echo
-    exit
-fi
-
-        if grep -q "://" <<<"$3";
-        then
-        echo "Valid URL" > /dev/null
-        else
-          echo
-          blue_echo "Attempting to download $3 using Particle Libraries 2.0..."
-          echo
-
-          if [ -f "$LIBRARY/../project.properties" ];
-          then
-            echo "Exists!" > /dev/null
-          else
-          cd "$LIBRARY/.."
-          mkdir src
-          echo "name=particle-lib" > "project.properties"
-          fi
-
-          cd "$LIBRARY/.."
-          particle library copy "$3" || ( echo && particle library search "$3" )
-          echo
-          exit
-        fi
-
-    if [ "$4" != "" ];  # Download a library with git
     then
-      echo
-      git clone "$3" "$4" || ( echo ; red_echo "Could not download Library.  Please supply a valid URL to a git repository." )
-      echo
-      exit
-    else
-      echo
-      git clone "$3" || ( echo ; red_echo "Could not download Library.  Please supply a valid URL to a git repository." )
-      echo
-      exit
+        DIRWARNING="true"
+        find_objects "$3"
+        cd "$LIBRARY"
+
+        while read i ## Install and add required libs from libs.txt
+        do
+            LIB_NAME="$(echo $i | awk '{ print $NF }' )"
+            getLib "$i" "$LIB_NAME"
+            addLib "$LIB_NAME" "$i"
+            addHeaders "$LIB_NAME" "$i"
+        done < "$FIRMWAREDIR/../libs.txt"
+        echo
+        exit
     fi
+
+    if [ "$2" == "get" ] || [ "$2" == "install" ]; # Download a library with git OR Install from libs.txt
+    then
+        cd "$LIBRARY"
+
+        if [ "$3" == "" ]; # Install from libs.txt
+        then
+            DIRWARNING="true"
+            find_objects
+
+            while read i
+            do
+                LIB_NAME="$(echo $i | awk '{ print $NF }' )"
+                getLib "$i" "$LIB_NAME"
+            done < "$FIRMWAREDIR/../libs.txt"
+            echo
+          else
+            DIRWARNING="true"
+            find_objects
+            QUERY_ARGS="$(echo $3 $4 | xargs)"
+            getLib "$QUERY_ARGS"
+            echo
+        fi
     exit
   fi
 
