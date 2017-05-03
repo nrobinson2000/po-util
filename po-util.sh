@@ -247,17 +247,6 @@ common_commands() #List common commands
 
 build_firmware()
 {
-
-    #Temporary fix for http://community.particle.io/t/stm32-usb-otg-driver-error-on-v0-6-0/26814
-    # STRING='CPPSRC += $(call target_files,$(BOOTLOADER_MODULE_PATH)/../hal/src/stm32/,newlib.cpp)'
-    # echo "$STRING" >> "$FIRMWARE_PARTICLE/firmware/bootloader/src/electron/sources.mk"
-    # sed "126s/.*/#define USB_OTG_MAX_TX_FIFOS (4*2)/" "$FIRMWARE_PARTICLE/firmware/platform/MCU/STM32F2xx/SPARK_Firmware_Driver/inc/platform_config.h" > temp.particle
-    # sed "132s/.*/#define USB_OTG_MAX_TX_FIFOS (6*2)/" temp.particle > temp.particle.1
-    # rm -f "$FIRMWARE_PARTICLE/firmware/platform/MCU/STM32F2xx/SPARK_Firmware_Driver/inc/platform_config.h"
-    # mv temp.particle.1 "$FIRMWARE_PARTICLE/firmware/platform/MCU/STM32F2xx/SPARK_Firmware_Driver/inc/platform_config.h"
-    # rm -f temp.particle
-    # FIXED in release/v0.6.1-rc.1
-
     if [ "$DEVICE_TYPE" == "duo" ];
     then
         # RedBear DUO
@@ -289,29 +278,29 @@ build_firmware()
   if [ "$DEVICE_TYPE" == "duo" ];
   then
     make all -s -C "$FIRMWARE_DUO/firmware/main" APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$DEVICE_TYPE"
+  fi
+
+  if [ "$DEVICE_TYPE" == "pi" ];
+  then
+      if hash docker 2>/dev/null;
+      then
+        if docker run --rm -i -v $FIRMWARE_PI/firmware:/firmware -v $FIRMWAREDIR:/input -v $FIRMWAREDIR/../bin:/output particle/buildpack-raspberrypi 2> echo;
+        then
+          echo
+          blue_echo "Successfully built firmware for Raspberry Pi"
+        else
+          echo
+          red_echo "Build failed."
+          echo
+          exit 1
+        fi
+      else
+        red_echo "Docker not found.  Please install docker to build firmware for Raspberry Pi"
+        echo
+        exit
+      fi
   else
     make all -s -C "$FIRMWARE_PARTICLE/firmware/main" APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$DEVICE_TYPE"
-  fi
-}
-
-build_pi()
-{
-  if hash docker 2>/dev/null;
-  then
-    if docker run --rm -i -v $FIRMWARE_PARTICLE/firmware:/firmware -v $FIRMWAREDIR:/input -v $FIRMWAREDIR/../bin:/output particle/buildpack-raspberrypi 2> echo;
-    then
-      echo
-      blue_echo "Successfully built firmware for Raspberry Pi"
-    else
-      echo
-      red_echo "Build failed."
-      echo
-      exit 1
-    fi
-  else
-    red_echo "Docker not found.  Please install docker to build firmware for Raspberry Pi"
-    echo
-    exit
   fi
 }
 
@@ -365,16 +354,20 @@ config()
   BASE_DIR=~/github
   FIRMWARE_PARTICLE=$BASE_DIR/particle
   FIRMWARE_DUO=$BASE_DIR/redbearduo
+  FIRMWARE_PI=$BASE_DIR/pi
   BRANCH="release/stable"
   BRANCH_DUO="duo"
+  BRANCH_PI="feature/raspberry-pi"
   ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/
   MODEM_DUO=$MODEM_DUO
 
   echo BASE_DIR="$BASE_DIR" >> $SETTINGS
   echo FIRMWARE_PARTICLE="$FIRMWARE_PARTICLE" >> $SETTINGS
   echo FIRMWARE_DUO="$FIRMWARE_DUO" >> $SETTINGS
+  echo FIRMWARE_PI="$FIRMWARE_PI" >> $SETTINGS
   echo "export PARTICLE_DEVELOP=1" >> $SETTINGS
   echo BINDIR="$BINDIR" >> $SETTINGS
+  echo FIRMWARE_DUO="$FIRMWARE_DUO" >> $SETTINGS
 
   # Particle
   echo
@@ -604,8 +597,10 @@ SETTINGS=~/.po
 BASE_DIR=~/github  # These
 FIRMWARE_PARTICLE=$BASE_DIR/particle
 FIRMWARE_DUO=$BASE_DIR/redbearduo
+FIRMWARE_PI=$BASE_DIR/pi
 BRANCH="release/stable" # can
 BRANCH_DUO="duo"
+BRANCH_PI="feature/raspberry-pi"
 BINDIR=~/bin            # be
 DFUBAUDRATE=19200       # changed in the "~/.po" file.
 CWD="$(pwd)" # Global Current Working Directory variable
@@ -743,6 +738,8 @@ Please install \"curl\" with your package manager.
   [ -d "$FIRMWARE_PARTICLE" ] || mkdir -p "$FIRMWARE_PARTICLE"  # If FIRMWARE_PARTICLE does not exist, create it
   # create redbearduo dir
   [ -d "$FIRMWARE_DUO" ] || mkdir -p "$FIRMWARE_DUO"  # If FIRMWARE_DUO does not exist, create it
+  # create raspberry-pi dir
+  [ -d "$FIRMWARE_PI" ] || mkdir -p "$FIRMWARE_PI"  # If FIRMWARE_DUO does not exist, create it
 
   # clone Particle firmware repository
   cd "$FIRMWARE_PARTICLE" || exit
@@ -766,6 +763,19 @@ Please install \"curl\" with your package manager.
     echo
     blue_echo "Installing RedBear Duo firmware from Github..."
     git clone https://github.com/redbear/firmware.git
+  else
+    NOGIT="true"
+  fi
+
+  # clone RedBear DUO firmware repository
+  cd "$FIRMWARE_PI" || exit
+
+  if hash git 2>/dev/null;
+  then
+    NOGIT="false"
+    echo
+    blue_echo "Installing Particle-Pi firmware from Github..."
+    git clone https://github.com/spark/firmware.git
   else
     NOGIT="true"
   fi
@@ -898,20 +908,29 @@ sudo usermod -a -G plugdev "$USER"
 
 fi
 
-cd "$FIRMWARE_PARTICLE" || exit
-
 if [ "$NOGIT" == "true" ];
 then
+  # clone Particle firmware repository
+  cd "$FIRMWARE_PARTICLE" || exit
+
+echo
     blue_echo "Installing Particle firmware from Github..."
     git clone https://github.com/spark/firmware.git
-fi
 
-cd "$FIRMWARE_DUO" || exit
+  # clone RedBear DUO firmware repository
+  cd "$FIRMWARE_DUO" || exit
 
-if [ "$NOGIT" == "true" ];
-then
-    blue_echo "Installing RedBear DUO firmware from Github..."
+    echo
+    blue_echo "Installing RedBear Duo firmware from Github..."
     git clone https://github.com/redbear/firmware.git
+
+
+  # clone RedBear DUO firmware repository
+  cd "$FIRMWARE_PI" || exit
+
+    echo
+    blue_echo "Installing Particle-Pi firmware from Github..."
+    git clone https://github.com/spark/firmware.git
 fi
 
 green_echo "
@@ -1117,6 +1136,19 @@ echo
 exit
 fi
 
+
+if [ "$2" == "pi" ]; # update just particle firmware
+then
+echo
+blue_echo "Updating Particle-Pi firmware..."
+cd "$FIRMWARE_PI"/firmware || exit
+git stash
+switch_branch "$BRANCH_PI" &> /dev/null
+git pull
+echo
+exit
+fi
+
 #update both and everything else if not specified
 
 echo
@@ -1133,6 +1165,14 @@ blue_echo "Updating Particle firmware..."
 cd "$FIRMWARE_PARTICLE"/firmware || exit
 git stash
 switch_branch &> /dev/null
+git pull
+
+echo
+
+blue_echo "Updating Particle-Pi firmware..."
+cd "$FIRMWARE_PI"/firmware || exit
+git stash
+switch_branch "$BRANCH_PI" &> /dev/null
 git pull
 
 echo
@@ -1435,7 +1475,7 @@ if [ "$2" == "setup" ];
       rm -rf "$FIRMWAREDIR/../$PROJECTDIR-packaged.tar.gz"
     fi
 
-    cp -r "$FIRMWAREDIR" "$FIRMWAREDIR/../$PROJECTDIR-packaged"
+    cp -rL "$FIRMWAREDIR" "$FIRMWAREDIR/../$PROJECTDIR-packaged"
     tar -cvzf "$FIRMWAREDIR/../$PROJECTDIR-packaged.tar.gz" "$FIRMWAREDIR/../$PROJECTDIR-packaged" &> /dev/null
     echo
     blue_echo "Firmware has been packaged as \"$PROJECTDIR-packaged\" and \"$PROJECTDIR-packaged.tar.gz\"
@@ -1928,12 +1968,6 @@ then
     exit
   fi
     echo
-    if [ "$DEVICE_TYPE" == "pi" ];
-    then
-      build_pi
-      echo
-      exit
-    fi
     build_firmware || exit
     build_message
 fi
@@ -1961,7 +1995,7 @@ then
   fi
   if [ "$DEVICE_TYPE" == "pi" ];
   then
-    build_pi
+    build_firmware
     ota "-m"
     exit
   fi
