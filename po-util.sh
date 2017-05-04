@@ -425,7 +425,7 @@ else
   LIB_QUERY="$2"
 fi
 
-    if (ls -1 "$LIBRARY" | grep "$LIB_QUERY") &> /dev/null ;
+    if (ls -1 "$LIBRARY" | grep -Fx "$LIB_QUERY") &> /dev/null ;
     then
         echo
         blue_echo "Library $LIB_QUERY is already installed..."
