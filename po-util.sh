@@ -1780,19 +1780,21 @@ then
   if [ "$DEVICE_TYPE" == "duo" ];
   then
     cd "$FIRMWARE_DUO"/firmware || exit
+    switch_branch $BRANCH_DUO &> /dev/null
   else
-    cd "$FIRMWARE_PARTICLE"/firmware || exit
-  fi
 
   if [ "$DEVICE_TYPE" == "pi" ];
   then
+    cd "$FIRMWARE_PI"/firmware || exit
     switch_branch "feature/raspberry-pi"  &> /dev/null
-  elif [ "$DEVICE_TYPE" == "duo" ];
-  then
-    switch_branch $BRANCH_DUO &> /dev/null
+
   else
+    cd "$FIRMWARE_PARTICLE"/firmware || exit
     switch_branch &> /dev/null
   fi
+fi
+
+
 else
   echo
   if [ "$1" == "redbear" ] || [ "$1" == "bluz" ] || [ "$1" == "oak" ];
