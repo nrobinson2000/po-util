@@ -193,7 +193,7 @@ bin/
   </section>
 
   <!--Start of Zopim Live Chat Script-->
-  <script type="text/javascript">
+  <!-- <script type="text/javascript">
     window.$zopim || (function(d, s) {
       var z = $zopim = function(c) {
           z._.push(c)
@@ -215,7 +215,7 @@ bin/
       type = "text/javascript";
       e.parentNode.insertBefore($, e)
     })(document, "script");
-  </script>
+  </script> -->
   <!--End of Zopim Live Chat Script-->
 
 
@@ -226,6 +226,13 @@ bin/
 
 
 
+
+  <script>
+    ((window.gitter = {}).chat = {}).options = {
+      room: 'po-util/Lobby'
+    };
+  </script>
+  <script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
 
 </body>
 
