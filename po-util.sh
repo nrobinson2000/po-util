@@ -188,6 +188,39 @@ build_message()
 
 dfu_open()
 {
+DFU_LIST="$(dfu-util -l)"
+echo "$DFU_LIST" > dfu-list.txt
+DFU_LIST='dfu-list.txt'
+
+if grep "2b04:d006" "$DFU_LIST" > /dev/null || grep "2b04:d008" "$DFU_LIST" > /dev/null || grep "2b04:d00a" "$DFU_LIST" > /dev/null || grep "1d50:607f" "$DFU_LIST" > /dev/null ||  grep "1d50:607f" "$DFU_LIST" > /dev/null ;
+then
+  blue_echo "
+Already found a device in DFU mode!
+"
+  rm "$DFU_LIST"
+  return
+fi
+
+if [ "$1" == "-d" ] || [ "$1" == "--device" ];
+then
+
+  if stty -F "$2" > /dev/null 2>&1; # Check if serial port is avaliable
+  then
+  blue_echo "
+Placing device $2 into DFU mode...
+"
+  stty -F "$2" "$DFUBAUDRATE" > /dev/null
+  return
+
+else
+  red_echo "
+Could not find a device on $2
+  "
+  fi
+
+  return
+fi
+
     if [ "$DEVICE_TYPE" == "duo" ];
     then
         if [ "$MODEM_DUO" != "" ];
@@ -466,7 +499,6 @@ fi
 
 }
 
-
 addLib()
 {
 
@@ -605,7 +637,7 @@ BINDIR=~/bin            # be
 DFUBAUDRATE=19200       # changed in the "~/.po" file.
 CWD="$(pwd)" # Global Current Working Directory variable
 MODEM="$(ls -1 /dev/* | grep "ttyACM" | tail -1)"
-MODEM_DUO="$(ls -1 /dev/* | grep "usbmodem" | tail -1)"
+MODEM_DUO="$(ls -1 /dev/* | grep "usbmodem" | tail -1)" #TODO: SORT THIS OUT FOR LINUX
 GCC_ARM_VER=gcc-arm-none-eabi-4_9-2015q3 # Updated to 4.9
 GCC_ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/
 
@@ -1094,11 +1126,29 @@ fi
 exit
 fi
 
+# List devices aviable over serial
+if [ "$1" == "dfu-list" ];
+then
+  blue_echo "
+Found the following Particle Devices:
+"
+  ls -1 /dev/* | grep "ttyACM"
+
+# blue_echo "
+# Found the following RedBear Devices:
+# "
+#
+# ls -1 /dev/* | grep "usbmodem"
+
+  echo
+  exit
+fi
+
 # Put device into DFU mode
 if [ "$1" == "dfu-open" ];
 then
-dfu_open
-exit
+    dfu_open "$2" "$3"
+    exit
 fi
 
 # Get device out of DFU mode
