@@ -1604,6 +1604,31 @@ then
   exit
 fi ### Close source
 
+if [ "$2" == "view-headers" ]; # See all headers in included libs
+then
+find_objects
+  for OUTPUT in $(ls -1d $FIRMWAREDIR/*/)
+  do
+    echo
+    blue_echo "$OUTPUT"
+    for HEADER in $(ls -1 $OUTPUT)
+    do
+      echo
+      green_echo "$HEADER"
+      for INCLUDE in $(grep -w "#include" "$OUTPUT$HEADER")
+      do
+        if [ "$INCLUDE" != "#include" ];
+        then
+          RAW_LIB_NAME=${INCLUDE%?}
+          RAW_LIB_NAME=${RAW_LIB_NAME#?}
+          echo "$RAW_LIB_NAME"
+        fi
+      done
+    done
+  done
+echo
+exit
+fi
 
 # commands for listing and loading examples in a lib
 
