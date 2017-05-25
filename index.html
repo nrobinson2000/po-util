@@ -12,6 +12,11 @@
   <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
   <script src="jquery.js"></script>
   <script>
+
+  if (window.location.hostname == "nrobinson2000.github.io") {
+     window.location.href = 'https://po-util.com';
+  }
+
     $(window).resize(function() {
       if ($(window).width() < 600) {
         document.getElementById("logo").width = 400;
