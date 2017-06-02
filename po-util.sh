@@ -932,6 +932,9 @@ sudo mv 60-po-util.rules /etc/udev/rules.d/60-po-util.rules
 # Install manpage
 blue_echo "Installing po manpage..."
 curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/homebrew-po/master/man/po.1
+
+[ -d  "/usr/local/share/man/man1/" ] || sudo mkdir "/usr/local/share/man/man1/"
+
 sudo mv po.1 /usr/local/share/man/man1/
 sudo mandb &> /dev/null
 
