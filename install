@@ -14,7 +14,7 @@ Continuing installation...
 
 if [ "$OS" == "Linux" ];
 then
-  bash <( curl -sL https://master.po-util.com/po-util.sh ) install
+  bash <(curl -sL https://master.po-util.com/po-util.sh) install
 fi
 
 if [ "$OS" == "Darwin" ];
