@@ -1,0 +1,26 @@
+#!/bin/bash
+
+OS="$(uname -s)"
+
+if [ "$OS" == "Linux" ];
+then
+
+bash < ( curl -sL https://master.po-util.com/po-util.sh ) install
+
+fi
+
+
+
+if [ "$OS" == "Darwin" ];
+then
+
+
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+
+brew tap nrobinson2000/po
+brew install po
+po install
+
+
+fi
