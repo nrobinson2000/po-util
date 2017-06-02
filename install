@@ -6,9 +6,9 @@ OS="$(uname -s)"
 echo "
 Are you ready to install po-util?"
 
-read -rp "ENTER / CTRL-C: " || echo "
+read -rp "ENTER / CTRL-C: " || echo ("
 Installation aborted.
-" && exit
+" && exit)
 
 echo "
 Continuing installation...
