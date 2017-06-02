@@ -10,7 +10,7 @@
 #   ███████/   ██████/           ██████/     ████/  ██/ ██/
 #   ██ |
 #   ██ |
-#   ██/                  https://nrobinson2000.github.io/po-util/
+#   ██/                  https://po-util.com
 #
 
 #  po-util - The Ultimate Local Particle Experience for Linux and macOS
@@ -599,7 +599,7 @@ then
             ███████/   ██████/           ██████/     ████/  ██/ ██/
             ██ |
             ██ |
-            ██/               https://nrobinson2000.github.io/po-util/
+            ██/               https://po-util.com
     "
 
     echo "Copyright (GPL) 2017 Nathan D. Robinson
@@ -968,15 +968,14 @@ echo
     git clone https://github.com/spark/firmware.git
 fi
 
-green_echo "
-    Thank you for installing po-util. Be sure to check out
-    https://nrobinson2000.github.io/po-util/ if you have any questions,
-    suggestions, comments, or problems.  You can use the message button in the
-    bottom right corner of the site to send me a private message. If need to
-    update po-util just run \"po update\" to download the latest versions of
-    po-util, Particle Firmware and particle-cli, or run \"po install\" to update
-    all dependencies.
-"
+    green_echo "
+    Thank you for installing po-util. Be sure to check out https://po-util.com
+    if you have any questions, suggestions, comments, or problems. You can use
+    the message button in the bottom right corner of the site to send me a
+    message. If you need to update po-util just run \"po update\" to download
+    the latest versions of po-util, Particle Firmware and particle-cli, or run
+    \"po install\" to update all dependencies.
+    "
   exit
 fi
 
@@ -1550,7 +1549,7 @@ in \"$PROJECTDIR\". Feel free to use either when sharing your firmware."
             ███████/   ██████/           ██████/     ████/  ██/ ██/
             ██ |
             ██ |
-            ██/               https://nrobinson2000.github.io/po-util/
+            ██/               https://po-util.com
 "
         blue_echo
 
@@ -1652,7 +1651,7 @@ then
             ███████/   ██████/           ██████/     ████/  ██/ ██/
             ██ |
             ██ |
-            ██/               https://nrobinson2000.github.io/po-util/
+            ██/               https://po-util.com
   "
 
   echo "
