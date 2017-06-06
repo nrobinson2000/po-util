@@ -1,10 +1,14 @@
 #!/bin/bash
-# https://master.po-util.com/install
+# Run this installer directly in your terminal with:
+# bash <(curl -sL https://master.po-util.com/install)
 
 OS="$(uname -s)"
 
 echo "
-Are you ready to install po-util?"
+Are you ready to install po-util?
+
+Please be sure to follow any prompts or instructions
+during the installation process."
 
 read -rp "ENTER / CTRL-C: "
 
@@ -15,10 +19,10 @@ Continuing installation...
 if [ "$OS" == "Linux" ];
 then
   bash <(curl -sL https://master.po-util.com/po-util.sh) install
-fi
 
-if [ "$OS" == "Darwin" ];
+elif [ "$OS" == "Darwin" ];
 then
+
   if hash brew 2>/dev/null;
   then
     echo "Homebrew is installed. Continuing..."
@@ -30,3 +34,9 @@ then
   brew install po
   po install
 fi
+
+echo "po-util has been installed on your system.
+If you are unsure about how to start with po-util
+please check out the quickstart guide:
+https://docs.po-util.com/quick-start.html
+"
