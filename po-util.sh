@@ -584,6 +584,121 @@ rmHeaders()
     fi
 }
 
+initProject()
+{
+    if [[ "$FOLDER" == "/"* ]]; # Check for absolute or relative
+    then
+      FIRMWAREDIR="$FOLDER/firmware"
+    else
+      FIRMWAREDIR="$CWD/$FOLDER/firmware"
+    fi
+
+    if [ -d "$FIRMWAREDIR" ];
+    then
+      echo
+      green_echo "Directory is already Initialized!"
+      echo
+      exit
+    fi
+
+    mkdir -p "$FIRMWAREDIR"
+    echo "#include \"Particle.h\"
+
+void setup() // Put setup code here to run once
+{
+
+}
+
+void loop() // Put code here to loop forever
+{
+
+}" > "$FIRMWAREDIR/main.cpp"
+
+      cp "$(brew --prefix)/Homebrew/Library/Taps/nrobinson2000/homebrew-po/po-util-README.md" "$FIRMWAREDIR/../README.md"
+
+      if [ "$DEVICE_TYPE" != "" ];
+      then
+          echo "---
+cmd: po $DEVICE_TYPE build
+
+targets:
+  Build:
+    args:
+      - $DEVICE_TYPE
+      - build
+    cmd: po
+    keymap: ctrl-alt-1
+    name: Build
+  Flash:
+    args:
+      - $DEVICE_TYPE
+      - flash
+    cmd: po
+    keymap: ctrl-alt-2
+    name: Flash
+  Clean:
+    args:
+      - $DEVICE_TYPE
+      - clean
+    cmd: po
+    keymap: ctrl-alt-3
+    name: Clean
+  DFU:
+    args:
+      - $DEVICE_TYPE
+      - dfu
+    cmd: po
+    keymap: ctrl-alt-4
+    name: DFU
+  OTA:
+    args:
+      - $DEVICE_TYPE
+      - ota
+      - --multi
+    cmd: po
+    keymap: ctrl-alt-5
+    name: DFU
+          " >> "$FIRMWAREDIR/../.atom-build.yml"
+
+  mkdir -p "$FIRMWAREDIR/../ci"
+
+  echo "dist: trusty
+sudo: required
+language: generic
+
+script:
+  - ci/travis.sh
+
+cache:
+  directories:
+  - $HOME/bin" > "$FIRMWAREDIR/../.travis.yml"
+
+  echo "#!/bin/bash
+sudo apt install -y expect
+curl -sLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
+chmod +x po-util.sh
+curl -sLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/config-expect.sh
+chmod +x config-expect.sh
+./config-expect.sh
+./po-util.sh install ~/github basic
+po lib clean . -f &> /dev/null
+po lib setup
+po $DEVICE_TYPE build" > "$FIRMWAREDIR/../ci/travis.sh"
+
+chmod +x "$FIRMWAREDIR/../ci/travis.sh"
+
+      fi
+
+  echo "bin/*" > "$FIRMWAREDIR/../.gitignore"
+  cd "$FIRMWAREDIR/.."
+  git init &> /dev/null
+
+      echo
+      green_echo "Directory initialized as a po-util project for $DEVICE_TYPE"
+      echo
+      exit
+}
+
 # End of helper functions
 
 if [ "$1" == "" ]; # Print help
@@ -993,124 +1108,7 @@ Please chose a device type next time :)"
   FOLDER="$2"
   fi
 
-  if [[ "$FOLDER" == "/"* ]]; # Check for absolute or relative
-  then
-    FIRMWAREDIR="$FOLDER/firmware"
-  else
-    FIRMWAREDIR="$CWD/$FOLDER/firmware"
-  fi
-
-  if [ -d "$FIRMWAREDIR" ];
-  then
-    echo
-    green_echo "Directory is already Initialized!"
-    echo
-    exit
-  fi
-
-  mkdir -p "$FIRMWAREDIR"
-  echo "#include \"Particle.h\"
-
-void setup() // Put setup code here to run once
-{
-
-}
-
-void loop() // Put code here to loop forever
-{
-
-}" > "$FIRMWAREDIR/main.cpp"
-
-        cp ~/.po-util-README.md "$FIRMWAREDIR/../README.md"
-
-    if [ "$DEVICE_TYPE" != "" ];
-    then
-        echo "---
-cmd: po $DEVICE_TYPE build
-
-targets:
-  Build:
-    args:
-      - $DEVICE_TYPE
-      - build
-    cmd: po
-    keymap: ctrl-alt-1
-    name: Build
-  Flash:
-    args:
-      - $DEVICE_TYPE
-      - flash
-    cmd: po
-    keymap: ctrl-alt-2
-    name: Flash
-  Clean:
-    args:
-      - $DEVICE_TYPE
-      - clean
-    cmd: po
-    keymap: ctrl-alt-3
-    name: Clean
-  DFU:
-    args:
-      - $DEVICE_TYPE
-      - dfu
-    cmd: po
-    keymap: ctrl-alt-4
-    name: DFU
-  OTA:
-    args:
-      - $DEVICE_TYPE
-      - ota
-      - --multi
-    cmd: po
-    keymap: ctrl-alt-5
-    name: DFU
-        " >> "$FIRMWAREDIR/../.atom-build.yml"
-
-mkdir -p "$FIRMWAREDIR/../ci"
-
-echo "dist: trusty
-sudo: required
-language: generic
-
-script:
-  - ci/travis.sh
-
-cache:
-  directories:
-  - $HOME/bin" > "$FIRMWAREDIR/../.travis.yml"
-
-echo "#!/bin/bash
-sudo apt install -y expect
-
-curl -sLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
-
-chmod +x po-util.sh
-
-curl -sLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/config-expect.sh
-
-chmod +x config-expect.sh
-
-./config-expect.sh
-
-./po-util.sh install ~/github basic
-
-po lib clean . -f &> /dev/null
-po lib setup
-po $DEVICE_TYPE build" > "$FIRMWAREDIR/../ci/travis.sh"
-
-chmod +x "$FIRMWAREDIR/../ci/travis.sh"
-
-    fi
-
-    echo "bin/*" > "$FIRMWAREDIR/../.gitignore"
-    cd "$FIRMWAREDIR/.."
-    git init &> /dev/null
-
-    echo
-    green_echo "Directory initialized as a po-util project for $DEVICE_TYPE"
-    echo
-    exit
+  initProject
 fi
 
 # Open serial monitor for device
@@ -1927,6 +1925,13 @@ blue_echo "You should now be able to claim your device.  Please run
 \"particle device add Device_ID\", using the Device_ID we found above."
 echo
 exit
+fi
+
+# Create our project files
+if [ "$2" == "init" ]; # Syntax: po init DEVICE dir
+then
+    FOLDER="$3"
+    initProject
 fi
 
 # Flash already compiled binary
