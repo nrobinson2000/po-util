@@ -30,7 +30,7 @@ simplifying complex tasks like properly compiling and flashing firmware.
 
 There are two versions of po-util. The first is [po-util Classic](https://github.com/nrobinson2000/po-util), which is designed for Linux distributions. The second is [po-util Homebrew Edition](https://github.com/nrobinson2000/homebrew-po), which is designed for macOS.
 
-**The quickest and easiest way to install `po-util` on Linux or macOS is to run this command:**
+**The quickest and easiest way to install `po-util` on Linux or macOS is to run the following:**
 
 ```
 $ bash <(curl -sL https://master.po-util.com/install)
