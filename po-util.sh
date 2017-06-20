@@ -35,6 +35,37 @@ function pause()
     read -rp "$*"
 }
 
+print_logo()
+{
+  if [ "$1" ];
+  then
+    TEXTLINE="$1"
+  else
+    TEXTLINE="https://po-util.com"
+  fi
+
+LOGO="                                                     __      __  __
+                                                    /  |    /  |/  |
+              ______    ______           __    __  _██ |_   ██/ ██ |
+             /      \  /      \  ______ /  |  /  |/ ██   |  /  |██ |
+            /██████  |/██████  |/      |██ |  ██ |██████/   ██ |██ |
+            ██ |  ██ |██ |  ██ |██████/ ██ |  ██ |  ██ | __ ██ |██ |
+            ██ |__██ |██ \__██ |        ██ \__██ |  ██ |/  |██ |██ |
+            ██    ██/ ██    ██/         ██    ██/   ██  ██/ ██ |██ |
+            ███████/   ██████/           ██████/     ████/  ██/ ██/
+            ██ |
+            ██ |
+            ██/                  $TEXTLINE
+"
+  if [ -t 1 ];
+  then
+      echo "$(tput setaf 6)$(tput bold)$LOGO$(tput sgr0)"
+  else
+      echo "$LOGO"
+  fi
+}
+
+
 blue_echo()
 {
     if [ -t 1 ];
@@ -294,19 +325,7 @@ build_firmware()
         mv temp.particle "$FIRMWARE_PARTICLE/firmware/build/module-defaults.mk"
     fi
 
-    blue_echo "                                                     __      __  __
-                                                    /  |    /  |/  |
-              ______    ______           __    __  _██ |_   ██/ ██ |
-             /      \  /      \  ______ /  |  /  |/ ██   |  /  |██ |
-            /██████  |/██████  |/      |██ |  ██ |██████/   ██ |██ |
-            ██ |  ██ |██ |  ██ |██████/ ██ |  ██ |  ██ | __ ██ |██ |
-            ██ |__██ |██ \__██ |        ██ \__██ |  ██ |/  |██ |██ |
-            ██    ██/ ██    ██/         ██    ██/   ██  ██/ ██ |██ |
-            ███████/   ██████/           ██████/     ████/  ██/ ██/
-            ██ |
-            ██ |
-            ██/         Building firmware for $DEVICE_TYPE...
-    "
+    print_logo "Building firmware for $DEVICE_TYPE..."
 
   if [ "$DEVICE_TYPE" == "duo" ];
   then
@@ -475,7 +494,6 @@ fi
       git clone "${GIT_ARGS[0]}" "${GIT_ARGS[1]}" || ( echo ; red_echo "Could not download Library.  Please supply a valid URL to a git repository." )
     fi
 
-
     else
       echo
       blue_echo "Attempting to download $LIB_QUERY using Particle Libraries 2.0..."
@@ -494,7 +512,6 @@ fi
       particle library copy "$LIB_QUERY" || ( echo && particle library search "$LIB_QUERY" && echo && return 1 )
       echo
     fi
-
 fi
 
 }
@@ -614,7 +631,7 @@ void loop() // Put code here to loop forever
 
 }" > "$FIRMWAREDIR/main.cpp"
 
-      cp "$(brew --prefix)/Homebrew/Library/Taps/nrobinson2000/homebrew-po/po-util-README.md" "$FIRMWAREDIR/../README.md"
+      cp "~/.po-util-README.md" "$FIRMWAREDIR/../README.md"
 
       if [ "$DEVICE_TYPE" != "" ];
       then
@@ -703,19 +720,7 @@ chmod +x "$FIRMWAREDIR/../ci/travis.sh"
 
 if [ "$1" == "" ]; # Print help
 then
-    blue_echo "                                                     __      __  __
-                                                    /  |    /  |/  |
-              ______    ______           __    __  _██ |_   ██/ ██ |
-             /      \  /      \  ______ /  |  /  |/ ██   |  /  |██ |
-            /██████  |/██████  |/      |██ |  ██ |██████/   ██ |██ |
-            ██ |  ██ |██ |  ██ |██████/ ██ |  ██ |  ██ | __ ██ |██ |
-            ██ |__██ |██ \__██ |        ██ \__██ |  ██ |/  |██ |██ |
-            ██    ██/ ██    ██/         ██    ██/   ██  ██/ ██ |██ |
-            ███████/   ██████/           ██████/     ████/  ██/ ██/
-            ██ |
-            ██ |
-            ██/               https://po-util.com
-    "
+    print_logo
 
     echo "Copyright (GPL) 2017 Nathan D. Robinson
 
@@ -1536,23 +1541,9 @@ in \"$PROJECTDIR\". Feel free to use either when sharing your firmware."
 
   if [ "$2" == "help" ] || [ "$2" == "" ]; # SHOW HELP TEXT FOR "po library"
   then
-  blue_echo "                                                     __      __  __
-                                                    /  |    /  |/  |
-              ______    ______           __    __  _██ |_   ██/ ██ |
-             /      \  /      \  ______ /  |  /  |/ ██   |  /  |██ |
-            /██████  |/██████  |/      |██ |  ██ |██████/   ██ |██ |
-            ██ |  ██ |██ |  ██ |██████/ ██ |  ██ |  ██ | __ ██ |██ |
-            ██ |__██ |██ \__██ |        ██ \__██ |  ██ |/  |██ |██ |
-            ██    ██/ ██    ██/         ██    ██/   ██  ██/ ██ |██ |
-            ███████/   ██████/           ██████/     ████/  ██/ ██/
-            ██ |
-            ██ |
-            ██/               https://po-util.com
-"
-        blue_echo
+  print_logo
 
-        echo "
-\"po library\": The Particle Library manager for po-util.
+        echo "\"po library\": The Particle Library manager for po-util.
 
 For help, read the LIBRARY MANAGER section of \"man po\"
     "
@@ -1637,23 +1628,9 @@ then
 
   if [ "$3" == "" ];
   then
-  # echo
-  blue_echo "                                                     __      __  __
-                                                    /  |    /  |/  |
-              ______    ______           __    __  _██ |_   ██/ ██ |
-             /      \  /      \  ______ /  |  /  |/ ██   |  /  |██ |
-            /██████  |/██████  |/      |██ |  ██ |██████/   ██ |██ |
-            ██ |  ██ |██ |  ██ |██████/ ██ |  ██ |  ██ | __ ██ |██ |
-            ██ |__██ |██ \__██ |        ██ \__██ |  ██ |/  |██ |██ |
-            ██    ██/ ██    ██/         ██    ██/   ██  ██/ ██ |██ |
-            ███████/   ██████/           ██████/     ████/  ██/ ██/
-            ██ |
-            ██ |
-            ██/               https://po-util.com
-  "
+  print_logo
 
-  echo "
-  \"po lib ex\": Particle Library Example Manager
+  echo "\"po lib ex\": Particle Library Example Manager
 
   ls - List the examples in a library
 
