@@ -469,7 +469,7 @@ config()
 
 getLibURL()
 {
-  TOKEN="$(cat ~/.particle/particle.config.json | grep 'token' | grep -oE '([0-Z])\w+' | grep -v 'token')"
+  TOKEN="$ grep 'token' ~/.particle/particle.config.json | grep -oE '([0-Z])\w+' | grep -v 'token')"
   DATA=$(curl -sLH "Authorization: Bearer $TOKEN" "https://api.particle.io/v1/libraries/$1" | json_pp)
   LIBURL=$(echo "$DATA" | grep "url" | grep -oE '"((?:\\.|[^"\\])*)"' | grep "http" |  tr -d '"')
 }
