@@ -467,6 +467,13 @@ config()
     echo
 }
 
+getLibURL()
+{
+  TOKEN="$(cat ~/.particle/particle.config.json | grep 'token' | grep -oE '([0-Z])\w+')"
+  DATA=$(curl -sLH "Authorization: Bearer $TOKEN" "https://api.particle.io/v1/libraries/$1" | json_pp)
+  LIBURL=$(echo "$DATA" | grep "url" | grep -oE '"((?:\\.|[^"\\])*)"' | grep "http" |  tr -d '"')
+}
+
 getLib() # "$i" "$LIB_NAME"
 {
 
@@ -496,6 +503,26 @@ fi
 
     else
       echo
+      getLibURL "$LIB_QUERY"
+
+      if  ( echo "$LIBURL" | grep "github" ) > /dev/null ;
+      then
+        green_echo "$LIB_QUERY is availiable on GitHub!"
+        read -rp "Would you prefer to download it this way? (yes/no): " answer
+
+        if [ "$answer" == "yes" ] || [ "$answer" == "y" ] || [ "$answer" == "Y" ];
+        then
+          echo
+          cd "$LIBRARY"
+          git clone "$LIBURL" "$LIB_QUERY"
+          echo
+          blue_echo "Downloaded $LIB_QUERY from GitHub."
+          return 0
+        fi
+
+      echo
+      fi
+
       blue_echo "Attempting to download $LIB_QUERY using Particle Libraries 2.0..."
       echo
 
@@ -1560,14 +1587,14 @@ then
     exit
   fi
 
-  green_echo "Checking for updates..."
+  green_echo "Checking for updates for libraries installed using git..."
   echo
 
   for OUTPUT in $(ls -1 "$LIBRARY")
   do
   	cd "$LIBRARY/$OUTPUT"
 
-    if [ -d "$LIBRARY/$OUTPUT/.git" ]; # Only do git pull if it is a repository
+    if [ ! -z "$(ls $LIBRARY/$OUTPUT/.git/ 2>/dev/null )" ]; # Only do git pull if it is a repository
     then
     blue_echo "Updating library $OUTPUT..."
     git pull
