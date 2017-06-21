@@ -505,7 +505,7 @@ fi
       echo
       getLibURL "$LIB_QUERY"
 
-      if  ( echo "$LIBURL" | grep "github" ) > /dev/null ;
+      if ( echo "$LIBURL" | grep "github" ) > /dev/null ;
       then
         green_echo "$LIB_QUERY is availiable on GitHub!"
         read -rp "Would you prefer to download it this way? (yes/no): " answer
