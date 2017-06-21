@@ -658,7 +658,7 @@ void loop() // Put code here to loop forever
 
 }" > "$FIRMWAREDIR/main.cpp"
 
-      cp "~/.po-util-README.md" "$FIRMWAREDIR/../README.md"
+      cp "$HOME/.po-util-README.md" "$FIRMWAREDIR/../README.md"
 
       if [ "$DEVICE_TYPE" != "" ];
       then
