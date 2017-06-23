@@ -726,7 +726,7 @@ chmod +x config-expect.sh
 ./config-expect.sh
 ./po-util.sh install ~/github basic
 po lib clean . -f &> /dev/null
-po lib setup
+yes "no" | po lib setup # change to \"yes\" to prefer libraries from GitHub
 po $DEVICE_TYPE build" > "$FIRMWAREDIR/../ci/travis.sh"
 
 chmod +x "$FIRMWAREDIR/../ci/travis.sh"
