@@ -1352,8 +1352,6 @@ if [ "$2" == "setup" ];
             done < "$FIRMWAREDIR/../libs.txt"
             echo
           else
-            DIRWARNING="true"
-            find_objects
             QUERY_ARGS="$(echo $3 $4 | xargs)"
             getLib "$QUERY_ARGS"
             echo
