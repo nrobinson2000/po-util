@@ -2052,19 +2052,6 @@ then
     build_message
 fi
 
-if [ "$2" == "debug-build" ];
-then
-  DIRWARNING="true"
-  find_objects "$3"
-  if [ "$FINDDIRFAIL" == "true" ];
-  then
-    exit
-  fi
-    echo
-    make all -C "$FIRMWARE_PARTICLE/"firmware APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$DEVICE_TYPE" DEBUG_BUILD="y" || exit
-    build_message
-fi
-
 if [ "$2" == "flash" ];
 then
   DIRWARNING="true"
