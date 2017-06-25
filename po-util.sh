@@ -30,7 +30,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Helper functions
-function pause()
+pause()
 {
     read -rp "$*"
 }
@@ -805,18 +805,18 @@ source "$SETTINGS"
 
 if [ "$1" == "info" ];
 then
-  echo
-  echo "$(tput bold)$(tput setaf 3)$(date)$(tput sgr0)"
-  echo
-  echo "$(tput bold)Configured Settings:$(tput sgr0)"
-  echo
-  echo "$(tput bold)Firmware Branches:$(tput sgr0)"
-  echo "$(tput bold)Particle: $(tput setaf 6)$BRANCH$(tput sgr0)"
-  echo "$(tput bold)Duo: $(tput setaf 6)$BRANCH_DUO$(tput sgr0)"
-  echo
-  echo "$(tput bold)DFU Baud Rate: $(tput setaf 6)$DFUBAUDRATE$(tput sgr0)"
-  echo "$(tput bold)Automatic Headers: $(tput setaf 6)$AUTO_HEADER$(tput sgr0)"
-  echo
+  echo "
+$(tput bold)$(tput setaf 3)$(date)$(tput sgr0)
+
+$(tput bold)Configured Settings:$(tput sgr0)
+
+$(tput bold)Firmware Branches:$(tput sgr0)
+$(tput bold)Particle: $(tput setaf 6)$BRANCH$(tput sgr0)
+$(tput bold)Duo: $(tput setaf 6)$BRANCH_DUO$(tput sgr0)
+
+$(tput bold)DFU Baud Rate: $(tput setaf 6)$DFUBAUDRATE$(tput sgr0)
+$(tput bold)Automatic Headers: $(tput setaf 6)$AUTO_HEADER$(tput sgr0)
+"
   exit
 fi
 
@@ -1153,20 +1153,21 @@ exit
 fi
 
 # List devices aviable over serial
-if [ "$1" == "dfu-list" ];
+if [ "$1" == "list" ] || [ "$1" == "ls" ];
 then
   blue_echo "
 Found the following Particle Devices:
 "
-  ls -1 /dev/* | grep "ttyACM"
 
-# blue_echo "
-# Found the following RedBear Devices:
-# "
-#
-# ls -1 /dev/* | grep "usbmodem"
+  for device in $(ls -1 /dev/* | grep "ttyACM");
+  do
 
-  echo
+    UDEVINFO="$(udevadm info $device)"
+    PLATFORM=$(echo "$UDEVINFO" | grep 'E: ID_MODEL=')
+    PLATFORM=$(echo "$PLATFORM" | tail -c +13)
+    echo "$(tput bold)$(tput setaf 3)$PLATFORM:$(tput sgr0) $device
+    "
+  done
   exit
 fi
 
