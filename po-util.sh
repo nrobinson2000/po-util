@@ -329,10 +329,10 @@ build_firmware()
   then
     echo "HELLO!"
     # echo "$FIRMWARE_DUO/firmware/main"
-    cd "$FIRMWARE_DUO/firmware/main"
-    pwd
-    # make all -s -C "$FIRMWARE_DUO/firmware/main" APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$DEVICE_TYPE"
-    make all -s APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$DEVICE_TYPE"
+    # cd "$FIRMWARE_DUO/firmware/main"
+    # pwd
+    make all -s -C "$FIRMWARE_DUO/firmware/main" APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$DEVICE_TYPE"
+    # make all -s APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$DEVICE_TYPE"
 
   fi
 
