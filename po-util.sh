@@ -327,7 +327,13 @@ build_firmware()
 
   if [ "$DEVICE_TYPE" == "duo" ];
   then
-    make all -s -C "$FIRMWARE_DUO/firmware/main" APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$DEVICE_TYPE"
+    echo "HELLO!"
+    # echo "$FIRMWARE_DUO/firmware/main"
+    cd "$FIRMWARE_DUO/firmware/main"
+    pwd
+    # make all -s -C "$FIRMWARE_DUO/firmware/main" APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$DEVICE_TYPE"
+    make all -s APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$DEVICE_TYPE"
+
   fi
 
   if [ "$DEVICE_TYPE" == "pi" ];
@@ -1954,7 +1960,7 @@ fi
 if [ "$2" == "upgrade" ] || [ "$2" == "patch" ] || [ "$2" == "update" ];
 then
 
-if [ "$DEVICE_TYPE" == "photon" ] || [ "$DEVICE_TYPE" == "P1" ] || [ "$DEVICE_TYPE" == "electron" ]
+if [ "$DEVICE_TYPE" == "photon" ] || [ "$DEVICE_TYPE" == "P1" ] || [ "$DEVICE_TYPE" == "electron" ];
 then
 
   pause "Connect your device and put into DFU mode. Press [ENTER] to continue..."
@@ -1972,6 +1978,26 @@ then
   exit
 
 else
+
+  if [ "$DEVICE_TYPE" == "duo" ];
+  then
+
+  pause "Connect your device and put into DFU mode. Press [ENTER] to continue..."
+  cd "$CWD" || exit
+  sed "2s/.*/START_DFU_FLASHER_SERIAL_SPEED=$DFUBAUDRATE/" "$FIRMWARE_DUO/firmware/build/module-defaults.mk" > temp.particle
+  rm -f "$FIRMWARE_DUO/firmware/build/module-defaults.mk"
+  mv temp.particle "$FIRMWARE_DUO/firmware/build/module-defaults.mk"
+
+  cd "$FIRMWARE_DUO/firmware/modules" || exit
+  make clean all PLATFORM="$DEVICE_TYPE" program-dfu
+
+  cd "$FIRMWARE_DUO/firmware" && git stash || exit
+  sleep 1
+  dfu-util -d $DFU_ADDRESS1 -a 0 -i 0 -s $DFU_ADDRESS2:leave -D /dev/null &> /dev/null
+
+  exit
+  fi
+
   echo
   red_echo "This command can only be used to update the system firmware for
 photon, P1, electron, or duo."
