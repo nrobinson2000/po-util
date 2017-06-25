@@ -96,7 +96,7 @@ red_echo()
     fi
 }
 
-function find_objects() #Consolidated function
+find_objects() #Consolidated function
 {
     if [ "$1" != "" ];
     then
