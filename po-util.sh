@@ -220,10 +220,8 @@ build_message()
 dfu_open()
 {
 DFU_LIST="$(dfu-util -l)"
-echo "$DFU_LIST" > dfu-list.txt
-DFU_LIST='dfu-list.txt'
 
-if grep "2b04:d006" "$DFU_LIST" > /dev/null || grep "2b04:d008" "$DFU_LIST" > /dev/null || grep "2b04:d00a" "$DFU_LIST" > /dev/null || grep "1d50:607f" "$DFU_LIST" > /dev/null ||  grep "1d50:607f" "$DFU_LIST" > /dev/null ;
+if echo "$DFU_LIST" | grep "2b04:d006" > /dev/null || echo "$DFU_LIST" | grep "2b04:d008" > /dev/null ||  echo "$DFU_LIST" | grep "2b04:d00a" > /dev/null || echo "$DFU_LIST" | grep "1d50:607f" > /dev/null || echo "$DFU_LIST" | grep "1d50:607f" > /dev/null ;
 then
   blue_echo "
 Already found a device in DFU mode!
