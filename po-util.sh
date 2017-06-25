@@ -327,36 +327,31 @@ build_firmware()
 
   if [ "$DEVICE_TYPE" == "duo" ];
   then
-    echo "HELLO!"
-    # echo "$FIRMWARE_DUO/firmware/main"
-    # cd "$FIRMWARE_DUO/firmware/main"
-    # pwd
     make all -s -C "$FIRMWARE_DUO/firmware/main" APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$DEVICE_TYPE"
-    # make all -s APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$DEVICE_TYPE"
+  else
 
-  fi
-
-  if [ "$DEVICE_TYPE" == "pi" ];
-  then
-      if hash docker 2>/dev/null;
-      then
-        if docker run --rm -i -v $FIRMWARE_PI/firmware:/firmware -v $FIRMWAREDIR:/input -v $FIRMWAREDIR/../bin:/output particle/buildpack-raspberrypi 2> echo;
+    if [ "$DEVICE_TYPE" == "pi" ];
+    then
+        if hash docker 2>/dev/null;
         then
-          echo
-          blue_echo "Successfully built firmware for Raspberry Pi"
+          if docker run --rm -i -v $FIRMWARE_PI/firmware:/firmware -v $FIRMWAREDIR:/input -v $FIRMWAREDIR/../bin:/output particle/buildpack-raspberrypi 2> echo;
+          then
+            echo
+            blue_echo "Successfully built firmware for Raspberry Pi"
+          else
+            echo
+            red_echo "Build failed."
+            echo
+            exit 1
+          fi
         else
+          red_echo "Docker not found. Please install docker to build firmware for Raspberry Pi"
           echo
-          red_echo "Build failed."
-          echo
-          exit 1
+          exit
         fi
       else
-        red_echo "Docker not found.  Please install docker to build firmware for Raspberry Pi"
-        echo
-        exit
-      fi
-  else
     make all -s -C "$FIRMWARE_PARTICLE/firmware/main" APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$DEVICE_TYPE"
+    fi
   fi
 }
 
