@@ -469,6 +469,10 @@ config()
 getAddedLibs()
 {
   find_objects "$1"
+  if [ "$FINDDIRFAIL" == "true" ]; then
+    exit
+  fi
+
   cd "$FIRMWAREDIR"
   for i in $(ls -d */ 2>/dev/null); do echo ${i%%/}; done
 }
