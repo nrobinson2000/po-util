@@ -466,6 +466,14 @@ config()
     echo
 }
 
+getAddedLibs()
+{
+  DIRWARNING="true"
+  find_objects "$1"
+  cd "$FIRMWAREDIR"
+  for i in $(ls -d */ 2>/dev/null); do echo ${i%%/}; done
+}
+
 getLibURL()
 {
   TOKEN="$(grep 'token' ~/.particle/particle.config.json | grep -oE '([0-Z])\w+' | grep -v 'token')"
@@ -1123,6 +1131,12 @@ fi
     the latest versions of po-util, Particle Firmware and particle-cli, or run
     \"po install\" to update all dependencies.
     "
+  exit
+fi
+
+if [ "$1" == "get-added-libs" ];
+then
+  getAddedLibs "$2"
   exit
 fi
 
