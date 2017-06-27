@@ -468,7 +468,6 @@ config()
 
 getAddedLibs()
 {
-  DIRWARNING="true"
   find_objects "$1"
   cd "$FIRMWAREDIR"
   for i in $(ls -d */ 2>/dev/null); do echo ${i%%/}; done
