@@ -1640,6 +1640,7 @@ fi ### Close source
 
 if [ "$2" == "view-headers" ]; # See all headers in included libs
 then
+DIRWARNING="true"
 find_objects
   for OUTPUT in $(ls -1d $FIRMWAREDIR/*/)
   do
