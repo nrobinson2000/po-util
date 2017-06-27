@@ -887,7 +887,8 @@ Please install \"curl\" with your package manager.
 
   if [ -f /usr/local/bin/po ]
   then
-    blue_echo "po already linked in /usr/local/bin."
+    blue_echo "po already linked in /usr/local/bin.
+    "
   else
     blue_echo "Creating \"po\" link in /usr/local/bin..."
     sudo ln -s ~/po-util.sh /usr/local/bin/po
