@@ -777,7 +777,7 @@ BINDIR=~/bin            # be
 DFUBAUDRATE=19200       # changed in the "~/.po" file.
 CWD="$(pwd)" # Global Current Working Directory variable
 MODEM="$(ls -1 /dev/* | grep "ttyACM" | tail -1)"
-MODEM_DUO="$(ls -1 /dev/* | grep "usbmodem" | tail -1)" #TODO: SORT THIS OUT FOR LINUX
+MODEM_DUO="$(ls -1 /dev/* | grep "ttyACM" | tail -1)" #TODO: SORT THIS OUT FOR LINUX
 GCC_ARM_VER=gcc-arm-none-eabi-4_9-2015q3 # Updated to 4.9
 GCC_ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/
 
@@ -893,6 +893,9 @@ Please install \"curl\" with your package manager.
     sudo ln -s ~/po-util.sh /usr/local/bin/po
   fi
 
+  blue_echo "Installing bash completion for po..."
+  sudo curl -fsSLo /etc/bash_completion.d/po-util.bash-completion https://raw.githubusercontent.com/nrobinson2000/homebrew-po/master/po-util.bash-completion
+
   # Download po-util-README.md
   curl -fsSLo ~/.po-util-README.md https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util-README.md
 
@@ -975,6 +978,9 @@ Please install \"curl\" with your package manager.
     echo
 
     # Install dependencies
+
+
+
 
     if hash arm-none-eabi-gcc 2>/dev/null; #Test for arm-none-eabi-gcc
     then
@@ -1287,7 +1293,7 @@ then
 DIRWARNING="true"
 find_objects "$3"
 
-for file in $(cd $FIRMWAREDIR && ls -d1 */);
+for file in $(cd $FIRMWAREDIR && ls -d1 */ 2>/dev/null); #TODO:Mute stderr
 do
     file_base="${file%/}"
 
