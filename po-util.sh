@@ -894,7 +894,7 @@ Please install \"curl\" with your package manager.
   fi
 
   blue_echo "Installing bash completion for po..."
-  sudo curl -fsSLo /etc/bash_completion.d/po-util.bash-completion https://raw.githubusercontent.com/nrobinson2000/homebrew-po/master/po-util.bash-completion
+  sudo curl -fsSLo /etc/bash_completion.d/po https://raw.githubusercontent.com/nrobinson2000/homebrew-po/master/completion/po
 
   # Download po-util-README.md
   curl -fsSLo ~/.po-util-README.md https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util-README.md
