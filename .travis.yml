@@ -1,15 +1,13 @@
-dist: trusty
-sudo: true
+dist: xenial
+sudo: required
 language: bash
-addons:
-  apt:
-    sources:
-    - debian-sid
-    packages:
-    - expect
-script:
+
+before_install:
+  - sudo apt-get install -y expect
+install:
   - time ./config-expect.sh
   - time ./po-util.sh install
+script:
   - time po photon build build-test/
   - time po electron clean build-test/
   - time po electron build build-test/
