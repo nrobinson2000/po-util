@@ -1,9 +1,12 @@
-dist: xenial
-sudo: required
-language: generic
-
-install:
-  - sudo apt-get install -y expect
+dist: trusty
+sudo: true
+language: bash
+addons:
+  apt:
+    sources:
+    - debian-sid    # Grab ShellCheck from the Debian repo
+    packages:
+    - expect
 script:
   - time ./config-expect.sh
   - time ./po-util.sh install
