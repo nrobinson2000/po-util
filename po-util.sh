@@ -749,7 +749,7 @@ chmod +x "$FIRMWAREDIR/../ci/travis.sh"
 
 # End of helper functions
 
-if [ "$1" == "" ]; # Print help
+if [ "$1" == "" ] || [ "$1" == "help" ]; # Print help
 then
     print_logo
 
