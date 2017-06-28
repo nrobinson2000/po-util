@@ -1153,7 +1153,7 @@ then
     FOLDER="$3"
   else
     blue_echo "
-Please chose a device type next time :)"
+Please choose a device type next time :)"
   FOLDER="$2"
   fi
 
