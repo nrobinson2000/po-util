@@ -4,7 +4,7 @@ language: bash
 addons:
   apt:
     sources:
-    - debian-sid    # Grab ShellCheck from the Debian repo
+    - debian-sid
     packages:
     - expect
 script:
