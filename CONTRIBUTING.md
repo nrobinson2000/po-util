@@ -14,7 +14,7 @@ Whenever possible, please follow these guidelines for contributions:
 
 >**You are currently viewing the Linux version of po-util.**
 >
->**The Linux version can be found over at [nrobinson2000/homebrew-po](https://github.com/nrobinson2000/homebrew-po).**
+>**The macOS version can be found over at [nrobinson2000/homebrew-po](https://github.com/nrobinson2000/homebrew-po).**
 
 --------
 
