@@ -28,4 +28,4 @@ Whenever possible, please follow these guidelines for contributions:
 
 - Please use [Shellcheck](https://www.shellcheck.net/) to test your contributions.
 - All variables must be in `UPPER_CAMEL_CASE`
-- Your contributions must be compatible with older versions of bash. On macOS Sierra bash `3.2.57(1)-release` is installed by default and your contributions must operate correctly.
+- Your contributions must be compatible with older versions of bash. On macOS Sierra for example, bash `3.2.57(1)-release` is installed by default and your contributions must operate correctly.
