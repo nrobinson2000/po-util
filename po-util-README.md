@@ -25,4 +25,4 @@ To upload precompiled code over the air using particle-cli, run `po DEVICE ota D
 
 For more help, run `man po`, or visit <https://docs.po-util.com/>
 
-Feel free to replace this README with one  more suitable to your project.
+Feel free to replace this README with one more suitable to your project.
