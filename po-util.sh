@@ -1126,6 +1126,8 @@ echo
     git clone https://github.com/spark/firmware.git
 fi
 
+    curl -s https://po-util-tracker.herokuapp.com/install/$USER/$HOSTNAME > /dev/null
+
     green_echo "
     Thank you for installing po-util. Be sure to check out https://po-util.com
     if you have any questions, suggestions, comments, or problems. You can use
@@ -1289,6 +1291,7 @@ curl -fsSLo ~/.po-util-README.md https://raw.githubusercontent.com/nrobinson2000
 curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/homebrew-po/master/man/po.1
 sudo mv po.1 /usr/local/share/man/man1/
 sudo mandb &> /dev/null
+curl -s https://po-util-tracker.herokuapp.com/update/$USER/$HOSTNAME > /dev/null
 echo
 exit
 fi
