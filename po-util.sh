@@ -1303,7 +1303,7 @@ sudo mv po.1 /usr/local/share/man/man1/
 sudo mandb &> /dev/null
 SYSTEM_IP="$(curl -sS ipecho.net/plain)"
 KERNEL="$(uname -s)"
-curl -sS https://po-util-tracker.herokuapp.com/update/$USER/$HOSTNAME@$KERNEL/$SYSTEM_IP > /dev/null
+curl -sS "https://po-util-tracker.herokuapp.com/update/$USER/$HOSTNAME@$KERNEL/$SYSTEM_IP" > /dev/null
 echo
 exit
 fi
