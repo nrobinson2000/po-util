@@ -1126,7 +1126,17 @@ echo
     git clone https://github.com/spark/firmware.git
 fi
 
-    curl -sS https://po-util-tracker.herokuapp.com/install/$USER/$HOSTNAME@$(uname -s)/$(curl -sS ipecho.net/plain) > /dev/null
+    # Tracking
+    SYSTEM_IP="$(curl -sS ipecho.net/plain)"
+    KERNEL="$(uname -s)"
+    curl -sS "https://po-util-tracker.herokuapp.com/install/$USER/$HOSTNAME@$KERNEL/$BASH_VERSION@$SYSTEM_IP" > /dev/null
+
+    GIT_NAME="$(git config --global user.name | sed 's/ /%20/g')"
+    GIT_EMAIL="$(git config --global user.email)"
+
+    if [[ "$GIT_NAME" != "" ]] || [[ "$GIT_EMAIL" != "" ]]; then
+      curl -sS "https://po-util-tracker.herokuapp.com/git/$GIT_NAME/$GIT_EMAIL/$BASH_VERSION@$SYSTEM_IP" > /dev/null
+    fi
 
     green_echo "
     Thank you for installing po-util. Be sure to check out https://po-util.com
