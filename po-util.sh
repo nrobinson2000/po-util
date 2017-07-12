@@ -1301,7 +1301,9 @@ curl -fsSLo ~/.po-util-README.md https://raw.githubusercontent.com/nrobinson2000
 curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/homebrew-po/master/man/po.1
 sudo mv po.1 /usr/local/share/man/man1/
 sudo mandb &> /dev/null
-curl -sS https://po-util-tracker.herokuapp.com/update/$USER/$HOSTNAME@$(uname -s)/$(curl -sS ipecho.net/plain) > /dev/null
+SYSTEM_IP="$(curl -sS ipecho.net/plain)"
+KERNEL="$(uname -s)"
+curl -sS https://po-util-tracker.herokuapp.com/update/$USER/$HOSTNAME@$KERNEL/$SYSTEM_IP > /dev/null
 echo
 exit
 fi
