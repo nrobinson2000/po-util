@@ -387,6 +387,12 @@ ota() # device firmware
 
 config()
 {
+  if [[ -d "$HOME/.po-util" ]]; then
+    echo "Exists!" > /dev/null
+  else
+    mkdir -p "$HOME/.po-util"
+  fi
+
   SETTINGS=~/.po-util/config
   BASE_DIR=~/.po-util/src
   FIRMWARE_PARTICLE=$BASE_DIR/particle
