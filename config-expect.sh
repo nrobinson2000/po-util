@@ -7,8 +7,6 @@ expect -exact "Branch: "
 send -- "release/stable\n"
 expect -exact "Branch: "
 send -- "duo\n"
-expect -exact "Baud Rate: "
-send -- "po\n"
 expect -exact "(yes/no): "
 send -- "yes\n"
 

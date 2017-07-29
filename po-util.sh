@@ -238,7 +238,7 @@ then
   blue_echo "
 Placing device $2 into DFU mode...
 "
-  stty -F "$2" "$DFUBAUDRATE" > /dev/null
+  custom-baud "$2" "$DFUBAUDRATE" > /dev/null 2>&1
   return
 
 else
@@ -279,7 +279,7 @@ fi
 
     if [ "$MODEM" ];
     then
-        stty -F "$MODEM" "$DFUBAUDRATE" > /dev/null
+        custom-baud "$MODEM" "$DFUBAUDRATE" > /dev/null 2>&1
     fi
 }
 
@@ -309,20 +309,6 @@ common_commands() #List common commands
 
 build_firmware()
 {
-    if [ "$DEVICE_TYPE" == "duo" ];
-    then
-        # RedBear DUO
-        cd "$CWD" || exit
-        sed "2s/.*/START_DFU_FLASHER_SERIAL_SPEED=$DFUBAUDRATE/" "$FIRMWARE_DUO/firmware/build/module-defaults.mk" > temp.particle
-        rm -f "$FIRMWARE_DUO/firmware/build/module-defaults.mk"
-        mv temp.particle "$FIRMWARE_DUO/firmware/build/module-defaults.mk"
-    else
-        cd "$CWD" || exit
-        sed "2s/.*/START_DFU_FLASHER_SERIAL_SPEED=$DFUBAUDRATE/" "$FIRMWARE_PARTICLE/firmware/build/module-defaults.mk" > temp.particle
-        rm -f "$FIRMWARE_PARTICLE/firmware/build/module-defaults.mk"
-        mv temp.particle "$FIRMWARE_PARTICLE/firmware/build/module-defaults.mk"
-    fi
-
     print_logo "Building firmware for $DEVICE_TYPE..."
 
   if [ "$DEVICE_TYPE" == "duo" ];
@@ -401,15 +387,15 @@ ota() # device firmware
 
 config()
 {
-  SETTINGS=~/.po
-  BASE_DIR=~/github
+  SETTINGS=~/.po-util/config
+  BASE_DIR=~/.po-util/src
   FIRMWARE_PARTICLE=$BASE_DIR/particle
   FIRMWARE_DUO=$BASE_DIR/redbearduo
   FIRMWARE_PI=$BASE_DIR/pi
   BRANCH="release/stable"
   BRANCH_DUO="duo"
   BRANCH_PI="feature/raspberry-pi"
-  ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/
+  GCC_ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/
   MODEM_DUO=$MODEM_DUO
 
   echo BASE_DIR="$BASE_DIR" >> $SETTINGS
@@ -438,20 +424,6 @@ config()
     BRANCH_DUO="$branch_variable"
     echo BRANCH_DUO="$BRANCH_DUO" >> $SETTINGS
 
-    echo
-    blue_echo "Which baud rate would you like to use to put devices into DFU mode?
-    Enter \"default\" for the default Particle baud rate of 14400.
-    Enter \"po\" to use the po-util recommended baud rate of 19200."
-    read -rp "Baud Rate: " dfu_variable
-    if [ "$dfu_variable" == "default" ];
-    then
-        DFUBAUDRATE=14400
-    fi
-    if [ "$dfu_variable" == "po" ];
-    then
-        DFUBAUDRATE=19200
-    fi
-    echo DFUBAUDRATE="$DFUBAUDRATE" >> $SETTINGS
     echo
     blue_echo "Shoud po-util automatically add and remove headers when using
     libraries?"
@@ -664,7 +636,7 @@ void loop() // Put code here to loop forever
 
 }" > "$FIRMWAREDIR/main.cpp"
 
-      cp "$HOME/.po-util-README.md" "$FIRMWAREDIR/../README.md"
+      cp "$HOME/.po-util/doc/po-util-README.md" "$FIRMWAREDIR/../README.md"
 
       if [ "$DEVICE_TYPE" != "" ];
       then
@@ -771,22 +743,25 @@ then
   exit
 fi
 
-# Configuration file is created at "~/.po"
-SETTINGS=~/.po
-BASE_DIR=~/github  # These
+# Configuration file is created at "~/.po-util/config"
+SETTINGS=~/.po-util/config
+BASE_DIR=~/.po-util/src  # These
 FIRMWARE_PARTICLE=$BASE_DIR/particle
 FIRMWARE_DUO=$BASE_DIR/redbearduo
 FIRMWARE_PI=$BASE_DIR/pi
 BRANCH="release/stable" # can
 BRANCH_DUO="duo"
 BRANCH_PI="feature/raspberry-pi"
-BINDIR=~/bin            # be
-DFUBAUDRATE=19200       # changed in the "~/.po" file.
+BINDIR=~/.po-util/bin            # be
+DFUBAUDRATE=14400       # changed in the "~/.po" file.
 CWD="$(pwd)" # Global Current Working Directory variable
 MODEM="$(ls -1 /dev/* | grep "ttyACM" | tail -1)"
 MODEM_DUO="$(ls -1 /dev/* | grep "ttyACM" | tail -1)" #TODO: SORT THIS OUT FOR LINUX
 GCC_ARM_VER=gcc-arm-none-eabi-4_9-2015q3 # Updated to 4.9
 GCC_ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/
+CUSTOM_BAUD_PATH=$BINDIR/custom-baud
+PATH="$PATH:$GCC_ARM_PATH"
+PATH="$PATH:$CUSTOM_BAUD_PATH"
 
 if [ "$1" == "config" ];
 then
@@ -904,8 +879,11 @@ Please install \"curl\" with your package manager.
   blue_echo "Installing bash completion for po..."
   sudo curl -fsSLo /etc/bash_completion.d/po https://raw.githubusercontent.com/nrobinson2000/homebrew-po/master/completion/po
 
+  # create doc dir
+  [ -d "$HOME/.po-util/doc" ] || mkdir -p "$HOME/.po-util/doc"  # If BASE_DIR does not exist, create it
+
   # Download po-util-README.md
-  curl -fsSLo ~/.po-util-README.md https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util-README.md
+  curl -fsSLo ~/.po-util/doc/po-util-README.md https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util-README.md
 
   # Check to see if we need to override the install directory.
   if [ "$2" ] && [ "$2" != $BASE_DIR ]
@@ -923,6 +901,23 @@ Please install \"curl\" with your package manager.
   [ -d "$FIRMWARE_DUO" ] || mkdir -p "$FIRMWARE_DUO"  # If FIRMWARE_DUO does not exist, create it
   # create raspberry-pi dir
   [ -d "$FIRMWARE_PI" ] || mkdir -p "$FIRMWARE_PI"  # If FIRMWARE_DUO does not exist, create it
+
+  LIBRARY=~/.po-util/lib # Create library directory
+  if [ -d "$LIBRARY" ];    # if it is not found.
+  then
+    LIBRARY=~/.po-util/lib
+  else
+    mkdir -p "$LIBRARY"
+  fi
+
+  if [ -f "$LIBRARY/../project.properties" ]; # Structure library directory
+  then
+    echo "Exists!" > /dev/null
+  else
+    cd "$LIBRARY/.."
+    mkdir src
+    echo "name=particle-lib" > "project.properties"
+  fi
 
   # clone Particle firmware repository
   cd "$FIRMWARE_PARTICLE" || exit
@@ -987,9 +982,6 @@ Please install \"curl\" with your package manager.
 
     # Install dependencies
 
-
-
-
     if hash arm-none-eabi-gcc 2>/dev/null; #Test for arm-none-eabi-gcc
     then
       blue_echo "ARM toolchain version $GCC_ARM_VER is already installed... Continuing..."
@@ -1004,12 +996,10 @@ Please install \"curl\" with your package manager.
         blue_echo "ARM toolchain version $GCC_ARM_VER is already downloaded... Continuing..."
     else
         curl -LO https://launchpad.net/gcc-arm-embedded/4.9/4.9-2015-q3-update/+download/gcc-arm-none-eabi-4_9-2015q3-20150921-linux.tar.bz2 #Update to v4.9
+        echo
+        blue_echo "Extracting ARM toolchain..."
         tar xjf gcc-arm-none-eabi-*-linux.tar.bz2
     fi
-
-    blue_echo "Creating ARM toolchain links in /usr/local/bin..."
-    sudo ln -s $GCC_ARM_PATH* /usr/local/bin # LINK gcc-arm-none-eabi
-
   fi
 
     if [ "$DISTRO" != "arch" ];
@@ -1073,6 +1063,16 @@ git pull
 make
 sudo make install
 cd ..
+
+# Install custom-baud
+blue_echo "Installing custom-baud..."
+cd "$BINDIR" || exit
+curl -fsSLO https://github.com/nrobinson2000/po-util/releases/download/v1.5/custom-baud.zip
+unzip -o custom-baud.zip
+cd custom-baud
+make clean all
+cd ..
+rm -f custom-baud.zip
 
 # Install particle-cli
 blue_echo "Installing particle-cli..."
@@ -1292,8 +1292,8 @@ blue_echo "Updating po-util.."
 rm ~/po-util.sh
 curl -fsSLo ~/po-util.sh https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
 chmod +x ~/po-util.sh
-rm ~/.po-util-README.md
-curl -fsSLo ~/.po-util-README.md https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util-README.md
+rm -f ~/.po-util/doc/po-util-README.md
+curl -fsSLo ~/.po-util/doc/po-util-README.md https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util-README.md
 curl -fsSLO https://raw.githubusercontent.com/nrobinson2000/homebrew-po/master/man/po.1
 sudo mv po.1 /usr/local/share/man/man1/
 sudo mandb &> /dev/null
@@ -1581,13 +1581,13 @@ if [ "$2" == "setup" ];
     if [ -d "$FIRMWAREDIR/../$PROJECTDIR-packaged" ];
     then
       rm -rf "$FIRMWAREDIR/../$PROJECTDIR-packaged"
-      rm -rf "$FIRMWAREDIR/../$PROJECTDIR-packaged.tar.gz"
+      rm -rf "$FIRMWAREDIR/../$PROJECTDIR-packaged.zip"
     fi
 
     ln -sL "$FIRMWAREDIR" "$FIRMWAREDIR/../$PROJECTDIR-packaged"
-    tar -cvzf "$FIRMWAREDIR/../$PROJECTDIR-packaged.tar.gz" "$FIRMWAREDIR/../$PROJECTDIR-packaged" &> /dev/null
+    zip -r "$FIRMWAREDIR/../$PROJECTDIR-packaged.zip" "$FIRMWAREDIR/../$PROJECTDIR-packaged" &> /dev/null
     echo
-    blue_echo "Firmware has been packaged as \"$PROJECTDIR-packaged\" and \"$PROJECTDIR-packaged.tar.gz\"
+    blue_echo "Firmware has been packaged as \"$PROJECTDIR-packaged\" and \"$PROJECTDIR-packaged.zip\"
 in \"$PROJECTDIR\". Feel free to use either when sharing your firmware."
     echo
   exit
@@ -1995,10 +1995,6 @@ if [ "$DEVICE_TYPE" == "photon" ] || [ "$DEVICE_TYPE" == "P1" ] || [ "$DEVICE_TY
 then
 
   pause "Connect your device and put into DFU mode. Press [ENTER] to continue..."
-  cd "$CWD" || exit
-  sed "2s/.*/START_DFU_FLASHER_SERIAL_SPEED=$DFUBAUDRATE/" "$FIRMWARE_PARTICLE/firmware/build/module-defaults.mk" > temp.particle
-  rm -f "$FIRMWARE_PARTICLE/firmware/build/module-defaults.mk"
-  mv temp.particle "$FIRMWARE_PARTICLE/firmware/build/module-defaults.mk"
 
   cd "$FIRMWARE_PARTICLE/firmware/modules" || exit
   make clean all PLATFORM="$DEVICE_TYPE" program-dfu
@@ -2014,10 +2010,6 @@ else
   then
 
   pause "Connect your device and put into DFU mode. Press [ENTER] to continue..."
-  cd "$CWD" || exit
-  sed "2s/.*/START_DFU_FLASHER_SERIAL_SPEED=$DFUBAUDRATE/" "$FIRMWARE_DUO/firmware/build/module-defaults.mk" > temp.particle
-  rm -f "$FIRMWARE_DUO/firmware/build/module-defaults.mk"
-  mv temp.particle "$FIRMWARE_DUO/firmware/build/module-defaults.mk"
 
   cd "$FIRMWARE_DUO/firmware/modules" || exit
   make clean all PLATFORM="$DEVICE_TYPE" program-dfu

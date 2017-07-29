@@ -1,8 +1,6 @@
 dist: xenial
 sudo: required
 language: bash
-services:
-  - docker
 before_install:
   - sudo apt-get install -y expect
 install:
@@ -18,5 +16,3 @@ script:
   - po core build build-test/
   - po duo clean build-test/
   - po duo build build-test/
-  - po pi clean build-test/
-  - po pi build build-test/
