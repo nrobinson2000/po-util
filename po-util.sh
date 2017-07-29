@@ -784,13 +784,6 @@ if [ ! -f $SETTINGS ]
 then
   echo
   blue_echo "Your \"$SETTINGS\" configuration file is missing.  Let's create it!"
-
-  if [[ -d "$HOME/.po-util" ]]; then
-    echo "Exists!" > /dev/null
-  else
-    mkdir -p "$HOME/.po-util"
-  fi
-
   config
 fi
 
@@ -928,7 +921,6 @@ Please install \"curl\" with your package manager.
     echo "Exists!" > /dev/null
   else
     cd "$LIBRARY/.."
-    mkdir src
     echo "name=particle-lib" > "project.properties"
   fi
 
