@@ -778,6 +778,13 @@ if [ ! -f $SETTINGS ]
 then
   echo
   blue_echo "Your \"$SETTINGS\" configuration file is missing.  Let's create it!"
+
+  if [[ -d "$HOME/.po-util" ]]; then
+    echo "Exists!" > /dev/null
+  else
+    mkdir -p "$HOME/.po-util"
+  fi
+
   config
 fi
 
