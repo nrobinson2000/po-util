@@ -174,17 +174,6 @@ project directory.
 <img src="images/ota.png">
 </p>
 
-### Triggering DFU mode on your Device(s)
-
-By default, `po-util` changes the trigger DFU Mode baud rate to `19200`, as it
-is a more friendly baud rate for Linux Distributions. To make your device(s)
-recognize this baud rate, you must run `po DEVICE_TYPE upgrade`. This will also
-update the system firmware on your device(s).
-
-If you wish to use the default Particle DFU Mode baud rate, you may change the
-`DFUBAUDRATE=19200` line in the `~/.po` configuration file to
-`DFUBAUDRATE=14400`.
-
 # Testimonials
 
 <blockquote><p>"I think you identified a common pain point for a lot of users, and the automated installation of the Particle toolchain is a problem that we've been focused on a lot recently ... you should already feel proud of yourself because you have made a meaningful contribution to the community. We are all very thankful for it - our community regularly impresses us, and you are certainly not an exception."</p>
