@@ -513,16 +513,6 @@ fi
 
       blue_echo "Attempting to download $LIB_QUERY using Particle Libraries 2.0..."
       echo
-
-      if [ -f "$LIBRARY/../project.properties" ];
-      then
-        echo "Exists!" > /dev/null
-      else
-      cd "$LIBRARY/.."
-      mkdir src
-      echo "name=particle-lib" > "project.properties"
-      fi
-
       cd "$LIBRARY/.."
       particle library copy "$LIB_QUERY" || ( echo && particle library search "$LIB_QUERY" && echo && return 1 )
       echo
