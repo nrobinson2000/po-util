@@ -577,17 +577,13 @@ addLib()
 
         if [ -d "$LIBRARY/$LIB_NAME/firmware" ];
         then
-            ln -s $LIBRARY/$LIB_NAME/firmware/*.h "$FIRMWAREDIR/$LIB_NAME"
-            ln -s $LIBRARY/$LIB_NAME/firmware/*.cpp "$FIRMWAREDIR/$LIB_NAME"
+            ln -s $LIBRARY/$LIB_NAME/firmware/* "$FIRMWAREDIR/$LIB_NAME"
         else
             if [ -d "$LIBRARY/$LIB_NAME/src" ];
             then
-                ln -s $LIBRARY/$LIB_NAME/src/*.h "$FIRMWAREDIR/$LIB_NAME"
-                ln -s $LIBRARY/$LIB_NAME/src/*.cpp "$FIRMWAREDIR/$LIB_NAME"
+                ln -s $LIBRARY/$LIB_NAME/src/* "$FIRMWAREDIR/$LIB_NAME"
             else
-
-                ln -s $LIBRARY/$LIB_NAME/*.h "$FIRMWAREDIR/$LIB_NAME"
-                ln -s $LIBRARY/$LIB_NAME/*.cpp "$FIRMWAREDIR/$LIB_NAME"
+                ln -s $LIBRARY/$LIB_NAME/* "$FIRMWAREDIR/$LIB_NAME"
             fi
         fi
     fi
@@ -1588,7 +1584,7 @@ if [ "$2" == "setup" ];
       rm -rf "$FIRMWAREDIR/../$PROJECTDIR-packaged.tar.gz"
     fi
 
-    cp -rL "$FIRMWAREDIR" "$FIRMWAREDIR/../$PROJECTDIR-packaged"
+    ln -sL "$FIRMWAREDIR" "$FIRMWAREDIR/../$PROJECTDIR-packaged"
     tar -cvzf "$FIRMWAREDIR/../$PROJECTDIR-packaged.tar.gz" "$FIRMWAREDIR/../$PROJECTDIR-packaged" &> /dev/null
     echo
     blue_echo "Firmware has been packaged as \"$PROJECTDIR-packaged\" and \"$PROJECTDIR-packaged.tar.gz\"
@@ -1877,7 +1873,7 @@ exit
 fi
 
   echo
-  red_echo"Please choose a valid command, or run \"po lib\" for help."
+  red_echo "Please choose a valid command, or run \"po lib\" for help."
   echo
   exit
 fi # Close Library
