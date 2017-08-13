@@ -8,7 +8,6 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
     expect \
     git \
     lsb-release \
-    node
     openssl \
     sudo \
     unzip \
