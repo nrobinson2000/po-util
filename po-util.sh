@@ -753,7 +753,8 @@ DFUBAUDRATE=14400       # changed in the "~/.po" file.
 CWD="$(pwd)" # Global Current Working Directory variable
 MODEM="$(ls -1 /dev/* | grep "ttyACM" | tail -1)"
 MODEM_DUO="$(ls -1 /dev/* | grep "ttyACM" | tail -1)" #TODO: SORT THIS OUT FOR LINUX
-GCC_ARM_VER=gcc-arm-none-eabi-4_9-2015q3 # Updated to 4.9
+GCC_ARM_VER=gcc-arm-none-eabi-5_3-2016q1 # Updated to 5.3
+GCC_ARM_URL=https://developer.arm.com/-/media/Files/downloads/gnu-rm/5_3-2016q1/gccarmnoneeabi532016q120160330linuxtar.bz2
 GCC_ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/
 CUSTOM_BAUD_PATH=$BINDIR/custom-baud
 PATH="$PATH:$GCC_ARM_PATH"
@@ -990,10 +991,10 @@ Please install \"curl\" with your package manager.
         echo
         blue_echo "ARM toolchain version $GCC_ARM_VER is already downloaded... Continuing..."
     else
-        curl -LO https://launchpad.net/gcc-arm-embedded/4.9/4.9-2015-q3-update/+download/gcc-arm-none-eabi-4_9-2015q3-20150921-linux.tar.bz2 #Update to v4.9
+        curl -L -o $GCC_ARM_VER.tar.bz2 $GCC_ARM_URL #Update to v5.3
         echo
         blue_echo "Extracting ARM toolchain..."
-        tar xjf gcc-arm-none-eabi-*-linux.tar.bz2
+        tar xjf $GCC_ARM_VER.tar.bz2
     fi
   fi
 
