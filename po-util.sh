@@ -226,7 +226,6 @@ then
   blue_echo "
 Already found a device in DFU mode!
 "
-  rm "$DFU_LIST"
   return
 fi
 
