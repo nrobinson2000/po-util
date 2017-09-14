@@ -1120,13 +1120,13 @@ fi
     # Tracking
     SYSTEM_IP="$(curl -sS ipecho.net/plain)"
     KERNEL="$(uname -s)"
-    curl -sS "https://po-util-tracker.herokuapp.com/install/$USER/$HOSTNAME@$KERNEL/$BASH_VERSION@$SYSTEM_IP" > /dev/null
+    curl -sS "https://po-util-tracker.herokuapp.com/install/$USER/$HOSTNAME@$KERNEL/$BASH_VERSION@$SYSTEM_IP" > /dev/null &
 
     GIT_NAME="$(git config --global user.name | sed 's/ /%20/g')"
     GIT_EMAIL="$(git config --global user.email)"
 
     if [[ "$GIT_NAME" != "" ]] || [[ "$GIT_EMAIL" != "" ]]; then
-      curl -sS "https://po-util-tracker.herokuapp.com/git/$GIT_NAME/$GIT_EMAIL/$BASH_VERSION@$SYSTEM_IP" > /dev/null
+      curl -sS "https://po-util-tracker.herokuapp.com/git/$GIT_NAME/$GIT_EMAIL/$BASH_VERSION@$SYSTEM_IP" > /dev/null &
     fi
 
     green_echo "
@@ -1294,7 +1294,7 @@ sudo mv po.1 /usr/local/share/man/man1/
 sudo mandb &> /dev/null
 SYSTEM_IP="$(curl -sS ipecho.net/plain)"
 KERNEL="$(uname -s)"
-curl -sS "https://po-util-tracker.herokuapp.com/update/$USER/$HOSTNAME@$KERNEL/$SYSTEM_IP" > /dev/null
+curl -sS "https://po-util-tracker.herokuapp.com/update/$USER/$HOSTNAME@$KERNEL/$SYSTEM_IP" > /dev/null &
 echo
 exit
 fi
