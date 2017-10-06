@@ -7,11 +7,20 @@ https://po-util.com/trello
 https://po-util.com/gitter
 - Redirect to Gitter room
 
+https://po-util.com/particle
+- Redirect to thread on Particle Community
+
 https://po-util.com/wiki
 - Redirect to nrobinson2000/po-util wiki on GitHub
 
 https://po-util.com/linux
 - Redirect to nrobinson2000/po-util on GitHub
 
+https://po-util.com/linux/travis
+- Redirect to linux build on Travis CI
+
 https://po-util.com/mac
 - Redirect to nrobinson2000/homebrew-po on GitHub
+
+https://po-util.com/mac/travis
+- Redirect to mac build on Travis CI
