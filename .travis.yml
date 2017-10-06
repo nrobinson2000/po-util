@@ -16,7 +16,7 @@ script:
   - po P1 build build-test/
   - po core clean build-test/
   - po core build build-test/
-  - po duo clean build-test/
-  - po duo build build-test/
+  # - po duo clean build-test/
+  # - po duo build build-test/
   - po pi clean build-test/
   - po pi build build-test/
