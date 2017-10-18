@@ -1152,7 +1152,7 @@ rm -f custom-baud.zip
 
 # Install particle-cli
 blue_echo "Installing particle-cli..."
-sudo npm install -g --unsafe-perm node-pre-gyp npm serialport particle-cli
+sudo npm install -g --unsafe-perm node-pre-gyp npm particle-cli
 
 # Install udev rules file
 blue_echo "Installing udev rule (requires sudo) ..."
