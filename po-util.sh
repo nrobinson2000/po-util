@@ -1107,17 +1107,17 @@ fi
 
 if [ "$DISTRO" == "deb" ];
 then
-    sudo $INSTALLER git nodejs python-software-properties python g++ make build-essential pkg-config libusb-1.0-0-dev libarchive-zip-perl screen libc6-i386 autoconf automake
+    sudo $INSTALLER git bc nodejs python-software-properties python g++ make build-essential pkg-config libusb-1.0-0-dev libarchive-zip-perl screen libc6-i386 autoconf automake
 fi
 
 if [ "$DISTRO" == "rpm" ];
 then
-    sudo $INSTALLER git nodejs python make automake gcc gcc-c++ kernel-devel libusb glibc.i686 vim-common perl-Archive-Zip-1.58-1.fc24.noarch screen autoconf
+    sudo $INSTALLER git bc nodejs python make automake gcc gcc-c++ kernel-devel libusb glibc.i686 vim-common perl-Archive-Zip-1.58-1.fc24.noarch screen autoconf
 fi
 
 if [ "$DISTRO" == "arch" ];
 then
-    sudo $INSTALLER git nodejs npm python gcc make automake libusb lib32-glibc vim yaourt screen autoconf
+    sudo $INSTALLER git bc nodejs npm python gcc make automake libusb lib32-glibc vim yaourt screen autoconf
     yaourt -S perl-archive-zip
 fi
 
