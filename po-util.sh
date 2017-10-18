@@ -65,7 +65,6 @@ LOGO="                                                     __      __  __
   fi
 }
 
-
 blue_echo()
 {
     if [ -t 1 ];
@@ -136,10 +135,10 @@ find_objects() #Consolidated function
                 else
                     if [ "$DIRECTORY" == "." ] && [ -f "$CWD/main.cpp" ];
                     then
-                        cd "$CWD/.."
-                        DEVICESFILE="$(pwd)/devices.txt"
+                        cd "$CWD/.." || exit
+                        DEVICESFILE="$PWD/devices.txt"
                         FIRMWAREDIR="$CWD"
-                        FIRMWAREBIN="$(pwd)/bin/firmware.bin"
+                        FIRMWAREBIN="$PWD/bin/firmware.bin"
                     else
                         echo
                         red_echo "Firmware not found!"
@@ -211,7 +210,7 @@ build_message()
 {
     echo
     cd "$FIRMWAREDIR"/.. || exit
-    BINARYDIR="$(pwd)/bin"
+    BINARYDIR="$PWD/bin"
     green_echo "Binary saved to $BINARYDIR/firmware.bin"
     echo
     exit
@@ -221,7 +220,7 @@ dfu_open()
 {
 DFU_LIST="$(dfu-util -l)"
 
-if echo "$DFU_LIST" | grep "2b04:d006" > /dev/null || echo "$DFU_LIST" | grep "2b04:d008" > /dev/null ||  echo "$DFU_LIST" | grep "2b04:d00a" > /dev/null || echo "$DFU_LIST" | grep "1d50:607f" > /dev/null || echo "$DFU_LIST" | grep "1d50:607f" > /dev/null ;
+if echo "$DFU_LIST" | grep "2b04:d006" > /dev/null || echo "$DFU_LIST" | grep "2b04:d008" > /dev/null ||  echo "$DFU_LIST" | grep "2b04:d00a" > /dev/null || echo "$DFU_LIST" | grep "1d50:607f" > /dev/null || echo "$DFU_LIST" | grep "2b04:d058" > /dev/null ;
 then
   blue_echo "
 Already found a device in DFU mode!
@@ -251,7 +250,7 @@ fi
 
     if [ "$DEVICE_TYPE" == "duo" ];
     then
-        if [ "$MODEM_DUO" != "" ];
+        if [ -e "$MODEM_DUO" ];
         then
             MODEM="$MODEM_DUO"
         else
@@ -263,7 +262,7 @@ fi
             exit
         fi
     else
-        if [ "$MODEM" != "" ];
+        if [ -e "$MODEM" ];
         then
             MODEM="$MODEM"
         else
@@ -276,7 +275,7 @@ fi
         fi
     fi
 
-    if [ "$MODEM" ];
+    if [ -e "$MODEM" ];
     then
         custom-baud "$MODEM" "$DFUBAUDRATE" > /dev/null 2>&1
     fi
@@ -306,8 +305,89 @@ common_commands() #List common commands
     echo
 }
 
+cleanFirmware()
+{
+  if [ "$DEVICE_TYPE" == "duo" ];
+  then
+    cd "$FIRMWARE_DUO"/firmware || exit
+  else
+    cd "$FIRMWARE_PARTICLE"/firmware || exit
+  fi
+
+  if [ "$DEVICE_TYPE" == "pi" ];
+  then
+    switch_branch "feature/raspberry-pi"  &> /dev/null
+  elif [ "$DEVICE_TYPE" == "duo" ];
+  then
+    switch_branch "$BRANCH_DUO" &> /dev/null
+  else
+    switch_branch &> /dev/null
+  fi
+
+    git stash &> /dev/null
+    echo
+    if [ "$DEVICE_TYPE" == "pi" ];
+    then
+      make clean -s 2>&1 /dev/null
+    else
+      make clean -s PLATFORM="$DEVICE_TYPE"  2>&1 /dev/null
+    fi
+
+    if [ "$FIRMWAREDIR/../bin" != "$HOME/bin" ];
+    then
+      rm -rf "$FIRMWAREDIR/../bin"
+    fi
+    blue_echo "Sucessfully cleaned."
+    echo
+}
+
+store_build_parameters() # Keep track of $DEVICE_TYPE and $FIRMWAREDIR
+{
+PARAMETERS="$HOME/.po-util/buildParameters"
+[[ -f "$PARAMETERS" ]] && . "$PARAMETERS"
+[[ "$STORED_DEVICE_TYPE" != "$DEVICE_TYPE" ]] && DEVICE_TYPE_CHANGED="true"
+[[ "$STORED_FIRMWAREDIR" != "$FIRMWAREDIR" ]] && FIRMWAREDIR_CHANGED="true"
+
+if [[ "$STORED_DEVICE_TYPE" != "$DEVICE_TYPE" ]] || [[ "$STORED_FIRMWAREDIR" != "$FIRMWAREDIR" ]]; then
+echo "STORED_DEVICE_TYPE=$DEVICE_TYPE" > "$PARAMETERS"
+echo "STORED_FIRMWAREDIR=$FIRMWAREDIR" >> "$PARAMETERS"
+fi
+
+if [[ "$DEVICE_TYPE_CHANGED" ]] && [[ "$FIRMWAREDIR_CHANGED" ]]; then
+  blue_echo "Detected change of platform and project. Cleaning before attempting build..."
+  cleanFirmware
+elif [[ "$DEVICE_TYPE_CHANGED" ]]; then
+  blue_echo "Detected change of platform. Cleaning before attempting build..."
+  cleanFirmware
+elif [[ "$FIRMWAREDIR_CHANGED" ]]; then
+  blue_echo "Detected change of project. Cleaning before attempting build..."
+  cleanFirmware
+fi
+}
+
+printSizes()
+{
+if [[ "$DEVICE_TYPE" == "core" ]]; then
+  FLASHTOTAL="110592"
+  RAMTOTAL="20480"
+else
+  FLASHTOTAL="125000"
+  RAMTOTAL="60000"
+fi
+
+  FLASH="$(( $1 + $2 ))"
+  FLASHPERCENT=$(bc -l <<< "scale = 4; $FLASH / $FLASHTOTAL * 100")
+
+  RAM="$(( $3 + $2 ))"
+  RAMPERCENT=$(bc -l <<< "scale = 4; $RAM / $RAMTOTAL * 100")
+  echo
+  echo "$(tput setaf 6)$(tput bold)Flash Used:$(tput sgr0) $FLASH / $FLASHTOTAL    ${FLASHPERCENT%??} %"
+  echo "$(tput setaf 6)$(tput bold)RAM Used:  $(tput sgr0) $RAM / $RAMTOTAL     ${RAMPERCENT%??} %"
+}
+
 build_firmware()
 {
+    store_build_parameters
     print_logo "Building firmware for $DEVICE_TYPE..."
 
   if [ "$DEVICE_TYPE" == "duo" ];
@@ -361,25 +441,28 @@ ota() # device firmware
   if [ "$1" == "--multi" ] || [ "$1" == "-m" ] || [ "$1" == "-ota" ];
   then
     DEVICEWARNING="true"
-    if [ "$FINDDEVICESFAIL" == "true" ];
+    if [ "$FINDDEVICESFAIL" == "true" ] || [[ -z "$DEVICES" ]];
     then
-      cd "$CWD"
+      cd "$CWD" || exit
       echo "" > devices.txt
       red_echo "Please list your devices in devices.txt"
-      sleep 3
-      exit
+      exit 1
     fi
     for DEVICE in $DEVICES ; do
       echo
       blue_echo "Flashing to device $DEVICE..."
-      particle flash "$DEVICE" "$FIRMWAREBIN" || ( red_echo "Your device must be online in order to flash firmware OTA." )
+      particle flash "$DEVICE" "$FIRMWAREBIN" || {
+         red_echo "Your device must be online in order to flash firmware OTA." && echo && exit 1
+       }
     done
     echo
     exit
   fi
   echo
   blue_echo "Flashing to device $1..."
-  particle flash "$1" "$FIRMWAREBIN" || ( red_echo "Try using \"particle flash\" if you are having issues." )
+  particle flash "$1" "$FIRMWAREBIN" || {
+    red_echo "Try using \"particle flash\" if you are having issues." && echo && exit 1
+  }
   echo
   exit
 }
@@ -450,8 +533,7 @@ getAddedLibs()
     exit
   fi
 
-  cd "$FIRMWAREDIR"
-  for i in $(ls -d */ 2>/dev/null); do echo ${i%%/}; done
+  for i in $FIRMWAREDIR/*/; do basename "$i"; done
 }
 
 getLibURL()
@@ -471,7 +553,7 @@ else
   LIB_QUERY="$2"
 fi
 
-    if (ls -1 "$LIBRARY" | grep -Fx "$LIB_QUERY") &> /dev/null ;
+    if [[ -d "$LIBRARY/$LIB_QUERY" ]];
     then
         echo
         blue_echo "Library $LIB_QUERY is already installed..."
@@ -500,7 +582,7 @@ fi
         if [ "$answer" == "yes" ] || [ "$answer" == "y" ] || [ "$answer" == "Y" ];
         then
           echo
-          cd "$LIBRARY"
+          cd "$LIBRARY" || exit
           git clone "$LIBURL" "$LIB_QUERY"
           echo
           blue_echo "Downloaded $LIB_QUERY from GitHub."
@@ -512,7 +594,7 @@ fi
 
       blue_echo "Attempting to download $LIB_QUERY using Particle Libraries 2.0..."
       echo
-      cd "$LIBRARY/.."
+      cd "$LIBRARY/.." || exit
       particle library copy "$LIB_QUERY" || ( echo && particle library search "$LIB_QUERY" && echo && return 1 )
       echo
     fi
@@ -522,11 +604,8 @@ fi
 
 addLib()
 {
-
-  if (ls -1 "$LIBRARY" | grep "$LIB_NAME") &> /dev/null ; # Try to automatically get library if not found
+  if [[ ! -d "$LIBRARY/$LIB_NAME" ]]; # Try to automatically get library if not found
   then
-    echo "FOUND LIBRARY!" &> /dev/null
-  else
     getLib "$LIB_NAME" || ( echo && exit)
   fi
 
@@ -701,7 +780,7 @@ chmod +x "$FIRMWAREDIR/../ci/travis.sh"
       fi
 
   echo "bin/*" > "$FIRMWAREDIR/../.gitignore"
-  cd "$FIRMWAREDIR/.."
+  cd "$FIRMWAREDIR/.." || exit
   git init &> /dev/null
 
       echo
@@ -714,8 +793,7 @@ chmod +x "$FIRMWAREDIR/../ci/travis.sh"
 
 if [ "$1" == "" ] || [ "$1" == "help" ]; # Print help
 then
-    print_logo
-
+print_logo
     echo "Copyright (GPL) 2017 Nathan D. Robinson
 
     Usage: po DEVICE_TYPE COMMAND DEVICE_NAME
@@ -750,8 +828,13 @@ BRANCH_PI="feature/raspberry-pi"
 BINDIR=~/.po-util/bin            # be
 DFUBAUDRATE=14400       # changed in the "~/.po" file.
 CWD="$(pwd)" # Global Current Working Directory variable
-MODEM="$(ls -1 /dev/* | grep "ttyACM" | tail -1)"
-MODEM_DUO="$(ls -1 /dev/* | grep "ttyACM" | tail -1)" #TODO: SORT THIS OUT FOR LINUX
+
+for modem in /dev/ttyACM*
+do
+  MODEM="$modem"
+  MODEM_DUO="$modem"
+done
+
 GCC_ARM_VER=gcc-arm-none-eabi-5_3-2016q1 # Updated to 5.3
 GCC_ARM_URL=https://developer.arm.com/-/media/Files/downloads/gnu-rm/5_3-2016q1/gccarmnoneeabi532016q120160330linuxtar.bz2
 GCC_ARM_PATH=$BINDIR/gcc-arm-embedded/$GCC_ARM_VER/bin/
@@ -906,11 +989,9 @@ Please install \"curl\" with your package manager.
     mkdir -p "$LIBRARY"
   fi
 
-  if [ -f "$LIBRARY/../project.properties" ]; # Structure library directory
+  if [ ! -f "$LIBRARY/../project.properties" ]; # Structure library directory
   then
-    echo "Exists!" > /dev/null
-  else
-    cd "$LIBRARY/.."
+    cd "$LIBRARY/.." || exit
     echo "name=particle-lib" > "project.properties"
   fi
 
@@ -1064,9 +1145,9 @@ blue_echo "Installing custom-baud..."
 cd "$BINDIR" || exit
 curl -fsSLO https://github.com/nrobinson2000/po-util/releases/download/v1.5/custom-baud.zip
 unzip -o custom-baud.zip
-cd custom-baud
+cd custom-baud || exit
 make clean all
-cd ..
+cd .. || exit
 rm -f custom-baud.zip
 
 # Install particle-cli
@@ -1166,28 +1247,39 @@ fi
 # Open serial monitor for device
 if [ "$1" == "serial" ];
 then
-if [ "$MODEM" == "" ]; # Don't run screen if device is not connected
-then
-red_echo "No device connected!"
-exit
-else
-screen -S particle "$MODEM"
-screen -S particle -X quit && exit || blue_echo "If \"po serial\" is putting device into DFU mode, power off device, removing battery for Electron, and run \"po serial\" several times.
-This bug will hopefully be fixed in a later release."
-fi
-exit
+  if [ ! -e "$MODEM" ]; # Don't run screen if device is not connected
+  then
+      red_echo "No device connected!"
+  else
+      screen -S particle "$MODEM"
+      screen -S particle -X quit && exit || blue_echo "If \"po serial\" is putting device into DFU mode, you are likely experiencing this issue:
+https://github.com/spark/firmware/pull/934"
+  fi
+  exit
 fi
 
 # List devices aviable over serial
 if [ "$1" == "list" ] || [ "$1" == "ls" ];
 then
+
+  for device in /dev/ttyACM*;
+  do
+  if [[ ! -e $device ]]; then
+    echo
+    red_echo "No devices found!"
+    echo
+    blue_echo "Your device(s) must be connected by USB."
+    echo
+    exit
+  fi
+  done
+
   blue_echo "
 Found the following Particle Devices:
 "
 
-  for device in $(ls -1 /dev/* | grep "ttyACM");
+  for device in /dev/ttyACM*;
   do
-
     UDEVINFO="$(udevadm info $device)"
     PLATFORM=$(echo "$UDEVINFO" | grep 'E: ID_MODEL=')
     PLATFORM=$(echo "$PLATFORM" | tail -c +13)
@@ -1205,6 +1297,7 @@ then
 fi
 
 # Get device out of DFU mode
+#TODO
 if [ "$1" == "dfu-close" ];
 then
 dfu-util -d 2b04:D006 -a 0 -i 0 -s 0x080A0000:leave -D /dev/null &> /dev/null
@@ -1304,50 +1397,50 @@ fi
 if [ "$1" == "library" ] || [ "$1" == "lib" ];
 then
 
-LIBRARY=~/.po-util/lib # Create library directory
-if [ -d "$LIBRARY" ];    # if it is not found.
-then
-LIBRARY=~/.po-util/lib
-else
-mkdir -p "$LIBRARY"
-fi
-
-if [ "$2" == "clean" ]; # Prepare for release, remove all symlinks, keeping references in libs.txt
-then
-DIRWARNING="true"
-find_objects "$3"
-
-for file in $(cd $FIRMWAREDIR && ls -d1 */ 2>/dev/null); #TODO:Mute stderr
-do
-    file_base="${file%/}"
-
-    if [ "$4" == "-f" ];
+    LIBRARY=~/.po-util/lib # Create library directory
+    if [ -d "$LIBRARY" ];    # if it is not found.
     then
-      rm -rf "$FIRMWAREDIR/$file_base" &> /dev/null
-      rmHeaders "$file_base"
-
+        LIBRARY=~/.po-util/lib
     else
-    if (ls -1 "$LIBRARY" | grep "$file_base") &> /dev/null ;
-    then
-        rm -rf "$FIRMWAREDIR/$file_base" &> /dev/null # Transition
-        rm "$FIRMWAREDIR/$file_base.h" &> /dev/null   # to new
-        rm "$FIRMWAREDIR/$file_base.cpp" &> /dev/null # system
-        rmHeaders "$file_base"
+        mkdir -p "$LIBRARY"
     fi
-  fi
-done
 
-echo
-blue_echo "Removed all symlinks. This can be undone with \"po lib add\""
-echo
-exit
-fi
-
-if [ "$2" == "setup" ];
+    if [ "$2" == "clean" ]; # Prepare for release, remove all symlinks, keeping references in libs.txt
     then
         DIRWARNING="true"
         find_objects "$3"
-        cd "$LIBRARY"
+
+        for file in $FIRMWAREDIR/*/;
+        do
+            file_base="$(basename $file)"
+
+            if [ "$4" == "-f" ];
+            then
+              rm -rf "${FIRMWAREDIR:?}/$file_base" &> /dev/null
+              rmHeaders "$file_base"
+
+            else
+            if [[ -d "$LIBRARY/$file_base" ]];
+            then
+                rm -rf "${FIRMWAREDIR:?}/$file_base" &> /dev/null # Transition
+                rm "$FIRMWAREDIR/$file_base.h" &> /dev/null   # to new
+                rm "$FIRMWAREDIR/$file_base.cpp" &> /dev/null # system
+                rmHeaders "$file_base"
+            fi
+          fi
+        done
+
+        echo
+        blue_echo "Removed all symlinks. This can be undone with \"po lib add\""
+        echo
+        exit
+    fi
+
+    if [ "$2" == "setup" ];
+    then
+        DIRWARNING="true"
+        find_objects "$3"
+        cd "$LIBRARY" || exit
 
         while read i ## Install and add required libs from libs.txt
         do
@@ -1362,7 +1455,7 @@ if [ "$2" == "setup" ];
 
     if [ "$2" == "get" ] || [ "$2" == "install" ]; # Download a library with git OR Install from libs.txt
     then
-        cd "$LIBRARY"
+        cd "$LIBRARY" || exit
 
         if [ "$3" == "" ]; # Install from libs.txt
         then
@@ -1382,7 +1475,6 @@ if [ "$2" == "setup" ];
         fi
     exit
   fi
-
 
   if [ "$2" == "purge" ];  # Delete library from "$LIBRARY"
   then
@@ -1406,7 +1498,6 @@ if [ "$2" == "setup" ];
       fi
     else
       red_echo "Library not found."
-      echo
     fi
     exit
   fi
@@ -1416,13 +1507,11 @@ if [ "$2" == "setup" ];
     DIRWARNING="true"
     find_objects "$3"
 
-    for file in $(ls -1 $FIRMWAREDIR);
+    for file in $FIRMWAREDIR*;
     do
     file_base="${file%.*}"
-      if (ls -1 "$LIBRARY" | grep "$file_base") &> /dev/null ;
+      if [[ ! -d "$LIBRARY/$file_base" ]];
       then
-      echo " " > /dev/null
-      else
         if [ "$file_base" != "examples" ];
         then
           mkdir -p "$LIBRARY/$file_base"
@@ -1460,30 +1549,17 @@ if [ "$2" == "setup" ];
       echo "Found" > /dev/null
     else
       echo
-      red_echo "Library $3 not found"
-      echo
-      exit
+      red_echo "Library $3 not found" ; echo ; exit
     fi
-
-    if [ -f "$FIRMWAREDIR/$3.cpp" ] || [ -f "$FIRMWAREDIR/$3.h" ];
-    then
-      echo
-      red_echo "Library $3 is already imported"
-      echo
-      exit
-    else
       LIB_NAME="$3"
       addLib
       #Add entries to libs.txt file
       LIB_URL="$( cd $LIBRARY/$3 && git config --get remote.origin.url )"
       echo "$LIB_URL $3" >> "$FIRMWAREDIR/../libs.txt"
       addHeaders "$LIB_NAME"
-
     echo
     green_echo "Imported library $3"
     echo
-    exit
-    fi
     exit
   fi
 
@@ -1495,8 +1571,7 @@ if [ "$2" == "setup" ];
     if [ "$3" == "" ];
     then
       echo
-      red_echo "Please choose a library to remove."
-      exit
+      red_echo "Please choose a library to remove." ; exit
     fi
 
     if [ -f "$FIRMWAREDIR/$3.cpp" ] && [ -f "$FIRMWAREDIR/$3.h" ] || [ -d "$FIRMWAREDIR/$3" ];  # Improve this to only check for [ -d "$FIRMWAREDIR/$3" ] once new system is adopted
@@ -1505,9 +1580,7 @@ if [ "$2" == "setup" ];
       green_echo "Found library $3"
     else
       echo
-      red_echo "Library $3 not found"
-      echo
-      exit
+      red_echo "Library $3 not found" ; echo ; exit
     fi
 
     if [ -d "$LIBRARY/$3" ];
@@ -1517,7 +1590,7 @@ if [ "$2" == "setup" ];
 
       rm "$FIRMWAREDIR/$3.cpp" &> /dev/null # Transition
       rm "$FIRMWAREDIR/$3.h" &> /dev/null   # to new
-      rm -rf "$FIRMWAREDIR/$3" &> /dev/null # system
+      rm -rf "${FIRMWAREDIR:?}/$3" &> /dev/null # system
 
       grep -v "$3" "$FIRMWAREDIR/../libs.txt" > "$FIRMWAREDIR/../libs-temp.txt"
       rm "$FIRMWAREDIR/../libs.txt"
@@ -1542,7 +1615,7 @@ if [ "$2" == "setup" ];
 
         rm "$FIRMWAREDIR/$3.cpp" &> /dev/null # Transition
         rm "$FIRMWAREDIR/$3.h" &> /dev/null   # to new
-        rm -rf "$FIRMWAREDIR/$3" &> /dev/null # system
+        rm -rf "${FIRMWAREDIR:?}/$3" &> /dev/null # system
 
         rmHeaders "$3"
         echo
@@ -1579,7 +1652,7 @@ if [ "$2" == "setup" ];
       rm -rf "$FIRMWAREDIR/../$PROJECTDIR-packaged.zip"
     fi
 
-    ln -sL "$FIRMWAREDIR" "$FIRMWAREDIR/../$PROJECTDIR-packaged"
+    cp -r "$FIRMWAREDIR" "$FIRMWAREDIR/../$PROJECTDIR-packaged"
     zip -r "$FIRMWAREDIR/../$PROJECTDIR-packaged.zip" "$FIRMWAREDIR/../$PROJECTDIR-packaged" &> /dev/null
     echo
     blue_echo "Firmware has been packaged as \"$PROJECTDIR-packaged\" and \"$PROJECTDIR-packaged.zip\"
@@ -1590,9 +1663,10 @@ in \"$PROJECTDIR\". Feel free to use either when sharing your firmware."
 
   if [ "$2" == "help" ] || [ "$2" == "" ]; # SHOW HELP TEXT FOR "po library"
   then
-  print_logo
 
-        echo "\"po library\": The Particle Library manager for po-util.
+    print_logo
+
+    echo "\"po library\": The Particle Library manager for po-util.
 
 For help, read the LIBRARY MANAGER section of \"man po\"
     "
@@ -1612,9 +1686,9 @@ then
   green_echo "Checking for updates for libraries installed using git..."
   echo
 
-  for OUTPUT in $(ls -1 "$LIBRARY")
+  for OUTPUT in $LIBRARY*;
   do
-  	cd "$LIBRARY/$OUTPUT"
+  	cd "$LIBRARY/$OUTPUT" || exit
 
     if [ ! -z "$(ls $LIBRARY/$OUTPUT/.git/ 2>/dev/null )" ]; # Only do git pull if it is a repository
     then
@@ -1631,9 +1705,9 @@ then
   echo
   blue_echo "Listing installed libraries that are cloneable..."
   echo
-  for OUTPUT in $(ls -1 "$LIBRARY")
+  for OUTPUT in $LIBRARY*;
   do
-  	cd "$LIBRARY/$OUTPUT"
+  	cd "$LIBRARY/$OUTPUT" || exit
     if [ -d "$LIBRARY/$OUTPUT/.git" ]; # Only if it is a repository
     then
       LIB_URL="$( cd $LIBRARY/$OUTPUT && git config --get remote.origin.url )"
@@ -1648,14 +1722,21 @@ if [ "$2" == "view-headers" ]; # See all headers in included libs
 then
 DIRWARNING="true"
 find_objects "$3"
-  for OUTPUT in $(ls -1d $FIRMWAREDIR/*/)
+  for OUTPUT in $FIRMWAREDIR/*/
   do
     echo
     blue_echo "$OUTPUT"
-    for HEADER in $(ls -1 $OUTPUT)
+    for HEADER in $OUTPUT*
     do
+      HEADER="$(basename $HEADER)"
+
+      if [[ "$HEADER" == "$(basename $OUTPUT)" ]]; then
+        continue
+      fi
+
       echo
       green_echo "$HEADER"
+
       for INCLUDE in $(grep -w "#include" "$OUTPUT$HEADER")
       do
         if [ "$INCLUDE" != "#include" ];
@@ -1676,20 +1757,21 @@ fi
 if [ "$2" == "examples" ] || [ "$2" == "ex" ];
 then
 
-  if [ "$3" == "" ];
-  then
-  print_logo
+if [ "$3" == "" ];
+then
+print_logo
 
-  echo "\"po lib ex\": Particle Library Example Manager
+echo "\"po lib ex\": Particle Library Example Manager
 
-  ls - List the examples in a library
+ls - List the examples in a library
 
-  load - Load an example from a library
+load - Load an example from a library
 
-  For help, read the LIBRARY EXAMPLE MANAGER section of \"man po\"
-  "
-  exit
-  else
+For help, read the LIBRARY EXAMPLE MANAGER section of \"man po\"
+"
+
+exit
+else
 
 if [ -d "$LIBRARY/$4" ];
 then
@@ -1811,9 +1893,8 @@ rm "$FIRMWAREDIR/../libs.temp2.txt"
 while read i ## create libs.txt
 do
   LIB_NAME="$i"
-  if (ls -1 "$LIBRARY" | grep "$LIB_NAME") &> /dev/null ;
+  if [[ -d "$LIBRARY/$LIB_NAME" ]];
   then
-
 
     if [ -d "$LIBRARY/$LIB_NAME/.git" ]; # Only if it is a repository
     then
@@ -1854,13 +1935,12 @@ echo
 else
 
   echo
-  red_echo"Example $5 not found."
+  red_echo "Example $5 not found."
   echo
 
 fi
 
 fi
-
 
 fi
 
@@ -1911,12 +1991,12 @@ or choose a proper command."
 fi
 if [ "$DEVICE_TYPE" == "photon" ];
 then
-  DFU_ADDRESS1="2b04:D006"
+  DFU_ADDRESS1="2b04:d006"
   DFU_ADDRESS2="0x080A0000"
 fi
 if [ "$DEVICE_TYPE" == "P1" ];
 then
-  DFU_ADDRESS1="2b04:D008"
+  DFU_ADDRESS1="2b04:d008"
   DFU_ADDRESS2="0x080A0000"
 fi
 if [ "$DEVICE_TYPE" == "electron" ];
@@ -2092,6 +2172,8 @@ then
   fi
     echo
     build_firmware || exit
+    SIZES=$(arm-none-eabi-size "$FIRMWAREDIR/../bin/firmware.elf" | tail -1)
+    printSizes $SIZES
     build_message
 fi
 
