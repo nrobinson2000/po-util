@@ -859,7 +859,7 @@ then
   config
 fi
 
-# Import our overrides from the ~/.po file.
+# Import our overrides from the ~/.po-util/config file.
 source "$SETTINGS"
 
 if [ "$1" == "info" ];
