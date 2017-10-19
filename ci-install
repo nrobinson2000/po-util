@@ -1,6 +1,6 @@
 #!/bin/bash
 # Script for installing po-util for Travis CI
-# bash <(curl -sL https://master.po-util.com/ci-install)
+# bash <(curl -sL master.po-util.com/ci-install)
 
 sudo apt install -y expect
 curl -sLO https://raw.githubusercontent.com/nrobinson2000/po-util/master/po-util.sh
