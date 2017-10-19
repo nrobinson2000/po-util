@@ -1,6 +1,6 @@
 #!/bin/bash
 # Run this installer directly in your terminal with:
-# bash <(curl -sL https://master.po-util.com/install)
+# bash <(curl -sL master.po-util.com/install)
 
 OS="$(uname -s)"
 
