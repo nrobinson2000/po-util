@@ -412,7 +412,7 @@ build_firmware()
         else
           red_echo "Docker not found. Please install docker to build firmware for Raspberry Pi"
           echo
-          exit
+          exit 1
         fi
       else
     make all -s -C "$FIRMWARE_PARTICLE/firmware/main" APPDIR="$FIRMWAREDIR" TARGET_DIR="$FIRMWAREDIR/../bin" PLATFORM="$DEVICE_TYPE"
@@ -492,7 +492,6 @@ config()
   echo FIRMWARE_PI="$FIRMWARE_PI" >> $SETTINGS
   echo "export PARTICLE_DEVELOP=1" >> $SETTINGS
   echo BINDIR="$BINDIR" >> $SETTINGS
-  echo FIRMWARE_DUO="$FIRMWARE_DUO" >> $SETTINGS
 
   # Particle
   echo
@@ -818,16 +817,16 @@ fi
 
 # Configuration file is created at "~/.po-util/config"
 SETTINGS=~/.po-util/config
-BASE_DIR=~/.po-util/src  # These
+BASE_DIR=~/.po-util/src
 FIRMWARE_PARTICLE=$BASE_DIR/particle
 FIRMWARE_DUO=$BASE_DIR/redbearduo
 FIRMWARE_PI=$BASE_DIR/pi
-BRANCH="release/stable" # can
+BRANCH="release/stable"
 BRANCH_DUO="duo"
 BRANCH_PI="feature/raspberry-pi"
-BINDIR=~/.po-util/bin            # be
-DFUBAUDRATE=14400       # changed in the "~/.po" file.
-CWD="$(pwd)" # Global Current Working Directory variable
+BINDIR=~/.po-util/bin
+DFUBAUDRATE=14400
+CWD="$PWD" # Global Current Working Directory variable
 
 for modem in /dev/ttyACM*
 do
@@ -1021,7 +1020,7 @@ Please install \"curl\" with your package manager.
     NOGIT="true"
   fi
 
-  # clone RedBear DUO firmware repository
+  # clone Particle-Pi firmware repository
   cd "$FIRMWARE_PI" || exit
 
   if hash git 2>/dev/null;
@@ -1190,7 +1189,7 @@ echo
     git clone https://github.com/redbear/firmware.git
 
 
-  # clone RedBear DUO firmware repository
+  # clone Particle-Pi firmware repository
   cd "$FIRMWARE_PI" || exit
 
     echo
@@ -1333,7 +1332,7 @@ exit
 fi
 
 
-if [ "$2" == "pi" ]; # update just particle firmware
+if [ "$2" == "pi" ]; # update just pi firmware
 then
 echo
 blue_echo "Updating Particle-Pi firmware..."
@@ -1963,7 +1962,7 @@ then
   then
     cd "$FIRMWARE_DUO"/firmware || exit
     switch_branch $BRANCH_DUO &> /dev/null
-  else
+  fi
 
   if [ "$DEVICE_TYPE" == "pi" ];
   then
@@ -1974,8 +1973,6 @@ then
     cd "$FIRMWARE_PARTICLE"/firmware || exit
     switch_branch &> /dev/null
   fi
-fi
-
 
 else
   echo
