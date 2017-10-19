@@ -2166,8 +2166,12 @@ then
   fi
     echo
     build_firmware || exit
-    SIZES=$(arm-none-eabi-size "$FIRMWAREDIR/../bin/firmware.elf" | tail -1)
-    printSizes $SIZES
+
+    if [[ "$DEVICE_TYPE" != "pi" ]]; then
+      SIZES=$(arm-none-eabi-size "$FIRMWAREDIR/../bin/firmware.elf" | tail -1)
+      printSizes $SIZES
+    fi
+
     build_message
 fi
 
