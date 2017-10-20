@@ -231,7 +231,7 @@ fi
 if [ "$1" == "-d" ] || [ "$1" == "--device" ];
 then
 
-  if stty -F "$2" > /dev/null 2>&1; # Check if serial port is avaliable
+  if [[ -e "$2" ]]; # Check if serial port is avaliable
   then
   blue_echo "
 Placing device $2 into DFU mode...
@@ -1187,14 +1187,12 @@ if [ "$NOGIT" == "true" ];
 then
   # clone Particle firmware repository
   cd "$FIRMWARE_PARTICLE" || exit
-
-echo
+    echo
     blue_echo "Installing Particle firmware from Github..."
     git clone https://github.com/spark/firmware.git
 
   # clone RedBear DUO firmware repository
   cd "$FIRMWARE_DUO" || exit
-
     echo
     blue_echo "Installing RedBear Duo firmware from Github..."
     git clone https://github.com/redbear/firmware.git
@@ -1202,7 +1200,6 @@ echo
 
   # clone Particle-Pi firmware repository
   cd "$FIRMWARE_PI" || exit
-
     echo
     blue_echo "Installing Particle-Pi firmware from Github..."
     git clone https://github.com/spark/firmware.git
@@ -1298,8 +1295,8 @@ fi
 #TODO
 if [ "$1" == "dfu-close" ];
 then
-  dfu-util -d 2b04:D006 -a 0 -i 0 -s 0x080A0000:leave -D /dev/null &> /dev/null
-  exit
+    dfu-util -d 2b04:D006 -a 0 -i 0 -s 0x080A0000:leave -D /dev/null &> /dev/null
+    exit
 fi
 
 # Update po-util
