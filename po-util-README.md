@@ -1,4 +1,4 @@
-![](https://rawgit.com/nrobinson2000/po-util/master/images/built-with-po-util.svg)
+[![](https://rawgit.com/nrobinson2000/po-util/master/images/built-with-po-util.svg)](https://po-util.com)
 
 # This directory is set up as a [po-util](https://po-util.com) project
 
