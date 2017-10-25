@@ -1,12 +1,14 @@
 [![](https://rawgit.com/nrobinson2000/po-util/master/images/built-with-po-util.svg)](https://po-util.com)
 
-# This directory is set up as a [po-util](https://po-util.com) project
+# This repository is set up as a [po-util](https://po-util.com) project
+---
 
 Po-util makes it easy to locally develop firmware for Particle devices.
 
-Po-util supports the Particle Photon, P1, Electron, Core, Raspberry Pi, and Redbear Duo
+Po-util supports the Particle Photon, P1, Electron, Core, Raspberry Pi, and Redbear Duo.
 
-# Project structure
+Project structure:
+----
 The C++ files go in the `firmware/` directory, and the compiled binary will appear in the `bin/` directory, named `firmware.bin`.
 
 To compile code, run `po DEVICE_TYPE build`, substituting `DEVICE_TYPE` with `photon`, `P1`, `electron`, `core`, `pi`, or `duo`.
@@ -27,4 +29,4 @@ To upload precompiled code over the air using particle-cli, run `po DEVICE ota D
 
 For more help, run `man po`, or visit <https://docs.po-util.com/>
 
-Feel free to replace this README with one more suitable to your project.
+Feel free to edit this README.md to make it more suitable for your project. **(I do ask that you please include the badge at the top though.)**
