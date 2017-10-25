@@ -1,3 +1,5 @@
+<img src="https://rawgit.com/nrobinson2000/po-util/master/images/po-badge-new-new.svg" height="20px">
+
 # This directory is set up as a [po-util](https://po-util.com) project
 
 Po-util makes it easy to locally develop firmware for Particle devices.
