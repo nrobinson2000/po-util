@@ -22,6 +22,6 @@ particle login
 
 For more help, run `man po`, or visit <https://docs.po-util.com/>
 
-*By the way, po-util has tab completion. Try pressing [TAB] at any time.*
+*By the way, po-util has tab completion. Try pressing [TAB] at any time to have arguments completed.*
 
 Feel free to edit this README.md to make it more suitable for your project. **(I do ask that you please include the badge at the top though.)**
