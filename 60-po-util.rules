@@ -1,9 +1,0 @@
-# UDEV Rules for Particle boards
-#
-# This will allow reflashing with DFU-util without using sudo
-
-# Photon / P1 / Electron
-SUBSYSTEMS=="usb", ACTION=="add", ATTRS{idProduct}=="[cd]00?", ATTRS{idVendor}=="2b04", GROUP="plugdev", MODE="0666"
-
-# Core
-SUBSYSTEMS=="usb", ACTION=="add", ATTRS{idProduct}=="607[df]", ATTRS{idVendor}=="1d50", GROUP="plugdev", MODE="0666"
