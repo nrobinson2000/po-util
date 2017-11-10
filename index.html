@@ -1,1 +1,42 @@
-<!DOCTYPE html><html><head><title>po-util</title><style>body{width: 40em; margin: 0 auto; font-family: Tahoma, Verdana, Arial, sans-serif;}code{padding: 2px 4px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 0.9rem; color: #c5d928; background-color: #22282d; border-radius: 0.3rem;}a{color: blue;}</style></head><body><h1>Welcome to master.po-util.com!</h1><p>This sub-domain of <code>po-util.com</code></a> is a mirror of the <code>master</code> branch of the po-util project.</p><p><a href="https://github.com/nrobinson2000/po-util">View the project on GitHub.</a></p><p>The purpose of this mirror is to provide a convenient URL for the po-util installation script. With this mirror, po-util can be installed on Linux and macOS with the following:</p><pre><code>$ bash <(curl -sL https://master.po-util.com/install)</code></pre><p>For online documentation please refer to <a href="https://docs.po-util.com">docs.po-util.com</a>.<br/>Additional support is available at <a href="https://gitter.im/po-util/Lobby">gitter.im</a>.</p><p><em>Thank you for using <a href="https://po-util.com">po-util</a>.</em></p><p align="right"><a href="https://www.netlify.com"> <img src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg"/></a></p></body></html>
+#!/bin/bash
+# Run this installer directly in your terminal with:
+# bash <(curl -sL master.po-util.com/install)
+
+OS="$(uname -s)"
+
+echo "
+Are you ready to install po-util?
+
+Please be sure to follow any prompts or instructions
+during the installation process."
+
+read -rp "ENTER / CTRL-C: "
+
+echo "
+Continuing installation...
+"
+
+if [ "$OS" == "Linux" ];
+then
+  bash <(curl -sL https://master.po-util.com/po-util.sh) install
+
+elif [ "$OS" == "Darwin" ];
+then
+
+  if hash brew 2>/dev/null;
+  then
+    echo "Homebrew is installed. Continuing..."
+  else
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  fi
+
+  brew tap nrobinson2000/po
+  brew install po
+  po install
+fi
+
+echo "po-util has been installed on your system.
+If you are unsure about how to start with po-util
+please check out the quickstart guide:
+https://docs.po-util.com/quick-start.html
+"
