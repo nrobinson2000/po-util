@@ -33,7 +33,7 @@ There are two versions of po-util. The first is [po-util Classic](https://github
 **The quickest and easiest way to install `po-util` on Linux or macOS is to run the following:**
 
 ```
-$ bash <(curl -sL https://master.po-util.com/install)
+$ bash <(curl -sL get.po-util.com)
 ```
 
 **Note:**
