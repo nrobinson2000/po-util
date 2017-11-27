@@ -788,6 +788,18 @@ chmod +x "$FIRMWAREDIR/../ci/travis.sh"
       exit
 }
 
+getLatestNodeVersion()
+{
+  curl -Ss https://nodejs.org/dist/ > node-result.txt
+  grep "<a href=\"v" "node-result.txt" > node-new.txt
+  tail -1 node-new.txt > node-oneline.txt
+  sed -n 's/.*\"\(.*.\)\".*/\1/p' node-oneline.txt > node-version.txt
+  NODEVERSION="$(cat node-version.txt)"
+  NODEVERSION="${NODEVERSION%?}"
+  INSTALLVERSION="node-$NODEVERSION"
+  rm node-*.txt
+}
+
 # End of helper functions
 
 if [ "$1" == "" ] || [ "$1" == "help" ]; # Print help
@@ -1079,15 +1091,8 @@ Please install \"curl\" with your package manager.
     if [ "$DISTRO" != "arch" ];
     then
 
-    # Install Node.js
-    curl -Ss https://nodejs.org/dist/ > node-result.txt
-    grep "<a href=\"v" "node-result.txt" > node-new.txt
-    tail -1 node-new.txt > node-oneline.txt
-    sed -n 's/.*\"\(.*.\)\".*/\1/p' node-oneline.txt > node-version.txt
-    NODEVERSION="$(cat node-version.txt)"
-    NODEVERSION="${NODEVERSION%?}"
-    INSTALLVERSION="node-$NODEVERSION"
-    rm node-*.txt
+    getLatestNodeVersion
+
     if [ "$(node -v)" == "$NODEVERSION" ];
     then
         blue_echo "Node.js version $NODEVERSION is already installed."
@@ -1096,10 +1101,9 @@ Please install \"curl\" with your package manager.
         curl -Ss https://api.github.com/repos/nodesource/distributions/contents/"$DISTRO" | grep "name"  | grep "setup_"| grep -v "setup_iojs"| grep -v "setup_dev" > node-files.txt
         tail -1 node-files.txt > node-oneline.txt
         sed -n 's/.*\"\(.*.\)\".*/\1/p' node-oneline.txt > node-version.txt
-        # MESSAGE="Installing Node.js version $(cat node-version.txt)..." blue_echo
-        # curl -sL https://"$DISTRO".nodesource.com/"$(cat node-version.txt)" | sudo -E bash -
-        curl -sL https://"$DISTRO".nodesource.com/setup_6.x | sudo -E bash -
-        rm -rf node-*.txt
+
+        blue_echo "Installing Node.js version $(cat node-version.txt)..."
+        curl -sL https://"$DISTRO".nodesource.com/"$(cat node-version.txt)" | sudo -E bash -
     fi
 fi
 
