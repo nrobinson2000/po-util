@@ -281,6 +281,61 @@ fi
     fi
 }
 
+serial_open()
+{
+if [ "$1" == "-d" ] || [ "$1" == "--device" ];
+then
+
+  if [[ -e "$2" ]]; # Check if serial port is avaliable
+  then
+  blue_echo "
+Placing device $2 into listening mode...
+"
+  custom-baud "$2" "28800" > /dev/null 2>&1
+  return
+
+else
+  red_echo "
+Could not find a device on $2
+  "
+  fi
+
+  return
+fi
+
+    if [ "$DEVICE_TYPE" == "duo" ];
+    then
+        if [ -e "$MODEM_DUO" ];
+        then
+            MODEM="$MODEM_DUO"
+        else
+            echo
+            red_echo "Device not found!"
+            echo
+            blue_echo "Your device must be connected by USB."
+            echo
+            exit
+        fi
+    else
+        if [ -e "$MODEM" ];
+        then
+            MODEM="$MODEM"
+        else
+            echo
+            red_echo "Device not found!"
+            echo
+            blue_echo "Your device must be connected by USB."
+            echo
+            exit
+        fi
+    fi
+
+    if [ -e "$MODEM" ];
+    then
+        custom-baud "$MODEM" "28800" > /dev/null 2>&1
+    fi
+}
+
 switch_branch()
 {
     if [ "$1" != "" ];
@@ -1091,7 +1146,7 @@ Please install \"curl\" with your package manager.
     if [ "$DISTRO" != "arch" ];
     then
 
-    getLatestNodeVersion
+    # getLatestNodeVersion
 
     if [ "$(node -v)" == "$NODEVERSION" ];
     then
@@ -1244,7 +1299,7 @@ Please choose a device type next time :)"
 fi
 
 # Open serial monitor for device
-if [ "$1" == "serial" ];
+if [ "$1" == "serial" ] && [ "$2" == "monitor" ];
 then
   if [ ! -e "$MODEM" ]; # Don't run screen if device is not connected
   then
@@ -1289,17 +1344,24 @@ Found the following Particle Devices:
 fi
 
 # Put device into DFU mode
-if [ "$1" == "dfu-open" ];
+if [ "$1" == "dfu" ] && [ "$2" == "open" ];
 then
-    dfu_open "$2" "$3"
+    dfu_open "$3" "$4"
     exit
 fi
 
 # Get device out of DFU mode
 #TODO
-if [ "$1" == "dfu-close" ];
+if [ "$1" == "dfu" ] && [ "$2" == "close" ];
 then
     dfu-util -d 2b04:D006 -a 0 -i 0 -s 0x080A0000:leave -D /dev/null &> /dev/null
+    exit
+fi
+
+# Put device into listening mode
+if [ "$1" == "serial" ] && [ "$2" == "open" ];
+then
+    serial_open "$3" "$4"
     exit
 fi
 
