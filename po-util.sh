@@ -1147,6 +1147,7 @@ Please install \"curl\" with your package manager.
     then
 
     # getLatestNodeVersion
+    NODEVERSION="v8.9.1"
 
     if [ "$(node -v)" == "$NODEVERSION" ];
     then
