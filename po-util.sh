@@ -958,36 +958,31 @@ then
 BASIC_INSTALL="true"
 fi
 
-  if [ "$(uname -s)" == "Darwin" ]; #Force homebrew version on macOS.
+# Don't let po-util install under root
+if [[ "$USER" == "root" ]]; then
+  red_echo "
+Please do not install po-util using sudo or root.
+Install it using your preferred account on your system.
+
+You will be prompted for your password to use sudo
+during the installation when appropriate.
+"
+exit
+fi
+
+  if [ "$(uname -s)" == "Darwin" ]; #Quit if on macOS
   then
-    # Install via Homebrew
     echo
-    blue_echo "You are on macOS.  po-util will be installed via Homebrew"
+    blue_echo "You are on macOS. This installer is for Linux.
+Please try the universal installer:
 
-    if hash brew 2>/dev/null;
-    then
-      echo
-      blue_echo "Homebrew is installed."
-    else
-      echo
-      blue_echo "Installing Brew..."
-      /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-    fi
-
-    echo
-    blue_echo "Installing po-util with \"brew\""
-
-    brew tap nrobinson2000/po
-    brew install po
-    po install
-    exit
-
+bash <(curl -sL get.po-util.com)
+"
+exit
   fi
 
-  if hash curl 2>/dev/null;
+  if ! hash curl 2>/dev/null;
   then
-    echo "CURL FOUND!" > /dev/null
-  else
     red_echo "
 po-util requires curl for the installation and updating of various tools.
 Please install \"curl\" with your package manager.
