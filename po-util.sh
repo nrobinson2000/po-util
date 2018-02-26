@@ -1184,7 +1184,7 @@ else
 # Install dfu-util
 blue_echo "Installing dfu-util (requires sudo)..."
 cd "$BASE_DIR" || exit
-git clone git://git.code.sf.net/p/dfu-util/dfu-util
+git clone https://git.code.sf.net/p/dfu-util/dfu-util
 cd dfu-util || exit
 git pull
 ./autogen.sh
