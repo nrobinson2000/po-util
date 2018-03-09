@@ -1184,7 +1184,7 @@ else
 # Install dfu-util
 blue_echo "Installing dfu-util (requires sudo)..."
 cd "$BASE_DIR" || exit
-git clone git://git.code.sf.net/p/dfu-util/dfu-util
+git clone https://git.code.sf.net/p/dfu-util/dfu-util
 cd dfu-util || exit
 git pull
 ./autogen.sh
@@ -1741,7 +1741,7 @@ then
   green_echo "Checking for updates for libraries installed using git..."
   echo
 
-  for OUTPUT in $LIBRARY*;
+  for OUTPUT in $(cd $LIBRARY && ls);
   do
   	cd "$LIBRARY/$OUTPUT" || exit
 
@@ -1760,7 +1760,7 @@ then
   echo
   blue_echo "Listing installed libraries that are cloneable..."
   echo
-  for OUTPUT in $LIBRARY*;
+  for OUTPUT in $(cd $LIBRARY && ls);
   do
   	cd "$LIBRARY/$OUTPUT" || exit
     if [ -d "$LIBRARY/$OUTPUT/.git" ]; # Only if it is a repository
