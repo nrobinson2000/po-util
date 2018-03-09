@@ -14,7 +14,7 @@
 #
 
 #  po-util - The Ultimate Local Particle Experience for Linux and macOS
-# Copyright (C) 2017  Nathan Robinson
+# Copyright (C) 2018  Nathan Robinson
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
