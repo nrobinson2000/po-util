@@ -206,6 +206,68 @@ of your devices on each line."
     fi
 }
 
+validateDevicePlatform()
+{
+  # Make sure we are using photon, P1, electron, pi, core, or duo
+  if [ "$1" == "photon" ] || [ "$1" == "P1" ] || [ "$1" == "electron" ] || [ "$1" == "pi" ] || [ "$1" == "core" ] || [ "$1" == "duo" ];
+  then
+    DEVICE_TYPE="$1"
+
+    if [ "$DEVICE_TYPE" == "duo" ];
+    then
+      cd "$FIRMWARE_DUO/firmware" || exit
+      switch_branch $BRANCH_DUO &> /dev/null
+    fi
+
+    if [ "$DEVICE_TYPE" == "pi" ];
+    then
+      cd "$FIRMWARE_PI/firmware" || exit
+      switch_branch "feature/raspberry-pi"  &> /dev/null
+
+    else
+      cd "$FIRMWARE_PARTICLE/firmware" || exit
+      switch_branch &> /dev/null
+    fi
+
+  else
+    echo
+    if [ "$1" == "redbear" ] || [ "$1" == "bluz" ] || [ "$1" == "oak" ];
+    then
+      red_echo "This compound is not supported yet. Find out more here: https://git.io/vMTAw"
+      echo
+    fi
+    red_echo "Please choose \"photon\", \"P1\", \"electron\", \"core\", \"pi\", or \"duo\",
+  or choose a proper command."
+    common_commands
+    exit
+  fi
+  if [ "$DEVICE_TYPE" == "photon" ];
+  then
+    DFU_ADDRESS1="2b04:d006"
+    DFU_ADDRESS2="0x080A0000"
+  fi
+  if [ "$DEVICE_TYPE" == "P1" ];
+  then
+    DFU_ADDRESS1="2b04:d008"
+    DFU_ADDRESS2="0x080A0000"
+  fi
+  if [ "$DEVICE_TYPE" == "electron" ];
+  then
+    DFU_ADDRESS1="2b04:d00a"
+    DFU_ADDRESS2="0x08080000"
+  fi
+  if [ "$DEVICE_TYPE" == "core" ];
+  then
+    DFU_ADDRESS1="1d50:607f"
+    DFU_ADDRESS2="0x08005000"
+  fi
+  if [ "$DEVICE_TYPE" == "duo" ];
+  then
+    DFU_ADDRESS1="2b04:d058"
+    DFU_ADDRESS2="0x80C0000"
+  fi
+}
+
 build_message()
 {
     echo
@@ -1281,7 +1343,7 @@ fi
 if [ "$1" == "init" ]; # Syntax: po init DEVICE dir
 then
 
-  if [ "$2" == "photon" ] || [ "$2" == "P1" ] || [ "$2" == "electron" ] || [ "$2" == "pi" ] || [ "$2" == "core" ] || [ "$2" == "duo" ];
+  if validateDevicePlatform "$2" ;
   then
     DEVICE_TYPE="$2"
     FOLDER="$3"
@@ -2009,64 +2071,33 @@ fi
 fi # Close Library
 ####################
 
-# Make sure we are using photon, P1, electron, pi, core, or duo
-if [ "$1" == "photon" ] || [ "$1" == "P1" ] || [ "$1" == "electron" ] || [ "$1" == "pi" ] || [ "$1" == "core" ] || [ "$1" == "duo" ];
-then
-  DEVICE_TYPE="$1"
+# po create PLATFORM NAME
+if [[ "$1" == "create" ]]; then
 
-  if [ "$DEVICE_TYPE" == "duo" ];
-  then
-    cd "$FIRMWARE_DUO/firmware" || exit
-    switch_branch $BRANCH_DUO &> /dev/null
-  fi
+_PLATFORM="$2"
+_NAME="$3"
 
-  if [ "$DEVICE_TYPE" == "pi" ];
-  then
-    cd "$FIRMWARE_PI/firmware" || exit
-    switch_branch "feature/raspberry-pi"  &> /dev/null
-
-  else
-    cd "$FIRMWARE_PARTICLE/firmware" || exit
-    switch_branch &> /dev/null
-  fi
-
-else
+if validateDevicePlatform "$_PLATFORM" && [[ ! -z "$_NAME" ]]; then
+[[ ! -d "$HOME/.po-util/projects" ]] && mkdir -p "$HOME/.po-util/projects"
+FOLDER="$HOME/.po-util/projects/$_NAME"
+initProject
+fi
   echo
-  if [ "$1" == "redbear" ] || [ "$1" == "bluz" ] || [ "$1" == "oak" ];
-  then
-    red_echo "This compound is not supported yet. Find out more here: https://git.io/vMTAw"
-    echo
-  fi
-  red_echo "Please choose \"photon\", \"P1\", \"electron\", \"core\", \"pi\", or \"duo\",
-or choose a proper command."
-  common_commands
   exit
 fi
-if [ "$DEVICE_TYPE" == "photon" ];
-then
-  DFU_ADDRESS1="2b04:d006"
-  DFU_ADDRESS2="0x080A0000"
+
+# po open NAME
+if [[ "$1" == "open" ]]; then
+  PROJECT_PATH="$HOME/.po-util/projects/$2"
+  echo
+  echo "Opening $PROJECT_PATH in a subshell.."
+  echo
+  cd "$PROJECT_PATH"
+  exec bash
+  exit
 fi
-if [ "$DEVICE_TYPE" == "P1" ];
-then
-  DFU_ADDRESS1="2b04:d008"
-  DFU_ADDRESS2="0x080A0000"
-fi
-if [ "$DEVICE_TYPE" == "electron" ];
-then
-  DFU_ADDRESS1="2b04:d00a"
-  DFU_ADDRESS2="0x08080000"
-fi
-if [ "$DEVICE_TYPE" == "core" ];
-then
-  DFU_ADDRESS1="1d50:607f"
-  DFU_ADDRESS2="0x08005000"
-fi
-if [ "$DEVICE_TYPE" == "duo" ];
-then
-  DFU_ADDRESS1="2b04:d058"
-  DFU_ADDRESS2="0x80C0000"
-fi
+
+validateDevicePlatform "$1"
 
 if [ "$2" == "setup" ];
 then
