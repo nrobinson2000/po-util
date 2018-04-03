@@ -1,12 +1,7 @@
 #!/bin/bash
-# Run this installer directly in your terminal with:
-# bash <(curl -sL master.po-util.com/install)
-
-OS="$(uname -s)"
 
 echo "
 Are you ready to install po-util?
-
 Please be sure to follow any prompts or instructions
 during the installation process."
 
@@ -16,13 +11,15 @@ echo "
 Continuing installation...
 "
 
-if [ "$OS" == "Linux" ];
-then
-  bash <(curl -sL https://master.po-util.com/po-util.sh) install
+# WIP: Check to see if there is a po alias clash
+source "$HOME/.bashrc"
 
-elif [ "$OS" == "Darwin" ];
-then
+if alias po &>/dev/null ; then
+  echo "$(tput setaf 1)$(tput bold)WARNING: You have an alias named 'po'. Use 'unalias po' to remove the alias.$(tput sgr0)"
+  exit
+fi
 
+if [[ $(uname -s) == "Darwin" ]]; then
   if hash brew 2>/dev/null;
   then
     echo "Homebrew is installed. Continuing..."
@@ -30,8 +27,17 @@ then
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   fi
 
-  brew tap nrobinson2000/po
-  brew install po
+  brew update
+  brew tap nrobinson2000/NewPo
+  brew install NewPo
+  po install
+fi
+
+if [[ $(uname -s) == "Linux" ]]; then
+  sudo curl -fsSLo /usr/local/share/po-common https://raw.githubusercontent.com/nrobinson2000/po/master/po-common
+  sudo curl -fsSLo /usr/local/share/po-linux https://raw.githubusercontent.com/nrobinson2000/po/master/po-linux
+  sudo curl -fsSLo /usr/local/bin/po https://raw.githubusercontent.com/nrobinson2000/po/master/po
+  sudo chmod +x /usr/local/bin/po
   po install
 fi
 
