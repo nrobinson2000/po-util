@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bin/bash -li
+# Makes the shell login and interactive
 
 echo "
 Are you ready to install po-util?
@@ -11,8 +12,10 @@ echo "
 Continuing installation...
 "
 
-# WIP: Check to see if there is a po alias clash
-source "$HOME/.bashrc"
+if [[ "$USER" != "${USER/ /}" ]]; then
+  echo "$(tput setaf 1)$(tput bold)WARNING: Your username contains space(s), something which is not compatible for po.$(tput sgr0)"
+  exit
+fi
 
 if alias po &>/dev/null ; then
   echo "$(tput setaf 1)$(tput bold)WARNING: You have an alias named 'po'. Use 'unalias po' to remove the alias.$(tput sgr0)"
