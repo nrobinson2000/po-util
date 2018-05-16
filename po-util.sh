@@ -917,8 +917,9 @@ getLatestNodeVersion()
   rm node-*.txt
 }
 
-# End of helper functions
+#### End of helper functions
 
+# po help
 if [ "$1" == "" ] || [ "$1" == "help" ]; # Print help
 then
 print_logo
@@ -934,6 +935,7 @@ print_logo
 exit
 fi
 
+# po setup-atom
 if [ "$1" == "setup-atom" ];
 then
   echo
@@ -970,6 +972,7 @@ CUSTOM_BAUD_PATH=$BINDIR/custom-baud
 PATH="$PATH:$GCC_ARM_PATH"
 PATH="$PATH:$CUSTOM_BAUD_PATH"
 
+# po config
 if [ "$1" == "config" ];
 then
   if [ -f "$SETTINGS" ];
@@ -991,6 +994,7 @@ fi
 # Import our overrides from the ~/.po-util/config file.
 source "$SETTINGS"
 
+# po info
 if [ "$1" == "info" ];
 then
   echo "
@@ -1012,6 +1016,7 @@ fi
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
+# po install
 if [ "$1" == "install" ]; # Install : "$2 specify alternate" : "$3 if 'basic' then just install arm toolchain for CI use"
 then
 
@@ -1333,12 +1338,14 @@ fi
   exit
 fi
 
+# po get-added-libs
 if [ "$1" == "get-added-libs" ];
 then
   getAddedLibs "$2"
   exit
 fi
 
+# po init
 # Create our project files
 if [ "$1" == "init" ]; # Syntax: po init DEVICE dir
 then
@@ -1356,6 +1363,7 @@ Please choose a device type next time :)"
   initProject
 fi
 
+# po serial monitor
 # Open serial monitor for device
 if [ "$1" == "serial" ] && [ "$2" == "monitor" ];
 then
@@ -1370,6 +1378,7 @@ https://github.com/spark/firmware/pull/934"
   exit
 fi
 
+# po ls
 # List devices aviable over serial
 if [ "$1" == "list" ] || [ "$1" == "ls" ];
 then
@@ -1401,6 +1410,7 @@ Found the following Particle Devices:
   exit
 fi
 
+# po dfu open
 # Put device into DFU mode
 if [ "$1" == "dfu" ] && [ "$2" == "open" ];
 then
@@ -1408,14 +1418,15 @@ then
     exit
 fi
 
+# po dfu close
 # Get device out of DFU mode
-#TODO
 if [ "$1" == "dfu" ] && [ "$2" == "close" ];
 then
     dfu-util -d 2b04:D006 -a 0 -i 0 -s 0x080A0000:leave -D /dev/null &> /dev/null
     exit
 fi
 
+# po serial open
 # Put device into listening mode
 if [ "$1" == "serial" ] && [ "$2" == "open" ];
 then
@@ -1423,6 +1434,7 @@ then
     exit
 fi
 
+# po update
 # Update po-util
 if [ "$1" == "update" ];
 then
@@ -1511,6 +1523,7 @@ fi
 
 #################### Library Manager
 
+# po lib
 if [ "$1" == "library" ] || [ "$1" == "lib" ];
 then
 
@@ -1522,6 +1535,7 @@ then
         mkdir -p "$LIBRARY"
     fi
 
+    # po lib clean
     if [ "$2" == "clean" ]; # Prepare for release, remove all symlinks, keeping references in libs.txt
     then
         DIRWARNING="true"
@@ -1553,6 +1567,7 @@ then
         exit
     fi
 
+    # po lib setup
     if [ "$2" == "setup" ];
     then
         DIRWARNING="true"
@@ -1570,6 +1585,7 @@ then
         exit
     fi
 
+    # po lib get
     if [ "$2" == "get" ] || [ "$2" == "install" ]; # Download a library with git OR Install from libs.txt
     then
         cd "$LIBRARY" || exit
@@ -1593,6 +1609,7 @@ then
     exit
   fi
 
+  # po lib purge
   if [ "$2" == "purge" ];  # Delete library from "$LIBRARY"
   then
     if  [ -d "$LIBRARY/$3" ];
@@ -1619,6 +1636,7 @@ then
     exit
   fi
 
+  # po lib create
   if [ "$2" == "create" ]; # Create a libraries in "$LIBRARY" from files in "$FIRMWAREDIR"  This for when multiple libraries are packaged together and they need to be separated.
   then
     DIRWARNING="true"
@@ -1644,6 +1662,7 @@ then
     exit
   fi
 
+  # po lib add
   if [ "$2" == "add" ] || [ "$2" == "import" ]; # Import a library
   then
     DIRWARNING="true"
@@ -1680,6 +1699,7 @@ then
     exit
   fi
 
+  # po lib rm
   if [ "$2" == "remove" ] || [ "$2" == "rm" ]; # Remove / Unimport a library
   then
     DIRWARNING="true"
@@ -1747,6 +1767,7 @@ then
     exit
   fi # Close remove
 
+  # po lib ls
   if [ "$2" == "list" ] || [ "$2" == "ls" ];
   then
     echo
@@ -1757,6 +1778,7 @@ then
     exit
   fi # Close list
 
+  # po lib pack
   if [ "$2" == "package" ] || [ "$2" == "pack" ] || [ "$2" == "export" ];
   then
     DIRWARNING="true"
@@ -1778,11 +1800,10 @@ in \"$PROJECTDIR\". Feel free to use either when sharing your firmware."
   exit
   fi
 
+  # po lib help
   if [ "$2" == "help" ] || [ "$2" == "" ]; # SHOW HELP TEXT FOR "po library"
   then
-
     print_logo
-
     echo "\"po library\": The Particle Library manager for po-util.
 
 For help, read the LIBRARY MANAGER section of \"man po\"
@@ -1790,6 +1811,7 @@ For help, read the LIBRARY MANAGER section of \"man po\"
   exit
 fi # Close help
 
+# po lib update
 if [ "$2" == "update" ] || [ "$2" == "refresh" ]; # Update all libraries
 then
   echo
@@ -1817,6 +1839,7 @@ then
   exit
 fi # Close Update
 
+# po lib src
 if [ "$2" == "source" ] || [ "$2" == "src" ] ;
 then
   echo
@@ -1835,6 +1858,7 @@ then
   exit
 fi ### Close source
 
+# po lib view-headers
 if [ "$2" == "view-headers" ]; # See all headers in included libs
 then
 DIRWARNING="true"
@@ -1869,8 +1893,8 @@ echo
 exit
 fi
 
+# po lib ex
 # commands for listing and loading examples in a lib
-
 if [ "$2" == "examples" ] || [ "$2" == "ex" ];
 then
 
@@ -1900,6 +1924,7 @@ echo
 exit
 fi
 
+# po lib ex ls
 if [ "$3" == "ls" ] || [ "$3" == "list" ]; #po lib ex ls
 then
 
@@ -1929,6 +1954,7 @@ fi
 
 fi
 
+# po lib ex load
 if [ "$3" == "load" ] || [ "$3" == "copy" ] && [ -d "$LIBRARY/$4/examples" ]; #po lib ex copy LIBNAME EXNAME
 then
 DATE=$(date +%Y-%m-%d)
@@ -2092,13 +2118,14 @@ if [[ "$1" == "open" ]]; then
   echo
   echo "Opening $PROJECT_PATH in a subshell.."
   echo
-  cd "$PROJECT_PATH"
+  cd "$PROJECT_PATH" || exit
   exec bash
   exit
 fi
 
 validateDevicePlatform "$1"
 
+# po DEVICE setup
 if [ "$2" == "setup" ];
 then
   echo
@@ -2118,6 +2145,7 @@ echo
 exit
 fi
 
+# po DEVICE init
 # Create our project files
 if [ "$2" == "init" ]; # Syntax: po init DEVICE dir
 then
@@ -2125,6 +2153,7 @@ then
     initProject
 fi
 
+# po DEVICE dfu
 # Flash already compiled binary
 if [ "$2" == "dfu" ];
 then
@@ -2146,6 +2175,7 @@ then
   exit
 fi
 
+# po DEVICE upgrade
 #Upgrade our firmware on device
 if [ "$2" == "upgrade" ] || [ "$2" == "patch" ] || [ "$2" == "update" ];
 then
@@ -2210,6 +2240,7 @@ fi
 
 fi
 
+# po DEVICE clean
 # Clean firmware directory
 if [ "$2" == "clean" ];
 then
@@ -2239,6 +2270,7 @@ then
   exit
 fi
 
+# po DEVICE ota
 # Flash binary over the air
 # Use --multi to flash multiple devices at once.  This reads a file named devices.txt
 if [ "$2" == "ota" ];
@@ -2246,6 +2278,7 @@ then
   ota "$3"
 fi
 
+# po DEVICE build
 if [ "$2" == "build" ];
 then
   DIRWARNING="true"
@@ -2265,6 +2298,7 @@ then
     build_message
 fi
 
+# po DEVICE flash
 if [ "$2" == "flash" ];
 then
   DIRWARNING="true"
