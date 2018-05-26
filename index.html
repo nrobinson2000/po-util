@@ -54,8 +54,8 @@ Documentation</a>
 
 <p>Particle Offline Utility is written as <code>po-util</code>, and the Particle Offline Utility command is <code>po</code>.</p>
 
-<p><code>po</code> makes it easy for developers to download the Particle Toolchain and install the required dependencies to quickly begin creating projects using the Particle Platform.</p>
-<p><code>po</code> features a responsive experience, giving developers the tools they
+<p><code>po-util</code> makes it easy for developers to download the Particle Toolchain and install the required dependencies to quickly begin creating projects using the Particle Platform.</p>
+<p><code>po-util</code> features a responsive experience, giving developers the tools they
 need for seamless local development, providing understandable commands for
 simplifying complex tasks like properly compiling and flashing firmware.</p>
 <p align="center">
@@ -79,7 +79,7 @@ inside of projects later. <a href="http://community.particle.io/t/how-to-use-po-
 <img src="images/lib.gif">
 </p>
 <h3>Full dependency setup</h3>
-<p><code>po</code> installs all of the dependencies required for local Particle
+<p><code>po-util</code> installs all of the dependencies required for local Particle
 Development, including the <a href="https://launchpad.net/gcc-arm-embedded">ARM toolchain</a>, <a href="http://dfu-util.sourceforge.net/">dfu-util</a>,
 <a href="https://nodejs.org/en/">nodejs</a>, <a href="https://github.com/spark/particle-cli">particle-cli</a> and the <a href="https://github.com/spark/firmware">Particle firmware</a>.</p>
 <h3>Local compilation and support for flashing over USB or OTA</h3>
@@ -87,7 +87,7 @@ Development, including the <a href="https://launchpad.net/gcc-arm-embedded">ARM 
 flashing over USB using dfu-util or Over The Air using particle-cli.
 Sequentially flashing multiple devices at once over the air is also supported.</p>
 <h3>Shortcuts for Building in Atom</h3>
-<p><code>po</code> supports shortcuts for <a href="https://atom.io">Atom</a>, the popular open-
+<p><code>po-util</code> supports shortcuts for <a href="https://atom.io">Atom</a>, the popular open-
 source IDE by GitHub. The shourcuts provide quick access to commonly used
 commands for <code>po</code>, including: building firmware, flashing firmware over
 USB, and flashing firmware Over The Air. <a href="http://community.particle.io/t/po-util-a-toolchain-installer-helper-for-linux-and-osx/21015/29?u=nrobinson2000">Read more about the shortcuts
@@ -96,7 +96,7 @@ here.</a></p>
 <img src="https://i.giphy.com/11w4YEQHmUy06s.gif" width="800px">
 </p>
 <h1>Project Structure</h1>
-<p>The directory structure of a full <code>po</code> project is arranged like so:</p>
+<p>The directory structure of a full <code>po-util</code> project is arranged like so:</p>
 <pre><code>firmware/
 ├ main.cpp
 └ lib1/
@@ -121,7 +121,7 @@ bin/
 <li>You can keep track of which devices are in a project and list which ones to be flashed Over The Air in <code>devices.txt</code>.</li>
 <li>Libraries are kept track of in <code>libs.txt</code>.</li>
 <li>Atom shortcuts are configured in<code>.atom-build.yml</code>.</li>
-<li>Every <code>po</code> project is initialized as a repository with scripts in <code>ci/</code> to use <a href="https://travis-ci.org/">Travis CI</a> for testing.</li>
+<li>Every <code>po-util</code> project is initialized as a repository with scripts in <code>ci/</code> to use <a href="https://travis-ci.org/">Travis CI</a> for testing.</li>
 </ul>
 <h1>Project setup</h1>
 <p>When using <code>po</code>, your code is arranged into projects with the structure
