@@ -182,7 +182,7 @@ project directory.
 <p style="text-align: left"><a href="http://nrobinson2000.me/po-util-recognition.pdf">Will Hart, Particle General Manager</a></p></blockquote>
 <hr>
 
-<blockquote><p>"I found that po-util works wonders by condensing the many disparate steps required to automate command line interactions with Particle products into simple, clear commands. No need to futz with the weird serial stuff on Linux, and nicely full featured. So much better than pressing the buttons, even if you aren’t automating anything else. Highly recommend!"</p>
+<blockquote><p>"I found that po-util works wonders by condensing the many disparate steps required to automate command-line interactions with Particle products into simple, clear commands. No need to futz with the weird serial stuff on Linux, and nicely full featured. So much better than pressing the buttons, even if you aren’t automating anything else. Highly recommend!"</p>
 <p style="text-align: left"><a href="https://amper.xyz/">Justice Reed, Head of Hardware, Amper Technologies</a></p></blockquote>
 <hr>
 
