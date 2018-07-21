@@ -37,10 +37,20 @@ if [[ $(uname -s) == "Darwin" ]]; then
 fi
 
 if [[ $(uname -s) == "Linux" ]]; then
-  sudo curl -fsSLo /usr/local/share/po-common https://raw.githubusercontent.com/nrobinson2000/po/master/share/po-common
-  sudo curl -fsSLo /usr/local/share/po-linux https://raw.githubusercontent.com/nrobinson2000/po/master/share/po-linux
-  sudo curl -fsSLo /usr/local/bin/po https://raw.githubusercontent.com/nrobinson2000/po/master/bin/po
-  sudo chmod +x /usr/local/bin/po
+
+    if [ -f /.dockerenv ]; then
+        curl -fsSLo /usr/local/share/po-common https://raw.githubusercontent.com/nrobinson2000/po/master/share/po-common
+        curl -fsSLo /usr/local/share/po-docker https://raw.githubusercontent.com/nrobinson2000/po/master/share/po-docker
+        curl -fsSLo /usr/local/bin/po https://raw.githubusercontent.com/nrobinson2000/po/master/bin/po
+        chmod +x /usr/local/bin/po
+    else
+        sudo curl -fsSLo /usr/local/share/po-common https://raw.githubusercontent.com/nrobinson2000/po/master/share/po-common
+        sudo curl -fsSLo /usr/local/share/po-linux https://raw.githubusercontent.com/nrobinson2000/po/master/share/po-linux
+        sudo curl -fsSLo /usr/local/bin/po https://raw.githubusercontent.com/nrobinson2000/po/master/bin/po
+        sudo chmod +x /usr/local/bin/po
+    fi
+
+
   po install
 fi
 
