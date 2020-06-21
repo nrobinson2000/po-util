@@ -1,4 +1,4 @@
-**[This project has been moved to nrobinson2000/po.](https://github.com/nrobinson2000/po)**
+# This tool has been deprecated. Please upgrade to [neopo.](https://github.com/nrobinson2000/neopo)
 
 <p align="center">
 <img src="https://nrobinson2000.github.io/po-util/logos/po-util-updated.svg">
